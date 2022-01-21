@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using DG.Tweening;
+using System.Threading.Tasks;
 
 /// <summary>
 /// UI操作クラス
@@ -11,6 +13,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
 [RequireComponent(typeof(ActionMode))]
+[RequireComponent(typeof(Image))]
 public class UIController : MonoBehaviour
 {
     /// <summary>選択状態フレーム</summary>
@@ -26,6 +29,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private Button button;
     /// <summary>イベントシステム</summary>
     [SerializeField] private EventTrigger eventTrigger;
+    /// <summary>ボタンの画像</summary>
+    [SerializeField] private Image image;
 
     private void Awake()
     {
@@ -129,6 +134,8 @@ public class UIController : MonoBehaviour
                 Debug.Log("オブジェクト名:[" + name + "]");
                 break;
         }
+        if (!image)
+            image = GetComponent<Image>();
     }
 
     /// <summary>
@@ -196,6 +203,7 @@ public class UIController : MonoBehaviour
                     UIManager.Instance.CloseMenu();
                     button.enabled = false;
                     // T.B.D　ボタン押下時の演出を追加
+                    PlayFlashingMotion();
                 }
                 break;
             case PauseActionMode.RedoAction:
@@ -208,6 +216,7 @@ public class UIController : MonoBehaviour
 
                     _menuClose = true;
                     button.enabled = false;
+                    PlayFlashingMotion();
                 }
                 break;
             case PauseActionMode.CheckAction:
@@ -222,11 +231,24 @@ public class UIController : MonoBehaviour
                     LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
                     _menuClose = true;
                     button.enabled = false;
+                    PlayFlashingMotion();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// 点滅演出
+    /// </summary>
+    private async void PlayFlashingMotion()
+    {
+        // 点滅の演出
+        await Task.Delay(80);
+        image.DOColor(Color.gray, .3f);
+        await Task.Delay(80);
+        image.DOColor(Color.white, .3f);
     }
 
     /// <summary>
