@@ -10,7 +10,7 @@ using UnityEngine.UI;
 /// </summary>
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
-public class UIControllerGameManualViewPage : MonoBehaviour
+public class GameManualViewPageUIController : MonoBehaviour
 {
     /// <summary>ページ番号</summary>
     private int _pageIndex;

@@ -53,18 +53,21 @@
     <UnityVersion>2020.3.25f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\GameRedoButton.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ClearUIController.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\AudioScripts\SfxPlay.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\GameManualScrollView.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\UIController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\UIControllerGameManualViewPage.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\GameManualViewPageUIController.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\SceneInfoManager.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\Common\InputConst.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\LoadNow.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\UIManager.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\PauseScreen.cs" />
     <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ActionMode.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\MasterScreen.cs" />
     <Compile Include="Assets\Test.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\MasterUIController.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\PauseUIController.cs" />
+    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ClearScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -289,11 +292,11 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="DOTween">
       <HintPath>Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@2.0.0\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>

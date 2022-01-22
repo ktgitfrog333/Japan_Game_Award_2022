@@ -15,7 +15,7 @@ public class SceneInfoManager : MonoBehaviour
     /// <summary>シーン名一覧</summary>
     private string[] _sceneNameAry = {
         "Demo_Scene"
-            ,"Demo2_Scene"
+            ,"Demo_Scene2"
     };
     /// <summary>読み込ませるシーン</summary>
     private string _loadSceneName;
@@ -35,13 +35,22 @@ public class SceneInfoManager : MonoBehaviour
 
     private void Start()
     {
+        RefleshSceneMap(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    /// シーン遷移情報マップを更新する
+    /// </summary>
+    /// <param name="SceneName">現在のシーン名</param>
+    public void RefleshSceneMap(string SceneName)
+    {
         // 遷移前のシーン情報がある場合は過去シーンとしてセット
         if (0 < _mapSceneName.Count && _mapSceneName.ContainsKey("Current"))
         {
             _mapSceneName["Old"] = _mapSceneName["Current"];
         }
         // 現在のシーン情報をセット
-        _mapSceneName["Current"] = SceneManager.GetActiveScene().name;
+        _mapSceneName["Current"] = SceneName;
         // 次のシーン情報をシーン一覧から検索してセット
         for (var i = 0; i < _sceneNameAry.Length; i++)
         {
@@ -49,6 +58,7 @@ public class SceneInfoManager : MonoBehaviour
             {
                 // 次のシーンが存在する場合はセット
                 _mapSceneName["Next"] = _sceneNameAry[i + 1];
+                break;
             }
             else
             {
@@ -85,6 +95,19 @@ public class SceneInfoManager : MonoBehaviour
     /// </summary>
     public void PlayLoadScene()
     {
+        SceneManager.sceneLoaded += LoadedGameScene;
         SceneManager.LoadScene(_loadSceneName);
+    }
+
+    /// <summary>
+    /// 次のシーンにあるオブジェクトへ値を渡す
+    /// </summary>
+    /// <param name="next"></param>
+    /// <param name="mode"></param>
+    private void LoadedGameScene(Scene next, LoadSceneMode mode)
+    {
+        RefleshSceneMap(next.name);
+        // シーン移動の度に実行されないように消す
+        SceneManager.sceneLoaded -= LoadedGameScene;
     }
 }

@@ -18,7 +18,7 @@ public class GameManualScrollView : MonoBehaviour
 
     [SerializeField] private ScrollRect scrollRect;
     /// <summary>選択項目のUIスクリプト</summary>
-    [SerializeField] private UIControllerGameManualViewPage firstElement;
+    [SerializeField] private GameManualViewPageUIController firstElement;
     /// <summary>選択項目のUIオブジェクト</summary>
     [SerializeField] private GameObject firstObject;
     /// <summary>イベントシステム</summary>
@@ -74,7 +74,7 @@ public class GameManualScrollView : MonoBehaviour
             scrollRect = GetComponent<ScrollRect>();
         var g = transform.GetChild(0).GetChild(0).GetChild(0);
         if (!firstElement)
-            firstElement = g.GetComponent<UIControllerGameManualViewPage>();
+            firstElement = g.GetComponent<GameManualViewPageUIController>();
         if (!firstObject)
             firstObject = g.gameObject;
     }

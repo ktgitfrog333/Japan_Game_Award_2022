@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private ClipToPlay index;
+    //[SerializeField] private ClipToPlay index;
     private void OnEnable()
     {
         //SfxPlay.Instance.PlaySFX(index);
@@ -19,5 +19,12 @@ public class Test : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void OnClick()
+    {
+        SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
+        UIManager.Instance.OpenClearScreen();
+        gameObject.SetActive(false);
     }
 }
