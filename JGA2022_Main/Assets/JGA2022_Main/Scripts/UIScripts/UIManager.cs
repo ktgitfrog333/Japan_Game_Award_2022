@@ -28,7 +28,12 @@ public class UIManager : MonoBehaviour
         // ポーズ画面表示の入力
         if (Input.GetButtonDown(InputConst.INPUT_CONST_MENU))
         {
-            PauseScreen.Instance.gameObject.SetActive(true);
+            // クリア画面の表示中はポーズ画面を有効にしない
+            if (!ClearScreen.Instance.gameObject.activeSelf && !PauseScreen.Instance.gameObject.activeSelf)
+            {
+                PauseScreen.Instance.gameObject.SetActive(true);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+            }
         }
     }
 
@@ -51,5 +56,23 @@ public class UIManager : MonoBehaviour
         GameManualScrollView.Instance.ResetPage();
         GameManualScrollView.Instance.gameObject.SetActive(false);
         PauseScreen.Instance.AutoSelectContent(PauseActionMode.CheckAction);
+    }
+
+    /// <summary>
+    /// クリア画面を開く
+    /// </summary>
+    public async void OpenClearScreen()
+    {
+        ClearScreen.Instance.gameObject.SetActive(true);
+
+        // 子オブジェクトは一度非表示にする
+        for (int i = 1; i < ClearScreen.Instance.transform.GetChild(0).childCount; i++)
+            ClearScreen.Instance.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
+        await Task.Delay(3000);
+        // 子オブジェクトは一度非表示にする
+        for (int i = 1; i < ClearScreen.Instance.transform.GetChild(0).childCount; i++)
+            ClearScreen.Instance.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
+
+        ClearScreen.Instance.AutoSelectContent();
     }
 }
