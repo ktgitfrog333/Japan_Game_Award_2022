@@ -35,6 +35,10 @@ JGA2022_Main
     │  │       ├─UI_Common	共通UI素材
     │  │       ├─UI_Fade		フェード演出テクスチャ素材
     │  │       └─UI_Pause	ポーズ画面UI素材
+    │  ├─ParticleEffects		自作エフェクトのデモ
+    │  │  ├─Materials
+    │  │  ├─Prefabs
+    │  │  └─Textures
     │  ├─Plugins				DOTweenアセット
     │  │  └─Demigiant
     │  │      └─DOTween
