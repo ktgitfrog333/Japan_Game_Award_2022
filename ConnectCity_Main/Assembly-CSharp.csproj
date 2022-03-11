@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E55A8BDB-0C79-FEC4-5B36-D86D8C67983C}</ProjectGuid>
+    <ProjectGuid>{EE075DD3-6D0F-06D8-6FB4-98FB15E38CB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,27 +53,27 @@
     <UnityVersion>2020.3.25f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Assets\JGA2022_Main\Scripts\Common\TagConst.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ClearUIController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\AudioScripts\SfxPlay.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ClearScreen.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\GameManualScrollView.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\GameManualViewPageUIController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\LevelScripts\GoalPoint.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\SceneInfoManager.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\PlayerScripts\PlayerController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\Common\InputConst.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\MasterUIController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\PauseUIController.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\LoadNow.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\UIManager.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\PauseScreen.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\ActionMode.cs" />
-    <Compile Include="Assets\JGA2022_Main\Scripts\UIScripts\MasterScreen.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\TagConst.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ClearUIController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\SfxPlay.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ClearScreen.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\GameManualScrollView.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\GameManualViewPageUIController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\GoalPoint.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SceneInfoManager.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\PlayerScripts\PlayerController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\InputConst.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterUIController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseUIController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\LoadNow.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIManager.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseScreen.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ActionMode.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterScreen.cs" />
     <Compile Include="Assets\Test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JGA2022_Main\Sharders\LevelSharders\ObjectTriplanar.shader" />
+    <None Include="Assets\ConnectCity_Main\Sharders\LevelSharders\ObjectTriplanar.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -682,7 +682,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{AF4EFAD7-73CE-DCF3-C40E-B19D8848B16F}</Project>
+      <Project>{E97485C1-43EC-1734-D14C-CE471295ED3F}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>
