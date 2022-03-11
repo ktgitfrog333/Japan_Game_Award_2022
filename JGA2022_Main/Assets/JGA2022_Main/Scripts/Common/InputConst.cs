@@ -25,5 +25,9 @@ namespace Common.Const
         /// キーボードのEsc/ゲームパッドのStart
         /// </summary>
         public static readonly string INPUT_CONST_CANCEL = "Cancel";
+        /// <summary>
+        /// キーボードのSpace/ゲームパッドのAボタン
+        /// </summary>
+        public static readonly string INPUT_CONSTJUMP = "Jump";
     }
 }
