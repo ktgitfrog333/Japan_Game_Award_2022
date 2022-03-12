@@ -13,9 +13,9 @@ https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676
 https://qiita.com/broken55/items/df152c061da759ad1471
 
 【ディレクトリ階層】
-JGA2022_Main
+ConnectCity_Main
 └─Assets
-    ├─JGA2022_Main
+    ├─ConnectCity_Main
     │  ├─Audio	音の素材
     │  │  ├─ME	ME素材
     │  │  └─SFX	SE素材
