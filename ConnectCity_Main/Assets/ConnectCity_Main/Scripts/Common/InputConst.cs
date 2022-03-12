@@ -18,9 +18,29 @@ namespace Common.Const
         /// </summary>
         public static readonly string INPUT_CONST_MENU = "Menu";
         /// <summary>
-        /// キーボードのRightKey,LeftKey,D,A/ゲームパッドのスティック入力・左右
+        /// キーボードのRightKey,LeftKey,D,A/ゲームパッドの十字キー入力・左右
         /// </summary>
         public static readonly string INPUT_CONST_HORIZONTAL = "Horizontal";
+        /// <summary>
+        /// ※未使用？
+        /// </summary>
+        public static readonly string INPUT_CONST_VERTICAL = "Vertical";
+        /// <summary>
+        /// キーボードのQ,E/ゲームパッドの左スティック入力・左右
+        /// </summary>
+        public static readonly string INPUT_CONST_HORIZONTAL_LS = "HorizontalLS";
+        /// <summary>
+        /// キーボードの2,W/ゲームパッドの左スティック入力・上下
+        /// </summary>
+        public static readonly string INPUT_CONST_VERTICAL_LS = "VerticalLS";
+        /// <summary>
+        /// キーボードのI,P/ゲームパッドの右スティック入力・左右
+        /// </summary>
+        public static readonly string INPUT_CONST_HORIZONTAL_RS = "HorizontalRS";
+        /// <summary>
+        /// キーボードの9,O/ゲームパッドの右スティック入力・上下
+        /// </summary>
+        public static readonly string INPUT_CONST_VERTICAL_RS = "VerticalRS";
         /// <summary>
         /// キーボードのEsc/ゲームパッドのStart
         /// </summary>

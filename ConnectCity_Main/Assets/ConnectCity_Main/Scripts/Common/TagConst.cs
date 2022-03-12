@@ -9,11 +9,16 @@ namespace Common.Const
     /// ・ファイルパス
     ///     $HOME/ProjectSettings/TagManager.asset
     /// </summary>
-    public static class TagConst
+    public class TagConst
     {
         /// <summary>
         /// プレイヤーのタグ名
         /// </summary>
         public static readonly string TAG_NAME_PLAYER = "Player";
+
+        /// <summary>
+        /// 動くブロックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_MOVECUBE = "MoveCube";
     }
 }
