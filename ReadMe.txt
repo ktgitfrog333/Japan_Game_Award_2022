@@ -40,10 +40,12 @@ ConnectCity_Main
     │  │  ├─Prefabs
     │  │  └─Textures
     │  ├─Plugins				DOTweenアセット
-    │  │  └─Demigiant
-    │  │      └─DOTween
-    │  │          ├─Editor
-    │  │          │  └─Imgs
-    │  │          └─Modules
+    │  │  ├─Demigiant
+    │  │  │  └─DOTween
+    │  │  │      ├─Editor
+    │  │  │      │  └─Imgs
+    │  │  │      └─Modules
+    │  │  └─UniRx			UniRx
+    │  │      └─Scripts
     │  └─Resources			DOTweenアセット
     └─ProjectSettings	コントローラー設定など
