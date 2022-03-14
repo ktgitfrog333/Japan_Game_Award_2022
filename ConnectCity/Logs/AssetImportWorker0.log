@@ -1,0 +1,539 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.25f1 (9b9180224418) revision 10195328'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19043) 64bit Core' Language: 'ja' Physical Memory: 8118 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/hirok/Documents/Unity/ConnectCity
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+51101
+Successfully changed project path to: C:/Users/hirok/Documents/Unity/ConnectCity
+C:/Users/hirok/Documents/Unity/ConnectCity
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 229.22 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.25f1 (9b9180224418)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/hirok/Documents/Unity/ConnectCity/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) UHD Graphics 620 (ID=0x5917)
+    Vendor:   
+    VRAM:     4059 MB
+    Driver:   27.20.100.9416
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56288
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.199106 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 36.44 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.016 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1016ms)
+		BeginReloadAssembly (140ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (556ms)
+			LoadAssemblies (136ms)
+			RebuildTransferFunctionScriptingTraits (1ms)
+			SetupTypeCache (186ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (34ms)
+			SetupLoadedEditorAssemblies (196ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (7ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (37ms)
+				BeforeProcessingInitializeOnLoad (18ms)
+				ProcessInitializeOnLoadAttributes (97ms)
+				ProcessInitializeOnLoadMethodAttributes (37ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.802056 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.52 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  3.372 seconds
+Domain Reload Profiling:
+	ReloadAssembly (3378ms)
+		BeginReloadAssembly (153ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (24ms)
+		EndReloadAssembly (3157ms)
+			LoadAssemblies (1537ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (327ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (42ms)
+			SetupLoadedEditorAssemblies (1151ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (98ms)
+				ProcessInitializeOnLoadAttributes (226ms)
+				ProcessInitializeOnLoadMethodAttributes (813ms)
+				AfterProcessingInitializeOnLoad (9ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (8ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.10 seconds
+Refreshing native plugins compatible for Editor in 0.40 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1548 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 71.7 MB.
+System memory in use after: 71.8 MB.
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 1981.
+Total: 9.367700 ms (FindLiveObjects: 0.234600 ms CreateObjectMapping: 0.063300 ms MarkObjects: 8.698300 ms  DeleteObjects: 0.370700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  path: Assets/FantomMusic/Music/Loop/Suspicious_Heart_Loop.ogg
+  artifactKey: Guid(9efbe05c258350143a660b2086f84901) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Suspicious_Heart_Loop.ogg using Guid(9efbe05c258350143a660b2086f84901) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2eb6807f83e18bff148886b9910ed3c4') in 0.261396 seconds 
+  Import took 0.266863 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001220 seconds.
+  path: Assets/FantomMusic/Music/Loop/Prison_of_Mind_Loop.ogg
+  artifactKey: Guid(889118c979365074ab779dc9ef9392fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Prison_of_Mind_Loop.ogg using Guid(889118c979365074ab779dc9ef9392fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f68451a94e643f548a56c749e4a3d56d') in 0.028972 seconds 
+  Import took 0.033219 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001452 seconds.
+  path: Assets/FantomMusic/Music/Loop/DotaBata-Run_Loop.ogg
+  artifactKey: Guid(565bdf823534d2244a91e618f748c2e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/DotaBata-Run_Loop.ogg using Guid(565bdf823534d2244a91e618f748c2e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e54bb0f8052be163e38ccff9c4452c6e') in 0.019740 seconds 
+  Import took 0.022561 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001609 seconds.
+  path: Assets/FantomMusic/Music/Loop/Xross_Road_Xrisis_Loop.ogg
+  artifactKey: Guid(22f534a0ae8d0cd4ebaf118042c0b720) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Xross_Road_Xrisis_Loop.ogg using Guid(22f534a0ae8d0cd4ebaf118042c0b720) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b731b332350f5aae92f3296e78ffda3') in 0.020470 seconds 
+  Import took 0.024160 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001292 seconds.
+  path: Assets/FantomMusic/Music/Loop/Voltage_Loop.ogg
+  artifactKey: Guid(f70c1bdb31eb5cd4587af2fe95289ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Voltage_Loop.ogg using Guid(f70c1bdb31eb5cd4587af2fe95289ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '292759535709dfd2a9c3dd75c04aafe5') in 0.020617 seconds 
+  Import took 0.025262 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001377 seconds.
+  path: Assets/FantomMusic/Music/Loop/Zero-Dimensional_Loop.ogg
+  artifactKey: Guid(c7b738866d1268d4d83af640e88a0255) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Zero-Dimensional_Loop.ogg using Guid(c7b738866d1268d4d83af640e88a0255) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd998ceb40f89880fbe7d6b7946c4fee2') in 0.018566 seconds 
+  Import took 0.020865 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001540 seconds.
+  path: Assets/FantomMusic/Music/Loop/Mission_Loop.ogg
+  artifactKey: Guid(c31485000f13bc84094d71c07e9d4e59) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Mission_Loop.ogg using Guid(c31485000f13bc84094d71c07e9d4e59) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '89fcf4aa26214fe500bc6c9de040e7e0') in 0.019989 seconds 
+  Import took 0.023801 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001129 seconds.
+  path: Assets/FantomMusic/Music/Loop/Power_of_Bravery_Loop.ogg
+  artifactKey: Guid(bdb1fb5903404fd4ba10b715ff7c29db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Power_of_Bravery_Loop.ogg using Guid(bdb1fb5903404fd4ba10b715ff7c29db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '48b09dbe897974ee95d06f2ebeffe0f6') in 0.020162 seconds 
+  Import took 0.023186 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001404 seconds.
+  path: Assets/FantomMusic/Music/Loop/Connexion_Loop.ogg
+  artifactKey: Guid(0cfe7aaaba8297e439a246bea151b642) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Connexion_Loop.ogg using Guid(0cfe7aaaba8297e439a246bea151b642) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0c89be4db6b897b956eae0b03750a640') in 0.020558 seconds 
+  Import took 0.024262 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001597 seconds.
+  path: Assets/FantomMusic/Music/Loop/Algorhythm_Loop.ogg
+  artifactKey: Guid(9bd1cf2fa454fef47bfcca74aa8ae1e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Algorhythm_Loop.ogg using Guid(9bd1cf2fa454fef47bfcca74aa8ae1e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b3ea87ddbd72949133508b62a3b7e82') in 0.018773 seconds 
+  Import took 0.021902 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001655 seconds.
+  path: Assets/FantomMusic/Music/Loop/Be_Up_In_Arms_Loop.ogg
+  artifactKey: Guid(c32d9bc72ec530345860fd343d85d81f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Be_Up_In_Arms_Loop.ogg using Guid(c32d9bc72ec530345860fd343d85d81f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '81e77a003fbfdeaa51b20bffd8325b39') in 0.019988 seconds 
+  Import took 0.023004 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001372 seconds.
+  path: Assets/FantomMusic/Music/Loop/Cool_Elegance_Loop.ogg
+  artifactKey: Guid(d89b57a399020f549ba279ebbc6f232e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Cool_Elegance_Loop.ogg using Guid(d89b57a399020f549ba279ebbc6f232e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a62900313a4cf16edea50b995dcbd467') in 0.018536 seconds 
+  Import took 0.020951 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001603 seconds.
+  path: Assets/FantomMusic/Music/Loop/Nightmare_Loop.ogg
+  artifactKey: Guid(43d2b3242c07e6943aad770a40291a49) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Nightmare_Loop.ogg using Guid(43d2b3242c07e6943aad770a40291a49) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4b72676976dc8dd5b030af3b77b97b13') in 0.018570 seconds 
+  Import took 0.021077 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001633 seconds.
+  path: Assets/FantomMusic/Music/Loop/Blader_Loop.ogg
+  artifactKey: Guid(76d360203cd5cc44ebdd64512ab29557) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Blader_Loop.ogg using Guid(76d360203cd5cc44ebdd64512ab29557) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '860fd0a9565acf5d4c37c01c0ba441cd') in 0.019026 seconds 
+  Import took 0.022015 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001607 seconds.
+  path: Assets/FantomMusic/Music/Loop/Crazy_Break_Down_Loop.ogg
+  artifactKey: Guid(aa6ecdecc6920834fae69b58134df785) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Crazy_Break_Down_Loop.ogg using Guid(aa6ecdecc6920834fae69b58134df785) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ed656a9268d7d670ddb97ca803929bd') in 0.020537 seconds 
+  Import took 0.023894 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001070 seconds.
+  path: Assets/FantomMusic/Music/Loop/Devils_Core_Loop.ogg
+  artifactKey: Guid(795bfa920e091f14b932acd8582dec44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Devils_Core_Loop.ogg using Guid(795bfa920e091f14b932acd8582dec44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6eb01c92e1cb70077e1b8758a27ea5e9') in 0.022516 seconds 
+  Import took 0.026140 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000884 seconds.
+  path: Assets/FantomMusic/Music/Loop/HIJIKATA_TRANCE_Loop.ogg
+  artifactKey: Guid(9f9d368c7f485e542b601407e1e2b3ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/HIJIKATA_TRANCE_Loop.ogg using Guid(9f9d368c7f485e542b601407e1e2b3ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd7f8a4acabdf9a1734b52dfaf60077b6') in 0.019804 seconds 
+  Import took 0.023193 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001206 seconds.
+  path: Assets/FantomMusic/Music/Loop/Fire_Dragoon_Loop.ogg
+  artifactKey: Guid(ee5584caa570f8644bcb68a3c03d26a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/Fire_Dragoon_Loop.ogg using Guid(ee5584caa570f8644bcb68a3c03d26a2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61245ed5c48e8b2057b441686cb4bb51') in 0.032077 seconds 
+  Import took 0.036598 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001182 seconds.
+  path: Assets/FantomMusic/Music/Loop/One_of_Victory_Loop.ogg
+  artifactKey: Guid(18d589fc99645694aaaf8c5c205bb816) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Loop/One_of_Victory_Loop.ogg using Guid(18d589fc99645694aaaf8c5c205bb816) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a2bb9f405990230d3e335e47af5036de') in 0.022974 seconds 
+  Import took 0.027083 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.853449 seconds.
+  path: Assets/FantomMusic/Music/MainAudioMixer.mixer
+  artifactKey: Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/MainAudioMixer.mixer using Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1793d97db15c776e4a46ade1d39623e5') in 0.013630 seconds 
+  Import took 0.018294 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.610976 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Beautiful Dreamer-LT.mp3
+  artifactKey: Guid(8ad3c181ab43363489f84fbac002fda3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Beautiful Dreamer-LT.mp3 using Guid(8ad3c181ab43363489f84fbac002fda3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5eaf6685ea771f7ed739922d19322d72') in 0.030787 seconds 
+  Import took 0.035990 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001711 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Darksider-LT.mp3
+  artifactKey: Guid(4d45b41c1065db049b9a0ceb1dfc69fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Darksider-LT.mp3 using Guid(4d45b41c1065db049b9a0ceb1dfc69fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '717c2e68ceb82b17b6e4b0aac39a7ad3') in 0.037193 seconds 
+  Import took 0.042173 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001293 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Pressure.ogg
+  artifactKey: Guid(c4270eade73e56742a77f4b10f800452) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Pressure.ogg using Guid(c4270eade73e56742a77f4b10f800452) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3a904bb26940099cde0563fb238f912') in 0.036739 seconds 
+  Import took 0.042427 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001429 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Super_Dragon.mp3
+  artifactKey: Guid(36961da5b3f74b248afca5aad85c1047) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Super_Dragon.mp3 using Guid(36961da5b3f74b248afca5aad85c1047) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '379dc1bcf56324bb4d3502ade5df46bd') in 0.032280 seconds 
+  Import took 0.037061 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001910 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Disast'n'Groove.ogg
+  artifactKey: Guid(a5372a68a0347874abd1fe49661c842d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Disast'n'Groove.ogg using Guid(a5372a68a0347874abd1fe49661c842d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ff52334085a4cf0eb9d411158f742eb') in 0.035406 seconds 
+  Import took 0.041877 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001004 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Ready_To_Flight.mp3
+  artifactKey: Guid(935f64d265b9baa49836210d432fb34a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Ready_To_Flight.mp3 using Guid(935f64d265b9baa49836210d432fb34a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cfc946758725be5b6a78233b43865fbb') in 0.033731 seconds 
+  Import took 0.038098 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001181 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis_Long.ogg
+  artifactKey: Guid(9b94e5ba31bfa1045a9dea5b8e08ef97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis_Long.ogg using Guid(9b94e5ba31bfa1045a9dea5b8e08ef97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47f44eb5286d28f2550dd01937a43b16') in 0.035284 seconds 
+  Import took 0.039594 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001460 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Face_The_Force.mp3
+  artifactKey: Guid(912dced91b4f15f4f87715ff7e3e328b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Face_The_Force.mp3 using Guid(912dced91b4f15f4f87715ff7e3e328b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7d5510d6200a9da6711bca71258621ee') in 0.033523 seconds 
+  Import took 0.040061 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000866 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis.ogg
+  artifactKey: Guid(72099fc402e65c34b887f7ff3c365737) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis.ogg using Guid(72099fc402e65c34b887f7ff3c365737) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcfd9e8aeaf15933b001047864568719') in 0.031084 seconds 
+  Import took 0.035042 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001037 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Cloudy_Shadow.ogg
+  artifactKey: Guid(e53f341f2a3d2e841927a98ebfa55aea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Cloudy_Shadow.ogg using Guid(e53f341f2a3d2e841927a98ebfa55aea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea963fa99337e8b9e7262256cd603122') in 0.034815 seconds 
+  Import took 0.041517 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001474 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Mysterious_Zone.ogg
+  artifactKey: Guid(db025e00f03b4f447b197253609cff37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Mysterious_Zone.ogg using Guid(db025e00f03b4f447b197253609cff37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '361afe79ad22e6b33f829fa47ec4f77d') in 0.032506 seconds 
+  Import took 0.037117 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001060 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis-LT.mp3
+  artifactKey: Guid(f9f89a61be692434183db4282bab43c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis-LT.mp3 using Guid(f9f89a61be692434183db4282bab43c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5aa37f976cc7d2059cab832aee3ad241') in 0.031091 seconds 
+  Import took 0.034945 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001677 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Death_Spiral.ogg
+  artifactKey: Guid(51e8fab81a388f849908aa728b829b02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Death_Spiral.ogg using Guid(51e8fab81a388f849908aa728b829b02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '12cf94d6f6a8683752306dcd156c58b1') in 0.035410 seconds 
+  Import took 0.040537 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000813 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Constant_Battle.mp3
+  artifactKey: Guid(33e5d3df966c1904a9ac0f157e1c46d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Constant_Battle.mp3 using Guid(33e5d3df966c1904a9ac0f157e1c46d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '671f12f3f38bbe2990301284901c5476') in 0.032324 seconds 
+  Import took 0.035631 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000845 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Beautiful Dreamer.mp3
+  artifactKey: Guid(e8031248876e2f540ad76f9a2a2cf17b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Beautiful Dreamer.mp3 using Guid(e8031248876e2f540ad76f9a2a2cf17b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '754d1e256db58fdf0e8fc156eb41fdfd') in 0.044244 seconds 
+  Import took 0.048253 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000972 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Death_Spiral-LT.mp3
+  artifactKey: Guid(de3d20783b13cb9438832d327797d7f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Death_Spiral-LT.mp3 using Guid(de3d20783b13cb9438832d327797d7f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b4e2fff8c75bddfc1009e0b442bc3ee') in 0.030448 seconds 
+  Import took 0.034309 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000782 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Darksider.mp3
+  artifactKey: Guid(7b6848781050bdb4d8f45bce7e1c7ac6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Darksider.mp3 using Guid(7b6848781050bdb4d8f45bce7e1c7ac6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ed128673b727dfcb55f703efc83eab6') in 0.030634 seconds 
+  Import took 0.034191 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000669 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Nightmare-LT.mp3
+  artifactKey: Guid(4504d7c8455e25e4e96c970195252a29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Nightmare-LT.mp3 using Guid(4504d7c8455e25e4e96c970195252a29) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee1c20cc1cf774c0ed2c8438efa71ed5') in 0.028743 seconds 
+  Import took 0.031973 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000767 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Mysterious_Zone-LT.mp3
+  artifactKey: Guid(b323edb7d0c584345a3d848c6778e19e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Mysterious_Zone-LT.mp3 using Guid(b323edb7d0c584345a3d848c6778e19e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'abe16bac5f20ee7a39ae7f7f5fe59a04') in 0.032744 seconds 
+  Import took 0.037380 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000620 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Pressure-LT.mp3
+  artifactKey: Guid(619d510dbeb2c224f9f4c7f1bf67f176) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Pressure-LT.mp3 using Guid(619d510dbeb2c224f9f4c7f1bf67f176) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b17415e292ade17b88b7b652b01a4e4') in 0.026085 seconds 
+  Import took 0.030055 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000499 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Disast'n'Groove-LT.mp3
+  artifactKey: Guid(25395b064e5434142a1acf1de6edeae0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Disast'n'Groove-LT.mp3 using Guid(25395b064e5434142a1acf1de6edeae0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '27c7fbe4e728d6c8bf72c689b6bb58f7') in 0.030545 seconds 
+  Import took 0.034732 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000593 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis_Long-LT.mp3
+  artifactKey: Guid(411be3b7dccf31743889b0730900fee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Xross_Road_Xrisis_Long-LT.mp3 using Guid(411be3b7dccf31743889b0730900fee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '70fb5c1a77f4255599e156d4a6bd9741') in 0.027787 seconds 
+  Import took 0.031148 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000483 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Zrk.mp3
+  artifactKey: Guid(1a2cf8161de15aa4ab0197bad0bbfc02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Zrk.mp3 using Guid(1a2cf8161de15aa4ab0197bad0bbfc02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bdf824b8a0fe9384bb090722f6aa10d0') in 0.035666 seconds 
+  Import took 0.041891 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000658 seconds.
+  path: Assets/FantomMusic/Music/Repeat/Nightmare.ogg
+  artifactKey: Guid(04ebd68c369921248a0262bac11a1d36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat/Nightmare.ogg using Guid(04ebd68c369921248a0262bac11a1d36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13a672463d076ecacfe8de3690d8caa8') in 0.034117 seconds 
+  Import took 0.037890 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 39.648128 seconds.
+  path: Assets/FantomMusic/Music/MainAudioMixer.mixer
+  artifactKey: Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/MainAudioMixer.mixer using Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6e1fd71ff6b1f36a177019eef05af76') in 0.004808 seconds 
+  Import took 0.008329 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 6.704493 seconds.
+  path: Assets/FantomMusic/Music/MainAudioMixer.mixer
+  artifactKey: Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/MainAudioMixer.mixer using Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02f73a08d6e85c5eb20244af1d12aa26') in 0.005384 seconds 
+  Import took 0.010633 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.969608 seconds.
+  path: Assets/FantomMusic/Music/MainAudioMixer.mixer
+  artifactKey: Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/MainAudioMixer.mixer using Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01db75ea3a0301cf1444b205a03279d4') in 0.003838 seconds 
+  Import took 0.007951 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.609964 seconds.
+  path: Assets/FantomMusic/Music/MainAudioMixer.mixer
+  artifactKey: Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/MainAudioMixer.mixer using Guid(c7aef21d8a3a41a499e92fbac2a831b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ef70f54f670c376f994a849b7a2b9e9') in 0.004350 seconds 
+  Import took 0.008446 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 25.829138 seconds.
+  path: Assets/FantomMusic/Music/Repeat
+  artifactKey: Guid(c7e47f07ee6f100428e957ca1be0dda7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/FantomMusic/Music/Repeat using Guid(c7e47f07ee6f100428e957ca1be0dda7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8c3e3dda2aaedcf53940df9a11b7cda') in 0.011076 seconds 
+  Import took 0.016992 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 521.154380 seconds.
+  path: Assets
+  artifactKey: Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets using Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42d402b061de3733987d63b9cc3b64de') in 0.013959 seconds 
+  Import took 0.018372 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.909191 seconds.
+  path: Assets/Scripts
+  artifactKey: Guid(e290be4dc791576489b0cc53d49c25ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts using Guid(e290be4dc791576489b0cc53d49c25ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aaec3b941ad82135012fec21342f3098') in 0.010498 seconds 
+  Import took 0.014408 seconds .
+
