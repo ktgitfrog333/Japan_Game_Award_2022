@@ -1,0 +1,1844 @@
+Using pre-set license
+Built from '2020.3/staging' branch; Version is '2020.3.25f1 (9b9180224418) revision 10195328'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19043) 64bit Core' Language: 'ja' Physical Memory: 8118 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+54652
+Successfully changed project path to: C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity
+C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 47.20 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.3.25f1 (9b9180224418)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) UHD Graphics 620 (ID=0x5917)
+    Vendor:   
+    VRAM:     4059 MB
+    Driver:   27.20.100.9416
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56672
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.005556 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 47.15 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.706 seconds
+Domain Reload Profiling:
+	ReloadAssembly (706ms)
+		BeginReloadAssembly (64ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (546ms)
+			LoadAssemblies (63ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (175ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (42ms)
+			SetupLoadedEditorAssemblies (200ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (10ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (47ms)
+				BeforeProcessingInitializeOnLoad (16ms)
+				ProcessInitializeOnLoadAttributes (93ms)
+				ProcessInitializeOnLoadMethodAttributes (34ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.019254 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.67 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.253 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1255ms)
+		BeginReloadAssembly (203ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (6ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (24ms)
+		EndReloadAssembly (979ms)
+			LoadAssemblies (141ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (327ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (48ms)
+			SetupLoadedEditorAssemblies (361ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (6ms)
+				SetLoadedEditorAssemblies (1ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (113ms)
+				ProcessInitializeOnLoadAttributes (216ms)
+				ProcessInitializeOnLoadMethodAttributes (15ms)
+				AfterProcessingInitializeOnLoad (10ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (7ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.12 seconds
+Refreshing native plugins compatible for Editor in 0.43 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1548 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 71.8 MB.
+System memory in use after: 71.9 MB.
+
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 1981.
+Total: 3.581500 ms (FindLiveObjects: 0.249900 ms CreateObjectMapping: 0.075000 ms MarkObjects: 3.139900 ms  DeleteObjects: 0.115800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  path: Assets/Texucres
+  artifactKey: Guid(0837198ef72b3e745b6299cfa608ec9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texucres using Guid(0837198ef72b3e745b6299cfa608ec9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a75661c4773c0e1753d2ea23f025e92c') in 0.010297 seconds 
+  Import took 0.014395 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.959608 seconds.
+  path: Assets/Texture
+  artifactKey: Guid(0837198ef72b3e745b6299cfa608ec9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture using Guid(0837198ef72b3e745b6299cfa608ec9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cd49bec4101b366072829fd928d39c3') in 0.011376 seconds 
+  Import took 0.015327 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 91.624817 seconds.
+  path: Assets/Texture/title_logo.png
+  artifactKey: Guid(a242ac12ad33d0045b37ec2c5d157da4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/title_logo.png using Guid(a242ac12ad33d0045b37ec2c5d157da4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38947cb8b95fb82cc1f1ffb8f0558c6b') in 0.322445 seconds 
+  Import took 0.328197 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 44.706042 seconds.
+  path: Assets/Texture/title_logo.png
+  artifactKey: Guid(a242ac12ad33d0045b37ec2c5d157da4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/title_logo.png using Guid(a242ac12ad33d0045b37ec2c5d157da4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '44df938a89f08739a5537734f97be14c') in 0.134110 seconds 
+  Import took 0.138861 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 218.168393 seconds.
+  path: Assets/Texture/fade_in.png
+  artifactKey: Guid(4e7ca3a84b108f6409dbe6188ca3693c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/fade_in.png using Guid(4e7ca3a84b108f6409dbe6188ca3693c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c7eee0ad093e243647fd66e2bfa3e46') in 0.027745 seconds 
+  Import took 0.034618 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001245 seconds.
+  path: Assets/Texture/gamefinish_2.png
+  artifactKey: Guid(bded47e0c6590814a9cc5dc9ae47bb18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/gamefinish_2.png using Guid(bded47e0c6590814a9cc5dc9ae47bb18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '640d756a7cb916f33ba12b8d01564d40') in 0.019973 seconds 
+  Import took 0.026131 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001421 seconds.
+  path: Assets/Texture/pushgamestart_2.png
+  artifactKey: Guid(5ca661beabdd5a8469177bec10c75f6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/pushgamestart_2.png using Guid(5ca661beabdd5a8469177bec10c75f6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acf7ee9225913a65c89c9e05856782d1') in 0.017635 seconds 
+  Import took 0.020872 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001560 seconds.
+  path: Assets/Texture/pause_pencil.png
+  artifactKey: Guid(7750d0d0ffdab13479d8c3db0b77d2ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/pause_pencil.png using Guid(7750d0d0ffdab13479d8c3db0b77d2ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cf4fff4748d70c776a8e4e3627e134a0') in 0.013536 seconds 
+  Import took 0.016999 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000915 seconds.
+  path: Assets/Texture/gamefinish_check_2.png
+  artifactKey: Guid(670184d7a26ecdf49b794bf7287985d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/gamefinish_check_2.png using Guid(670184d7a26ecdf49b794bf7287985d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f8c8b86683829a1c34b482e4575de00f') in 0.013713 seconds 
+  Import took 0.017336 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001841 seconds.
+  path: Assets/Texture/no_2.png
+  artifactKey: Guid(f996a4e2a8cd81448822d91313480737) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/no_2.png using Guid(f996a4e2a8cd81448822d91313480737) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '191d6a9ae99a0f2e0a9364d53eda1aaf') in 0.016398 seconds 
+  Import took 0.020715 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001971 seconds.
+  path: Assets/Texture/gamestart_2.png
+  artifactKey: Guid(35d1047b157cca846ad6f606e0ca541a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/gamestart_2.png using Guid(35d1047b157cca846ad6f606e0ca541a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '78ab467a3a0879ba8ce737499be0e39c') in 0.025973 seconds 
+  Import took 0.031686 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.267193 seconds.
+  path: Assets/Texture/yes_2.png
+  artifactKey: Guid(ab12ab43bb5e7534d9ceeb096891ee57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/yes_2.png using Guid(ab12ab43bb5e7534d9ceeb096891ee57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f74bafedd002fd8d28e931829c40a565') in 0.021882 seconds 
+  Import took 0.026117 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 575.175539 seconds.
+  path: Assets/Texture/pushgamestart_2.png
+  artifactKey: Guid(5ca661beabdd5a8469177bec10c75f6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Texture/pushgamestart_2.png using Guid(5ca661beabdd5a8469177bec10c75f6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f8f7f1625a712e66b9c4fadd82d5e27') in 0.029659 seconds 
+  Import took 0.038122 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 150.885473 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_AirCon.mat
+  artifactKey: Guid(0b359c066f7ca1848963fbb541342291) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_AirCon.mat using Guid(0b359c066f7ca1848963fbb541342291) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c05c8c84bbe999c35f0155b2508f734') in 0.069378 seconds 
+  Import took 0.074287 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001530 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Screens.mat
+  artifactKey: Guid(17c4e27cdce12f840a6029815ee3690f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Screens.mat using Guid(17c4e27cdce12f840a6029815ee3690f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1b231cad51a322329e1abeb4d9c2159e') in 0.019674 seconds 
+  Import took 0.024238 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001602 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_SpeedwayTiles.mat
+  artifactKey: Guid(c9c2d6cdace4287428f3b6c13edacc61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_SpeedwayTiles.mat using Guid(c9c2d6cdace4287428f3b6c13edacc61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bcf0a6c834ccb8e5567ef10dce6cb593') in 0.031050 seconds 
+  Import took 0.036144 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001055 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintBlack.mat
+  artifactKey: Guid(b9208677843a62549b0df6fee33903f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintBlack.mat using Guid(b9208677843a62549b0df6fee33903f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff29aebc93bbde124168cbcf0026564e') in 0.021613 seconds 
+  Import took 0.026890 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000991 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintBlue.mat
+  artifactKey: Guid(19c747a40e2b4ac4eb2a6ea984120e33) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintBlue.mat using Guid(19c747a40e2b4ac4eb2a6ea984120e33) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be385dd3380975210f526d705d528fd0') in 0.022273 seconds 
+  Import took 0.027631 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001293 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_AsphaltHexagonRoof.mat
+  artifactKey: Guid(4395015a23ca81e44aa74bc896ddf19e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_AsphaltHexagonRoof.mat using Guid(4395015a23ca81e44aa74bc896ddf19e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '403404cecf924524b2490fee0c1fbd6d') in 0.022719 seconds 
+  Import took 0.028647 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000809 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteA.mat
+  artifactKey: Guid(043876dd9e3fe2540b509f16d204c22d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteA.mat using Guid(043876dd9e3fe2540b509f16d204c22d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e5db56cfecd6889467dd4982ffe4ae5') in 0.023386 seconds 
+  Import took 0.027771 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001303 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassBottle.mat
+  artifactKey: Guid(00274977c7d32764fb24222fd4bdafd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassBottle.mat using Guid(00274977c7d32764fb24222fd4bdafd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca2afaa4d3ff13ceb830553ca0aec90d') in 0.020461 seconds 
+  Import took 0.024498 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000892 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassLamps.mat
+  artifactKey: Guid(2477a524148476b4d985aceef83f10f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassLamps.mat using Guid(2477a524148476b4d985aceef83f10f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7de39670819652b93b6dde68b52468ef') in 0.019361 seconds 
+  Import took 0.024063 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000778 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalGrating.mat
+  artifactKey: Guid(95722f46acb051146842c74b11f69401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalGrating.mat using Guid(95722f46acb051146842c74b11f69401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '94ad2d1876c101e380b57b3130e1e28f') in 0.022249 seconds 
+  Import took 0.027874 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000908 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteB.mat
+  artifactKey: Guid(d151e03df289e8a4eb071759fea8024e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteB.mat using Guid(d151e03df289e8a4eb071759fea8024e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bf38f7358c2c29d1f61df8a8b750a722') in 0.020147 seconds 
+  Import took 0.024850 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000640 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticBlack.mat
+  artifactKey: Guid(a941c0a450a6f7e40a5aa4a26c918cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticBlack.mat using Guid(a941c0a450a6f7e40a5aa4a26c918cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2e70973bac133a9dc0ad50c4b2ea6931') in 0.017972 seconds 
+  Import took 0.022130 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001561 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Letters.mat
+  artifactKey: Guid(7420f8a79dbde5f4dbc37ef9a30d7187) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Letters.mat using Guid(7420f8a79dbde5f4dbc37ef9a30d7187) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64b623b926fa330dffd384ea0612686f') in 0.020736 seconds 
+  Import took 0.025074 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001200 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteCBeige.mat
+  artifactKey: Guid(0c962d86794e22b468bc291fc3ad2e2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteCBeige.mat using Guid(0c962d86794e22b468bc291fc3ad2e2f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '016e4b44fc6c2f40f30a0e2d326e9e62') in 0.022853 seconds 
+  Import took 0.027410 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001003 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_RedWhiteStripes.mat
+  artifactKey: Guid(310fc766e727d6c4191fc3d1b8216300) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_RedWhiteStripes.mat using Guid(310fc766e727d6c4191fc3d1b8216300) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9146e30d78365e3d3b1779e6fe758b1b') in 0.020716 seconds 
+  Import took 0.025460 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001051 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GalvanizedSteelDirt.mat
+  artifactKey: Guid(63a94bec6e1fbc1448413b63f0ec4d18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GalvanizedSteelDirt.mat using Guid(63a94bec6e1fbc1448413b63f0ec4d18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb149d112456dd19bab35a037f4cba60') in 0.019119 seconds 
+  Import took 0.023453 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001113 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassBlack.mat
+  artifactKey: Guid(1ea0c1b47f4c10443957688c50e08c3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassBlack.mat using Guid(1ea0c1b47f4c10443957688c50e08c3f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f27bf4219f3630b493201c826a43ea11') in 0.023775 seconds 
+  Import took 0.027823 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000819 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightRed.mat
+  artifactKey: Guid(e1fd51fcfc97f8b41837b663fa11a05d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightRed.mat using Guid(e1fd51fcfc97f8b41837b663fa11a05d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f139b3352fbcdfbaf6457bb136b70117') in 0.018188 seconds 
+  Import took 0.021925 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000705 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_DarkPanels.mat
+  artifactKey: Guid(091ac59e348f01543887421292a28725) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_DarkPanels.mat using Guid(091ac59e348f01543887421292a28725) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '16c5c0f83b21cf06d4fdf0a8da19f6aa') in 0.024705 seconds 
+  Import took 0.028255 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000696 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintWhiteRusty.mat
+  artifactKey: Guid(781fcada43fe9d24d85ba7dedfa162eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintWhiteRusty.mat using Guid(781fcada43fe9d24d85ba7dedfa162eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fccee72b4222cd616acbdbe9f1f7b989') in 0.024372 seconds 
+  Import took 0.029489 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001068 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintWhiteWorn.mat
+  artifactKey: Guid(8709e0a9a82b35547a8ad555fb216df0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintWhiteWorn.mat using Guid(8709e0a9a82b35547a8ad555fb216df0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07a49eb4f1ce3ccd0236369c5e6bd422') in 0.020452 seconds 
+  Import took 0.025548 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001077 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaperWhite.mat
+  artifactKey: Guid(1df3cd8a72242eb448748fc727219f63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaperWhite.mat using Guid(1df3cd8a72242eb448748fc727219f63) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '78e0274c10408be9326762e39545a0ae') in 0.022010 seconds 
+  Import took 0.026328 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000835 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteWall.mat
+  artifactKey: Guid(3d8798a7d0043f346982261959da80aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteWall.mat using Guid(3d8798a7d0043f346982261959da80aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '52c0b5f989868980b5f027c082d42776') in 0.022624 seconds 
+  Import took 0.026833 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000949 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticYellow.mat
+  artifactKey: Guid(b4810a6cfa707904b9fc4e0539f1cf7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticYellow.mat using Guid(b4810a6cfa707904b9fc4e0539f1cf7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b043177b5ec1c220cc84267d9665d421') in 0.019339 seconds 
+  Import took 0.024947 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000813 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_OxidizedSteel.mat
+  artifactKey: Guid(08777be1a7a534d488ba2a61ef1b71de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_OxidizedSteel.mat using Guid(08777be1a7a534d488ba2a61ef1b71de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8236f52d317e8808de9277416e4a4754') in 0.020494 seconds 
+  Import took 0.025097 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000824 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GalvanizedSteel.mat
+  artifactKey: Guid(2dcbf4db5f5d49a41be591949c264d8b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GalvanizedSteel.mat using Guid(2dcbf4db5f5d49a41be591949c264d8b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '23011cd097ea06072362dbbca92d9163') in 0.022991 seconds 
+  Import took 0.029044 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000685 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightBlue.mat
+  artifactKey: Guid(adb4fd8b658bd3c44b8c64b248ed251e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightBlue.mat using Guid(adb4fd8b658bd3c44b8c64b248ed251e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cd88713a96c213baeb8de43384a54908') in 0.021350 seconds 
+  Import took 0.026734 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000916 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Brass.mat
+  artifactKey: Guid(ce2629fbe3ab5ca46a9a2de14e8f3099) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Brass.mat using Guid(ce2629fbe3ab5ca46a9a2de14e8f3099) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '50bca9f1df8998258eee22a94cb151d6') in 0.020870 seconds 
+  Import took 0.027246 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000876 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Rubber.mat
+  artifactKey: Guid(55940bf09de93ca4abb963f2416f4f93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Rubber.mat using Guid(55940bf09de93ca4abb963f2416f4f93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e22ccfc2032afcbd4aded62c41f6f2e') in 0.022879 seconds 
+  Import took 0.028781 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000792 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintWorn.mat
+  artifactKey: Guid(6c496a272c8f7674f8081063ebf72aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintWorn.mat using Guid(6c496a272c8f7674f8081063ebf72aaa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd207c5991ab114c424f1e1803ea55cfb') in 0.023683 seconds 
+  Import took 0.028515 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000934 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteCWhite.mat
+  artifactKey: Guid(e0c71d8041f9d6247900321d9d03bf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteCWhite.mat using Guid(e0c71d8041f9d6247900321d9d03bf34) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b26004aca58268c5ae2cb8f618a8c770') in 0.021869 seconds 
+  Import took 0.026058 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000800 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintYellow.mat
+  artifactKey: Guid(3da9bf9b35b5ae34d853ad71fc52ceb9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintYellow.mat using Guid(3da9bf9b35b5ae34d853ad71fc52ceb9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f28fad35199e3c092f3c772535e375c') in 0.021440 seconds 
+  Import took 0.025460 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000847 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecalSheet.mat
+  artifactKey: Guid(0ad6b5304fcbc504096f4497c31b1fa9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecalSheet.mat using Guid(0ad6b5304fcbc504096f4497c31b1fa9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '149005e2e366f9c26800146761c6a787') in 0.018423 seconds 
+  Import took 0.022526 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000700 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteTiles.mat
+  artifactKey: Guid(a62df475316d4e64b896704355c3926b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteTiles.mat using Guid(a62df475316d4e64b896704355c3926b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '710ef3c78dab79f0c65f06f588c1c62f') in 0.020827 seconds 
+  Import took 0.025521 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000731 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalLightGreyWorn.mat
+  artifactKey: Guid(bc98715ddccb71747bd9b1ba21f67e9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalLightGreyWorn.mat using Guid(bc98715ddccb71747bd9b1ba21f67e9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '75aacc47c6708725f157a1b6370bc29c') in 0.017620 seconds 
+  Import took 0.022893 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000701 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalAccent.mat
+  artifactKey: Guid(548b7e8d35fcf8944b045bd75223f1d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalAccent.mat using Guid(548b7e8d35fcf8944b045bd75223f1d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '484c28167a6628b2cc5f279a3f6a570e') in 0.018397 seconds 
+  Import took 0.024168 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000647 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintRed.mat
+  artifactKey: Guid(78e40843a981cbf43a8dee699c0c3049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintRed.mat using Guid(78e40843a981cbf43a8dee699c0c3049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '039db3dd44f315b8526580e672ee4ca4') in 0.019766 seconds 
+  Import took 0.024872 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001126 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Concrete.mat
+  artifactKey: Guid(eea84a686ebfabd48be0bc56fe6a82f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Concrete.mat using Guid(eea84a686ebfabd48be0bc56fe6a82f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '31b72971edde6255fa16256fe01e9c0d') in 0.015972 seconds 
+  Import took 0.019515 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000804 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassTinted.mat
+  artifactKey: Guid(e1e496ebabc66a542bf5577e927db50c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_GlassTinted.mat using Guid(e1e496ebabc66a542bf5577e927db50c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7214d2b7ca40c72c70f4b14d38c345da') in 0.020617 seconds 
+  Import took 0.023842 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000629 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightWhite.mat
+  artifactKey: Guid(29aa1f432aac8f74780182daabdc66ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightWhite.mat using Guid(29aa1f432aac8f74780182daabdc66ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '780df284a777724f1c66fc6f52c6dfb3') in 0.022684 seconds 
+  Import took 0.026878 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000815 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LeavesBush.mat
+  artifactKey: Guid(e3e0fc43fb649674db584c03837e453c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LeavesBush.mat using Guid(e3e0fc43fb649674db584c03837e453c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07acd2935161ada90fb2c923b6be9d5e') in 0.017688 seconds 
+  Import took 0.023353 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000699 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintRed.mat
+  artifactKey: Guid(b1260c43b0ed5fe48a8a2f49791ed061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalPaintRed.mat using Guid(b1260c43b0ed5fe48a8a2f49791ed061) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '237c69993b984b5f0d5385d510100746') in 0.020339 seconds 
+  Import took 0.025931 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000834 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintedMetal.mat
+  artifactKey: Guid(96ed653a7e4435247b2ddb11aaf75b6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PaintedMetal.mat using Guid(96ed653a7e4435247b2ddb11aaf75b6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '73c91841b323116a4ef4168733ac8553') in 0.020644 seconds 
+  Import took 0.026329 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000616 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightsA.mat
+  artifactKey: Guid(0db3be0e06e5cac44963f6847344df54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightsA.mat using Guid(0db3be0e06e5cac44963f6847344df54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee64370e19c38dce6a9f160203c81392') in 0.017697 seconds 
+  Import took 0.022815 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000677 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_SatinSteel.mat
+  artifactKey: Guid(c8e21ccf45d51d54e846e7b5583e161b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_SatinSteel.mat using Guid(c8e21ccf45d51d54e846e7b5583e161b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0382187b9547b9ea461272a717f8ca32') in 0.021023 seconds 
+  Import took 0.025055 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000876 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_BannerA.mat
+  artifactKey: Guid(872a92656e6abc94d92256a781040cbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_BannerA.mat using Guid(872a92656e6abc94d92256a781040cbb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9cedba8125672476447c6a807af0b872') in 0.017438 seconds 
+  Import took 0.023126 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000753 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Cardboard.mat
+  artifactKey: Guid(d2729a47d00d1604baa3218511abe4e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Cardboard.mat using Guid(d2729a47d00d1604baa3218511abe4e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ad75d768ce2d0085206a6664c8be55f3') in 0.017239 seconds 
+  Import took 0.021590 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000738 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteAccent.mat
+  artifactKey: Guid(2d31e7f7fadb46944af4c38c963f7f07) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_ConcreteAccent.mat using Guid(2d31e7f7fadb46944af4c38c963f7f07) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a376b920d483f9c1ecad796d30d8099b') in 0.021076 seconds 
+  Import took 0.025688 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001399 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_BlackCloth.mat
+  artifactKey: Guid(20855676e15bcbb44b441632ebd62355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_BlackCloth.mat using Guid(20855676e15bcbb44b441632ebd62355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '844184ca60bb1d5f713bff61ec45bfbf') in 0.023827 seconds 
+  Import took 0.029026 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000526 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightYellow.mat
+  artifactKey: Guid(0bfcd73b9c2495c488147eb35ae56f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_LightYellow.mat using Guid(0bfcd73b9c2495c488147eb35ae56f73) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '585baaee46733eeeb272bd4eab051237') in 0.021046 seconds 
+  Import took 0.025121 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000936 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalDarkWorn.mat
+  artifactKey: Guid(39b83a2966bf35e46bbbcaffd13ece6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_MetalDarkWorn.mat using Guid(39b83a2966bf35e46bbbcaffd13ece6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '250e9002cd412681a849de4c8eec31f7') in 0.020697 seconds 
+  Import took 0.025106 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001353 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticWhite.mat
+  artifactKey: Guid(7bd99dad06f949a45b50e950d11ebf62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_PlasticWhite.mat using Guid(7bd99dad06f949a45b50e950d11ebf62) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7fa9c20c3a7ea3d1a1b5fc87380e2fe2') in 0.018364 seconds 
+  Import took 0.022960 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000968 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteB.mat
+  artifactKey: Guid(2d9fe8b99f8b79c4791e7a752a01f57a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_DecorConcreteB.mat using Guid(2d9fe8b99f8b79c4791e7a752a01f57a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e442c9dce55d071e02a3ad840a2599b3') in 0.019876 seconds 
+  Import took 0.024016 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.590891 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_SteelRaw.mat
+  artifactKey: Guid(2be8a7136d63fe6458283781fac0cbb1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_SteelRaw.mat using Guid(2be8a7136d63fe6458283781fac0cbb1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d78930fb2cb7987bfb63d34e3a5106d') in 0.021711 seconds 
+  Import took 0.025604 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000827 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_Wood.mat
+  artifactKey: Guid(96a3c23ff4d986546bf7bd754d378cbf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_Wood.mat using Guid(96a3c23ff4d986546bf7bd754d378cbf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a692e5dae17d0cdcf1b9dacb1292fb1c') in 0.020171 seconds 
+  Import took 0.025338 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001609 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_TarpA.mat
+  artifactKey: Guid(f0d469634d5d4f94bb88b84c0c7130df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_TarpA.mat using Guid(f0d469634d5d4f94bb88b84c0c7130df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c6599c1ca5849cda5148063f9dead28') in 0.023071 seconds 
+  Import took 0.030233 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001388 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_TreeWlnutLeaf.mat
+  artifactKey: Guid(7b5307e68cc54af45a34b34878ec501b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_TreeWlnutLeaf.mat using Guid(7b5307e68cc54af45a34b34878ec501b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '029a7a26b605a4378c6f81f9cf36372e') in 0.023949 seconds 
+  Import took 0.029083 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001325 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_StreetTiles.mat
+  artifactKey: Guid(d4bcc0cb30899e74f8fde96a6c7bb915) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_StreetTiles.mat using Guid(d4bcc0cb30899e74f8fde96a6c7bb915) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'decb46cfe3a5552097f92d085d25b0fe') in 0.024461 seconds 
+  Import took 0.029982 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001249 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_WhitePanels.mat
+  artifactKey: Guid(b840b2c0da8958a49b80747850a97e13) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_WhitePanels.mat using Guid(b840b2c0da8958a49b80747850a97e13) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0be043f674088a5ef0423a9a955eccb6') in 0.025399 seconds 
+  Import took 0.029750 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001021 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_TreeWalnutBark.mat
+  artifactKey: Guid(a51cb749c9df0bd40ad30ff463b1531a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_TreeWalnutBark.mat using Guid(a51cb749c9df0bd40ad30ff463b1531a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '352d0ed0ffdc15d43b95db75d248e0cc') in 0.025109 seconds 
+  Import took 0.030172 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000807 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_WoodDarkGreyTower.mat
+  artifactKey: Guid(68ef5b66d0847a04d8c886dacd0370d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_WoodDarkGreyTower.mat using Guid(68ef5b66d0847a04d8c886dacd0370d5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8cc3ec153b1636e6c8eb9e124f96f13f') in 0.021552 seconds 
+  Import took 0.025701 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000887 seconds.
+  path: Assets/KB3D/NeoCities/Materials/KB3D_NEC_WoodLacquered.mat
+  artifactKey: Guid(98f1cc3c52787684d96b66afac0d1f58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/NeoCities/Materials/KB3D_NEC_WoodLacquered.mat using Guid(98f1cc3c52787684d96b66afac0d1f58) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c937dacc5fecc471ca956d75ebc7df69') in 0.021861 seconds 
+  Import took 0.026172 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 14.175482 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_basecolor.png
+  artifactKey: Guid(a78b62d5c70ab624da8f81f43c10db82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_basecolor.png using Guid(a78b62d5c70ab624da8f81f43c10db82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '08c6fbb0ce15c8db03d6d3fe1442114b') in 0.097368 seconds 
+  Import took 0.103765 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001498 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_normal.png
+  artifactKey: Guid(b3f9d62383ff37c48be2117ec969481c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_normal.png using Guid(b3f9d62383ff37c48be2117ec969481c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9093dab72607b8eb86a5429aed96d243') in 0.098201 seconds 
+  Import took 0.102526 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001612 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_height.png
+  artifactKey: Guid(c4daa8ffa0618c243a0ec56f37279469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_height.png using Guid(c4daa8ffa0618c243a0ec56f37279469) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '459425779cd17cc084686785fa1c9652') in 0.055330 seconds 
+  Import took 0.059072 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001430 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_height.png
+  artifactKey: Guid(33994edf2c50f174aaefdcc38e3ef90f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_height.png using Guid(33994edf2c50f174aaefdcc38e3ef90f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0e8156bb3b553b787f6914655264e4af') in 0.060218 seconds 
+  Import took 0.063752 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001200 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_height.png
+  artifactKey: Guid(4794b4a68aad3c1489a3aad3ea58bc30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_height.png using Guid(4794b4a68aad3c1489a3aad3ea58bc30) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6623b1f3286567d8a83abb9bc522497c') in 0.053865 seconds 
+  Import took 0.058809 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000840 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_height.png
+  artifactKey: Guid(d63c48e527d5e0b46b1dee3abb8a6bd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_height.png using Guid(d63c48e527d5e0b46b1dee3abb8a6bd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a1b3869522531c2683351095438b1fe3') in 0.054720 seconds 
+  Import took 0.058588 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000940 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_basecolor.png
+  artifactKey: Guid(9243c65d8cd8e474b9ce2b53a7ba734c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_basecolor.png using Guid(9243c65d8cd8e474b9ce2b53a7ba734c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '23bc9e92b5ce33a7be0b0dfd5554e409') in 0.053831 seconds 
+  Import took 0.057692 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001114 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_basecolor.png
+  artifactKey: Guid(b9631ffb88d3d68448921f291e8c360b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_basecolor.png using Guid(b9631ffb88d3d68448921f291e8c360b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b75317546ef5ac8e28d0638ade51fd5e') in 0.054329 seconds 
+  Import took 0.057701 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000980 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_height.png
+  artifactKey: Guid(4c6d70ef530242b4d8336c04eff9a686) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_height.png using Guid(4c6d70ef530242b4d8336c04eff9a686) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd7a897accbc8ebc3d66f2fadff0308f9') in 0.059358 seconds 
+  Import took 0.063220 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001291 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Brass_height.png
+  artifactKey: Guid(7fa074e1c064ee849b695e53b33f44a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Brass_height.png using Guid(7fa074e1c064ee849b695e53b33f44a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '41cfca4c6f201b1258dcdf946e6f96f9') in 0.054771 seconds 
+  Import took 0.058288 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000985 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_basecolor.png
+  artifactKey: Guid(fd355284efd5a4843bfc105da094800c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_basecolor.png using Guid(fd355284efd5a4843bfc105da094800c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3f154b4dba315a3b923465ead1789f96') in 0.053012 seconds 
+  Import took 0.056574 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000914 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_mads.png
+  artifactKey: Guid(735e4574d97cb0f4f9f09881c19adf82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_mads.png using Guid(735e4574d97cb0f4f9f09881c19adf82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f5c122e0acb23222b02b750fdb5c072e') in 0.083696 seconds 
+  Import took 0.087627 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000978 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_mads.png
+  artifactKey: Guid(f7926733271e16e40b92480422b04081) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_mads.png using Guid(f7926733271e16e40b92480422b04081) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e01adb3e40a53e42374c01b5734cff1') in 0.085854 seconds 
+  Import took 0.090070 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001273 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_mads.png
+  artifactKey: Guid(19d33d8b2e5a8514880fde9adce2abc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_mads.png using Guid(19d33d8b2e5a8514880fde9adce2abc1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c335a195408a9e119fdfb1e283c62aec') in 0.090002 seconds 
+  Import took 0.094593 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001301 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_basecolor.png
+  artifactKey: Guid(4abba1a4010d0c749b97a5864750b006) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_basecolor.png using Guid(4abba1a4010d0c749b97a5864750b006) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c5d7732b132fd9e5397824d4d5cfbb6') in 0.063285 seconds 
+  Import took 0.067878 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000767 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_normal.png
+  artifactKey: Guid(552bace44231b594b955ce8228183ddc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_normal.png using Guid(552bace44231b594b955ce8228183ddc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dc0d94e36338b1f33a7b79571f8c9245') in 0.087767 seconds 
+  Import took 0.093039 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001058 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_height.png
+  artifactKey: Guid(82ff724fd5ea0774d97d5aca328d33ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_height.png using Guid(82ff724fd5ea0774d97d5aca328d33ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b634f5f5643251b9be9454961926a5c7') in 0.054954 seconds 
+  Import took 0.059316 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000789 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Brass_basecolor.png
+  artifactKey: Guid(02090b02ede022846a820670c3674f5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Brass_basecolor.png using Guid(02090b02ede022846a820670c3674f5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5dc4524e286515feff04bd070df96236') in 0.055275 seconds 
+  Import took 0.059050 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001047 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_normal.png
+  artifactKey: Guid(4a1f5267f6cd3e740a814170144ba0c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_normal.png using Guid(4a1f5267f6cd3e740a814170144ba0c4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a7a368f866cb0951dab68889dc018568') in 0.088428 seconds 
+  Import took 0.093031 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001309 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_normal.png
+  artifactKey: Guid(d572f0db09175d84c8109566f5b2ff10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_normal.png using Guid(d572f0db09175d84c8109566f5b2ff10) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a8c52e23b1d0801bd67f4f4946cb31ac') in 0.089625 seconds 
+  Import took 0.094844 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001210 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_mads.png
+  artifactKey: Guid(880b3b4ed0f57e14d86235dd4d6bfac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_mads.png using Guid(880b3b4ed0f57e14d86235dd4d6bfac7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63955034ae0e11cb7d4107d6ec4acc2a') in 0.088959 seconds 
+  Import took 0.092915 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001125 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_normal.png
+  artifactKey: Guid(5a143e85600d2d444b00155222114ebb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_normal.png using Guid(5a143e85600d2d444b00155222114ebb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '52097d11c9fb3bd343e5042f0928b8ff') in 0.089018 seconds 
+  Import took 0.093980 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001164 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_normal.png
+  artifactKey: Guid(8947dd4604b73434fb02a66d8712f60b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_normal.png using Guid(8947dd4604b73434fb02a66d8712f60b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff196c9cef5c1c4982bfff51c9ae1159') in 0.087706 seconds 
+  Import took 0.091850 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001357 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_mads.png
+  artifactKey: Guid(308145b664f26d146878fa357b6f5ebc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AsphaltHexagonRoof_mads.png using Guid(308145b664f26d146878fa357b6f5ebc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '454ad833afd5f6bc8f90562d0e224ae3') in 0.088887 seconds 
+  Import took 0.093180 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000894 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_basecolor.png
+  artifactKey: Guid(f5be4ef1c0f38e840b8cb2ede6e10491) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_basecolor.png using Guid(f5be4ef1c0f38e840b8cb2ede6e10491) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '235b08271f624b96d63516e1e499c4ae') in 0.055328 seconds 
+  Import took 0.059462 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000883 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_mads.png
+  artifactKey: Guid(d513d24b6553c4a4c8ec7f5b88f0c12b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_mads.png using Guid(d513d24b6553c4a4c8ec7f5b88f0c12b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca4bca0b1275cae8aacbdb364cb6b8cf') in 0.085828 seconds 
+  Import took 0.091579 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000795 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_normal.png
+  artifactKey: Guid(faac07119130294498775328874e0ba6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_normal.png using Guid(faac07119130294498775328874e0ba6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e700a1c545534a52f3760a82e10ae38f') in 0.084459 seconds 
+  Import took 0.089532 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001162 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_basecolor.png
+  artifactKey: Guid(778ac81abf0159043852fb1382ef495a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_basecolor.png using Guid(778ac81abf0159043852fb1382ef495a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '941c15404df71d175387a9ac2fd5eac3') in 0.063606 seconds 
+  Import took 0.068107 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001391 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_normal.png
+  artifactKey: Guid(c17cdfdb7a1b234449c66dfc9e8d47ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_normal.png using Guid(c17cdfdb7a1b234449c66dfc9e8d47ef) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd154be8f6a51f797d771d1c78d5ac05c') in 0.090543 seconds 
+  Import took 0.094425 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001401 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_height.png
+  artifactKey: Guid(a56f6d45ab411e04a92dc04148dcc47a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_height.png using Guid(a56f6d45ab411e04a92dc04148dcc47a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c10e72d3d4da2de32c2da28e516c64b7') in 0.060958 seconds 
+  Import took 0.065608 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001373 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_basecolrgba.png
+  artifactKey: Guid(a49d7445578f39d41b53529d8797ef94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_basecolrgba.png using Guid(a49d7445578f39d41b53529d8797ef94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e10d0430d49ceb3328dea96e8c50a007') in 0.088600 seconds 
+  Import took 0.093998 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000761 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_basecolor.png
+  artifactKey: Guid(1d40d6f1ba632d44f9e57fb3f84ec0b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_basecolor.png using Guid(1d40d6f1ba632d44f9e57fb3f84ec0b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3d448862193d95e9c08f0c21060a377') in 0.057826 seconds 
+  Import took 0.062234 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001197 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_height.png
+  artifactKey: Guid(22ba31acae6cd44439058bff9f60ad46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_height.png using Guid(22ba31acae6cd44439058bff9f60ad46) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd0cbac4681f713098620d78ea7623172') in 0.057399 seconds 
+  Import took 0.061705 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000873 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_basecolor.png
+  artifactKey: Guid(453eaa2ad01d36a4b9ff245f8dc6dd82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_basecolor.png using Guid(453eaa2ad01d36a4b9ff245f8dc6dd82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '009c84b109247300fbf86b6fee06f149') in 0.054971 seconds 
+  Import took 0.058295 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000956 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_mads.png
+  artifactKey: Guid(432a733f99cc2ba46aa7d2a27f18c859) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteA_mads.png using Guid(432a733f99cc2ba46aa7d2a27f18c859) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcd18cf1d0cb709ccd9d5a5e484e1a07') in 0.085057 seconds 
+  Import took 0.090163 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000958 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_basecolor.png
+  artifactKey: Guid(77f64bf1388e666438365e5d851df345) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_basecolor.png using Guid(77f64bf1388e666438365e5d851df345) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e3fb0f8936ae3645144e0e6ef36098fa') in 0.053837 seconds 
+  Import took 0.057552 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001452 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_normal.png
+  artifactKey: Guid(e8de109ebc2105e4381625d42a8b61ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_normal.png using Guid(e8de109ebc2105e4381625d42a8b61ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '93dd34f689ef27e1a528c4b75efca3f0') in 0.088949 seconds 
+  Import took 0.093809 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001057 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_height.png
+  artifactKey: Guid(bb080162a5245e64cbf0bb0e2a8cdd54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_height.png using Guid(bb080162a5245e64cbf0bb0e2a8cdd54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b9c9fa38c6fce3b06b585c97c83c7ca') in 0.051457 seconds 
+  Import took 0.055310 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000993 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_normal.png
+  artifactKey: Guid(a718c7f4dcde252478e92933ab0016a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_normal.png using Guid(a718c7f4dcde252478e92933ab0016a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '20d59f557cdbd8faea2ed32e7a14c91b') in 0.094053 seconds 
+  Import took 0.098248 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001171 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_basecolor.png
+  artifactKey: Guid(c08f49e1f2da3b04a9058011363cb66e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_basecolor.png using Guid(c08f49e1f2da3b04a9058011363cb66e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bda3c12d97d29d6d3201e782047fd7c6') in 0.053854 seconds 
+  Import took 0.057790 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001223 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_refraction.png
+  artifactKey: Guid(e934964ec8c06c34fbcb7b0e35341a7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_refraction.png using Guid(e934964ec8c06c34fbcb7b0e35341a7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3bc507bf28639289272e92e994f9c8f0') in 0.058491 seconds 
+  Import took 0.063425 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001094 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_basecolor.png
+  artifactKey: Guid(789a0d9bd2a0966448610792ae91e328) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_basecolor.png using Guid(789a0d9bd2a0966448610792ae91e328) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca6291821a401d95f6cd2957e258a93c') in 0.059323 seconds 
+  Import took 0.062808 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000875 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_normal.png
+  artifactKey: Guid(4cf8b98931d400c4fad3b2930bd48bf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_normal.png using Guid(4cf8b98931d400c4fad3b2930bd48bf3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f60185509c92383a62ff935bf1b80b3') in 0.085565 seconds 
+  Import took 0.089704 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001103 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_basecolor.png
+  artifactKey: Guid(bdfa22ac908c4be4c8d789c68dcc7736) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_basecolor.png using Guid(bdfa22ac908c4be4c8d789c68dcc7736) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aba681482b3cd30f51f837db79b8f8bd') in 0.055174 seconds 
+  Import took 0.058740 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001348 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_refraction.png
+  artifactKey: Guid(9040b1a579ba22940a9cce9036af1fcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_refraction.png using Guid(9040b1a579ba22940a9cce9036af1fcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3295a1608da920398518e6958585e037') in 0.054792 seconds 
+  Import took 0.058317 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001485 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_height.png
+  artifactKey: Guid(bb3b1be7f83b5704787726732c7e8939) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_height.png using Guid(bb3b1be7f83b5704787726732c7e8939) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3abf8c18dc630371dd81bc484dd634b') in 0.058068 seconds 
+  Import took 0.062621 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001792 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_normal.png
+  artifactKey: Guid(da02e44e9ad32734b87eaa7aad7f679e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_normal.png using Guid(da02e44e9ad32734b87eaa7aad7f679e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ef95835b019e51844c910aa09cedf32b') in 0.089646 seconds 
+  Import took 0.094488 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001205 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_normal.png
+  artifactKey: Guid(54c3d8d8ac9201347977ac34db0d7786) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_normal.png using Guid(54c3d8d8ac9201347977ac34db0d7786) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acdd9308135e673282703193b1abe17f') in 0.089206 seconds 
+  Import took 0.093862 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001306 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_mads.png
+  artifactKey: Guid(21e81757a5bfb774d8321c1385e19c28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_mads.png using Guid(21e81757a5bfb774d8321c1385e19c28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2223a9c0e1e7bf15c2127ac3fd9b11ab') in 0.087420 seconds 
+  Import took 0.091861 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001149 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_normal.png
+  artifactKey: Guid(9a53642cc7dbf5f40a3b92bf9e3842f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_normal.png using Guid(9a53642cc7dbf5f40a3b92bf9e3842f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ea9a440a42cfa49aa02c040c1836713') in 0.088394 seconds 
+  Import took 0.093743 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001240 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_normal.png
+  artifactKey: Guid(c7310b9495de02f4bb4318ef0ca5f035) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_normal.png using Guid(c7310b9495de02f4bb4318ef0ca5f035) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2360cccd40b14bc375f10ab44f319ab6') in 0.089024 seconds 
+  Import took 0.092974 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001207 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_mads.png
+  artifactKey: Guid(df6db43b52a162f4ca494c0a149a11b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_mads.png using Guid(df6db43b52a162f4ca494c0a149a11b3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a995f3f3cb875a376bc62c14fe132609') in 0.085098 seconds 
+  Import took 0.089365 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001342 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_basecolor.png
+  artifactKey: Guid(aa7e411665cb0bc42a6320dd2ed42f90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_basecolor.png using Guid(aa7e411665cb0bc42a6320dd2ed42f90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '707bccfad18af30f79348e36c2d5abc6') in 0.056101 seconds 
+  Import took 0.059936 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000905 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_mads.png
+  artifactKey: Guid(f6af33798918e684994dfe83f83cc001) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_mads.png using Guid(f6af33798918e684994dfe83f83cc001) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b83ce4700d868174f76f342ef6728838') in 0.088128 seconds 
+  Import took 0.092332 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001308 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_height.png
+  artifactKey: Guid(6fb73b7d77ef6b14397d8ad7bf1c3ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BlackCloth_height.png using Guid(6fb73b7d77ef6b14397d8ad7bf1c3ae6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ee4b911cfc984c4590eb6bedccf724f') in 0.060361 seconds 
+  Import took 0.063689 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001006 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Brass_normal.png
+  artifactKey: Guid(a3fdddb93dfc88a47a74263092de8232) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Brass_normal.png using Guid(a3fdddb93dfc88a47a74263092de8232) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc03a63c793e5586d894495d1c0a1dd6') in 0.089458 seconds 
+  Import took 0.094298 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001340 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_height.png
+  artifactKey: Guid(39c29686f13fbc944bde9d4bea345b6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteAccent_height.png using Guid(39c29686f13fbc944bde9d4bea345b6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '205971bf0bff4f5b0a1a1412856ea361') in 0.053533 seconds 
+  Import took 0.056919 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001308 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_normal.png
+  artifactKey: Guid(410eec2643dde9e40802dc23236de9f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteel_normal.png using Guid(410eec2643dde9e40802dc23236de9f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f76360bf1e9949cb232c8348a4f6a581') in 0.088808 seconds 
+  Import took 0.093669 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001135 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_basecolrgba.png
+  artifactKey: Guid(1f39052cb76807f45afb4b4ad8069820) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_basecolrgba.png using Guid(1f39052cb76807f45afb4b4ad8069820) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2be6724542be65770a76a26fb6c65571') in 0.089649 seconds 
+  Import took 0.094693 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001115 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_normal.png
+  artifactKey: Guid(ae91fcbce62e8924c9e14b6dc855e84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_normal.png using Guid(ae91fcbce62e8924c9e14b6dc855e84c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '05f4e3f5cc2aae035043c6926681818d') in 0.088507 seconds 
+  Import took 0.092458 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001234 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_normal.png
+  artifactKey: Guid(86daf9527dbe6bb46a15a42a863abc05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteB_normal.png using Guid(86daf9527dbe6bb46a15a42a863abc05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b57fc65baccb915cd4c1b393fa22ff12') in 0.092455 seconds 
+  Import took 0.096900 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001580 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_basecolor.png
+  artifactKey: Guid(c3a6ce2eb536adc42a2f8927494f0ec5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_basecolor.png using Guid(c3a6ce2eb536adc42a2f8927494f0ec5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '433d7111fb8d187c78f6cfb413278c47') in 0.057065 seconds 
+  Import took 0.061260 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001077 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_basecolor.png
+  artifactKey: Guid(835f03828510c3f41ab1152a12666b55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_basecolor.png using Guid(835f03828510c3f41ab1152a12666b55) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '17dfae1858a42def3c93a518bd9b928f') in 0.055434 seconds 
+  Import took 0.059037 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001195 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_mads.png
+  artifactKey: Guid(b8fb9160bc580564692e4a9a74b9ea38) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_mads.png using Guid(b8fb9160bc580564692e4a9a74b9ea38) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a9d8d555ac7059f970a51d226674116f') in 0.086530 seconds 
+  Import took 0.090614 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001241 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_height.png
+  artifactKey: Guid(5a838245b57e3b244a16ce0160363779) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_height.png using Guid(5a838245b57e3b244a16ce0160363779) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c1618bfe13c9a7bfffb2051ad6dd38c') in 0.061050 seconds 
+  Import took 0.065078 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001360 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_height.png
+  artifactKey: Guid(e559314b172e10a469462c3fa8e51891) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCWhite_height.png using Guid(e559314b172e10a469462c3fa8e51891) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d6875d0527b44f2ec18f38528e681d2') in 0.052823 seconds 
+  Import took 0.056383 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001222 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_basecolor.png
+  artifactKey: Guid(af683b516fd1c984d85f25496f038523) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_basecolor.png using Guid(af683b516fd1c984d85f25496f038523) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '13dd629700b1b8d53e6da5579185359f') in 0.054690 seconds 
+  Import took 0.058800 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001239 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_height.png
+  artifactKey: Guid(172a34e7e3520294cab0e69edc2ae8df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_height.png using Guid(172a34e7e3520294cab0e69edc2ae8df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c82c97de84a6cb9e8190b2e71eef577') in 0.054558 seconds 
+  Import took 0.058986 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000764 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_height.png
+  artifactKey: Guid(6c149bbe1dfd64841b2337bc2bc533d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_height.png using Guid(6c149bbe1dfd64841b2337bc2bc533d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8818465398fd7ca15a5e937dd4f6e480') in 0.056811 seconds 
+  Import took 0.061237 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000581 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_mads.png
+  artifactKey: Guid(917d2c00489298945a03f6c90cd8a6e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteCBeige_mads.png using Guid(917d2c00489298945a03f6c90cd8a6e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0077baa59f1a25c60b5d976c5da4410a') in 0.088654 seconds 
+  Import took 0.093305 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001334 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_height.png
+  artifactKey: Guid(7ee86f56c605af34e906e13843e59f1b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteWall_height.png using Guid(7ee86f56c605af34e906e13843e59f1b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3e5fba9a8a79a4c6862e0ecd15177a8') in 0.056559 seconds 
+  Import took 0.060459 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001027 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_basecolor.png
+  artifactKey: Guid(73d58b22fcd005b4e88455f7f56876ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DarkPanels_basecolor.png using Guid(73d58b22fcd005b4e88455f7f56876ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f02ac931da1a2efbe9b3a70966c19d63') in 0.057558 seconds 
+  Import took 0.063057 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000663 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_mads.png
+  artifactKey: Guid(b4b88447f495f1541a921d8bae84c596) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_mads.png using Guid(b4b88447f495f1541a921d8bae84c596) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7d68f71a33654f9dccca27a142eef985') in 0.087015 seconds 
+  Import took 0.092508 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000874 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_normal.png
+  artifactKey: Guid(0a24388011136ca488d0efb283992e7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GalvanizedSteelDirt_normal.png using Guid(0a24388011136ca488d0efb283992e7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '954eb9073b9402d0dd8d1f060f2c0981') in 0.091259 seconds 
+  Import took 0.095329 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001116 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_height.png
+  artifactKey: Guid(40ad40457c6fc6545a616b635facdb47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_height.png using Guid(40ad40457c6fc6545a616b635facdb47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b6e784cd7d3d3ebd965fd4b984ffbb58') in 0.058959 seconds 
+  Import took 0.062170 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000894 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_mads.png
+  artifactKey: Guid(ab86dc1109be85b4a869a4fa48338838) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_mads.png using Guid(ab86dc1109be85b4a869a4fa48338838) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5653c42fe9b321d5f03f59dd3e240c88') in 0.097800 seconds 
+  Import took 0.103433 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000874 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_mads.png
+  artifactKey: Guid(35971f0a1927a9343b28238600194fb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_mads.png using Guid(35971f0a1927a9343b28238600194fb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec5540c079b5331fc29f2bce2603566e') in 0.096037 seconds 
+  Import took 0.101055 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001173 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_mads.png
+  artifactKey: Guid(a81b08f341df29941846d88116e4ece8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_AirCon_mads.png using Guid(a81b08f341df29941846d88116e4ece8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7679949b4b665be393c2174948bd7367') in 0.106361 seconds 
+  Import took 0.111089 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001171 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_height.png
+  artifactKey: Guid(c79fa6daa7f814f45ba564821d67da0d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_height.png using Guid(c79fa6daa7f814f45ba564821d67da0d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0dd2807dc601a5ba56fca4b59fedbc9d') in 0.059201 seconds 
+  Import took 0.063266 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001192 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_mads.png
+  artifactKey: Guid(1cfc410704144c94a9ceb234d4c2aa92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_mads.png using Guid(1cfc410704144c94a9ceb234d4c2aa92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '765d18347eba193a25ea58ecf0c74552') in 0.086333 seconds 
+  Import took 0.090428 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001164 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_basecolor.png
+  artifactKey: Guid(c48e9468cc9ee744e82edd7b48cf53e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_BannerA_basecolor.png using Guid(c48e9468cc9ee744e82edd7b48cf53e1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24a2b0db040fba40f628ee04d82dc906') in 0.053619 seconds 
+  Import took 0.057282 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001240 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_mads.png
+  artifactKey: Guid(f1c216baa538ea44292a7cfc0142b39d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecorConcreteB_mads.png using Guid(f1c216baa538ea44292a7cfc0142b39d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6bad26ea52a6e065fb6ac0bd304affdf') in 0.090195 seconds 
+  Import took 0.099947 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001312 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Brass_mads.png
+  artifactKey: Guid(150d4b2f191182446b16132ff07ec071) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Brass_mads.png using Guid(150d4b2f191182446b16132ff07ec071) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fd8872f2c4ae2dcd96195ea3670a6329') in 0.090115 seconds 
+  Import took 0.095281 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001230 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_height.png
+  artifactKey: Guid(fcf12da7ea9498343a41d721f74970a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_height.png using Guid(fcf12da7ea9498343a41d721f74970a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c5b5ab5ae81eb6198d37c0adc2091f0a') in 0.052482 seconds 
+  Import took 0.056478 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001292 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_basecolrgba.png
+  artifactKey: Guid(695f7af8027b20f4a98f746d6c7c4682) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBottle_basecolrgba.png using Guid(695f7af8027b20f4a98f746d6c7c4682) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91c1f614aeec0c23214fba4b5a13e41d') in 0.094007 seconds 
+  Import took 0.098471 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000771 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_normal.png
+  artifactKey: Guid(f5d5b3c104b02aa43ad07b81371e0276) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_DecalSheet_normal.png using Guid(f5d5b3c104b02aa43ad07b81371e0276) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '377555cc701b0547f082da8511ebadc3') in 0.086927 seconds 
+  Import took 0.091300 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001076 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_basecolrgba.png
+  artifactKey: Guid(00469968d9c84a840bf761b934cd1338) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassLamps_basecolrgba.png using Guid(00469968d9c84a840bf761b934cd1338) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2eed58c0f7625b7b4fc2e007576d2e4b') in 0.088008 seconds 
+  Import took 0.092725 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000634 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_mads.png
+  artifactKey: Guid(6a378c0e9ccad8b44a9fe857dc725e4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_mads.png using Guid(6a378c0e9ccad8b44a9fe857dc725e4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '020eb961144fa54df72763e14f34fa37') in 0.087542 seconds 
+  Import took 0.093445 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000996 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_basecolor.png
+  artifactKey: Guid(338cef740c213a447b2ad03b258c28b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_GlassBlack_basecolor.png using Guid(338cef740c213a447b2ad03b258c28b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1cfcdde6f8803f4d4e5e9a5f896f5332') in 0.064923 seconds 
+  Import took 0.069365 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001058 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_mads.png
+  artifactKey: Guid(b7d135e7fe7b47349962897a1459fc8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Cardboard_mads.png using Guid(b7d135e7fe7b47349962897a1459fc8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '67e074d6cb1a29a8e684eb85f3bb6010') in 0.086757 seconds 
+  Import took 0.091939 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001170 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_basecolor.png
+  artifactKey: Guid(2c2fed472c926b94e915e4ad41c758c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_Concrete_basecolor.png using Guid(2c2fed472c926b94e915e4ad41c758c0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c1d192c484b5013f4ecccf6369d35813') in 0.053450 seconds 
+  Import took 0.057729 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001295 seconds.
+  path: Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_height.png
+  artifactKey: Guid(e2be499c0f2fd3f40a62b2a54261d4d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/KB3D/CommonTextures/KB3D_NEC_ConcreteTiles_height.png using Guid(e2be499c0f2fd3f40a62b2a54261d4d9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d464f1a642c4a732e628423a4689e56') in 0.053814 seconds 
+  Import took 0.057142 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 5.596172 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects
+  artifactKey: Guid(4f34c5940141eff4e82f4c8bfdf6e203) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects using Guid(4f34c5940141eff4e82f4c8bfdf6e203) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3d1787762bd319a75bd63c176702af3') in 0.009813 seconds 
+  Import took 0.014310 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.064148 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/2_10.mat
+  artifactKey: Guid(eb10b6f571322b443bec8c532c088270) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/2_10.mat using Guid(eb10b6f571322b443bec8c532c088270) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6b5895533930083403e3d72be43352b') in 0.299037 seconds 
+  Import took 0.302574 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001537 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/DemoObjects.prefab
+  artifactKey: Guid(88c20de6c1dc0f04abeaffaac0a9a6cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/DemoObjects.prefab using Guid(88c20de6c1dc0f04abeaffaac0a9a6cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aeb2968270de939cbca19fd15b3c3e90') in 0.054483 seconds 
+  Import took 0.058784 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001387 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/4_10.mat
+  artifactKey: Guid(db3bceb128d32144ca6fd4550ac256bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/4_10.mat using Guid(db3bceb128d32144ca6fd4550ac256bc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a7c86fdea58011cbed94f10e99e67ad') in 0.023135 seconds 
+  Import took 0.027400 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002171 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/Full.mat
+  artifactKey: Guid(1b27a20a436b4c64b882a6f739bf91de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/Full.mat using Guid(1b27a20a436b4c64b882a6f739bf91de) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '83f61e726bdb047d8a3ffa124eef25f5') in 0.034424 seconds 
+  Import took 0.039192 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001297 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/8_10.mat
+  artifactKey: Guid(964f6a34e2240bf45940918b112ce7be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/8_10.mat using Guid(964f6a34e2240bf45940918b112ce7be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '16a4abcbb599849fd8ef4b1b5f682de5') in 0.033050 seconds 
+  Import took 0.036081 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000914 seconds.
+  path: Assets/SkySeries Freebie/ExampleScenes/SceneObjects/6_10.mat
+  artifactKey: Guid(abcc3c67b7d0a794f8bb91be4e85abdd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/ExampleScenes/SceneObjects/6_10.mat using Guid(abcc3c67b7d0a794f8bb91be4e85abdd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '73fc5412959e474d7fa89f3bd868f456') in 0.027977 seconds 
+  Import took 0.032093 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 2.701000 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/AmbienceExposure4k.hdr
+  artifactKey: Guid(c9bc6cdb7a2e78b4c85ae74715b0a355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/AmbienceExposure4k.hdr using Guid(c9bc6cdb7a2e78b4c85ae74715b0a355) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c95a3d7db5937b5786252739877c5db3') in 0.159740 seconds 
+  Import took 0.165359 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001210 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayLeft.hdr
+  artifactKey: Guid(a78d8299279fda54098aca1c72ecfae1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayLeft.hdr using Guid(a78d8299279fda54098aca1c72ecfae1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5526e5d5ca5a76db016368007d7f007f') in 0.032478 seconds 
+  Import took 0.036108 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001447 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/SunlessCirruscover4k.hdr
+  artifactKey: Guid(99af420a4ccafa74abdc47436d8b0685) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/SunlessCirruscover4k.hdr using Guid(99af420a4ccafa74abdc47436d8b0685) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1d6015cb4cde3791ba8af28afc10c2a') in 0.127502 seconds 
+  Import took 0.132697 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001391 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CasualDay4K.hdr
+  artifactKey: Guid(1153dc89e66880c4eb7adc16ba588855) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CasualDay4K.hdr using Guid(1153dc89e66880c4eb7adc16ba588855) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4022470712f24f6505813b368ad1f068') in 0.141986 seconds 
+  Import took 0.146975 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001467 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudBack.hdr
+  artifactKey: Guid(a779becf00399924184cd13e046a100e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudBack.hdr using Guid(a779becf00399924184cd13e046a100e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '06ada7986be7121320b90cce2402c6dd') in 0.041350 seconds 
+  Import took 0.045378 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001194 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayTop.hdr
+  artifactKey: Guid(c769857dc541ab7449d1352d7ff46ce8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayTop.hdr using Guid(c769857dc541ab7449d1352d7ff46ce8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd980f35e1fc86d71cfa39f49d058b556') in 0.031005 seconds 
+  Import took 0.034107 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001450 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunLeft.hdr
+  artifactKey: Guid(7f0373fb8ec72a142898c7984aada4b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunLeft.hdr using Guid(7f0373fb8ec72a142898c7984aada4b9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a5989ff742768c322e4feae48bcf1cf9') in 0.033879 seconds 
+  Import took 0.038108 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001055 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudRight.hdr
+  artifactKey: Guid(438e868ac8cccca4e81873838a67c003) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudRight.hdr using Guid(438e868ac8cccca4e81873838a67c003) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd067be8d090e13a4610a526c975892c4') in 0.043689 seconds 
+  Import took 0.046830 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001405 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudTop.hdr
+  artifactKey: Guid(a199da0432efa6a489df8883d1f3bfe0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudTop.hdr using Guid(a199da0432efa6a489df8883d1f3bfe0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '36cf57b862a8614370031042f712e27d') in 0.037222 seconds 
+  Import took 0.040169 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000938 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudLeft.hdr
+  artifactKey: Guid(740f96d568f4f3e40b049c40f11603e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudLeft.hdr using Guid(740f96d568f4f3e40b049c40f11603e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e8850c4dddf076dbf37361bc2bbca4eb') in 0.038634 seconds 
+  Import took 0.041556 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001016 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/DayInTheClouds4k.hdr
+  artifactKey: Guid(90196f2c2d8d2f2448717676e1a09894) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/DayInTheClouds4k.hdr using Guid(90196f2c2d8d2f2448717676e1a09894) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a53531a6c8cc9d1d2dbc98d89ac85c1a') in 0.123209 seconds 
+  Import took 0.128549 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001139 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayFront.hdr
+  artifactKey: Guid(4499836ec803a0443834895abc208fba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayFront.hdr using Guid(4499836ec803a0443834895abc208fba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c874bdadfdb43a3ce4e92aec7236a053') in 0.032911 seconds 
+  Import took 0.036537 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001491 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunFront.hdr
+  artifactKey: Guid(b915aaf1fa7dbd54a9e60e42712933a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunFront.hdr using Guid(b915aaf1fa7dbd54a9e60e42712933a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f5c4ae2cd5621124bded75315d4eb97') in 0.033183 seconds 
+  Import took 0.036203 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001223 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunRight.hdr
+  artifactKey: Guid(f5760fc943c5eb643a2291630888f6a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunRight.hdr using Guid(f5760fc943c5eb643a2291630888f6a1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cfe3f0307bf8d964849f075277ed0025') in 0.030475 seconds 
+  Import took 0.033894 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001298 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/UnderTheSea4k.hdr
+  artifactKey: Guid(26cddb2a3a1bc804d8e9ca09b109793a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/UnderTheSea4k.hdr using Guid(26cddb2a3a1bc804d8e9ca09b109793a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f1d7bd73f03f0016bb8bc21c9c9c3cef') in 0.126447 seconds 
+  Import took 0.131264 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001270 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CloudedSunGlow4k.hdr
+  artifactKey: Guid(12c15a8e5a294be45819b1dd4b9b08d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CloudedSunGlow4k.hdr using Guid(12c15a8e5a294be45819b1dd4b9b08d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64f630f0b97de9833d475bb0d0639014') in 0.129147 seconds 
+  Import took 0.133968 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001374 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CoriolisNight4k.hdr
+  artifactKey: Guid(354036e57ae357148aed267204ce73a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CoriolisNight4k.hdr using Guid(354036e57ae357148aed267204ce73a7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c39b3f0269851be534866c70076671d') in 0.128520 seconds 
+  Import took 0.133689 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000810 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/HighFantasy4k.hdr
+  artifactKey: Guid(6e998e53d0a82bb45928cd08a0fcfff3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/HighFantasy4k.hdr using Guid(6e998e53d0a82bb45928cd08a0fcfff3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ff70cbd9c25a399032c47bc89b81b8e') in 0.130040 seconds 
+  Import took 0.135949 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001170 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayBack.hdr
+  artifactKey: Guid(50762494be58d144d98d179cd6ba1470) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayBack.hdr using Guid(50762494be58d144d98d179cd6ba1470) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9dbfe262ce4a25aa57d56d78ae92fadc') in 0.031160 seconds 
+  Import took 0.034277 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001318 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudFront.hdr
+  artifactKey: Guid(d822c5eff7d42f04691027bc8c2b0716) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudFront.hdr using Guid(d822c5eff7d42f04691027bc8c2b0716) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd2eed82089b6583d1a1e41b99adfb8c4') in 0.044975 seconds 
+  Import took 0.048000 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001431 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/PlanetaryEarth4k.hdr
+  artifactKey: Guid(3675d0c3c874f6b479bab57eb7e68c90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/PlanetaryEarth4k.hdr using Guid(3675d0c3c874f6b479bab57eb7e68c90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2463bd795c86af9856d0db03f16e1c3') in 0.127986 seconds 
+  Import took 0.134414 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000611 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunTop.hdr
+  artifactKey: Guid(47d70ba0d1c1c3e4ab451b6bc37b0ebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunTop.hdr using Guid(47d70ba0d1c1c3e4ab451b6bc37b0ebe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '285d86229004bd39e288d46d1ce0f93c') in 0.042350 seconds 
+  Import took 0.046994 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001112 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/SkyhighFluffycloudField4k.hdr
+  artifactKey: Guid(18a0be10f0f64ac4c9f679d68e2cf857) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/SkyhighFluffycloudField4k.hdr using Guid(18a0be10f0f64ac4c9f679d68e2cf857) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5981e91931cf32d45be55018d505a973') in 0.129344 seconds 
+  Import took 0.135509 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001389 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudBottom.hdr
+  artifactKey: Guid(94b877781ad034640abce933599b6f2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudBottom.hdr using Guid(94b877781ad034640abce933599b6f2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '577352410e37e0fb6357bd86d229ad71') in 0.039413 seconds 
+  Import took 0.043199 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001017 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSun4k.hdr
+  artifactKey: Guid(8967f190ed29c46418093a47d66daee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSun4k.hdr using Guid(8967f190ed29c46418093a47d66daee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0ab38269400a876940162e0d9607c749') in 0.126370 seconds 
+  Import took 0.132468 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000968 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/Cloudymorning4k.hdr
+  artifactKey: Guid(3b5d67736d7b8ad4f8da4d58eaef0b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/Cloudymorning4k.hdr using Guid(3b5d67736d7b8ad4f8da4d58eaef0b98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '740ac4d5cb06b1f8538333cf933e510b') in 0.129878 seconds 
+  Import took 0.135497 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001115 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudEQ_hdr.exr
+  artifactKey: Guid(09999639e73bcd64abda22253af612d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/CosmicCoolCloudEQ_hdr.exr using Guid(09999639e73bcd64abda22253af612d8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcc75d2bbdc18e2e1df3f7312bdb8dde') in 2.109711 seconds 
+  Import took 2.114135 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001445 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayBottom.hdr
+  artifactKey: Guid(42e0664ae4c5c424ebcd980a10687e18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayBottom.hdr using Guid(42e0664ae4c5c424ebcd980a10687e18) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8e706e717462ab524aa1b11d56fbf371') in 0.046278 seconds 
+  Import took 0.049723 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001551 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDay4k.hdr
+  artifactKey: Guid(3e80b688af9b1d84ea52c5d36bb1cbbd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDay4k.hdr using Guid(3e80b688af9b1d84ea52c5d36bb1cbbd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '934ceffdb4a1a1d31ceb011561e787aa') in 0.126686 seconds 
+  Import took 0.132255 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000817 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/UnearthlyRed4k.hdr
+  artifactKey: Guid(a3de28b69b48944438c87668bd722ae7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/UnearthlyRed4k.hdr using Guid(a3de28b69b48944438c87668bd722ae7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f7c7345102a5a6a7aba0175e6c070a92') in 0.123457 seconds 
+  Import took 0.128643 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001359 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunBack.hdr
+  artifactKey: Guid(4e52cbaf92b83a94cb86bed75ed34652) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunBack.hdr using Guid(4e52cbaf92b83a94cb86bed75ed34652) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '841b0b3c876ac04dd7c9f96b938d6c54') in 0.035376 seconds 
+  Import took 0.038659 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001032 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/MegaSunBottom.hdr
+  artifactKey: Guid(3de85f3af41435a4c8f9d237bc1f19ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/MegaSunBottom.hdr using Guid(3de85f3af41435a4c8f9d237bc1f19ec) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'df7aecac52aa349b048f87f697c09028') in 0.031942 seconds 
+  Import took 0.036974 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001799 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/FluffballDayRight.hdr
+  artifactKey: Guid(669daa4bd63e4204dacb9aa01a164a7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/FluffballDayRight.hdr using Guid(669daa4bd63e4204dacb9aa01a164a7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bd6c24a04af9ecf9c4e111338ecd11c2') in 0.041645 seconds 
+  Import took 0.045734 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000716 seconds.
+  path: Assets/SkySeries Freebie/FreebieHdri/DarkStorm4K.hdr
+  artifactKey: Guid(762f22ba43541df4e95e0e7126e8d96c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/FreebieHdri/DarkStorm4K.hdr using Guid(762f22ba43541df4e95e0e7126e8d96c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0af1b8a84f7f57fc75c7813ee65d0a34') in 0.128366 seconds 
+  Import took 0.134179 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 641.770548 seconds.
+  path: Assets/SkySeries Freebie/SunlessCirruscover.mat
+  artifactKey: Guid(4e154bf235e41704bbd6bbc6fd6c63f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/SunlessCirruscover.mat using Guid(4e154bf235e41704bbd6bbc6fd6c63f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a328e4373ccb705ef6846df0f842b5b8') in 0.093428 seconds 
+  Import took 0.099589 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001223 seconds.
+  path: Assets/SkySeries Freebie/UnderTheSea4k.mat
+  artifactKey: Guid(119ec07f1c7ed204db46bd8465fd5a50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/UnderTheSea4k.mat using Guid(119ec07f1c7ed204db46bd8465fd5a50) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e055daaa2872838d56ab2a6d13ad830') in 0.065998 seconds 
+  Import took 0.074167 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001244 seconds.
+  path: Assets/SkySeries Freebie/UnearthlyRed.mat
+  artifactKey: Guid(5d133deeaa66ed445853e946ff25e073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/SkySeries Freebie/UnearthlyRed.mat using Guid(5d133deeaa66ed445853e946ff25e073) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9e2b89310ec5f1375b603a5af36f642a') in 0.061708 seconds 
+  Import took 0.066582 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 708.976670 seconds.
+  path: Assets/Scripts
+  artifactKey: Guid(e290be4dc791576489b0cc53d49c25ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts using Guid(e290be4dc791576489b0cc53d49c25ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e32d7165f9606aab5ae86419dc8bdf13') in 0.017768 seconds 
+  Import took 0.023437 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 16.848602 seconds.
+  path: Assets/Scripts/Input.cs
+  artifactKey: Guid(f690e434f91675740952eea4d8c895ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Input.cs using Guid(f690e434f91675740952eea4d8c895ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cbba8afde0f5e8c627c7ff47bb1e8b54') in 0.040509 seconds 
+  Import took 0.045795 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.758285 seconds.
+  path: Assets/Scripts/InputKey.cs
+  artifactKey: Guid(f690e434f91675740952eea4d8c895ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/InputKey.cs using Guid(f690e434f91675740952eea4d8c895ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4906611953f642683fac01d32ede377c') in 0.014163 seconds 
+  Import took 0.020329 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
