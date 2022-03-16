@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Common.Const;
 using System.Threading.Tasks;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// ポーズ画面などのUIを制御する
@@ -23,18 +25,18 @@ public class UIManager : MonoBehaviour
         instance = this;
     }
 
-    void Update()
+    private void Start()
     {
-        // ポーズ画面表示の入力
-        if (Input.GetButtonDown(InputConst.INPUT_CONST_MENU))
-        {
-            // クリア画面の表示中はポーズ画面を有効にしない
-            if (!ClearScreen.Instance.gameObject.activeSelf && !PauseScreen.Instance.gameObject.activeSelf)
+        // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONST_MENU) &&
+                !ClearScreen.Instance.gameObject.activeSelf &&
+                !PauseScreen.Instance.gameObject.activeSelf)
+            .Subscribe(_ =>
             {
                 PauseScreen.Instance.gameObject.SetActive(true);
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
-            }
-        }
+            });
     }
 
     /// <summary>

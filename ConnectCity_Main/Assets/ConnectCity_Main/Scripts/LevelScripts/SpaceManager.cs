@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Common.Const;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// 空間制御する
 /// </summary>
 public class SpaceManager : MonoBehaviour
 {
-    /// <summary>動かすブロックのオブジェクト配列</summary>
-    private GameObject[] _moveCbs;
     /// <summary>空間操作に必要なRigidBody、Velocity</summary>
     private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
     /// <summary>移動速度</summary>
@@ -17,51 +17,30 @@ public class SpaceManager : MonoBehaviour
 
     private void Start()
     {
-        if (!FindMoveCubes()) Debug.Log("動かすブロックの取得失敗");
-    }
-
-    private void Update()
-    {
-        if (SetMoveVelocotyLeftAndRight())
-        {
-            if (!CheckPositionAndSetMoveCubesRigidbodies()) Debug.Log("制御対象RigidBody格納の失敗");
-        }
-        //else
-        //    Debug.Log("操作入力無しまたは制御更新の失敗");
-    }
-
-    private void FixedUpdate()
-    {
-        if (0f < _spaceDirections.MoveVelocityLeftSpace.magnitude && _spaceDirections.RbsLeftSpace != null && 0 < _spaceDirections.RbsLeftSpace.Length)
-        {
-            foreach (var rb in _spaceDirections.RbsLeftSpace)
-            {
-                rb.AddForce(_spaceDirections.MoveVelocityLeftSpace + _spaceDirections.MoveVelocityLeftSpace * Time.deltaTime);
-            }
-        }
-        if (0f < _spaceDirections.MoveVelocityRightSpace.magnitude && _spaceDirections.RbsRightSpace != null && 0 < _spaceDirections.RbsRightSpace.Length)
-        {
-            foreach (var rb in _spaceDirections.RbsRightSpace)
-            {
-                rb.AddForce(_spaceDirections.MoveVelocityRightSpace + _spaceDirections.MoveVelocityRightSpace * Time.deltaTime);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 動かすブロックをリストで保持
-    /// </summary>
-    /// <returns>処理結果の成功／失敗</returns>
-    private bool FindMoveCubes()
-    {
+        // 動かすブロックのリストを取得
         var objs = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-        if (0 < objs.Length)
-        {
-            _moveCbs = objs;
-            return true;
-        }
-        else
-            return false;
+        // 移動入力、空間内のブロック座標をチェック
+        this.UpdateAsObservable()
+            .Where(_ => SetMoveVelocotyLeftAndRight())
+            .Select(_ => !CheckPositionAndSetMoveCubesRigidbodies(objs))
+            .Where(x => x)
+            .Subscribe(_ => Debug.Log("制御対象RigidBody格納の失敗"));
+        // 左空間の制御
+        this.FixedUpdateAsObservable()
+            .Where(_ => 0f < _spaceDirections.MoveVelocityLeftSpace.magnitude && _spaceDirections.RbsLeftSpace != null && 0 < _spaceDirections.RbsLeftSpace.Length)
+            .Subscribe(_ =>
+            {
+                foreach (var rb in _spaceDirections.RbsLeftSpace)
+                    rb.AddForce(_spaceDirections.MoveVelocityLeftSpace + _spaceDirections.MoveVelocityLeftSpace * Time.deltaTime);
+            });
+        // 右空間の制御
+        this.FixedUpdateAsObservable()
+            .Where(_ => 0f < _spaceDirections.MoveVelocityRightSpace.magnitude && _spaceDirections.RbsRightSpace != null && 0 < _spaceDirections.RbsRightSpace.Length)
+            .Subscribe(_ =>
+            {
+                foreach (var rb in _spaceDirections.RbsRightSpace)
+                    rb.AddForce(_spaceDirections.MoveVelocityRightSpace + _spaceDirections.MoveVelocityRightSpace * Time.deltaTime);
+            });
     }
 
     /// <summary>
@@ -93,7 +72,7 @@ public class SpaceManager : MonoBehaviour
     /// 動かすブロックの位置が左空間・右空間かを調べて、各空間操作用のリストへ格納
     /// </summary>
     /// <returns>処理結果の成功／失敗</returns>
-    private bool CheckPositionAndSetMoveCubesRigidbodies()
+    private bool CheckPositionAndSetMoveCubesRigidbodies(GameObject[] _moveCbs)
     {
         if (0 < _moveCbs.Length)
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// ポーズ画面UI操作クラス
@@ -93,13 +95,14 @@ public class PauseUIController : MasterUIController
     /// </summary>
     protected override void EntryEventTrigger()
     {
-        base.EntryEventTrigger();
-        var entryAry = new List<EventTrigger.Entry>();
-        entryAry.Add(GetEntryEvent(EventTriggerType.Select, (data) => Selected()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Deselect, (data) => Deselected()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Submit, (data) => Submited()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Cancel, (data) => Canceled()));
-        eventTrigger.triggers = entryAry;
+        button.OnSelectAsObservable()
+            .Subscribe(_ => Selected());
+        button.OnDeselectAsObservable()
+            .Subscribe(_ => Deselected());
+        button.OnSubmitAsObservable()
+            .Subscribe(_ => Submited());
+        button.OnCancelAsObservable()
+            .Subscribe(_ => Canceled());
     }
 
     /// <summary>

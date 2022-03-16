@@ -20,8 +20,6 @@ public class MasterUIController : MonoBehaviour
     protected bool _menuClose;
     /// <summary>ボタン</summary>
     [SerializeField] protected Button button;
-    /// <summary>イベントシステム</summary>
-    [SerializeField] protected EventTrigger eventTrigger;
     /// <summary>ボタンの画像</summary>
     [SerializeField] private Image image;
 
@@ -73,26 +71,7 @@ public class MasterUIController : MonoBehaviour
     /// <summary>
     /// イベントトリガーを設定する
     /// </summary>
-    protected virtual void EntryEventTrigger()
-    {
-        if (!eventTrigger)
-            eventTrigger = GetComponent<EventTrigger>();
-    }
-
-    /// <summary>
-    /// イベントトリガーのエントリー要素としてIDとイベントリスナー登録を実施して取得する
-    /// </summary>
-    /// <param name="type">イベントトリガータイプ</param>
-    /// <param name="action">登録したいイベント関数</param>
-    /// <returns>イベントトリガーのエントリー要素</returns>
-    protected EventTrigger.Entry GetEntryEvent(EventTriggerType type, UnityAction<BaseEventData> action)
-    {
-        var e = new EventTrigger.Entry();
-        e.eventID = type;
-        e.callback.AddListener(action);
-
-        return e;
-    }
+    protected virtual void EntryEventTrigger() { }
 
     /// <summary>
     /// 選択時に呼び出すメソッド
