@@ -20,5 +20,10 @@ namespace Common.Const
         /// 動くブロックのタグ名
         /// </summary>
         public static readonly string TAG_NAME_MOVECUBE = "MoveCube";
+
+        /// <summary>
+        /// 動くブロックグループのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_MOVECUBEGROUP = "MoveCubeGroup";
     }
 }

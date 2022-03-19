@@ -26,6 +26,7 @@ public class SpaceManager : MonoBehaviour
     {
         // 動かすブロックのリストを取得
         var objs = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
+        var objsGroup = GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
         if (!SetCollsion(objs)) Debug.Log("オブジェクト取得の失敗");
         // 移動入力、空間内のブロック座標をチェック
         this.UpdateAsObservable()
@@ -49,6 +50,20 @@ public class SpaceManager : MonoBehaviour
                 foreach (var rb in _spaceDirections.RbsRightSpace)
                     rb.AddForce(_spaceDirections.MoveVelocityRightSpace + _spaceDirections.MoveVelocityRightSpace * Time.deltaTime);
             });
+        this.OnCollisionEnterAsObservable()
+            .Select(x => CheckGroupAndAddGroup(x.transform, objsGroup))
+            .Where(x => !x)
+            .Subscribe(_ => Debug.Log("既に登録済みか、レベルデザイン内のオブジェクトではありません。"));
+    }
+
+    private bool CheckGroupAndAddGroup(Transform transform, GameObject gameObjectGroup)
+    {
+        if (transform.parent == null)
+            return false;
+        if (transform.parent != null && transform.parent.tag.Equals(TagConst.TAG_NAME_MOVECUBEGROUP))
+            return false;
+        transform.parent = gameObjectGroup.transform;
+        return true;
     }
 
     /// <summary>
