@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
 using Common.Const;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// プレイヤー操作制御
@@ -17,69 +18,74 @@ public class PlayerController : MonoBehaviour
     /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
     private static readonly float ISGROUNDED_RAY_MAX_DISTANCE = 0.8f;
 
-    /// <summary>位置・スケール</summary>
-    private Transform _transform;
     /// <summary>キャラクター制御</summary>
     private CharacterController _characterCtrl;
-    /// <summary>移動させる位置・スケール</summary>
-    private Vector3 _moveVelocity;
 
     /// <summary>移動速度</summary>
     [SerializeField] private float moveSpeed = 4f;
     /// <summary>ジャンプ速度</summary>
     [SerializeField] private float jumpSpeed = 5f;
     /// <summary>ジャンプ状態</summary>
-    private bool jumped;
+    private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
 
     void Start()
     {
-        _transform = transform;
         _characterCtrl = GetComponent<CharacterController>();
-    }
+        // 位置・スケールのキャッシュ
+        var transform = base.transform;
+        // 移動先の座標（X軸の移動、Y軸のジャンプのみ）
+        var moveVelocity = new Vector3();
 
-    private void Update()
-    {
-        _moveVelocity.x = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed;
-        //_moveVelocity.z = Input.GetAxis(VERTICAL) * speed;
-        _transform.LookAt(_transform.position + new Vector3(_moveVelocity.x, 0f, _moveVelocity.z));
-        if (!jumped && Input.GetButtonDown(InputConst.INPUT_CONSTJUMP) && LevelDecision.IsGrounded(_transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
-            jumped = true;
-    }
-
-    private void FixedUpdate()
-    {
-        MoveCharacter();
+        // 移動入力に応じて移動座標をセット
+        this.UpdateAsObservable()
+            .Select(_ => Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed)
+            .Subscribe(x =>
+            {
+                moveVelocity.x = x;
+                transform.LookAt(transform.position + new Vector3(moveVelocity.x, 0f, 0f));
+            });
+        // ジャンプ入力に応じてジャンプフラグをセット
+        this.UpdateAsObservable()
+            .Where(_ => !_isJumped.Value &&
+                LevelDecision.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
+            .Select(_ => Input.GetButtonDown(InputConst.INPUT_CONSTJUMP))
+            .Where(x => x)
+            .Subscribe(x => _isJumped.Value = x);
+        // ジャンプフラグ切り替え
+        _isJumped.Where(x => x)
+            .Subscribe(_ =>
+            {
+                moveVelocity.y = jumpSpeed;
+                // T.B.D ジャンプSEがはいるが、ひとまず決定音を鳴らす
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                _isJumped.Value = false;
+            });
+        // 空中にいる際の移動座標をセット
+        this.UpdateAsObservable()
+            .Where(_ => !LevelDecision.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
+            .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
+        // 移動
+        this.FixedUpdateAsObservable()
+            .Subscribe(_ => _characterCtrl.Move(moveVelocity * Time.deltaTime));
     }
 
     /// <summary>
-    /// キャラクターを動かす
+    /// ゲームオブジェクトからプレイヤー操作を実行
     /// </summary>
-    private void MoveCharacter()
+    /// <param name="moveVelocity">移動座標</param>
+    /// <returns>成功／失敗</returns>
+    public bool MoveChatactorFromGameManager(Vector3 moveVelocity)
     {
-        if (LevelDecision.IsGrounded(_transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
-        {
-            // ジャンプ
-            if (jumped)
-            {
-                _moveVelocity.y = jumpSpeed;
-                // T.B.D ジャンプSEがはいるが、ひとまず決定音を鳴らす
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                jumped = false;
-            }
-        }
-        else
-        {
-            _moveVelocity.y += Physics.gravity.y * Time.deltaTime;
-        }
-
-        _characterCtrl.Move(_moveVelocity * Time.deltaTime);
+        if (_characterCtrl == null)
+            return false;
+        _characterCtrl.Move(moveVelocity);
+        return true;
     }
 }
-
 /// <summary>
 /// レベル共通判定
 /// </summary>
-public static class LevelDecision
+public class LevelDecision
 {
     /// <summary>
     /// 接地判定
@@ -95,6 +101,26 @@ public static class LevelDecision
         //Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
         var raycastHits = new RaycastHit[1];
         var hitCount = Physics.RaycastNonAlloc(ray, raycastHits, rayMaxDistance);
+        return hitCount >= 1f;
+    }
+
+    /// <summary>
+    /// プレイヤーが上に乗っているかの判定
+    /// </summary>
+    /// <param name="postion">位置・スケール</param>
+    /// <param name="rayOriginOffset">始点</param>
+    /// <param name="rayDirection">終点</param>
+    /// <param name="rayMaxDistance">最大距離</param>
+    /// <param name="layerMask">マスク情報</param>
+    /// <returns>レイのヒット判定の有無</returns>
+    public static bool IsOnPlayeredAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask)
+    {
+        if (layerMask < 0) return IsGrounded(postion, rayOriginOffset, rayDirection, rayMaxDistance);
+
+        var ray = new Ray(postion + rayOriginOffset, rayDirection);
+        //Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
+        var raycastHits = new RaycastHit[1];
+        var hitCount = Physics.RaycastNonAlloc(ray, raycastHits, rayMaxDistance, layerMask);
         return hitCount >= 1f;
     }
 }

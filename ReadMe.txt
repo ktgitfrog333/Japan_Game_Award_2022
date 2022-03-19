@@ -34,7 +34,9 @@ ConnectCity_Main
     │  │       ├─UI_Clear	クリア画面UI素材
     │  │       ├─UI_Common	共通UI素材
     │  │       ├─UI_Fade		フェード演出テクスチャ素材
-    │  │       └─UI_Pause	ポーズ画面UI素材
+    │  │       ├─UI_Pause	ポーズ画面UI素材
+    │  │       └─UniRx			UniRxアセット
+    │  │           └─Scripts
     │  ├─ParticleEffects		自作エフェクトのデモ
     │  │  ├─Materials
     │  │  ├─Prefabs

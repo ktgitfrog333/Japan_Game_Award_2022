@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Common.Const;
 using UnityEngine.EventSystems;
 using System.Threading.Tasks;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// 操作説明
@@ -53,19 +54,16 @@ public class GameManualScrollView : MonoBehaviour
     private void Start()
     {
         Initialize();
-    }
-
-    void Update()
-    {
         // マウスボタン・キャンセルボタンが押されたら画面を閉じる
-        if (Input.GetMouseButtonDown(0)
-            || Input.GetMouseButtonDown(1)
-            || Input.GetMouseButtonDown(2)
-        )
-        {
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
-            UIManager.Instance.CloseManual();
-        }
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonDown(0) ||
+                Input.GetMouseButtonDown(1) ||
+                Input.GetMouseButtonDown(2))
+            .Subscribe(_ =>
+            {
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                UIManager.Instance.CloseManual();
+            });
     }
 
     private void Initialize()

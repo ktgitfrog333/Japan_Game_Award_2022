@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// 操作説明UI操作クラス
@@ -16,8 +18,8 @@ public class GameManualViewPageUIController : MonoBehaviour
     private int _pageIndex;
     /// <summary>ボタン</summary>
     [SerializeField] private Button button;
-    /// <summary>イベントシステム</summary>
-    [SerializeField] private EventTrigger eventTrigger;
+    ///// <summary>イベントシステム</summary>
+    //[SerializeField] private EventTrigger eventTrigger;
     /// <summary>メニューを閉じる際に一度のみ実行するよう制御するフラグ</summary>
     private bool _menuClose;
 
@@ -80,28 +82,12 @@ public class GameManualViewPageUIController : MonoBehaviour
     /// </summary>
     private void EntryEventTrigger()
     {
-        if (!eventTrigger)
-            eventTrigger = GetComponent<EventTrigger>();
-        var entryAry = new List<EventTrigger.Entry>();
-        entryAry.Add(GetEntryEvent(EventTriggerType.Select, (data) => Selected()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Submit, (data) => Submited()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Cancel, (data) => Canceled()));
-        eventTrigger.triggers = entryAry;
-    }
-
-    /// <summary>
-    /// イベントトリガーのエントリー要素としてIDとイベントリスナー登録を実施して取得する
-    /// </summary>
-    /// <param name="type">イベントトリガータイプ</param>
-    /// <param name="action">登録したいイベント関数</param>
-    /// <returns>イベントトリガーのエントリー要素</returns>
-    private EventTrigger.Entry GetEntryEvent(EventTriggerType type, UnityAction<BaseEventData> action)
-    {
-        var e = new EventTrigger.Entry();
-        e.eventID = type;
-        e.callback.AddListener(action);
-
-        return e;
+        button.OnSelectAsObservable()
+            .Subscribe(_ => Selected());
+        button.OnSubmitAsObservable()
+            .Subscribe(_ => Submited());
+        button.OnCancelAsObservable()
+            .Subscribe(_ => Canceled());
     }
 
     /// <summary>

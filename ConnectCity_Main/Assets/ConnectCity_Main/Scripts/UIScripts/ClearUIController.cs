@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// クリア画面UI操作クラス
@@ -81,12 +83,12 @@ public class ClearUIController : MasterUIController
     /// </summary>
     protected override void EntryEventTrigger()
     {
-        base.EntryEventTrigger();
-        var entryAry = new List<EventTrigger.Entry>();
-        entryAry.Add(GetEntryEvent(EventTriggerType.Select, (data) => Selected()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Deselect, (data) => Deselected()));
-        entryAry.Add(GetEntryEvent(EventTriggerType.Submit, (data) => Submited()));
-        eventTrigger.triggers = entryAry;
+        button.OnSelectAsObservable()
+            .Subscribe(_ => Selected());
+        button.OnDeselectAsObservable()
+            .Subscribe(_ => Deselected());
+        button.OnSubmitAsObservable()
+            .Subscribe(_ => Submited());
     }
 
     /// <summary>

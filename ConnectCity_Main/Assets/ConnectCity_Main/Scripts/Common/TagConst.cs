@@ -5,15 +5,20 @@ using UnityEngine;
 namespace Common.Const
 {
     /// <summary>
-    /// TagManager‚Ìƒ^ƒO–¼‚ğˆê——‰»
-    /// Eƒtƒ@ƒCƒ‹ƒpƒX
+    /// TagManagerã®ã‚¿ã‚°åã‚’ä¸€è¦§åŒ–
+    /// ãƒ»ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
     ///     $HOME/ProjectSettings/TagManager.asset
     /// </summary>
-    public static class TagConst
+    public class TagConst
     {
         /// <summary>
-        /// ƒvƒŒƒCƒ„[‚Ìƒ^ƒO–¼
+        /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ã‚°å
         /// </summary>
         public static readonly string TAG_NAME_PLAYER = "Player";
+
+        /// <summary>
+        /// å‹•ããƒ–ãƒ­ãƒƒã‚¯ã®ã‚¿ã‚°å
+        /// </summary>
+        public static readonly string TAG_NAME_MOVECUBE = "MoveCube";
     }
 }

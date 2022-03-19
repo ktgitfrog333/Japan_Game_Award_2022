@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// UIへフェード演出を入れるスクリプトクラス
@@ -37,18 +39,13 @@ public class LoadNow : MonoBehaviour
         _loadNowRect.anchoredPosition = new Vector2(LOAD_NOW_MIN_POSITION, 0f);
         DrawLoadNowFadeInTrigger = true;
         UIManager.Instance.enabled = false;
-    }
 
-    void Update()
-    {
-        if (DrawLoadNowFadeInTrigger == true)
-        {
-            DrawLoadNowFadeIn();
-        }
-        if (DrawLoadNowFadeOutTrigger == true)
-        {
-            DrawLoadNowFadeOut();
-        }
+        this.UpdateAsObservable()
+            .Where(_ => DrawLoadNowFadeInTrigger == true)
+            .Subscribe(_ => DrawLoadNowFadeIn());
+        this.UpdateAsObservable()
+            .Where(_ => DrawLoadNowFadeOutTrigger == true)
+            .Subscribe(_ => DrawLoadNowFadeOut());
     }
 
     /// <summary>
