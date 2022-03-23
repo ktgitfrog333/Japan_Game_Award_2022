@@ -89,15 +89,21 @@ public class InputKey : MonoBehaviour
                 {
                     if(Input.GetKeyDown(KeyCode.DownArrow))
                     {
+                        Debug.Log("下ボタン");
+                        Debug.Log(pencil_pos.x);
                         pencil_pos.x = gamefinish_pos.x - 275;
                         pencil_pos.y = gamefinish_pos.y;
+                        start_end = Start_End.End;
                     }
                 }else if(start_end == Start_End.End)
                 {
                     if(Input.GetKeyDown(KeyCode.UpArrow))
                     {
+                        Debug.Log("上ボタン");
+                        Debug.Log(pencil_pos.x);
                         pencil_pos.x = gamestart_pos.x - 230;
                         pencil_pos.y = gamestart_pos.y;
+                        start_end = Start_End.Start;
                     }
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
@@ -129,6 +135,7 @@ public class InputKey : MonoBehaviour
                     {
                         pencil_pos.x = no_pos.x - 180;
                         pencil_pos.y = no_pos.y;
+                        yes_no = Yes_No.No;
                     }
                     if(Input.GetKeyDown(KeyCode.Space))
                     {
@@ -140,6 +147,7 @@ public class InputKey : MonoBehaviour
                     {
                         pencil_pos.x = yes_pos.x - 100;
                         pencil_pos.y = yes_pos.y;
+                        yes_no = Yes_No.Yes;
                     }
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
