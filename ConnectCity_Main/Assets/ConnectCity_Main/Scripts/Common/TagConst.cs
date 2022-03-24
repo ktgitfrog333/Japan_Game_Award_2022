@@ -15,15 +15,17 @@ namespace Common.Const
         /// プレイヤーのタグ名
         /// </summary>
         public static readonly string TAG_NAME_PLAYER = "Player";
-
         /// <summary>
-        /// 動くブロックのタグ名
+        /// 動くキューブのタグ名
         /// </summary>
         public static readonly string TAG_NAME_MOVECUBE = "MoveCube";
-
         /// <summary>
-        /// 動くブロックグループのタグ名
+        /// 動くキューブグループのタグ名
         /// </summary>
         public static readonly string TAG_NAME_MOVECUBEGROUP = "MoveCubeGroup";
+        /// <summary>
+        /// レベルデザインのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_LEVELDESIGN = "LevelDesign";
     }
 }
