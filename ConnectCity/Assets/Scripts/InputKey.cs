@@ -40,7 +40,7 @@ public class InputKey : MonoBehaviour
     Start_End start_end;
     Yes_No yes_no;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         title_image = GameObject.Find("Title_Logo_Image");
         push_image = GameObject.Find("PushGameStart_Logo_Image");
@@ -50,11 +50,11 @@ public class InputKey : MonoBehaviour
         gamefinish_check_image = GameObject.Find("GameFinish_Check_Logo_Image");
         yes_image = GameObject.Find("Yes_Logo_Image");
         no_image = GameObject.Find("No_Logo_Image");
-        pencil_pos = pause_pencil_image.transform.position;
-        gamestart_pos = gamestart_image.transform.position;
-        gamefinish_pos = gamefinish_image.transform.position;
-        yes_pos = yes_image.transform.position;
-        no_pos = no_image.transform.position;
+        pencil_pos = pause_pencil_image.GetComponent<RectTransform>().anchoredPosition;
+        gamestart_pos = gamestart_image.GetComponent<RectTransform>().anchoredPosition;
+        gamefinish_pos = gamefinish_image.GetComponent<RectTransform>().anchoredPosition;
+        yes_pos = yes_image.GetComponent<RectTransform>().anchoredPosition;
+        no_pos = no_image.GetComponent<RectTransform>().anchoredPosition;
         status = Title_Status.Push_Button;
         push_image.SetActive(true);
         gamestart_image.SetActive(false);
@@ -66,7 +66,7 @@ public class InputKey : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         switch(status)
         {
@@ -78,8 +78,9 @@ public class InputKey : MonoBehaviour
                     gamefinish_image.SetActive(true);
                     pause_pencil_image.SetActive(true);
                     start_end = Start_End.Start;
-                    pencil_pos.x = gamestart_pos.x - 230;
+                    pencil_pos.x = gamestart_pos.x - 280;
                     pencil_pos.y = gamestart_pos.y;
+                    pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                     status = Title_Status.Start_End;
                 }
                 break;
@@ -93,16 +94,23 @@ public class InputKey : MonoBehaviour
                         Debug.Log(pencil_pos.x);
                         pencil_pos.x = gamefinish_pos.x - 275;
                         pencil_pos.y = gamefinish_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         start_end = Start_End.End;
                     }
-                }else if(start_end == Start_End.End)
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        //
+                    }
+                }
+                else if(start_end == Start_End.End)
                 {
                     if(Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         Debug.Log("è„É{É^Éì");
                         Debug.Log(pencil_pos.x);
-                        pencil_pos.x = gamestart_pos.x - 230;
+                        pencil_pos.x = gamestart_pos.x - 280;
                         pencil_pos.y = gamestart_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         start_end = Start_End.Start;
                     }
                     if (Input.GetKeyDown(KeyCode.Space))
@@ -115,6 +123,7 @@ public class InputKey : MonoBehaviour
                         yes_no = Yes_No.Yes;
                         pencil_pos.x = yes_pos.x - 100;
                         pencil_pos.y = yes_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         status = Title_Status.End_Confirm;
                     }
                 }
@@ -135,11 +144,12 @@ public class InputKey : MonoBehaviour
                     {
                         pencil_pos.x = no_pos.x - 180;
                         pencil_pos.y = no_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         yes_no = Yes_No.No;
                     }
                     if(Input.GetKeyDown(KeyCode.Space))
                     {
-                        //
+                        Quit();
                     }
                 }else if(yes_no == Yes_No.No)
                 {
@@ -147,6 +157,7 @@ public class InputKey : MonoBehaviour
                     {
                         pencil_pos.x = yes_pos.x - 100;
                         pencil_pos.y = yes_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         yes_no = Yes_No.Yes;
                     }
                     if (Input.GetKeyDown(KeyCode.Space))
@@ -157,12 +168,23 @@ public class InputKey : MonoBehaviour
                         gamestart_image.SetActive(true);
                         gamefinish_image.SetActive(true);
                         start_end = Start_End.Start;
-                        pencil_pos.x = gamestart_pos.x - 230;
+                        pencil_pos.x = gamestart_pos.x - 280;
                         pencil_pos.y = gamestart_pos.y;
+                        pause_pencil_image.GetComponent<RectTransform>().anchoredPosition = pencil_pos;
                         status = Title_Status.Start_End;
                     }
                 }
                 break;
         }
+    }
+
+    public void Quit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #elif UNITY_STANDALONE
+            UnityEngine.Application.Quit();
+        #endif
+
     }
 }
