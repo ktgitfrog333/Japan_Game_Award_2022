@@ -49,5 +49,9 @@ namespace Common.Const
         /// キーボードのSpace/ゲームパッドのAボタン
         /// </summary>
         public static readonly string INPUT_CONSTJUMP = "Jump";
+        /// <summary>
+        /// キーボードのR/ゲームパッドのRBボタン
+        /// </summary>
+        public static readonly string INPUT_CONSTSPACE = "Space";
     }
 }

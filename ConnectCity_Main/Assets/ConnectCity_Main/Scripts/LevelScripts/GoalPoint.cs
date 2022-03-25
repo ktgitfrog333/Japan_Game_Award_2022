@@ -4,6 +4,7 @@ using UnityEngine;
 using Common.Const;
 using UniRx;
 using UniRx.Triggers;
+using Common.LevelDesign;
 
 /// <summary>
 /// ゴールエリア
@@ -33,7 +34,7 @@ public class GoalPoint : MonoBehaviour
     /// <returns>成功／失敗</returns>
     private bool PlayClearDirectionAndOpenClearScreen()
     {
-        if (LevelDecision.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
+        if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
         {
             // T.B.D プレイヤー操作を停止する処理を追加
             // T.B.D ゴール演出を入れるなら追加
