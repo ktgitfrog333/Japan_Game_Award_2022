@@ -28,9 +28,7 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
-    /// <summary>
-    /// プレイヤーのゲームオブジェクト
-    /// </summary>
+    /// <summary>プレイヤーのゲームオブジェクト</summary>
     [SerializeField] private GameObject player;
 
     private void Reset()

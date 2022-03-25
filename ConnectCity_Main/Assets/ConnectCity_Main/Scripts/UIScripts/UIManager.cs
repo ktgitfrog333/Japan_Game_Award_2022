@@ -5,6 +5,7 @@ using Common.Const;
 using System.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine.UI;
 
 /// <summary>
 /// ポーズ画面などのUIを制御する
@@ -13,6 +14,17 @@ public class UIManager : MonoBehaviour
 {
     private static UIManager instance;
     public static UIManager Instance { get { return instance; } }
+
+    /// <summary>空間操作可能な境界</summary>
+    [SerializeField] private GameObject spaceScreen;
+    /// <summary>空間操作可能な境界のオブジェクト名</summary>
+    private static readonly string OBJECT_NAME_SPACESCREEN = "SpaceScreen";
+
+    private void Reset()
+    {
+        if (spaceScreen == null)
+            spaceScreen = GameObject.Find(OBJECT_NAME_SPACESCREEN);
+    }
 
     private void Awake()
     {
@@ -35,6 +47,15 @@ public class UIManager : MonoBehaviour
             .Subscribe(_ =>
             {
                 PauseScreen.Instance.gameObject.SetActive(true);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+            });
+        // 空間操作可能な境界を表示切り替え操作の入力
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
+                !spaceScreen.activeSelf)
+            .Subscribe(_ =>
+            {
+                spaceScreen.SetActive(true);
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
             });
     }
@@ -76,5 +97,14 @@ public class UIManager : MonoBehaviour
             ClearScreen.Instance.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 
         ClearScreen.Instance.AutoSelectContent();
+    }
+
+    /// <summary>
+    /// 空間操作可能な境界を表示／非表示
+    /// </summary>
+    public async void CloseSpaceScreen()
+    {
+        await Task.Delay(500);
+        spaceScreen.SetActive(false);
     }
 }
