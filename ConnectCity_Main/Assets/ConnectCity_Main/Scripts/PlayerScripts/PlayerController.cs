@@ -13,11 +13,11 @@ using Common.LevelDesign;
 public class PlayerController : MonoBehaviour
 {
     /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
-    private static readonly Vector3 ISGROUNDED_RAY_ORIGIN_OFFSET = new Vector3(0f, 0.1f);
+    [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, 0.1f);
     /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
-    private static readonly Vector3 ISGROUNDED_RAY_DIRECTION = Vector3.down;
+    [SerializeField] private Vector3 rayDirection = Vector3.down;
     /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
-    private static readonly float ISGROUNDED_RAY_MAX_DISTANCE = 0.8f;
+    [SerializeField] private float rayMaxDistance = 0.8f;
 
     /// <summary>キャラクター制御</summary>
     private CharacterController _characterCtrl;
@@ -48,7 +48,8 @@ public class PlayerController : MonoBehaviour
         // ジャンプ入力に応じてジャンプフラグをセット
         this.UpdateAsObservable()
             .Where(_ => !_isJumped.Value &&
-                LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
             .Select(_ => Input.GetButtonDown(InputConst.INPUT_CONSTJUMP))
             .Where(x => x)
             .Subscribe(x => _isJumped.Value = x);
@@ -63,10 +64,13 @@ public class PlayerController : MonoBehaviour
             });
         // 空中にいる際の移動座標をセット
         this.UpdateAsObservable()
-            .Where(_ => !LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
+            .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
             .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
+        
         // 移動
         this.FixedUpdateAsObservable()
+            .Where(_ => 0f < moveVelocity.magnitude)
             .Subscribe(_ => _characterCtrl.Move(moveVelocity * Time.deltaTime));
     }
 
@@ -80,6 +84,16 @@ public class PlayerController : MonoBehaviour
         if (_characterCtrl == null)
             return false;
         _characterCtrl.Move(moveVelocity);
+        return true;
+    }
+
+    /// <summary>
+    /// プレイヤーを死亡させる
+    /// </summary>
+    /// <returns>成功／失敗</returns>
+    public bool DeadPlayerFromGameManager()
+    {
+        // T.B.D プレイヤーの死亡演出
         return true;
     }
 }

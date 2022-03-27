@@ -15,5 +15,13 @@ namespace Common.Const
         /// プレイヤーのレイヤー名
         /// </summary>
         public static readonly string LAYER_NAME_PLAYER = "Player";
+        /// <summary>
+        /// 静的オブジェクトのレイヤー名
+        /// </summary>
+        public static readonly string LAYER_NAME_FREEZE = "Freeze";
+        /// <summary>
+        /// MoveCubeのレイヤー名
+        /// </summary>
+        public static readonly string LAYER_NAME_MOVECUBE = "MoveCube";
     }
 }

@@ -19,11 +19,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject spaceScreen;
     /// <summary>空間操作可能な境界のオブジェクト名</summary>
     private static readonly string OBJECT_NAME_SPACESCREEN = "SpaceScreen";
+    /// <summary>ロード演出</summary>
+    [SerializeField] private GameObject loadNow;
+    /// <summary>ロード演出のオブジェクト名</summary>
+    private static readonly string OBJECT_NAME_LOADNOW = "LoadNow";
 
     private void Reset()
     {
         if (spaceScreen == null)
             spaceScreen = GameObject.Find(OBJECT_NAME_SPACESCREEN);
+        if (loadNow == null)
+            loadNow = GameObject.Find(OBJECT_NAME_LOADNOW);
     }
 
     private void Awake()
@@ -106,5 +112,17 @@ public class UIManager : MonoBehaviour
     {
         await Task.Delay(500);
         spaceScreen.SetActive(false);
+    }
+
+    /// <summary>
+    /// フェード演出オブジェクトを有効にする
+    /// </summary>
+    /// <returns></returns>
+    public bool EnableDrawLoadNowFadeOutTrigger()
+    {
+        loadNow.SetActive(true);
+        loadNow.GetComponent<LoadNow>().DrawLoadNowFadeOutTrigger = true;
+
+        return true;
     }
 }

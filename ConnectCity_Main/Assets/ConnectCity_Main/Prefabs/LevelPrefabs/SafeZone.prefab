@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1696018376661584596
+--- !u!1 &4427013182712558755
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1696018376661584597}
-  - component: {fileID: 1696018376661584598}
+  - component: {fileID: 4427013182712558754}
+  - component: {fileID: 4427013182712558752}
+  - component: {fileID: 4427013182712558753}
   m_Layer: 0
-  m_Name: SpaceManager
+  m_Name: SafeZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1696018376661584597
+--- !u!4 &4427013182712558754
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1696018376661584596}
+  m_GameObject: {fileID: 4427013182712558755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,29 +32,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1696018376661584598
+--- !u!65 &4427013182712558752
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4427013182712558755}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20, y: 9.708158, z: 1}
+  m_Center: {x: 0, y: 1.7136955, z: 0}
+--- !u!114 &4427013182712558753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1696018376661584596}
+  m_GameObject: {fileID: 4427013182712558755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b89589f4fba97448dabca832a45767, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fa2a50e722a28b4a895e24114fd4930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveLSpeed: 0.3
-  moveHSpeed: 3.5
-  gearChgDelaySec: 2
-  moveCubeGroup: {fileID: 5020951347855527081, guid: 0ebdf4144f7d0254ea791f15d2b8ff37, type: 3}
-  rayOriginOffset: {x: 0, y: -0.1, z: 0}
-  rayDirection: {x: 0, y: 1, z: 0}
-  rayMaxDistance: 0.9
-  gameObjects1: []
-  rayOriginOffsetLeft: {x: 0.1, y: 0, z: 0}
-  rayDirectionLeft: {x: -1, y: 0, z: 0}
-  rayMaxDistanceLeft: 0.8
-  rayOriginOffsetRight: {x: -0.1, y: 0, z: 0}
-  rayDirectionRight: {x: 1, y: 0, z: 0}
-  rayMaxDistanceRight: 0.8
+  boxCenter: {x: 0, y: 1.7136955, z: 0}
+  boxSize: {x: 20, y: 9.708158, z: 1}
+  insPosition: {x: 0, y: 0, z: 0}

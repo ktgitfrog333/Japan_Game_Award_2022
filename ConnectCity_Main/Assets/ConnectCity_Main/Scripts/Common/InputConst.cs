@@ -26,19 +26,43 @@ namespace Common.Const
         /// </summary>
         public static readonly string INPUT_CONST_VERTICAL = "Vertical";
         /// <summary>
-        /// キーボードのQ,E/ゲームパッドの左スティック入力・左右
+        /// キーボードのf/ゲームパッドは未使用
+        /// </summary>
+        public static readonly string INPUT_CONST_LS_COM = "LSCom";
+        /// <summary>
+        /// キーボードのj/ゲームパッドは未使用
+        /// </summary>
+        public static readonly string INPUT_CONST_RS_COM = "RSCom";
+        /// <summary>
+        /// キーボードは未使用/ゲームパッドの左スティック入力・左右
+        /// </summary>
+        public static readonly string INPUT_CONST_HORIZONTAL_LS_KEYBOD = "HorizontalLSKeyBod";
+        /// <summary>
+        /// キーボードは未使用/ゲームパッドの左スティック入力・上下
+        /// </summary>
+        public static readonly string INPUT_CONST_VERTICAL_LS_KEYBOD = "VerticalLSKeyBod";
+        /// <summary>
+        /// キーボードのk,;/ゲームパッドの右スティック入力・左右
+        /// </summary>
+        public static readonly string INPUT_CONST_HORIZONTAL_RS_KEYBOD = "HorizontalRSKeyBod";
+        /// <summary>
+        /// キーボードのo,l/ゲームパッドの右スティック入力・上下
+        /// </summary>
+        public static readonly string INPUT_CONST_VERTICAL_RS_KEYBOD = "VerticalRSKeyBod";
+        /// <summary>
+        /// キーボードは未使用/ゲームパッドの左スティック入力・左右
         /// </summary>
         public static readonly string INPUT_CONST_HORIZONTAL_LS = "HorizontalLS";
         /// <summary>
-        /// キーボードの2,W/ゲームパッドの左スティック入力・上下
+        /// キーボードは未使用/ゲームパッドの左スティック入力・上下
         /// </summary>
         public static readonly string INPUT_CONST_VERTICAL_LS = "VerticalLS";
         /// <summary>
-        /// キーボードのI,P/ゲームパッドの右スティック入力・左右
+        /// キーボードのk,;/ゲームパッドの右スティック入力・左右
         /// </summary>
         public static readonly string INPUT_CONST_HORIZONTAL_RS = "HorizontalRS";
         /// <summary>
-        /// キーボードの9,O/ゲームパッドの右スティック入力・上下
+        /// キーボードのo,l/ゲームパッドの右スティック入力・上下
         /// </summary>
         public static readonly string INPUT_CONST_VERTICAL_RS = "VerticalRS";
         /// <summary>

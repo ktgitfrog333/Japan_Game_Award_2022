@@ -128,6 +128,7 @@ public class PauseUIController : MasterUIController
                 {
                     SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                     SceneInfoManager.Instance.LoadSceneNameRedo();
+                    // T.B.D LoadNowはシングルトンにせず、UIManager管理にする
                     LoadNow.Instance.gameObject.SetActive(true);
                     LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
 

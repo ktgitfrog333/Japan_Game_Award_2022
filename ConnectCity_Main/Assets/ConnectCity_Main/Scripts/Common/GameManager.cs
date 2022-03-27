@@ -45,13 +45,15 @@ public class GameManager : MonoBehaviour
     /// <returns>成功／失敗</returns>
     public bool MoveCharactorFromSpaceManager(Vector3 moveVelocity)
     {
-        try
-        {
-            return player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity) ? true : false;
-        }
-        catch
-        {
-            return false;
-        }
+        return player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
+    }
+
+    /// <summary>
+    /// プレイヤーを死亡させる
+    /// </summary>
+    /// <returns>成功／失敗</returns>
+    public bool DeadPlayerFromSpaceManager()
+    {
+        return player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
     }
 }
