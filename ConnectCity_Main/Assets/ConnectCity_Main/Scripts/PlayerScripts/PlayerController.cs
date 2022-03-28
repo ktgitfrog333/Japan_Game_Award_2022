@@ -23,8 +23,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 rayDirection = Vector3.down;
     /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
     [SerializeField] private float rayMaxDistance = 0.8f;
-    /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
-    [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
     /// <summary>キャラクター制御</summary>
     [SerializeField] private CharacterController _characterCtrl;
     /// <summary>プレイヤーのアニメーション</summary>
@@ -91,23 +89,36 @@ public class PlayerController : MonoBehaviour
                 moveVelocity.y = jumpSpeed;
                 // T.B.D ジャンプSEがはいるが、ひとまず決定音を鳴らす
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
+                    _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
+                _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
                 _isJumped.Value = false;
+            });
+        // ジャンプ状態から着地した時
+        this.UpdateAsObservable()
+            .Where(_ => !_isJumped.Value &&
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+            .Select(_ => moveVelocity.y < 0f)
+            .Where(x => x)
+            .Subscribe(x => {
+                moveVelocity.y = 0f;
+                // T.B.D 着地SEが入るが、ひとまずメニューを閉じる音を鳴らす
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
+                    _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
+                _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
             });
         // 空中にいる際の移動座標をセット
         this.UpdateAsObservable()
-            .Select(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+            .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
                 !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
             .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
-        
+
         // 移動
         this.FixedUpdateAsObservable()
-            .Where(_ => 0f < moveVelocity.magnitude)
             .Subscribe(_ => {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
-                {
-                    if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
-                }
+                if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
                 _characterCtrl.Move(moveVelocity * Time.deltaTime);
             });
 
@@ -126,8 +137,10 @@ public class PlayerController : MonoBehaviour
     private bool PlayPlayerAnimation(Vector3 velocity)
     {
         // 歩行状態
-        if (0f <= Mathf.Abs(velocity.x) && velocity.y <= 0f)
+        if (velocity.y <= 0f)
             _playerAnimation.SetFloat(PlayerAnimator.PARAMETERS_MOVESPEED, Mathf.Abs(velocity.x));
+        // ジャンプ
+        _playerAnimation.SetFloat(PlayerAnimator.PARAMETERS_JUMPSPEED, Mathf.Abs(velocity.y));
         return true;
     }
 
@@ -156,7 +169,6 @@ public class PlayerController : MonoBehaviour
     {
         if (_characterCtrl == null)
             return false;
-        PlayPlayerAnimation(moveVelocity);
         _characterCtrl.Move(moveVelocity);
         return true;
     }
@@ -180,6 +192,10 @@ public class PlayerAnimator
     /// 移動速度のパラメータ
     /// </summary>
     public static readonly string PARAMETERS_MOVESPEED = "MoveSpeed";
+    /// <summary>
+    /// ジャンプのパラメータ
+    /// </summary>
+    public static readonly string PARAMETERS_JUMPSPEED = "JumpSpeed";
 }
 /// <summary>
 /// プレイヤーのエフェクトで使用するエフェクト配列のインデックスを管理
