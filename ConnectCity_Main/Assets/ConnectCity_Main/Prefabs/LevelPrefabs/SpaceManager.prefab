@@ -43,6 +43,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b89589f4fba97448dabca832a45767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
+  moveLSpeed: 0.3
+  moveHSpeed: 3.5
+  gearChgDelaySec: 1.7
   moveCubeGroup: {fileID: 5020951347855527081, guid: 0ebdf4144f7d0254ea791f15d2b8ff37, type: 3}
-  gameObjects1: []
+  rayOriginOffset: {x: 0, y: -0.1, z: 0}
+  rayDirection: {x: 0, y: 1, z: 0}
+  rayMaxDistance: 0.9
+  rayOriginOffsetLeft: {x: 0.1, y: 0, z: 0}
+  rayDirectionLeft: {x: -1, y: 0, z: 0}
+  rayMaxDistanceLeft: 0.8
+  rayMaxDistanceLeftLong: 1.6
+  rayOriginOffsetRight: {x: -0.1, y: 0, z: 0}
+  rayDirectionRight: {x: 1, y: 0, z: 0}
+  rayMaxDistanceRight: 0.8
+  rayMaxDistanceRightLong: 1.6
+  rayOriginOffsetUp: {x: 0, y: -0.1, z: 0}
+  rayDirectionUp: {x: 0, y: 1, z: 0}
+  rayMaxDistanceUpLong: 1.6
+  rayOriginOffsetDown: {x: 0, y: 0.1, z: 0}
+  rayDirectionDown: {x: 0, y: -1, z: 0}
+  rayMaxDistanceDownLong: 1.6
+  deadMagnitude: 0.9

@@ -11,17 +11,51 @@ using Common.LevelDesign;
 /// </summary>
 public class SpaceManager : MonoBehaviour
 {
-    /// <summary>移動速度</summary>
-    [SerializeField] private float moveSpeed = 3.5f;
+    /// <summary>移動速度（初動フェーズ）</summary>
+    [SerializeField] private float moveLSpeed = .3f;
+    /// <summary>移動速度（移動フェーズ）</summary>
+    [SerializeField] private float moveHSpeed = 3.5f;
+    /// <summary>長押ししてから移動フェーズへ以降するまでの時間</summary>
+    [SerializeField] private float gearChgDelaySec = 2f;
     /// <summary>動くキューブをグループ化するプレハブ</summary>
     [SerializeField] private GameObject moveCubeGroup;
 
     /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
-    private static readonly Vector3 ISPLAYERED_RAY_ORIGIN_OFFSET = new Vector3(0f, -0.1f);
+    [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, -.1f);
     /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
-    private static readonly Vector3 ISPLAYERED_RAY_DIRECTION = Vector3.up;
+    [SerializeField] private Vector3 rayDirection = Vector3.up;
     /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
-    private static readonly float ISPLAYERED_RAY_MAX_DISTANCE = 0.9f;
+    [SerializeField] private float rayMaxDistance = .9f;
+    /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+    [SerializeField] private Vector3 rayOriginOffsetLeft = new Vector3(.1f, 0f);
+    /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+    [SerializeField] private Vector3 rayDirectionLeft = Vector3.left;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+    [SerializeField] private float rayMaxDistanceLeft = .8f;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+    [SerializeField] private float rayMaxDistanceLeftLong = 1.6f;
+    /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+    [SerializeField] private Vector3 rayOriginOffsetRight = new Vector3(-.1f, 0f);
+    /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+    [SerializeField] private Vector3 rayDirectionRight = Vector3.right;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+    [SerializeField] private float rayMaxDistanceRight = .8f;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+    [SerializeField] private float rayMaxDistanceRightLong = 1.6f;
+    /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+    [SerializeField] private Vector3 rayOriginOffsetUp = new Vector3(0f, -.1f);
+    /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+    [SerializeField] private Vector3 rayDirectionUp = Vector3.up;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+    [SerializeField] private float rayMaxDistanceUpLong = 1.6f;
+    /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+    [SerializeField] private Vector3 rayOriginOffsetDown = new Vector3(0f, .1f);
+    /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+    [SerializeField] private Vector3 rayDirectionDown = Vector3.down;
+    /// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+    [SerializeField] private float rayMaxDistanceDownLong = 1.6f;
+    /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
+    [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
     /// <summary>空間操作に必要なRigidBody、Velocity</summary>
     private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
     /// <summary>ブロックの接続状況</summary>
@@ -29,54 +63,56 @@ public class SpaceManager : MonoBehaviour
 
     private void Start()
     {
-        var moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-
         // ブロックの接続状況
+        var moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
         if (!SetCollsion(moveCubes, GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_LEVELDESIGN).transform))
             throw new System.Exception("オブジェクト取得の失敗");
+        // 速度の初期値
+        _spaceDirections.MoveSpeed = moveLSpeed;
         // 移動入力をチェック
+        var velocitySeted = new BoolReactiveProperty();
         this.UpdateAsObservable()
-            .Subscribe(_ => SetMoveVelocotyLeftAndRight());
+            .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight());
+        velocitySeted.Where(x => x)
+            .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
+            .Where(_ => velocitySeted.Value)
+            .Subscribe(_ => _spaceDirections.MoveSpeed = moveHSpeed);
+        velocitySeted.Where(x => !x)
+            .Subscribe(_ => {
+                _spaceDirections.MoveSpeed = moveLSpeed;
+            });
+
         // 空間内のブロック座標をチェック
         this.UpdateAsObservable()
-            .Select(_ => CheckPositionAndSetMoveCubesRigidbodies(moveCubes))
+            .Select(_ => CheckPositionAndSetMoveCubesComponents(moveCubes))
             .Where(x => !x)
-            .Subscribe(_ => throw new System.Exception("制御対象RigidBody格納の失敗"));
-        var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
+            .Subscribe(_ => Debug.LogError("制御対象RigidBody格納の失敗"));
         // 不要なグループ削除
-        this.UpdateAsObservable()
-            .Subscribe(_ =>
-            {
-                foreach (var obj in moveCubeGroups)
-                    if (obj != null && obj.transform.childCount < 1) Destroy(obj);
-            });
+        var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
+        foreach (var obj in moveCubeGroups)
+            obj.ObserveEveryValueChanged(x => x.transform.childCount < 1)
+                .Where(x => x)
+                .Subscribe(_ => Destroy(obj));
         // 左空間の制御
         this.FixedUpdateAsObservable()
             .Where(_ => 0f < _spaceDirections.MoveVelocityLeftSpace.magnitude && _spaceDirections.RbsLeftSpace != null && 0 < _spaceDirections.RbsLeftSpace.Length)
-            .Select(_ => MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace))
-            .Where(x => !x)
-            .Subscribe(_ => Debug.Log("左空間：MoveCubeの制御を破棄"));
+            .Subscribe(_ =>
+            {
+                if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
+                    _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
+                if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.ScrLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
+                    Debug.Log("左空間：MoveCubeの制御を破棄");
+            });
         // 右空間の制御
         this.FixedUpdateAsObservable()
             .Where(_ => 0f < _spaceDirections.MoveVelocityRightSpace.magnitude && _spaceDirections.RbsRightSpace != null && 0 < _spaceDirections.RbsRightSpace.Length)
-            .Select(_ => MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace))
-            .Where(x => !x)
-            .Subscribe(_ => Debug.Log("右空間：MoveCubeの制御を破棄"));
-
-        //// デバッグ用
-        //this.UpdateAsObservable()
-        //    .Subscribe(_ =>
-        //    {
-        //        var game = new List<GameObject>();
-        //        foreach(var g in _connectDirections)
-        //        {
-        //            game.Add(g.UpConnectedBlock);
-        //            game.Add(g.DownConnectedBlock);
-        //            game.Add(g.LeftConnectedBlock);
-        //            game.Add(g.RightConnectedBlock);
-        //        }
-        //        gameObjects1 = game.ToArray();
-        //    });
+            .Subscribe(_ =>
+            {
+                if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
+                    _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
+                if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
+                    Debug.Log("左空間：MoveCubeの制御を破棄");
+            });
     }
 
     /// <summary>
@@ -84,17 +120,29 @@ public class SpaceManager : MonoBehaviour
     /// </summary>
     /// <param name="rigidBodySpace">対象のRigidBody</param>
     /// <param name="moveVelocitySpace">移動ベクトル</param>
+    /// <param name="moveSpeed">移動速度（初動／移動）</param>
     /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
-    private bool MoveMoveCube(Rigidbody[] rigidBodySpace, Vector3 moveVelocitySpace)
+    private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
     {
-        foreach (var rb in rigidBodySpace)
-            if (rb == null) return false;
-        foreach (var rb in rigidBodySpace)
-            rb.AddForce(moveVelocitySpace + moveVelocitySpace * Time.deltaTime);
+        for (var i = 0; i < rigidBodySpace.Length; i++)
+        {
+            if (moveVelocitySpace.Equals(Vector3.zero))
+            {
+                rigidBodySpace[i].velocity = Vector3.zero;
+            }
+            else
+            {
+                if (Mathf.Abs(moveVelocitySpace.x) < Mathf.Abs(moveVelocitySpace.y))
+                    rigidBodySpace[i].velocity = new Vector3(0f, rigidBodySpace[i].velocity.y, 0f);
+                else
+                    rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
+
+                rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
+            }
+            objs[i].PlayMoveCbAnimation(moveSpeed);
+        }
         return true;
     }
-
-    [SerializeField] private GameObject[] gameObjects1;
 
     /// <summary>
     /// 衝突判定をセット
@@ -117,10 +165,20 @@ public class SpaceManager : MonoBehaviour
             obj.transform.parent = group.transform;
 
             obj.UpdateAsObservable()
-                .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, ISPLAYERED_RAY_ORIGIN_OFFSET, ISPLAYERED_RAY_DIRECTION, ISPLAYERED_RAY_MAX_DISTANCE, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
-                .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
-                .Where(x => x!)
-                .Subscribe(_ => Debug.Log("プレイヤー操作指令の失敗"));
+                .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                .Where(x => !x)
+                .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
+            obj.UpdateAsObservable()
+                .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                .Where(x => !x)
+                .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
+            obj.UpdateAsObservable()
+                .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                .Where(x => !x)
+                .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
             obj.transform.parent.OnCollisionEnterAsObservable()
                 .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                 .Select(x => GetMatchingMoveCubes(obj, x.gameObject))
@@ -130,6 +188,17 @@ public class SpaceManager : MonoBehaviour
                 {
                     if (!x) Debug.Log("MoveCubeのコネクト処理失敗");
                     _connectDirections = new List<ConnectDirection2D>();
+                });
+            // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
+            obj.UpdateAsObservable()
+                .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
+                .Select(_ => CheckDirectionMoveCubeToPlayer(obj))
+                .Where(x => x)
+                .Select(_ => GameManager.Instance.DeadPlayerFromSpaceManager())
+                .Where(x => x)
+                .Subscribe(_ => {
+                    SceneInfoManager.Instance.LoadSceneNameRedo();
+                    UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                 });
         }
 
@@ -302,6 +371,87 @@ public class SpaceManager : MonoBehaviour
     }
 
     /// <summary>
+    /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
+    /// </summary>
+    /// <param name="moveCube">対象のMoveCube</param>
+    /// <returns>挟まっている／離れている</returns>
+    private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube)
+    {
+        var rOrgOffL = rayOriginOffsetLeft;
+        var rOrgDireL = rayDirectionLeft;
+        var rMaxDisL = rayMaxDistanceLeftLong;
+        var rOrgOffR = rayOriginOffsetRight;
+        var rOrgDireR = rayDirectionRight;
+        var rMaxDisR = rayMaxDistanceRightLong;
+        var rOrgOffUpAry = GetThreePointHorizontal(rayOriginOffsetUp, .5f);
+        var rOrgDireUp = rayDirectionUp;
+        var rMaxDisUp = rayMaxDistanceUpLong;
+        var rOrgOffDownAry = GetThreePointHorizontal(rayOriginOffsetDown, .5f);
+        var rOrgDireDown = rayDirectionDown;
+        var rMaxDisDown = rayMaxDistanceDownLong;
+
+        // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
+        // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
+        // 左
+        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+        {
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+            {
+                return true;
+            }
+        }
+        // 右
+        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+        {
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+            {
+                return true;
+            }
+        }
+        for (var i = 0; i < 3; i++)
+        {
+            // 上
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+            {
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                {
+                    return true;
+                }
+            }
+            // 下
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+            {
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// レイの光線を3本たてる
+    /// 補正値によって幅を調整する
+    /// </summary>
+    /// <param name="rayOriginOffset">基準点（中央点）</param>
+    /// <param name="range">幅を広げる範囲</param>
+    /// <returns>3点ベクター</returns>
+    private Vector3[] GetThreePointHorizontal(Vector3 rayOriginOffset, float range)
+    {
+        var idx = 0;
+        var result = new Vector3[3];
+        result[idx++] = new Vector3(-1f * range, rayOriginOffset.y);
+        result[idx++] = rayOriginOffset;
+        result[idx++] = new Vector3(1f * range, rayOriginOffset.y);
+        return result;
+    }
+
+    /// <summary>
     /// 角度を逆転させる
     /// 上なら下、左なら右
     /// </summary>
@@ -326,18 +476,30 @@ public class SpaceManager : MonoBehaviour
     /// <returns>処理結果の成功／失敗</returns>
     private bool SetMoveVelocotyLeftAndRight()
     {
+        // キーボード
+        var lCom = Input.GetButton(InputConst.INPUT_CONST_LS_COM);
+        var hztlLKey = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS_KEYBOD);
+        var vtclLkey = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS_KEYBOD);
+        var rCom = Input.GetButton(InputConst.INPUT_CONST_RS_COM);
+        var hztlRKey = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS_KEYBOD);
+        var vtclRkey = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS_KEYBOD);
+
+        // コントローラー
         var hztlL = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS);
         var vtclL = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS);
         var hztlR = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS);
         var vtclR = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS);
 
-        if (0f < Mathf.Abs(hztlL) || 0f < Mathf.Abs(vtclL) || 0f < Mathf.Abs(hztlR) || 0f < Mathf.Abs(vtclR))
+        if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) || 
+            (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
         {
-            _spaceDirections.MoveVelocityLeftSpace = new Vector3(hztlL, vtclL) * moveSpeed;
-            _spaceDirections.MoveVelocityRightSpace = new Vector3(hztlR, vtclR) * moveSpeed;
-
-            return (0f < _spaceDirections.MoveVelocityLeftSpace.magnitude)
-                || (0f < _spaceDirections.MoveVelocityRightSpace.magnitude) ? true : false;
+            // キーボード操作のインプット
+            return SetVelocity(hztlLKey, vtclLkey, hztlRKey, vtclRkey);
+        }
+        else if (0f < Mathf.Abs(hztlL) || 0f < Mathf.Abs(vtclL) || 0f < Mathf.Abs(hztlR) || 0f < Mathf.Abs(vtclR))
+        {
+            // コントローラー操作のインプット
+            return SetVelocity(hztlL, vtclL, hztlR, vtclR);
         }
         else
         {
@@ -346,37 +508,79 @@ public class SpaceManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 移動先情報をセット
+    /// </summary>
+    /// <param name="horizontalLeft">左空間のHorizontal</param>
+    /// <param name="verticalLeft">左空間のVertical</param>
+    /// <param name="horizontalRight">右空間のHorizontal</param>
+    /// <param name="verticalRight">右空間のVertical</param>
+    /// <returns>成功</returns>
+    private bool SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
+    {
+        _spaceDirections.MoveVelocityLeftSpace = new Vector3(horizontalLeft, verticalLeft);
+        _spaceDirections.MoveVelocityRightSpace = new Vector3(horizontalRight, verticalRight);
+
+        return (0f < _spaceDirections.MoveVelocityLeftSpace.magnitude)
+            || (0f < _spaceDirections.MoveVelocityRightSpace.magnitude) ? true : false;
+    }
+
+    /// <summary>
     /// 動かすブロックの位置が左空間・右空間かを調べて、各空間操作用のリストへ格納
     /// </summary>
     /// <returns>処理結果の成功／失敗</returns>
-    private bool CheckPositionAndSetMoveCubesRigidbodies(GameObject[] gameObjects)
+    private bool CheckPositionAndSetMoveCubesComponents(GameObject[] gameObjects)
     {
         if (0 < gameObjects.Length)
         {
+            // RididBodyのリスト
             var rbsLeft = new List<Rigidbody>();
             var rbsRight = new List<Rigidbody>();
+            // Animatorのリスト
+            var scrsLeft = new List<MoveCbSmall>();
+            var scrsRight = new List<MoveCbSmall>();
+
             foreach (var obj in gameObjects)
             {
                 // グループ化されている場合は親のRigidBodyをセット
                 var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
                 if (obj.transform.position.x < 0f)
+                {
                     // 左空間
                     rbsLeft.Add(rb);
+                    scrsLeft.Add(obj.GetComponent<MoveCbSmall>());
+                }
                 else if (0f < obj.transform.position.x)
-                    // 右空間
+                {
+                    //右空間
                     rbsRight.Add(rb);
+                    scrsRight.Add(obj.GetComponent<MoveCbSmall>());
+                }
                 else
                     return false;
+
             }
-            // 動かす対象のRigidBodyを格納
+            // 動かす対象のRigidBody、Animatorを格納
             if (0 < rbsLeft.Count)
+            {
                 _spaceDirections.RbsLeftSpace = rbsLeft.ToArray();
+                _spaceDirections.ScrLeftSpace = scrsLeft.ToArray();
+            }
             else
+            {
                 _spaceDirections.RbsLeftSpace = null;
+                _spaceDirections.ScrLeftSpace = null;
+            }
             if (0 < rbsRight.Count)
+            {
                 _spaceDirections.RbsRightSpace = rbsRight.ToArray();
+                _spaceDirections.ScrRightSpace = scrsRight.ToArray();
+            }
             else
+            {
                 _spaceDirections.RbsRightSpace = null;
+                _spaceDirections.ScrRightSpace = null;
+            }
+
             return true;
         }
         else
@@ -399,7 +603,14 @@ public struct SpaceDirection2D
     public Vector3 MoveVelocityLeftSpace { get; set; }
     /// <summary>右側のVelocity</summary>
     public Vector3 MoveVelocityRightSpace { get; set; }
+    /// <summary>移動速度</summary>
+    public float MoveSpeed { get; set; }
+    /// <summary>左空間のスクリプト</summary>
+    public MoveCbSmall[] ScrLeftSpace { get; set; }
+    /// <summary>右空間のスクリプト</summary>
+    public MoveCbSmall[] ScrRightSpace { get; set; }
 }
+
 /// <summary>
 /// ブロックの接続状態
 /// </summary>
@@ -407,7 +618,9 @@ public struct ConnectDirection2D
 {
     /// <summary>オリジナルのブロック</summary>
     public GameObject OriginMoveCube { get; set; }
+    /// <summary>衝突されたブロック</summary>
     public GameObject MeetMoveCube { get; set; }
+    /// <summary>オリジナルのブロックのレイ</summary>
     public Direction OriginRayDire { get; set; }
 }
 /// <summary>
