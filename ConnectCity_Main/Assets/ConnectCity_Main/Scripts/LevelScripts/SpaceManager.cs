@@ -84,9 +84,9 @@ public class SpaceManager : MonoBehaviour
 
         // 空間内のブロック座標をチェック
         this.UpdateAsObservable()
-            .Select(_ => CheckPositionAndSetMoveCubesRigidbodies(moveCubes))
+            .Select(_ => CheckPositionAndSetMoveCubesComponents(moveCubes))
             .Where(x => !x)
-            .Subscribe(_ => throw new System.Exception("制御対象RigidBody格納の失敗"));
+            .Subscribe(_ => Debug.LogError("制御対象RigidBody格納の失敗"));
         // 不要なグループ削除
         var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
         foreach (var obj in moveCubeGroups)
@@ -100,7 +100,7 @@ public class SpaceManager : MonoBehaviour
             {
                 if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
                     _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
-                if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
+                if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.ScrLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
                     Debug.Log("左空間：MoveCubeの制御を破棄");
             });
         // 右空間の制御
@@ -110,7 +110,7 @@ public class SpaceManager : MonoBehaviour
             {
                 if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
                     _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
-                if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
+                if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
                     Debug.Log("左空間：MoveCubeの制御を破棄");
             });
     }
@@ -122,24 +122,24 @@ public class SpaceManager : MonoBehaviour
     /// <param name="moveVelocitySpace">移動ベクトル</param>
     /// <param name="moveSpeed">移動速度（初動／移動）</param>
     /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
-    private bool MoveMoveCube(Rigidbody[] rigidBodySpace, Vector3 moveVelocitySpace, float moveSpeed)
+    private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
     {
-        foreach (var rb in rigidBodySpace)
-            if (rb == null) return false;
-        foreach (var rb in rigidBodySpace)
+        for (var i = 0; i < rigidBodySpace.Length; i++)
         {
             if (moveVelocitySpace.Equals(Vector3.zero))
             {
-                rb.velocity = Vector3.zero;
+                rigidBodySpace[i].velocity = Vector3.zero;
             }
             else
             {
                 if (Mathf.Abs(moveVelocitySpace.x) < Mathf.Abs(moveVelocitySpace.y))
-                    rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+                    rigidBodySpace[i].velocity = new Vector3(0f, rigidBodySpace[i].velocity.y, 0f);
                 else
-                    rb.velocity = new Vector3(rb.velocity.x, 0f, 0f);
-                rb.AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
+                    rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
+
+                rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
             }
+            objs[i].PlayMoveCbAnimation(moveSpeed);
         }
         return true;
     }
@@ -434,6 +434,13 @@ public class SpaceManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// レイの光線を3本たてる
+    /// 補正値によって幅を調整する
+    /// </summary>
+    /// <param name="rayOriginOffset">基準点（中央点）</param>
+    /// <param name="range">幅を広げる範囲</param>
+    /// <returns>3点ベクター</returns>
     private Vector3[] GetThreePointHorizontal(Vector3 rayOriginOffset, float range)
     {
         var idx = 0;
@@ -510,8 +517,8 @@ public class SpaceManager : MonoBehaviour
     /// <returns>成功</returns>
     private bool SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
     {
-        _spaceDirections.MoveVelocityLeftSpace = new Vector3(horizontalLeft, verticalLeft)/* * moveSpeed*/;
-        _spaceDirections.MoveVelocityRightSpace = new Vector3(horizontalRight, verticalRight)/* * moveSpeed*/;
+        _spaceDirections.MoveVelocityLeftSpace = new Vector3(horizontalLeft, verticalLeft);
+        _spaceDirections.MoveVelocityRightSpace = new Vector3(horizontalRight, verticalRight);
 
         return (0f < _spaceDirections.MoveVelocityLeftSpace.magnitude)
             || (0f < _spaceDirections.MoveVelocityRightSpace.magnitude) ? true : false;
@@ -521,34 +528,59 @@ public class SpaceManager : MonoBehaviour
     /// 動かすブロックの位置が左空間・右空間かを調べて、各空間操作用のリストへ格納
     /// </summary>
     /// <returns>処理結果の成功／失敗</returns>
-    private bool CheckPositionAndSetMoveCubesRigidbodies(GameObject[] gameObjects)
+    private bool CheckPositionAndSetMoveCubesComponents(GameObject[] gameObjects)
     {
         if (0 < gameObjects.Length)
         {
+            // RididBodyのリスト
             var rbsLeft = new List<Rigidbody>();
             var rbsRight = new List<Rigidbody>();
+            // Animatorのリスト
+            var scrsLeft = new List<MoveCbSmall>();
+            var scrsRight = new List<MoveCbSmall>();
+
             foreach (var obj in gameObjects)
             {
                 // グループ化されている場合は親のRigidBodyをセット
                 var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
                 if (obj.transform.position.x < 0f)
+                {
                     // 左空間
                     rbsLeft.Add(rb);
+                    scrsLeft.Add(obj.GetComponent<MoveCbSmall>());
+                }
                 else if (0f < obj.transform.position.x)
-                    // 右空間
+                {
+                    //右空間
                     rbsRight.Add(rb);
+                    scrsRight.Add(obj.GetComponent<MoveCbSmall>());
+                }
                 else
                     return false;
+
             }
-            // 動かす対象のRigidBodyを格納
+            // 動かす対象のRigidBody、Animatorを格納
             if (0 < rbsLeft.Count)
+            {
                 _spaceDirections.RbsLeftSpace = rbsLeft.ToArray();
+                _spaceDirections.ScrLeftSpace = scrsLeft.ToArray();
+            }
             else
+            {
                 _spaceDirections.RbsLeftSpace = null;
+                _spaceDirections.ScrLeftSpace = null;
+            }
             if (0 < rbsRight.Count)
+            {
                 _spaceDirections.RbsRightSpace = rbsRight.ToArray();
+                _spaceDirections.ScrRightSpace = scrsRight.ToArray();
+            }
             else
+            {
                 _spaceDirections.RbsRightSpace = null;
+                _spaceDirections.ScrRightSpace = null;
+            }
+
             return true;
         }
         else
@@ -573,7 +605,12 @@ public struct SpaceDirection2D
     public Vector3 MoveVelocityRightSpace { get; set; }
     /// <summary>移動速度</summary>
     public float MoveSpeed { get; set; }
+    /// <summary>左空間のスクリプト</summary>
+    public MoveCbSmall[] ScrLeftSpace { get; set; }
+    /// <summary>右空間のスクリプト</summary>
+    public MoveCbSmall[] ScrRightSpace { get; set; }
 }
+
 /// <summary>
 /// ブロックの接続状態
 /// </summary>
@@ -581,7 +618,9 @@ public struct ConnectDirection2D
 {
     /// <summary>オリジナルのブロック</summary>
     public GameObject OriginMoveCube { get; set; }
+    /// <summary>衝突されたブロック</summary>
     public GameObject MeetMoveCube { get; set; }
+    /// <summary>オリジナルのブロックのレイ</summary>
     public Direction OriginRayDire { get; set; }
 }
 /// <summary>
