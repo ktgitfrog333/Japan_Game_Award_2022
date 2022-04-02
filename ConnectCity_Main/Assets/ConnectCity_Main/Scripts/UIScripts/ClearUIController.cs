@@ -5,139 +5,143 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using Main.Audio;
 
-/// <summary>
-/// クリア画面UI操作クラス
-/// </summary>
-[RequireComponent(typeof(Button))]
-[RequireComponent(typeof(EventTrigger))]
-[RequireComponent(typeof(ActionMode))]
-[RequireComponent(typeof(Image))]
-public class ClearUIController : MasterUIController
+namespace Main.UI
 {
-    /// <summary>アクションモード</summary>
-    [SerializeField] private ActionMode act;
-
-    protected override void OnEnable()
+    /// <summary>
+    /// クリア画面UI操作クラス
+    /// </summary>
+    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(EventTrigger))]
+    [RequireComponent(typeof(ActionMode))]
+    [RequireComponent(typeof(Image))]
+    public class ClearUIController : MasterUIController
     {
-        if (!act)
-            act = GetComponent<ActionMode>();
-        base.OnEnable();
-    }
+        /// <summary>アクションモード</summary>
+        [SerializeField] private ActionMode act;
 
-    protected override void Initialize()
-    {
-        base.Initialize();
-
-        if (!act)
-            act = GetComponent<ActionMode>();
-
-        // 各項目によって変わる
-        switch (act.clearMode)
+        protected override void OnEnable()
         {
-            case ClearActionMode.RetryAction:
-                if (!button)
-                {
-                    button = GetComponent<Button>();
-                    var n = new Navigation();
-                    n.mode = Navigation.Mode.Explicit;
-                    n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
-                    n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
-                    button.navigation = n;
-                }
-
-                break;
-            case ClearActionMode.SelectAction:
-                if (!button)
-                {
-                    button = GetComponent<Button>();
-                    var n = new Navigation();
-                    n.mode = Navigation.Mode.Explicit;
-                    n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
-                    n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
-                    button.navigation = n;
-                }
-
-                break;
-            case ClearActionMode.ProceedAction:
-                if (!button)
-                {
-                    button = GetComponent<Button>();
-                    var n = new Navigation();
-                    n.mode = Navigation.Mode.Explicit;
-                    n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
-                    n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
-                    button.navigation = n;
-                }
-
-                break;
-            default:
-                Debug.Log("アクションモード未設定");
-                Debug.Log("オブジェクト名:[" + name + "]");
-                break;
+            if (!act)
+                act = GetComponent<ActionMode>();
+            base.OnEnable();
         }
-    }
 
-    /// <summary>
-    /// イベントトリガーを設定する
-    /// </summary>
-    protected override void EntryEventTrigger()
-    {
-        button.OnSelectAsObservable()
-            .Subscribe(_ => Selected());
-        button.OnDeselectAsObservable()
-            .Subscribe(_ => Deselected());
-        button.OnSubmitAsObservable()
-            .Subscribe(_ => Submited());
-    }
-
-    /// <summary>
-    /// 選択項目の決定時に呼び出すメソッド
-    /// </summary>
-    public override void Submited()
-    {
-        // 各項目によって変わる
-        switch (act.clearMode)
+        protected override void Initialize()
         {
-            case ClearActionMode.RetryAction:
-                if (_menuClose == false)
-                {
-                    _menuClose = true;
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                    SceneInfoManager.Instance.LoadSceneNameRedo();
-                    LoadNow.Instance.gameObject.SetActive(true);
-                    LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+            base.Initialize();
 
-                    button.enabled = false;
-                    PlayFlashingMotion();
-                }
-                break;
-            case ClearActionMode.SelectAction:
-                if (_menuClose == false)
-                {
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                    SceneInfoManager.Instance.LoadSceneNameSelect();
-                    LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
-                    _menuClose = true;
-                    button.enabled = false;
-                    PlayFlashingMotion();
-                }
-                break;
-            case ClearActionMode.ProceedAction:
-                if (_menuClose == false)
-                {
-                    _menuClose = true;
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                    SceneInfoManager.Instance.LoadSceneNameNext();
-                    LoadNow.Instance.gameObject.SetActive(true);
-                    LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+            if (!act)
+                act = GetComponent<ActionMode>();
 
-                    button.enabled = false;
-                    PlayFlashingMotion();
-                }
-                break;
-            default:
-                break;
+            // 各項目によって変わる
+            switch (act.clearMode)
+            {
+                case ClearActionMode.RetryAction:
+                    if (!button)
+                    {
+                        button = GetComponent<Button>();
+                        var n = new Navigation();
+                        n.mode = Navigation.Mode.Explicit;
+                        n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
+                        n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
+                        button.navigation = n;
+                    }
+
+                    break;
+                case ClearActionMode.SelectAction:
+                    if (!button)
+                    {
+                        button = GetComponent<Button>();
+                        var n = new Navigation();
+                        n.mode = Navigation.Mode.Explicit;
+                        n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
+                        n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
+                        button.navigation = n;
+                    }
+
+                    break;
+                case ClearActionMode.ProceedAction:
+                    if (!button)
+                    {
+                        button = GetComponent<Button>();
+                        var n = new Navigation();
+                        n.mode = Navigation.Mode.Explicit;
+                        n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
+                        n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
+                        button.navigation = n;
+                    }
+
+                    break;
+                default:
+                    Debug.Log("アクションモード未設定");
+                    Debug.Log("オブジェクト名:[" + name + "]");
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// イベントトリガーを設定する
+        /// </summary>
+        protected override void EntryEventTrigger()
+        {
+            button.OnSelectAsObservable()
+                .Subscribe(_ => Selected());
+            button.OnDeselectAsObservable()
+                .Subscribe(_ => Deselected());
+            button.OnSubmitAsObservable()
+                .Subscribe(_ => Submited());
+        }
+
+        /// <summary>
+        /// 選択項目の決定時に呼び出すメソッド
+        /// </summary>
+        public override void Submited()
+        {
+            // 各項目によって変わる
+            switch (act.clearMode)
+            {
+                case ClearActionMode.RetryAction:
+                    if (_menuClose == false)
+                    {
+                        _menuClose = true;
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                        SceneInfoManager.Instance.LoadSceneNameRedo();
+                        LoadNow.Instance.gameObject.SetActive(true);
+                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+
+                        button.enabled = false;
+                        PlayFlashingMotion();
+                    }
+                    break;
+                case ClearActionMode.SelectAction:
+                    if (_menuClose == false)
+                    {
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                        SceneInfoManager.Instance.LoadSceneNameSelect();
+                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+                        _menuClose = true;
+                        button.enabled = false;
+                        PlayFlashingMotion();
+                    }
+                    break;
+                case ClearActionMode.ProceedAction:
+                    if (_menuClose == false)
+                    {
+                        _menuClose = true;
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                        SceneInfoManager.Instance.LoadSceneNameNext();
+                        LoadNow.Instance.gameObject.SetActive(true);
+                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+
+                        button.enabled = false;
+                        PlayFlashingMotion();
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -3,96 +3,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-/// <summary>
-/// 効果音を再生するクラス
-/// </summary>
-public class SfxPlay : MonoBehaviour
+namespace Main.Audio
 {
-    /// <summary>クラス自身</summary>
-    private static SfxPlay instance;
-    /// <summary>シングルトンのインスタンス</summary>
-    public static SfxPlay Instance
+    [RequireComponent(typeof(AudioSource))]
+    /// <summary>
+    /// 効果音を再生するクラス
+    /// </summary>
+    public class SfxPlay : MonoBehaviour
     {
-        get { return instance; }
-    }
-
-    /// <summary>オーディオソース</summary>
-    [SerializeField] private AudioSource audioSource;
-    /// <summary>効果音のクリップ</summary>
-    [SerializeField] private AudioClip[] clip;
-
-    private void Reset()
-    {
-        Initialize();
-    }
-
-    private void Awake()
-    {
-        // シングルトンのため複数生成禁止
-        if (null != instance)
+        /// <summary>クラス自身</summary>
+        private static SfxPlay instance;
+        /// <summary>シングルトンのインスタンス</summary>
+        public static SfxPlay Instance
         {
-            Destroy(gameObject);
-            return;
+            get { return instance; }
         }
 
-        instance = this;
-    }
+        /// <summary>オーディオソース</summary>
+        [SerializeField] private AudioSource audioSource;
+        /// <summary>効果音のクリップ</summary>
+        [SerializeField] private AudioClip[] clip;
 
-    private void Start()
-    {
-        Initialize();
-    }
-
-    /// <summary>
-    /// 初期設定
-    /// </summary>
-    private void Initialize()
-    {
-        if (!audioSource)
+        private void Reset()
         {
-            audioSource = GetComponent<AudioSource>();
-            audioSource.playOnAwake = false;
+            Initialize();
         }
-    }
 
-    /// <summary>
-    /// 指定されたSEを再生する
-    /// </summary>
-    /// <param name="clipToPlay">SE</param>
-    public void PlaySFX(ClipToPlay clipToPlay)
-    {
-        try
+        private void Awake()
         {
-            if ((int)clipToPlay <= (clip.Length - 1))
+            // シングルトンのため複数生成禁止
+            if (null != instance)
             {
-                audioSource.clip = clip[(int)clipToPlay];
+                Destroy(gameObject);
+                return;
+            }
 
-                // SEを再生
-                audioSource.Play();
+            instance = this;
+        }
+
+        private void Start()
+        {
+            Initialize();
+        }
+
+        /// <summary>
+        /// 初期設定
+        /// </summary>
+        private void Initialize()
+        {
+            if (!audioSource)
+            {
+                audioSource = GetComponent<AudioSource>();
+                audioSource.playOnAwake = false;
             }
         }
-        catch (Exception e)
+
+        /// <summary>
+        /// 指定されたSEを再生する
+        /// </summary>
+        /// <param name="clipToPlay">SE</param>
+        public void PlaySFX(ClipToPlay clipToPlay)
         {
-            Debug.Log("対象のファイルが見つかりません:[" + clipToPlay + "]");
-            Debug.Log(e);
+            try
+            {
+                if ((int)clipToPlay <= (clip.Length - 1))
+                {
+                    audioSource.clip = clip[(int)clipToPlay];
+
+                    // SEを再生
+                    audioSource.Play();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("対象のファイルが見つかりません:[" + clipToPlay + "]");
+                Debug.Log(e);
+            }
         }
     }
-}
 
-/// <summary>
-/// オーディオクリップリストのインデックス
-/// </summary>
-public enum ClipToPlay
-{
-    /// <summary>メニューを開く</summary>
-    se_menu = 0,
-    /// <summary>メニューを閉じる</summary>
-    se_close = 1,
-    /// <summary>項目の決定</summary>
-    se_decided = 2,
-    /// <summary>ゲームクリア</summary>
-    me_game_clear = 3,
-    /// <summary>ステージセレクト</summary>
-    se_select = 4
+    /// <summary>
+    /// オーディオクリップリストのインデックス
+    /// </summary>
+    public enum ClipToPlay
+    {
+        /// <summary>メニューを開く</summary>
+        se_menu = 0,
+        /// <summary>メニューを閉じる</summary>
+        se_close = 1,
+        /// <summary>項目の決定</summary>
+        se_decided = 2,
+        /// <summary>ゲームクリア</summary>
+        me_game_clear = 3,
+        /// <summary>ステージセレクト</summary>
+        se_select = 4
+    }
 }

@@ -1,85 +1,89 @@
+using Main.Audio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// MoveCubeオブジェクト
-/// </summary>
-[RequireComponent(typeof(Animator))]
-public class MoveCbSmall : MonoBehaviour
+namespace Main.Level
 {
-    /// <summary>MoveCubeのアニメータ</summary>
-    [SerializeField] private Animator _animator;
-    /// <summary>パーティクルシステムの配列</summary>
-    [SerializeField] private ParticleSystem[] _particleSystems;
-
-    private void Reset()
+    /// <summary>
+    /// MoveCubeオブジェクト
+    /// </summary>
+    [RequireComponent(typeof(Animator))]
+    public class MoveCbSmall : MonoBehaviour
     {
-        if (_animator == null)
-            _animator = GetComponent<Animator>();
-        if (_particleSystems.Length <= 0f)
+        /// <summary>MoveCubeのアニメータ</summary>
+        [SerializeField] private Animator _animator;
+        /// <summary>パーティクルシステムの配列</summary>
+        [SerializeField] private ParticleSystem[] _particleSystems;
+
+        private void Reset()
         {
-            var particleList = new List<ParticleSystem>();
-            for (var i = 0; i < transform.childCount; i++)
+            if (_animator == null)
+                _animator = GetComponent<Animator>();
+            if (_particleSystems.Length <= 0f)
             {
-                particleList.Add(transform.GetChild(i).GetComponent<ParticleSystem>());
+                var particleList = new List<ParticleSystem>();
+                for (var i = 0; i < transform.childCount; i++)
+                {
+                    particleList.Add(transform.GetChild(i).GetComponent<ParticleSystem>());
+                }
+                if (particleList.Count < 1) Debug.LogError("パーティクルのセットが失敗");
+                _particleSystems = particleList.ToArray();
             }
-            if (particleList.Count < 1) Debug.LogError("パーティクルのセットが失敗");
-            _particleSystems = particleList.ToArray();
+        }
+
+        /// <summary>
+        /// MoveCubeのアニメーションを再生
+        /// </summary>
+        /// <param name="moveSpeed">移動先</param>
+        /// <returns>成功／失敗</returns>
+        public bool PlayMoveCbAnimation(float moveSpeed)
+        {
+            _animator.SetFloat(MoveCbSmallAnimator.PARAMETERS_MOVESPEED, moveSpeed);
+            return true;
+        }
+
+        /// <summary>
+        /// 移動中に光をまとわせる
+        /// 移動アニメーションで発火
+        /// </summary>
+        public void OnAirHover()
+        {
+            // 移動SE
+            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+            // 移動中にパーティクルで枠をつける
+            if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
+                _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(true);
+            _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Play();
+        }
+
+        /// <summary>
+        /// エフェクトの停止
+        /// オブジェクト硬直アニメーションで発火
+        /// </summary>
+        public void OnFreeze()
+        {
+            // todo 止まった時にエフェクトを止める
+            if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
+                _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(false);
         }
     }
-
     /// <summary>
-    /// MoveCubeのアニメーションを再生
+    /// MoveCubeのパラメータ
     /// </summary>
-    /// <param name="moveSpeed">移動先</param>
-    /// <returns>成功／失敗</returns>
-    public bool PlayMoveCbAnimation(float moveSpeed)
+    public class MoveCbSmallAnimator
     {
-        _animator.SetFloat(MoveCbSmallAnimator.PARAMETERS_MOVESPEED, moveSpeed);
-        return true;
+        /// <summary>
+        /// 移動速度のパラメータ
+        /// </summary>
+        public static readonly string PARAMETERS_MOVESPEED = "MoveSpeed";
     }
-
     /// <summary>
-    /// 移動中に光をまとわせる
-    /// 移動アニメーションで発火
+    /// MoveCubeのエフェクトで使用するエフェクト配列のインデックスを管理
     /// </summary>
-    public void OnAirHover()
+    public enum MoveCbSmallEffectIdx
     {
-        // 移動SE
-        SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
-        // 移動中にパーティクルで枠をつける
-        if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
-            _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(true);
-        _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Play();
+        /// <summary>移動エフェクト</summary>
+        MoveDust
     }
-
-    /// <summary>
-    /// エフェクトの停止
-    /// オブジェクト硬直アニメーションで発火
-    /// </summary>
-    public void OnFreeze()
-    {
-        // todo 止まった時にエフェクトを止める
-        if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
-            _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(false);
-    }
-}
-/// <summary>
-/// MoveCubeのパラメータ
-/// </summary>
-public class MoveCbSmallAnimator
-{
-    /// <summary>
-    /// 移動速度のパラメータ
-    /// </summary>
-    public static readonly string PARAMETERS_MOVESPEED = "MoveSpeed";
-}
-/// <summary>
-/// MoveCubeのエフェクトで使用するエフェクト配列のインデックスを管理
-/// </summary>
-public enum MoveCbSmallEffectIdx
-{
-    /// <summary>移動エフェクト</summary>
-    MoveDust
 }

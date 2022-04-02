@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.Const
+namespace Main.Common.Const
 {
     /// <summary>
     /// InputManagerのAxis名を一覧化

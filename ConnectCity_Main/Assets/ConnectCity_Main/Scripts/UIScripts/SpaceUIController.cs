@@ -4,66 +4,70 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
+using Main.Audio;
 
-/// <summary>
-/// 空間操作可能な境界UI
-/// </summary>
-[RequireComponent(typeof(Button))]
-[RequireComponent(typeof(Image))]
-public class SpaceUIController : MasterUIController
+namespace Main.UI
 {
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void Initialize()
-    {
-        if (button == null)
-            button = GetComponent<Button>();
-    }
-
     /// <summary>
-    /// イベントトリガーを設定する
+    /// 空間操作可能な境界UI
     /// </summary>
-    protected override void EntryEventTrigger()
+    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(Image))]
+    public class SpaceUIController : MasterUIController
     {
-        button.OnSubmitAsObservable()
-            .Subscribe(_ => Submited());
-        button.OnCancelAsObservable()
-            .Subscribe(_ => Canceled());
-    }
-
-    /// <summary>
-    /// 選択項目の決定時に呼び出すメソッド
-    /// </summary>
-    public override void Submited()
-    {
-        if (!Close()) Debug.Log("操作エラー");
-    }
-
-    /// <summary>
-    /// キャンセル時に呼び出すメソッド
-    /// </summary>
-    public void Canceled()
-    {
-        if (!Close()) Debug.Log("操作エラー");
-    }
-
-    /// <summary>
-    /// 閉じる
-    /// </summary>
-    /// <returns>成功／失敗</returns>
-    private bool Close()
-    {
-        if (_menuClose == false)
+        protected override void OnEnable()
         {
-            _menuClose = true;
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
-            UIManager.Instance.CloseSpaceScreen();
-            button.enabled = false;
+            base.OnEnable();
         }
 
-        return true;
+        protected override void Initialize()
+        {
+            if (button == null)
+                button = GetComponent<Button>();
+        }
+
+        /// <summary>
+        /// イベントトリガーを設定する
+        /// </summary>
+        protected override void EntryEventTrigger()
+        {
+            button.OnSubmitAsObservable()
+                .Subscribe(_ => Submited());
+            button.OnCancelAsObservable()
+                .Subscribe(_ => Canceled());
+        }
+
+        /// <summary>
+        /// 選択項目の決定時に呼び出すメソッド
+        /// </summary>
+        public override void Submited()
+        {
+            if (!Close()) Debug.Log("操作エラー");
+        }
+
+        /// <summary>
+        /// キャンセル時に呼び出すメソッド
+        /// </summary>
+        public void Canceled()
+        {
+            if (!Close()) Debug.Log("操作エラー");
+        }
+
+        /// <summary>
+        /// 閉じる
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool Close()
+        {
+            if (_menuClose == false)
+            {
+                _menuClose = true;
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                UIManager.Instance.CloseSpaceScreen();
+                button.enabled = false;
+            }
+
+            return true;
+        }
     }
 }
