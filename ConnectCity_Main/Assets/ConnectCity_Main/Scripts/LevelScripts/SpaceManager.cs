@@ -7,6 +7,7 @@ using UniRx.Triggers;
 using Main.Common.LevelDesign;
 using Main.Common;
 using Main.UI;
+using System.Threading.Tasks;
 
 namespace Main.Level
 {
@@ -194,13 +195,16 @@ namespace Main.Level
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
+                var pressed = new ReactiveProperty<bool>();
                 obj.UpdateAsObservable()
                     .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
                     .Select(_ => CheckDirectionMoveCubeToPlayer(obj))
-                    .Where(x => x)
-                    .Select(_ => GameManager.Instance.DeadPlayerFromSpaceManager())
-                    .Where(x => x)
-                    .Subscribe(_ => {
+                    .Subscribe(x => pressed.Value = x);
+                pressed.Where(x => x)
+                    .Subscribe(async _ =>
+                    {
+                        pressed.Value = false;
+                        await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.LoadSceneNameRedo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     });

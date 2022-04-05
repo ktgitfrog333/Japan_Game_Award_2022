@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Main.Common.Const.TagConst;
+using System.Threading.Tasks;
 
 namespace Main.Common
 {
@@ -34,15 +35,25 @@ namespace Main.Common
         /// <summary>プレイヤーのゲームオブジェクト</summary>
         [SerializeField] private GameObject player;
         /// <summary>T.B.D 重力操作ギミックのゲームオブジェクト</summary>
-        [SerializeField] private GameObject gravityController;
+        [SerializeField] private GameObject[] gravityControllers;
+        /// <summary>T.B.D 敵ギミックのゲームオブジェクト</summary>
+        [SerializeField] private GameObject[] humanEnemies;
+        /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
+        [SerializeField] private GameObject[] turretEnemies;
 
         private void Reset()
         {
             if (player == null)
                 player = GameObject.FindGameObjectWithTag(TAG_NAME_PLAYER);
             // T.B.D 重力操作ギミックの仮実装
-            //if (gravityController == null)
-            //    gravityController = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_DUMMY);
+            //if (gravityControllers == null && gravityControllers.length)
+            //    gravityControllers = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            // T.B.D 敵ギミックの仮実装
+            //if (humanEnemies == null && humanEnemies.length)
+            //    humanEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            // T.B.D レーザー砲ギミックの仮実装
+            //if (turretEnemies == null && turretEnemies.length)
+            //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
         }
 
         /// <summary>
@@ -70,11 +81,32 @@ namespace Main.Common
 
         /// <summary>
         /// プレイヤーを死亡させる
+        /// コネクトシステム処理からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DeadPlayerFromSpaceManager()
+        public async Task<bool> DeadPlayerFromSpaceManager()
         {
-            return player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+        }
+
+        /// <summary>
+        /// プレイヤーを死亡させる
+        /// 敵からの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public async Task<bool> DeadPlayerFromHumanEnemies()
+        {
+            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+        }
+
+        /// <summary>
+        /// プレイヤーを死亡させる
+        /// レーザー砲からの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public async Task<bool> DeadPlayerFromTurretEnemies()
+        {
+            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
     }
 }

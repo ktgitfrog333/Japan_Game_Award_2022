@@ -6,6 +6,7 @@ using UniRx.Triggers;
 using Main.Common.LevelDesign;
 using Main.Common.Const;
 using Main.Audio;
+using System.Threading.Tasks;
 
 namespace Main.Player
 {
@@ -19,7 +20,7 @@ namespace Main.Player
         /// <summary>移動速度</summary>
         [SerializeField] private float moveSpeed = 4f;
         /// <summary>ジャンプ速度</summary>
-        [SerializeField] private float jumpSpeed = 5f;
+        [SerializeField] private float jumpSpeed = 6f;
         /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
         [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, 0.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
@@ -180,9 +181,16 @@ namespace Main.Player
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DeadPlayerFromGameManager()
+        public async Task<bool> DeadPlayerFromGameManager()
         {
-            // T.B.D プレイヤーの死亡演出
+            var render = GetComponent<MeshRenderer>();
+            if (render.enabled)
+                render.enabled = false;
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0f, transform.eulerAngles.z);
+            if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
+                _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
+            SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+            await Task.Delay(3000);
             return true;
         }
     }
@@ -207,5 +215,7 @@ namespace Main.Player
     {
         /// <summary>移動エフェクト</summary>
         RunDust
+        /// <summary>死亡エフェクト</summary>
+        , DiedLight
     }
 }
