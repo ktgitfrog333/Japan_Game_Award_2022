@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class InputKey : MonoBehaviour
 {
@@ -66,7 +69,7 @@ public class InputKey : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Update()
+    async public void Update()
     {
         switch(status)
         {
@@ -99,7 +102,9 @@ public class InputKey : MonoBehaviour
                     }
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
-                        //
+                        GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
+                        await Task.Delay(3000);
+                        SceneManager.LoadScene("SelectScene");
                     }
                 }
                 else if(start_end == Start_End.End)
