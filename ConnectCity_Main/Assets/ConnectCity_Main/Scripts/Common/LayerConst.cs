@@ -23,5 +23,9 @@ namespace Main.Common.Const
         /// MoveCubeのレイヤー名
         /// </summary>
         public static readonly string LAYER_NAME_MOVECUBE = "MoveCube";
+        /// <summary>
+        /// 敵ギミックのレイヤー名
+        /// </summary>
+        public static readonly string LAYER_NAME_HUMANENEMIES = "HumanEnemies";
     }
 }

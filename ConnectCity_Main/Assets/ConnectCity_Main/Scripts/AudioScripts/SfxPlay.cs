@@ -1,7 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
+using System.Threading.Tasks;
 
 namespace Main.Audio
 {
@@ -23,6 +25,8 @@ namespace Main.Audio
         [SerializeField] private AudioSource audioSource;
         /// <summary>効果音のクリップ</summary>
         [SerializeField] private AudioClip[] clip;
+        //[SerializeField] private float limitTimeConnectSFX = 1.985f;
+        //[SerializeField] private float _timeUp = 0f;
 
         private void Reset()
         {
@@ -74,12 +78,56 @@ namespace Main.Audio
                     audioSource.Play();
                 }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Debug.Log("対象のファイルが見つかりません:[" + clipToPlay + "]");
                 Debug.Log(e);
             }
         }
+
+        //private IEnumerator LoopReadClipsQue(ClipToPlay clipToPlay, float waitTime)
+        //{
+        //    yield return new WaitForSeconds(waitTime);
+        //    PlaySFX(clipToPlay);
+        //}
+
+        //private IEnumerator _cntUpTimer;
+
+        //private IEnumerator CntUpTimer()
+        //{
+        //    while (_timeUp < limitTimeConnectSFX)
+        //    {
+        //        _timeUp += Time.deltaTime;
+        //        yield return null;
+        //    }
+        //    _timeUp = 0f;
+        //    StopCoroutine(_cntUpTimer);
+        //}
+
+        //public void PlaySFXMetronomeAsync(ClipToPlay clipToPlay)
+        //{
+
+        //    // 音の再生時間をあらかじめ設定する
+        //    // 音の再生処理からタイマーを起動
+        //    // 二回目以降の再生処理は（再生時間-タイマー時間+0.5f）を待機時間として設定
+        //    // コルーチンの処理へ引数を渡してStartCoroutine
+
+        //    if (0f < _timeUp)
+        //    {
+        //        StopCoroutine(_cntUpTimer);
+        //        _timeUp = .01f;
+        //        _cntUpTimer = null;
+        //        _cntUpTimer = CntUpTimer();
+        //        StartCoroutine(_cntUpTimer);
+        //        StartCoroutine(LoopReadClipsQue(clipToPlay, limitTimeConnectSFX - _timeUp/* + .5f*/));
+        //    }
+        //    else
+        //    {
+        //        _cntUpTimer = CntUpTimer();
+        //        StartCoroutine(_cntUpTimer);
+        //        StartCoroutine(LoopReadClipsQue(clipToPlay, 0f));
+        //    }
+        //}
     }
 
     /// <summary>

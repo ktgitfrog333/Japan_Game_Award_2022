@@ -8,6 +8,7 @@ using Main.Common.LevelDesign;
 using Main.Common;
 using Main.UI;
 using System.Threading.Tasks;
+using Main.Audio;
 
 namespace Main.Level
 {
@@ -24,7 +25,8 @@ namespace Main.Level
         [SerializeField] private float gearChgDelaySec = 2f;
         /// <summary>動くキューブをグループ化するプレハブ</summary>
         [SerializeField] private GameObject moveCubeGroup;
-
+        /// <summary>接続演出のプレハブ（リング）</summary>
+        [SerializeField] private GameObject[] connectedRingPrefabs;
         /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
         [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, -.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
@@ -65,6 +67,8 @@ namespace Main.Level
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
         /// <summary>ブロックの接続状況</summary>
         private List<ConnectDirection2D> _connectDirections = new List<ConnectDirection2D>();
+        /// <summary>プールのグループ</summary>
+        private PoolGroup _poolGroup;
 
         private void Start()
         {
@@ -118,35 +122,8 @@ namespace Main.Level
                     if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
                         Debug.Log("左空間：MoveCubeの制御を破棄");
                 });
-        }
-
-        /// <summary>
-        /// MoveCubeをRigidBodyから動かす
-        /// </summary>
-        /// <param name="rigidBodySpace">対象のRigidBody</param>
-        /// <param name="moveVelocitySpace">移動ベクトル</param>
-        /// <param name="moveSpeed">移動速度（初動／移動）</param>
-        /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
-        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
-        {
-            for (var i = 0; i < rigidBodySpace.Length; i++)
-            {
-                if (moveVelocitySpace.Equals(Vector3.zero))
-                {
-                    rigidBodySpace[i].velocity = Vector3.zero;
-                }
-                else
-                {
-                    if (Mathf.Abs(moveVelocitySpace.x) < Mathf.Abs(moveVelocitySpace.y))
-                        rigidBodySpace[i].velocity = new Vector3(0f, rigidBodySpace[i].velocity.y, 0f);
-                    else
-                        rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
-
-                    rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
-                }
-                objs[i].PlayMoveCbAnimation(moveSpeed);
-            }
-            return true;
+            if (!InitializePool())
+                Debug.LogError("プール作成の失敗");
         }
 
         /// <summary>
@@ -168,7 +145,7 @@ namespace Main.Level
                 var group = Instantiate(moveCubeGroup, obj.transform.position, Quaternion.identity);
                 group.transform.parent = level;
                 obj.transform.parent = group.transform;
-
+                // プレイヤーの接地判定
                 obj.UpdateAsObservable()
                     .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
                     .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
@@ -184,9 +161,25 @@ namespace Main.Level
                     .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
+                // 敵ギミックの接地判定
+                obj.UpdateAsObservable()
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
+                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(x => !x)
+                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
+                obj.UpdateAsObservable()
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
+                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(x => !x)
+                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
+                obj.UpdateAsObservable()
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
+                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(x => !x)
+                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
-                    .Select(x => GetMatchingMoveCubes(obj, x.gameObject))
+                    .Select(x => GetMatchingMoveCubes(obj, x.gameObject, x.contacts[0].point))
                     .Where(x => 2 == SetGroupMattingMoveCube(x))
                     .Select(_ => ConnectMoveCube())
                     .Subscribe(x =>
@@ -198,7 +191,7 @@ namespace Main.Level
                 var pressed = new ReactiveProperty<bool>();
                 obj.UpdateAsObservable()
                     .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
-                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj))
+                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_PLAYER))
                     .Subscribe(x => pressed.Value = x);
                 pressed.Where(x => x)
                     .Subscribe(async _ =>
@@ -207,6 +200,18 @@ namespace Main.Level
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.LoadSceneNameRedo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    });
+                // 全てのMoveCubeから左右にレイをとばして敵ギミックとFreezeを貫通したらTrue
+                var pressedEnem = new ReactiveProperty<bool>();
+                obj.UpdateAsObservable()
+                    .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
+                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_HUMANENEMIES))
+                    .Subscribe(x => pressedEnem.Value = x);
+                pressedEnem.Where(x => x)
+                    .Subscribe(_ =>
+                    {
+                        pressedEnem.Value = false;
+                        GameManager.Instance.DestroyHumanEnemyFromSpaceManager();
                     });
             }
 
@@ -219,11 +224,12 @@ namespace Main.Level
         /// <param name="originObject">衝突を受けたオブジェクト</param>
         /// <param name="meetParentObject">衝突したオブジェクト</param>
         /// <returns>MoveCubeのペアと角度／空（親オブジェクト内の子オブジェクトが存在しない）</returns>
-        private ConnectDirection2D GetMatchingMoveCubes(GameObject originObject, GameObject meetParentObject)
+        private ConnectDirection2D GetMatchingMoveCubes(GameObject originObject, GameObject meetParentObject, Vector3 contactsPoint)
         {
             var pair = GetMinDistanceTheMoveCube(originObject, meetParentObject);
             // 取得したペアがない場合は空オブジェクトを返却
             if (pair.MeetMoveCube == null || pair.MeetMoveCube == null) return new ConnectDirection2D();
+            pair.ContactsPoint = contactsPoint;
             Direction result;
 
             // X座標とY座標を比較して距離がある＝対象軸上にオブジェクトがある
@@ -337,6 +343,10 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
+                if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f) , orgTran.parent.childCount + metTran.parent.childCount))
+                    Debug.Log("パーティクル生成の失敗");
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
                 {
@@ -379,11 +389,76 @@ namespace Main.Level
         }
 
         /// <summary>
+        /// 角度を逆転させる
+        /// 上なら下、左なら右
+        /// </summary>
+        /// <param name="direction">角度・正</param>
+        /// <returns>角度・逆</returns>
+        private Direction ReverseDirection(Direction direction)
+        {
+            if (direction.Equals(Direction.UP))
+                return Direction.DOWN;
+            if (direction.Equals(Direction.DOWN))
+                return Direction.UP;
+            if (direction.Equals(Direction.LEFT))
+                return Direction.RIGHT;
+            if (direction.Equals(Direction.RIGHT))
+                return Direction.LEFT;
+            throw new System.Exception("角度計算の失敗");
+        }
+
+        /// <summary>
+        /// 接続演出のパーティクルを生成
+        /// </summary>
+        /// <param name="point">発生位置</param>
+        /// <param name="count">コネクションされたオブジェクト数</param>
+        /// <returns>成功／失敗</returns>
+        private bool PlayConnectParticle(Vector3 point, int count)
+        {
+            if (3 < count)
+            {
+                // パーティクルレベル3
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD]);
+            }
+            else if (2 < count)
+            {
+                // パーティクルレベル2
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND]);
+            }
+            else
+            {
+                // パーティクルレベル1
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST]);
+            }
+        }
+
+        /// <summary>
+        /// プレハブを元にオブジェクトを生成してプールする
+        /// ※プール内に存在するならそのオブジェクトを再利用する
+        /// </summary>
+        /// <param name="connectedRing">プレハブ</param>
+        /// <param name="point">生成する位置</param>
+        /// <param name="quaternion">クォータニオン</param>
+        /// <param name="pool">プール対象のオブジェクトのTransform</param>
+        /// <returns>成功／失敗</returns>
+        private bool InstanceConnectedRingsPool(GameObject connectedRing, Vector3 point, Quaternion quaternion, Transform pool)
+        {
+            foreach (Transform t in pool)
+            {
+                t.SetPositionAndRotation(point, quaternion);
+                t.GetComponent<ParticleSystem>().Play();
+                return true;
+            }
+            Instantiate(connectedRing, point, quaternion, pool).GetComponent<ParticleSystem>().Play();
+            return true;
+        }
+
+        /// <summary>
         /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
         /// </summary>
         /// <param name="moveCube">対象のMoveCube</param>
         /// <returns>挟まっている／離れている</returns>
-        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube)
+        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName)
         {
             var rOrgOffL = rayOriginOffsetLeft;
             var rOrgDireL = rayDirectionLeft;
@@ -401,7 +476,7 @@ namespace Main.Level
             // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
             // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
             // 左
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
             {
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -410,7 +485,7 @@ namespace Main.Level
                 }
             }
             // 右
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
             {
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -421,7 +496,7 @@ namespace Main.Level
             for (var i = 0; i < 3; i++)
             {
                 // 上
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
                 {
                     if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -430,7 +505,7 @@ namespace Main.Level
                     }
                 }
                 // 下
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
                 {
                     if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -457,25 +532,6 @@ namespace Main.Level
             result[idx++] = rayOriginOffset;
             result[idx++] = new Vector3(1f * range, rayOriginOffset.y);
             return result;
-        }
-
-        /// <summary>
-        /// 角度を逆転させる
-        /// 上なら下、左なら右
-        /// </summary>
-        /// <param name="direction">角度・正</param>
-        /// <returns>角度・逆</returns>
-        private Direction ReverseDirection(Direction direction)
-        {
-            if (direction.Equals(Direction.UP))
-                return Direction.DOWN;
-            if (direction.Equals(Direction.DOWN))
-                return Direction.UP;
-            if (direction.Equals(Direction.LEFT))
-                return Direction.RIGHT;
-            if (direction.Equals(Direction.RIGHT))
-                return Direction.LEFT;
-            throw new System.Exception("角度計算の失敗");
         }
 
         /// <summary>
@@ -596,6 +652,49 @@ namespace Main.Level
                 return false;
             }
         }
+
+        /// <summary>
+        /// MoveCubeをRigidBodyから動かす
+        /// </summary>
+        /// <param name="rigidBodySpace">対象のRigidBody</param>
+        /// <param name="moveVelocitySpace">移動ベクトル</param>
+        /// <param name="moveSpeed">移動速度（初動／移動）</param>
+        /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
+        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
+        {
+            for (var i = 0; i < rigidBodySpace.Length; i++)
+            {
+                if (moveVelocitySpace.Equals(Vector3.zero))
+                {
+                    rigidBodySpace[i].velocity = Vector3.zero;
+                }
+                else
+                {
+                    if (Mathf.Abs(moveVelocitySpace.x) < Mathf.Abs(moveVelocitySpace.y))
+                        rigidBodySpace[i].velocity = new Vector3(0f, rigidBodySpace[i].velocity.y, 0f);
+                    else
+                        rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
+
+                    rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
+                }
+                objs[i].PlayMoveCbAnimation(moveSpeed);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// プールの初期設定
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool InitializePool()
+        {
+            _poolGroup = new PoolGroup();
+            _poolGroup.ConnectedRingPools = new Transform[connectedRingPrefabs.Length];
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
+            return true;
+        }
     }
 
     /// <summary>
@@ -630,7 +729,10 @@ namespace Main.Level
         public GameObject MeetMoveCube { get; set; }
         /// <summary>オリジナルのブロックのレイ</summary>
         public Direction OriginRayDire { get; set; }
+        /// <summary>接続位置</summary>
+        public Vector3 ContactsPoint { get; set; }
     }
+
     /// <summary>
     /// 角度
     /// </summary>
@@ -644,5 +746,28 @@ namespace Main.Level
         , LEFT
         /// <summary>右</summary>
         , RIGHT
+    }
+
+    /// <summary>
+    /// プールのグループ
+    /// </summary>
+    public struct PoolGroup
+    {
+        /// <summary>接続演出のプレハブ（リング）のプール</summary>
+        public Transform[] ConnectedRingPools { get; set; }
+    }
+
+    /// <summary>
+    /// オブジェクトプール
+    /// パーティクル用のインデックス
+    /// </summary>
+    public enum ParticleSystemPoolIdx
+    {
+        /// <summary>0番目</summary>
+        FIRST
+        /// <summary>1番目</summary>
+            , SECOND
+        /// <summary>2番目</summary>
+            , THIRD
     }
 }

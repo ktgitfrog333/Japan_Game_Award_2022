@@ -47,6 +47,10 @@ MonoBehaviour:
   moveHSpeed: 3.5
   gearChgDelaySec: 1.7
   moveCubeGroup: {fileID: 5020951347855527081, guid: 0ebdf4144f7d0254ea791f15d2b8ff37, type: 3}
+  connectedRingPrefabs:
+  - {fileID: 2459271673136080777, guid: 6e19ae9463937644e8f51a84848532c0, type: 3}
+  - {fileID: 109302335814482391, guid: 335ddc447a274064b8f0d248a6e66c78, type: 3}
+  - {fileID: 8006995682305027280, guid: 6769ddd1beb13c54c9f3315466ca1a4b, type: 3}
   rayOriginOffset: {x: 0, y: -0.1, z: 0}
   rayDirection: {x: 0, y: 1, z: 0}
   rayMaxDistance: 0.9
@@ -65,3 +69,7 @@ MonoBehaviour:
   rayDirectionDown: {x: 0, y: -1, z: 0}
   rayMaxDistanceDownLong: 1.6
   deadMagnitude: 0.9
+  _connectedRingPools:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

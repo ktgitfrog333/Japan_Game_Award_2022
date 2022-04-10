@@ -68,6 +68,18 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// 空間操作オブジェクトから敵ギミックオブジェクトへ
+        /// プレイヤー操作指令を実行して、実行結果を返却する
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool MoveHumanEnemyFromSpaceManager(Vector3 moveVelocity)
+        {
+            // T.B.D 敵オブジェクトを動かす処理を入れる
+            return true;
+        }
+
+        /// <summary>
         /// T.B.D 重力操作ギミックの仮実装(GameManager.Instance.MoveCharactorFromGravityController(3.5fなど);)
         /// 重力操作ギミックオブジェクトからプレイヤーオブジェクトへ
         /// プレイヤー操作指令を実行して、実行結果を返却する
@@ -107,6 +119,17 @@ namespace Main.Common
         public async Task<bool> DeadPlayerFromTurretEnemies()
         {
             return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+        }
+
+        /// <summary>
+        /// 敵ギミックを破壊する
+        /// コネクトシステム処理からの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool DestroyHumanEnemyFromSpaceManager()
+        {
+            // T.B.D 敵ギミック破壊処理を呼ぶ
+            return true;
         }
     }
 }
