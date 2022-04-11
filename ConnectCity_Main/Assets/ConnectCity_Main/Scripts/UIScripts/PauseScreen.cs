@@ -11,21 +11,11 @@ namespace Main.UI
     /// </summary>
     public class PauseScreen : MasterScreen
     {
-        private static PauseScreen instance;
-        public static PauseScreen Instance { get { return instance; } }
         /// <summary>選択項目のUIスクリプト</summary>
         [SerializeField] private PauseUIController firstElement;
 
         protected override void Awake()
         {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-
             base.Awake();
         }
 

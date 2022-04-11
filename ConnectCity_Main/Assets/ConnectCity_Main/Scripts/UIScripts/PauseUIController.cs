@@ -142,7 +142,7 @@ namespace Main.UI
                     break;
                 case PauseActionMode.CheckAction:
                     SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                    GameManualScrollView.Instance.gameObject.SetActive(true);
+                    UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
                     break;
                 case PauseActionMode.SelectAction:
                     if (_menuClose == false)

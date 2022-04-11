@@ -17,9 +17,7 @@ namespace Main.UI
     [RequireComponent(typeof(ScrollRect))]
     public class GameManualScrollView : MonoBehaviour
     {
-        private static GameManualScrollView instance;
-        public static GameManualScrollView Instance { get { return instance; } }
-
+        /// <summary>ScrollRectコンポーネント</summary>
         [SerializeField] private ScrollRect scrollRect;
         /// <summary>選択項目のUIスクリプト</summary>
         [SerializeField] private GameManualViewPageUIController firstElement;
@@ -30,13 +28,6 @@ namespace Main.UI
 
         private void Awake()
         {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
             gameObject.SetActive(false);
         }
 

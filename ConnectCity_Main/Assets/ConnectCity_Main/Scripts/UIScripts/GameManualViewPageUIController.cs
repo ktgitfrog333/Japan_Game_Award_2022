@@ -99,7 +99,7 @@ namespace Main.UI
         public void Selected()
         {
             SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
-            GameManualScrollView.Instance.ScrollPage(_pageIndex);
+            UIManager.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
         }
 
         /// <summary>

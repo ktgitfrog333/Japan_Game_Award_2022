@@ -2202,6 +2202,11 @@ PrefabInstance:
       objectReference: {fileID: 367162129}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5cd3a17af3523748a195b9fe8333ec3, type: 3}
+--- !u!1 &4340329385687419265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4340329386932541821, guid: b5cd3a17af3523748a195b9fe8333ec3, type: 3}
+  m_PrefabInstance: {fileID: 4340329385687419264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4381517468099655666
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2363,6 +2368,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5089ec5842fa1664f8fcbed5cf25bce7, type: 3}
+--- !u!1 &4381517468099655667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7324866810291047580, guid: 5089ec5842fa1664f8fcbed5cf25bce7, type: 3}
+  m_PrefabInstance: {fileID: 4381517468099655666}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4427013183155433871
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2626,6 +2636,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1792962516}
     - target: {fileID: 5552559685150214610, guid: 5bcccb195b50fd349af7fe63cd3f53ef, type: 3}
+      propertyPath: clearScreen
+      value: 
+      objectReference: {fileID: 4381517468099655667}
+    - target: {fileID: 5552559685150214610, guid: 5bcccb195b50fd349af7fe63cd3f53ef, type: 3}
       propertyPath: pauseScreen
       value: 
       objectReference: {fileID: 1998508660}
@@ -2633,6 +2647,10 @@ PrefabInstance:
       propertyPath: spaceScreen
       value: 
       objectReference: {fileID: 3748436319434064030}
+    - target: {fileID: 5552559685150214610, guid: 5bcccb195b50fd349af7fe63cd3f53ef, type: 3}
+      propertyPath: gameManualScrollView
+      value: 
+      objectReference: {fileID: 4340329385687419265}
     - target: {fileID: 5552559685150214611, guid: 5bcccb195b50fd349af7fe63cd3f53ef, type: 3}
       propertyPath: m_Name
       value: UIManager

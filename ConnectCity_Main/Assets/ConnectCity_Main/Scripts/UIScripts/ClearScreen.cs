@@ -10,20 +10,11 @@ namespace Main.UI
     /// </summary>
     public class ClearScreen : MasterScreen
     {
-        private static ClearScreen instance;
-        public static ClearScreen Instance { get { return instance; } }
+        /// <summary>UI操作スクリプト</summary>
         [SerializeField] private ClearUIController firstElement;
 
         protected override void Awake()
         {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-
             base.Awake();
         }
 

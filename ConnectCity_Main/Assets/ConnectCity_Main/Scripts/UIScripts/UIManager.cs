@@ -26,6 +26,18 @@ namespace Main.UI
         [SerializeField] private GameObject loadNow;
         /// <summary>ロード演出のオブジェクト名</summary>
         private static readonly string OBJECT_NAME_LOADNOW = "LoadNow";
+        /// <summary>ポーズ画面</summary>
+        [SerializeField] private GameObject pauseScreen;
+        /// <summary>ポーズ画面のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_PAUSESCREEN = "PauseScreen";
+        /// <summary>遊び方の確認</summary>
+        [SerializeField] private GameObject gameManualScrollView;
+        /// <summary>遊び方の確認のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_GAMEMANUALSCROLLVIEW = "GameManualScrollView";
+        /// <summary>遊び方の確認</summary>
+        [SerializeField] private GameObject clearScreen;
+        /// <summary>遊び方の確認のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_CLEARSCREEN = "ClearScreen";
 
         private void Reset()
         {
@@ -33,6 +45,12 @@ namespace Main.UI
                 spaceScreen = GameObject.Find(OBJECT_NAME_SPACESCREEN);
             if (loadNow == null)
                 loadNow = GameObject.Find(OBJECT_NAME_LOADNOW);
+            if (pauseScreen == null)
+                pauseScreen = GameObject.Find(OBJECT_NAME_PAUSESCREEN);
+            if (gameManualScrollView == null)
+                gameManualScrollView = GameObject.Find(OBJECT_NAME_GAMEMANUALSCROLLVIEW);
+            if (clearScreen == null)
+                clearScreen = GameObject.Find(OBJECT_NAME_CLEARSCREEN);
         }
 
         private void Awake()
@@ -51,11 +69,11 @@ namespace Main.UI
             // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
             this.UpdateAsObservable()
                 .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONST_MENU) &&
-                    !ClearScreen.Instance.gameObject.activeSelf &&
-                    !PauseScreen.Instance.gameObject.activeSelf)
+                    !clearScreen.activeSelf &&
+                    !pauseScreen.activeSelf)
                 .Subscribe(_ =>
                 {
-                    PauseScreen.Instance.gameObject.SetActive(true);
+                    pauseScreen.SetActive(true);
                     SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
                 });
             // 空間操作可能な境界を表示切り替え操作の入力
@@ -76,7 +94,7 @@ namespace Main.UI
         {
             await Task.Delay(500);
             // T.B.D プレイヤー/ギミックその他のオブジェクトを無効にする
-            PauseScreen.Instance.gameObject.SetActive(false);
+            pauseScreen.SetActive(false);
         }
 
         /// <summary>
@@ -85,9 +103,36 @@ namespace Main.UI
         public async void CloseManual()
         {
             await Task.Delay(500);
-            GameManualScrollView.Instance.ResetPage();
-            GameManualScrollView.Instance.gameObject.SetActive(false);
-            PauseScreen.Instance.AutoSelectContent(PauseActionMode.CheckAction);
+            GameManualScrollViewResetFromUIManager();
+            GameManualScrollViewSetActiveFromUIManager(false);
+            pauseScreen.GetComponent<PauseScreen>().AutoSelectContent(PauseActionMode.CheckAction);
+        }
+
+        /// <summary>
+        /// 遊び方の確認を有効にする
+        /// </summary>
+        /// <param name="active">有効／無効</param>
+        public void GameManualScrollViewSetActiveFromUIManager(bool active)
+        {
+            gameManualScrollView.SetActive(active);
+        }
+
+        /// <summary>
+        /// 遊び方の確認を選択した際に表示される
+        /// 1ページ目にリセット
+        /// </summary>
+        public void GameManualScrollViewResetFromUIManager()
+        {
+            gameManualScrollView.GetComponent<GameManualScrollView>().ResetPage();
+        }
+
+        /// <summary>
+        /// 遊び方の確認を選択した際に表示される
+        /// 1ページ目にリセット
+        /// </summary>
+        public void GameManualScrollViewScrollPageFromUIManager(int pageIndex)
+        {
+            gameManualScrollView.GetComponent<GameManualScrollView>().ScrollPage(pageIndex);
         }
 
         /// <summary>
@@ -95,17 +140,17 @@ namespace Main.UI
         /// </summary>
         public async void OpenClearScreen()
         {
-            ClearScreen.Instance.gameObject.SetActive(true);
+            clearScreen.SetActive(true);
 
             // 子オブジェクトは一度非表示にする
-            for (int i = 1; i < ClearScreen.Instance.transform.GetChild(0).childCount; i++)
-                ClearScreen.Instance.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
+            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
+                clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
             await Task.Delay(3000);
             // 子オブジェクトは一度非表示にする
-            for (int i = 1; i < ClearScreen.Instance.transform.GetChild(0).childCount; i++)
-                ClearScreen.Instance.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
+            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
+                clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 
-            ClearScreen.Instance.AutoSelectContent();
+            clearScreen.GetComponent<ClearScreen>().AutoSelectContent();
         }
 
         /// <summary>
