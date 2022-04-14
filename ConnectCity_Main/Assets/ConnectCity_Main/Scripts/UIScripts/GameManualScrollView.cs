@@ -38,6 +38,7 @@ namespace Main.UI
             @event.SetSelectedGameObject(firstObject);
             firstElement.Selected();
             SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+            Time.timeScale = 0f;
         }
 
         private void Reset()

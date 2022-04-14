@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Main.Common.Const.TagConst;
 using System.Threading.Tasks;
+using Main.Level;
 
 namespace Main.Common
 {
@@ -34,6 +35,16 @@ namespace Main.Common
 
         /// <summary>プレイヤーのゲームオブジェクト</summary>
         [SerializeField] private GameObject player;
+        /// <summary>プレイヤーのゲームオブジェクト</summary>
+        public GameObject Player { get { return player; } }
+        /// <summary>空間操作</summary>
+        [SerializeField] private GameObject spaceManager;
+        /// <summary>空間操作オブジェクト名</summary>
+        private static readonly string OBJECT_NAME_SPACEMANAGER = "SpaceManager";
+        /// <summary>カメラ</summary>
+        [SerializeField] private GameObject mainCamera;
+        /// <summary>カメラ</summary>
+        public GameObject MainCamera { get { return mainCamera; } }
         /// <summary>T.B.D 重力操作ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] gravityControllers;
         /// <summary>T.B.D 敵ギミックのゲームオブジェクト</summary>
@@ -45,6 +56,10 @@ namespace Main.Common
         {
             if (player == null)
                 player = GameObject.FindGameObjectWithTag(TAG_NAME_PLAYER);
+            if (spaceManager == null)
+                spaceManager = GameObject.Find(OBJECT_NAME_SPACEMANAGER);
+            if (mainCamera == true)
+                mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             // T.B.D 重力操作ギミックの仮実装
             //if (gravityControllers == null && gravityControllers.length)
             //    gravityControllers = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
@@ -130,6 +145,17 @@ namespace Main.Common
         {
             // T.B.D 敵ギミック破壊処理を呼ぶ
             return true;
+        }
+
+        /// <summary>
+        /// ステージの空間操作範囲を設定
+        /// 空間操作からの呼び出し
+        /// </summary>
+        /// <param name="vector4">UP/DOWN/LEFT/RIGHT</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetStageScaleMaxDistanceFromSpaceManager(Vector4 vector4)
+        {
+            return spaceManager.GetComponent<SpaceManager>().SetStageScaleMaxDistanceFromGameManager(vector4);
         }
     }
 }

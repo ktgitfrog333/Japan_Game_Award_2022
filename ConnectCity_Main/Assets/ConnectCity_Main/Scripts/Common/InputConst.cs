@@ -77,5 +77,17 @@ namespace Main.Common.Const
         /// キーボードのR/ゲームパッドのRBボタン
         /// </summary>
         public static readonly string INPUT_CONSTSPACE = "Space";
+        /// <summary>
+        /// キーボードのBackSpace/ゲームパッドのBackボタン
+        /// </summary>
+        public static readonly string INPUT_CONSTUNDO = "Undo";
+        /// <summary>
+        /// キーボードのH/ゲームパッドのYボタン
+        /// </summary>
+        public static readonly string INPUT_CONSTSELECT = "Select";
+        /// <summary>
+        /// キーボードのG/ゲームパッドのXボタン
+        /// </summary>
+        public static readonly string INPUT_CONSTMANUAL = "Manual";
     }
 }

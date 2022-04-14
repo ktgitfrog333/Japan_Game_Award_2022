@@ -82,7 +82,8 @@ namespace Main.UI
         public void Selected()
         {
             _common.SelectContent();
-            frame.SetActive(true);
+            if (frame != null)
+                frame.SetActive(true);
             SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
         }
 
@@ -107,9 +108,9 @@ namespace Main.UI
         {
             // 点滅の演出
             await Task.Delay(80);
-            image.DOColor(Color.gray, .3f);
+            image.DOColor(Color.gray, .3f).SetUpdate(true);
             await Task.Delay(80);
-            image.DOColor(Color.white, .3f);
+            image.DOColor(Color.white, .3f).SetUpdate(true);
         }
     }
 

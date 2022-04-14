@@ -23,9 +23,9 @@ namespace Main.UI
         /// <summary>空間操作可能な境界のオブジェクト名</summary>
         private static readonly string OBJECT_NAME_SPACESCREEN = "SpaceScreen";
         /// <summary>ロード演出</summary>
-        [SerializeField] private GameObject loadNow;
+        [SerializeField] private GameObject fadeScreen;
         /// <summary>ロード演出のオブジェクト名</summary>
-        private static readonly string OBJECT_NAME_LOADNOW = "LoadNow";
+        private static readonly string OBJECT_NAME_FADESCREEN = "FadeScreen";
         /// <summary>ポーズ画面</summary>
         [SerializeField] private GameObject pauseScreen;
         /// <summary>ポーズ画面のオブジェクト名</summary>
@@ -38,19 +38,25 @@ namespace Main.UI
         [SerializeField] private GameObject clearScreen;
         /// <summary>遊び方の確認のオブジェクト名</summary>
         private static readonly string OBJECT_NAME_CLEARSCREEN = "ClearScreen";
+        /// <summary>ショートカット入力</summary>
+        [SerializeField] private GameObject shortcuGuideScreen;
+        /// <summary>ショートカット入力</summary>
+        private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
 
         private void Reset()
         {
             if (spaceScreen == null)
                 spaceScreen = GameObject.Find(OBJECT_NAME_SPACESCREEN);
-            if (loadNow == null)
-                loadNow = GameObject.Find(OBJECT_NAME_LOADNOW);
+            if (fadeScreen == null)
+                fadeScreen = GameObject.Find(OBJECT_NAME_FADESCREEN);
             if (pauseScreen == null)
                 pauseScreen = GameObject.Find(OBJECT_NAME_PAUSESCREEN);
             if (gameManualScrollView == null)
                 gameManualScrollView = GameObject.Find(OBJECT_NAME_GAMEMANUALSCROLLVIEW);
             if (clearScreen == null)
                 clearScreen = GameObject.Find(OBJECT_NAME_CLEARSCREEN);
+            if (shortcuGuideScreen == null)
+                shortcuGuideScreen = GameObject.Find(OBJECT_NAME_SHORTCUGUIDESCREEN);
         }
 
         private void Awake()
@@ -95,6 +101,8 @@ namespace Main.UI
             await Task.Delay(500);
             // T.B.D プレイヤー/ギミックその他のオブジェクトを無効にする
             pauseScreen.SetActive(false);
+            if (Time.timeScale == 0f)
+                Time.timeScale = 1f;
         }
 
         /// <summary>
@@ -105,7 +113,8 @@ namespace Main.UI
             await Task.Delay(500);
             GameManualScrollViewResetFromUIManager();
             GameManualScrollViewSetActiveFromUIManager(false);
-            pauseScreen.GetComponent<PauseScreen>().AutoSelectContent(PauseActionMode.CheckAction);
+            if (Time.timeScale == 0f)
+                Time.timeScale = 1f;
         }
 
         /// <summary>
@@ -168,8 +177,8 @@ namespace Main.UI
         /// <returns></returns>
         public bool EnableDrawLoadNowFadeOutTrigger()
         {
-            loadNow.SetActive(true);
-            loadNow.GetComponent<LoadNow>().DrawLoadNowFadeOutTrigger = true;
+            fadeScreen.SetActive(true);
+            fadeScreen.GetComponent<FadeScreen>().DrawLoadNowFadeOut();
 
             return true;
         }

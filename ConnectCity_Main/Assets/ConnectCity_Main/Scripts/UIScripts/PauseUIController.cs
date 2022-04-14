@@ -30,7 +30,7 @@ namespace Main.UI
 
         protected override void Initialize()
         {
-            base.Initialize();
+            //base.Initialize();
 
             if (!act)
                 act = GetComponent<ActionMode>();
@@ -42,47 +42,6 @@ namespace Main.UI
                     if (!button)
                     {
                         button = GetComponent<Button>();
-                        var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)PauseActionMode.CheckAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)PauseActionMode.RedoAction).GetComponent<Button>();
-                        button.navigation = n;
-                    }
-
-                    break;
-                case PauseActionMode.RedoAction:
-                    if (!button)
-                    {
-                        button = GetComponent<Button>();
-                        var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)PauseActionMode.BackAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)PauseActionMode.SelectAction).GetComponent<Button>();
-                        button.navigation = n;
-                    }
-
-                    break;
-                case PauseActionMode.SelectAction:
-                    if (!button)
-                    {
-                        button = GetComponent<Button>();
-                        var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)PauseActionMode.RedoAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)PauseActionMode.CheckAction).GetComponent<Button>();
-                        button.navigation = n;
-                    }
-
-                    break;
-                case PauseActionMode.CheckAction:
-                    if (!button)
-                    {
-                        button = GetComponent<Button>();
-                        var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)PauseActionMode.SelectAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)PauseActionMode.BackAction).GetComponent<Button>();
-                        button.navigation = n;
                     }
 
                     break;
@@ -123,36 +82,6 @@ namespace Main.UI
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
                         UIManager.Instance.CloseMenu();
                         button.enabled = false;
-                        PlayFlashingMotion();
-                    }
-                    break;
-                case PauseActionMode.RedoAction:
-                    if (_menuClose == false)
-                    {
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.LoadSceneNameRedo();
-                        // T.B.D LoadNowはシングルトンにせず、UIManager管理にする
-                        LoadNow.Instance.gameObject.SetActive(true);
-                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
-
-                        _menuClose = true;
-                        button.enabled = false;
-                        PlayFlashingMotion();
-                    }
-                    break;
-                case PauseActionMode.CheckAction:
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                    UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
-                    break;
-                case PauseActionMode.SelectAction:
-                    if (_menuClose == false)
-                    {
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.LoadSceneNameSelect();
-                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
-                        _menuClose = true;
-                        button.enabled = false;
-                        PlayFlashingMotion();
                     }
                     break;
                 default:
@@ -167,9 +96,6 @@ namespace Main.UI
         {
             if (_menuClose == false)
             {
-                frame.SetActive(false);
-                _common.DeSelectContent();
-
                 _menuClose = true;
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
                 UIManager.Instance.CloseMenu();

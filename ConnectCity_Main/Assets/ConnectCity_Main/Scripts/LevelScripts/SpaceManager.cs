@@ -63,6 +63,8 @@ namespace Main.Level
         [SerializeField] private float rayMaxDistanceDownLong = 1.6f;
         /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
         [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
+        /// <summary>ステージ範囲（UP/DOWN/LEFT/RIGHT）</summary>
+        [SerializeField] private float[] stageScaleMaxDistance = new float[4];
         /// <summary>空間操作に必要なRigidBody、Velocity</summary>
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
         /// <summary>ブロックの接続状況</summary>
@@ -124,6 +126,30 @@ namespace Main.Level
                 });
             if (!InitializePool())
                 Debug.LogError("プール作成の失敗");
+            //// デバッグ
+            //this.UpdateAsObservable()
+            //    .Subscribe(_ =>
+            //    {
+            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.UP]), Color.green);
+            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.DOWN] * -1f), Color.green);
+            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.LEFT] * -1f, 0f), Color.green);
+            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.RIGHT], 0f), Color.green);
+            //    });
+        }
+
+        /// <summary>
+        /// ステージの空間操作範囲を設定
+        /// GameManagerからの呼び出し
+        /// </summary>
+        /// <param name="vector4">UP/DOWN/LEFT/RIGHT</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetStageScaleMaxDistanceFromGameManager(Vector4 vector4)
+        {
+            stageScaleMaxDistance[(int)Direction.UP] = vector4.x;
+            stageScaleMaxDistance[(int)Direction.DOWN] = vector4.y;
+            stageScaleMaxDistance[(int)Direction.LEFT] = vector4.z;
+            stageScaleMaxDistance[(int)Direction.RIGHT] = vector4.w;
+            return true;
         }
 
         /// <summary>
@@ -198,7 +224,7 @@ namespace Main.Level
                     {
                         pressed.Value = false;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
-                        SceneInfoManager.Instance.LoadSceneNameRedo();
+                        SceneInfoManager.Instance.SetSceneIdRedo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     });
                 // 全てのMoveCubeから左右にレイをとばして敵ギミックとFreezeを貫通したらTrue

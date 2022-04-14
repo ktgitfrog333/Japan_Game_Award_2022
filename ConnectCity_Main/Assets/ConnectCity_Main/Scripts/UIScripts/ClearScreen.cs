@@ -1,3 +1,4 @@
+using Main.Common;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,15 @@ namespace Main.UI
         protected override void Awake()
         {
             base.Awake();
+        }
+
+        protected override void OnEnable()
+        {
+            Time.timeScale = 0f;
+            if (SceneInfoManager.Instance.FinalStage)
+            {
+                // T.B.D 最終ステージのみ画像を差し替える
+            }
         }
 
         protected override void Initialize()

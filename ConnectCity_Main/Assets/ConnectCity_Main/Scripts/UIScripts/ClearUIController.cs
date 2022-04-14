@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -43,9 +44,16 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
+                        if (!SceneInfoManager.Instance.FinalStage)
+                        {
+                            n.mode = Navigation.Mode.Explicit;
+                            n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
+                            n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.SelectAction).GetComponent<Button>();
+                        }
+                        else
+                        {
+                            // T.B.D 最終ステージの設定を適用
+                        }
                         button.navigation = n;
                     }
 
@@ -55,9 +63,16 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        n.mode = Navigation.Mode.Explicit;
-                        n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
-                        n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
+                        if (!SceneInfoManager.Instance.FinalStage)
+                        {
+                            n.mode = Navigation.Mode.Explicit;
+                            n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
+                            n.selectOnDown = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
+                        }
+                        else
+                        {
+                            // T.B.D 最終ステージの設定を適用
+                        }
                         button.navigation = n;
                     }
 
@@ -107,9 +122,8 @@ namespace Main.UI
                     {
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.LoadSceneNameRedo();
-                        LoadNow.Instance.gameObject.SetActive(true);
-                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+                        SceneInfoManager.Instance.SetSceneIdRedo();
+                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         PlayFlashingMotion();
@@ -119,8 +133,8 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.LoadSceneNameSelect();
-                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+                        SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
+                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                         _menuClose = true;
                         button.enabled = false;
                         PlayFlashingMotion();
@@ -131,9 +145,8 @@ namespace Main.UI
                     {
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.LoadSceneNameNext();
-                        LoadNow.Instance.gameObject.SetActive(true);
-                        LoadNow.Instance.DrawLoadNowFadeOutTrigger = true;
+                        SceneInfoManager.Instance.SetSceneIdNext();
+                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         PlayFlashingMotion();
