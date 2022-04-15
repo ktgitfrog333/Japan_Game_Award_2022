@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.Const
+namespace Main.Common.Const
 {
     /// <summary>
     /// TagManagerのタグ名を一覧化（レイヤー）
@@ -23,5 +23,9 @@ namespace Common.Const
         /// MoveCubeのレイヤー名
         /// </summary>
         public static readonly string LAYER_NAME_MOVECUBE = "MoveCube";
+        /// <summary>
+        /// 敵ギミックのレイヤー名
+        /// </summary>
+        public static readonly string LAYER_NAME_HUMANENEMIES = "HumanEnemies";
     }
 }

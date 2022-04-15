@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Common.LevelDesign
+namespace Main.Common.LevelDesign
 {
     public class LevelDesigns
     {
