@@ -56,6 +56,12 @@ namespace Main.Common
         public ObjectsOffset[] HumanEnemieOffsets => _humanEnemieOffsets;
         /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] turretEnemies;
+        /// <summary>T.B.D ぼろいブロックのゲームオブジェクト</summary>
+        [SerializeField] private GameObject[] brokenCubes;
+        /// <summary>T.B.D ぼろいブロックの初期状態</summary>
+        private ObjectsOffset[] _brokenCubeOffsets;
+        /// <summary>T.B.D ぼろいブロックの初期状態</summary>
+        public ObjectsOffset[] BrokenCubeOffsets => _brokenCubeOffsets;
 
         private void Reset()
         {
@@ -74,6 +80,9 @@ namespace Main.Common
             // T.B.D レーザー砲ギミックの仮実装
             //if (turretEnemies == null && turretEnemies.length)
             //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            // T.B.D ぼろいブロックの仮実装
+            //if (brokenCubes == null || (brokenCubes != null && 0 == brokenCubes.Length))
+            //    brokenCubes = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
         }
 
         private void Start()
@@ -89,7 +98,11 @@ namespace Main.Common
             // T.B.D 敵ギミックの仮実装
             //_humanEnemieOffsets = LevelDesisionIsObjected.SaveObjectOffset(humanEnemies);
             //if (_humanEnemieOffsets == null)
-            //    Debug.LogError("オブジェクト初期状態の保存の失敗");
+            //    Debug.LogError("敵ギミック初期状態の保存の失敗");
+            // T.B.D ぼろいブロックの仮実装
+            //_brokenCubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(brokenCubes);
+            //if (_brokenCubeOffsets == null)
+            //    Debug.LogError("ぼろいブロック初期状態の保存の失敗");
         }
 
         /// <summary>

@@ -174,6 +174,9 @@ namespace Main.Common
             // T.B.D 敵ギミックの仮実装
             //if (!LevelDesisionIsObjected.ResetObjectFromSceneInfoManager(stage, GameManager.Instance.HumanEnemieOffsets))
             //    Debug.LogError("敵オブジェクトリセット処理の失敗");
+            // T.B.D ぼろいブロックの仮実装
+            //if (!LevelDesisionIsObjected.ResetObjectFromSceneInfoManager(stage, GameManager.Instance.BrokenCubeOffsets))
+            //    Debug.LogError("ぼろいブロックリセット処理の失敗");
             stage.SetActive(false);
             return true;
         }
