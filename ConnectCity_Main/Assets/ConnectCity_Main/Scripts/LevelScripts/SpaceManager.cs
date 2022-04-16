@@ -65,6 +65,10 @@ namespace Main.Level
         [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
         /// <summary>ステージ範囲（UP/DOWN/LEFT/RIGHT）</summary>
         [SerializeField] private float[] stageScaleMaxDistance = new float[4];
+        /// <summary>MoveCubeの初期状態</summary>
+        private ObjectsOffset[] _cubeOffsets;
+        /// <summary>MoveCubeの初期状態</summary>
+        public ObjectsOffset[] CubeOffsets => _cubeOffsets;
         /// <summary>空間操作に必要なRigidBody、Velocity</summary>
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
         /// <summary>ブロックの接続状況</summary>
@@ -74,8 +78,19 @@ namespace Main.Level
 
         private void Start()
         {
+            ManualStart();
+        }
+
+        /// <summary>
+        /// 疑似スタート
+        /// </summary>
+        private void ManualStart()
+        {
             // ブロックの接続状況
             var moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
+            _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(moveCubes);
+            if (_cubeOffsets == null)
+                Debug.LogError("オブジェクト初期状態の保存の失敗");
             if (!SetCollsion(moveCubes, GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_LEVELDESIGN).transform))
                 throw new System.Exception("オブジェクト取得の失敗");
             // 速度の初期値
@@ -149,6 +164,17 @@ namespace Main.Level
             stageScaleMaxDistance[(int)Direction.DOWN] = vector4.y;
             stageScaleMaxDistance[(int)Direction.LEFT] = vector4.z;
             stageScaleMaxDistance[(int)Direction.RIGHT] = vector4.w;
+            return true;
+        }
+
+        /// <summary>
+        /// 疑似スタートを発火させる
+        /// SceneInfoManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFromSceneInfoManager()
+        {
+            ManualStart();
             return true;
         }
 

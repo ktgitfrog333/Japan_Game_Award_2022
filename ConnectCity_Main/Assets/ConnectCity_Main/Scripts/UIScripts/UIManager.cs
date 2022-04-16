@@ -182,5 +182,15 @@ namespace Main.UI
 
             return true;
         }
+
+        /// <summary>
+        /// フェード演出UIのスタートイベント内の処理を疑似発火
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFadeScreenFromSceneInfoManager()
+        {
+            fadeScreen.GetComponent<FadeScreen>().ManualStart();
+            return true;
+        }
     }
 }

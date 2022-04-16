@@ -5,6 +5,7 @@ using UnityEngine;
 using static Main.Common.Const.TagConst;
 using System.Threading.Tasks;
 using Main.Level;
+using Main.Common.LevelDesign;
 
 namespace Main.Common
 {
@@ -49,6 +50,10 @@ namespace Main.Common
         [SerializeField] private GameObject[] gravityControllers;
         /// <summary>T.B.D 敵ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] humanEnemies;
+        /// <summary>T.B.D 敵ギミックの初期状態</summary>
+        private ObjectsOffset[] _humanEnemieOffsets;
+        /// <summary>T.B.D 敵ギミックの初期状態</summary>
+        public ObjectsOffset[] HumanEnemieOffsets => _humanEnemieOffsets;
         /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] turretEnemies;
 
@@ -69,6 +74,33 @@ namespace Main.Common
             // T.B.D レーザー砲ギミックの仮実装
             //if (turretEnemies == null && turretEnemies.length)
             //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+        }
+
+        private void Start()
+        {
+            ManualStart();
+        }
+
+        /// <summary>
+        /// 疑似スタート
+        /// </summary>
+        public void ManualStart()
+        {
+            // T.B.D 敵ギミックの仮実装
+            //_humanEnemieOffsets = LevelDesisionIsObjected.SaveObjectOffset(humanEnemies);
+            //if (_humanEnemieOffsets == null)
+            //    Debug.LogError("オブジェクト初期状態の保存の失敗");
+        }
+
+        /// <summary>
+        /// 疑似スタートを発火させる
+        /// SceneInfoManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFromSceneInfoManager()
+        {
+            ManualStart();
+            return true;
         }
 
         /// <summary>
