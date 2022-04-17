@@ -11,7 +11,8 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(BrideScenes_SelectMain.Instance.LoadSceneId);
+        //Debug.Log(BrideScenes_SelectMain.Instance.LoadSceneId);
+        //SceneInfoManager.Instance.UpdateScenesMap(0);
     }
 
     private void Update()

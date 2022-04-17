@@ -27,5 +27,9 @@ namespace Main.Common.Const
         /// レベルデザインのタグ名
         /// </summary>
         public static readonly string TAG_NAME_LEVELDESIGN = "LevelDesign";
+        /// <summary>
+        /// SpaceManagerのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_SPACEMANAGER = "SpaceManager";
     }
 }

@@ -63,7 +63,7 @@ namespace Main.Level
                 .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) ||
                     x.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 .Subscribe(_ => {
-                    SceneInfoManager.Instance.SetSceneIdRedo();
+                    SceneInfoManager.Instance.SetSceneIdUndo();
                     UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                 });
         }

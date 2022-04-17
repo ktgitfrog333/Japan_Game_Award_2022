@@ -58,6 +58,7 @@ namespace Main.UI
                                 Time.timeScale = 1f;
                             break;
                         case SceneLoadType.PrefabLoad:
+                            SceneInfoManager.Instance.UpdateScenesMap(SceneInfoManager.Instance.LoadSceneId);
                             if (!SceneInfoManager.Instance.StartStage())
                                 Debug.LogError("ステージ開始処理の失敗");
                             if (!SceneInfoManager.Instance.PlayManualStartFromSceneInfoManager())

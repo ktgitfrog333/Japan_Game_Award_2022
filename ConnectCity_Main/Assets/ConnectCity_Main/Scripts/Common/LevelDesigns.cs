@@ -56,7 +56,7 @@ namespace Main.Common.LevelDesign
         /// <param name="StagePrefab">ステージプレハブ</param>
         /// <param name="objectsOffset">オブジェクトリスト</param>
         /// <returns>成功／失敗</returns>
-        public static bool ResetObjectFromSceneInfoManager(GameObject StagePrefab, ObjectsOffset[] objectsOffset)
+        public static bool LoadObjectOffset(GameObject StagePrefab, ObjectsOffset[] objectsOffset)
         {
             foreach (var off in objectsOffset)
             {
@@ -70,7 +70,7 @@ namespace Main.Common.LevelDesign
         /// オブジェクト状態を保存
         /// シーン読み込み時に一度だけ実行
         /// </summary>
-        /// <param name="objectsOffset">オブジェクト</param>
+        /// <param name="objectsOffset">オブジェクト（複数）</param>
         /// <returns>成功／失敗</returns>
         public static ObjectsOffset[] SaveObjectOffset(GameObject[] objectsOffset)
         {
@@ -82,6 +82,29 @@ namespace Main.Common.LevelDesign
                 off.localPosition = obj.transform.localPosition;
                 offs.Add(off);
             }
+            if (0 < offs.Count)
+            {
+                return offs.ToArray();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// オブジェクト状態を保存
+        /// シーン読み込み時に一度だけ実行
+        /// </summary>
+        /// <param name="objectsOffset">オブジェクト（単体）</param>
+        /// <returns>成功／失敗</returns>
+        public static ObjectsOffset[] SaveObjectOffset(GameObject objectsOffset)
+        {
+            var offs = new List<ObjectsOffset>();
+            var obj = objectsOffset;
+            var off = new ObjectsOffset();
+            off.GameObjectObj = obj;
+            off.localPosition = obj.transform.localPosition;
+            offs.Add(off);
             if (0 < offs.Count)
             {
                 return offs.ToArray();

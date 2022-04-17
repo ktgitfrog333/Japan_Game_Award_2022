@@ -35,13 +35,17 @@ namespace Main.Common
         }
 
         /// <summary>プレイヤーのゲームオブジェクト</summary>
-        [SerializeField] private GameObject player;
+        [SerializeField] private GameObject[] player;
         /// <summary>プレイヤーのゲームオブジェクト</summary>
-        public GameObject Player { get { return player; } }
+        public GameObject Player => player[SceneInfoManager.Instance.SceneIdCrumb.Current];
+        /// <summary>プレイヤーの初期状態</summary>
+        private ObjectsOffset[] _playerOffsets;
+        /// <summary>プレイヤーの初期状態</summary>
+        public ObjectsOffset[] PlayerOffsets => _playerOffsets;
         /// <summary>空間操作</summary>
         [SerializeField] private GameObject spaceManager;
-        /// <summary>空間操作オブジェクト名</summary>
-        private static readonly string OBJECT_NAME_SPACEMANAGER = "SpaceManager";
+        /// <summary>空間操作</summary>
+        public GameObject SpaceManager => spaceManager;
         /// <summary>カメラ</summary>
         [SerializeField] private GameObject mainCamera;
         /// <summary>カメラ</summary>
@@ -66,9 +70,9 @@ namespace Main.Common
         private void Reset()
         {
             if (player == null)
-                player = GameObject.FindGameObjectWithTag(TAG_NAME_PLAYER);
+                player = GameObject.FindGameObjectsWithTag(TAG_NAME_PLAYER);
             if (spaceManager == null)
-                spaceManager = GameObject.Find(OBJECT_NAME_SPACEMANAGER);
+                spaceManager = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
             if (mainCamera == true)
                 mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             // T.B.D 重力操作ギミックの仮実装
@@ -95,6 +99,9 @@ namespace Main.Common
         /// </summary>
         public void ManualStart()
         {
+            _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
+            if (_playerOffsets == null)
+                Debug.LogError("オブジェクト初期状態の保存の失敗");
             // T.B.D 敵ギミックの仮実装
             //_humanEnemieOffsets = LevelDesisionIsObjected.SaveObjectOffset(humanEnemies);
             //if (_humanEnemieOffsets == null)
@@ -124,7 +131,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveCharactorFromSpaceManager(Vector3 moveVelocity)
         {
-            return player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
         }
 
         /// <summary>
@@ -148,7 +155,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveCharactorFromGravityController(Vector3 moveVelocity)
         {
-            return player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
         }
 
         /// <summary>
@@ -158,7 +165,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromSpaceManager()
         {
-            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await Player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
 
         /// <summary>
@@ -168,7 +175,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromHumanEnemies()
         {
-            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneInfoManager.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
 
         /// <summary>
@@ -178,7 +185,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromTurretEnemies()
         {
-            return await player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneInfoManager.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
 
         /// <summary>
@@ -190,17 +197,6 @@ namespace Main.Common
         {
             // T.B.D 敵ギミック破壊処理を呼ぶ
             return true;
-        }
-
-        /// <summary>
-        /// ステージの空間操作範囲を設定
-        /// 空間操作からの呼び出し
-        /// </summary>
-        /// <param name="vector4">UP/DOWN/LEFT/RIGHT</param>
-        /// <returns>成功／失敗</returns>
-        public bool SetStageScaleMaxDistanceFromSpaceManager(Vector4 vector4)
-        {
-            return spaceManager.GetComponent<SpaceManager>().SetStageScaleMaxDistanceFromGameManager(vector4);
         }
     }
 }
