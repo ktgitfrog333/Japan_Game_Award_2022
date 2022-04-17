@@ -7,6 +7,7 @@ using UniRx.Triggers;
 using UnityEngine.UI;
 using Main.Common.Const;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -156,10 +157,16 @@ namespace Main.UI
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
             await Task.Delay(3000);
             // 子オブジェクトは一度非表示にする
-            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
+            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount - (SceneInfoManager.Instance.FinalStage ? 1 : 0); i++)
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 
             clearScreen.GetComponent<ClearScreen>().AutoSelectContent();
+        }
+
+        public async void CloseClearScreen()
+        {
+            await Task.Delay(500);
+            clearScreen.SetActive(false);
         }
 
         /// <summary>
@@ -180,6 +187,16 @@ namespace Main.UI
             fadeScreen.SetActive(true);
             fadeScreen.GetComponent<FadeScreen>().DrawLoadNowFadeOut();
 
+            return true;
+        }
+
+        /// <summary>
+        /// フェード演出UIのスタートイベント内の処理を疑似発火
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFadeScreenFromSceneInfoManager()
+        {
+            fadeScreen.GetComponent<FadeScreen>().ManualStart();
             return true;
         }
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Main.UI
 {
@@ -13,6 +14,10 @@ namespace Main.UI
     {
         /// <summary>UI操作スクリプト</summary>
         [SerializeField] private ClearUIController firstElement;
+        /// <summary>ステージクリアのスプライト</summary>
+        [SerializeField] private Sprite _stageClear;
+        /// <summary>オールクリアのスプライト</summary>
+        [SerializeField] private Sprite _gameAllClear;
 
         protected override void Awake()
         {
@@ -23,9 +28,9 @@ namespace Main.UI
         {
             Time.timeScale = 0f;
             if (SceneInfoManager.Instance.FinalStage)
-            {
-                // T.B.D 最終ステージのみ画像を差し替える
-            }
+                transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = _gameAllClear;
+            else
+                transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = _stageClear;
         }
 
         protected override void Initialize()

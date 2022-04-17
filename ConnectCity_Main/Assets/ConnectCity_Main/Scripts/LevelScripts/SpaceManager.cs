@@ -63,20 +63,36 @@ namespace Main.Level
         [SerializeField] private float rayMaxDistanceDownLong = 1.6f;
         /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
         [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
-        /// <summary>ステージ範囲（UP/DOWN/LEFT/RIGHT）</summary>
-        [SerializeField] private float[] stageScaleMaxDistance = new float[4];
+        /// <summary>MoveCubeの初期状態</summary>
+        private ObjectsOffset[] _cubeOffsets;
+        /// <summary>MoveCubeの初期状態</summary>
+        public ObjectsOffset[] CubeOffsets => _cubeOffsets;
         /// <summary>空間操作に必要なRigidBody、Velocity</summary>
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
         /// <summary>ブロックの接続状況</summary>
         private List<ConnectDirection2D> _connectDirections = new List<ConnectDirection2D>();
         /// <summary>プールのグループ</summary>
         private PoolGroup _poolGroup;
+        /// <summary>MoveCubes</summary>
+        private GameObject[] _moveCubes;
 
         private void Start()
         {
+            ManualStart();
+        }
+
+        /// <summary>
+        /// 疑似スタート
+        /// </summary>
+        private void ManualStart()
+        {
             // ブロックの接続状況
-            var moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-            if (!SetCollsion(moveCubes, GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_LEVELDESIGN).transform))
+            _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
+            _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
+            if (_cubeOffsets == null)
+                Debug.LogError("オブジェクト初期状態の保存の失敗");
+            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current));
+            if (_moveCubes == null)
                 throw new System.Exception("オブジェクト取得の失敗");
             // 速度の初期値
             _spaceDirections.MoveSpeed = moveLSpeed;
@@ -95,9 +111,9 @@ namespace Main.Level
 
             // 空間内のブロック座標をチェック
             this.UpdateAsObservable()
-                .Select(_ => CheckPositionAndSetMoveCubesComponents(moveCubes))
+                .Select(_ => CheckPositionAndSetMoveCubesComponents(_moveCubes))
                 .Where(x => !x)
-                .Subscribe(_ => Debug.LogError("制御対象RigidBody格納の失敗"));
+                .Subscribe(_ => Debug.Log("制御対象RigidBody格納の失敗"));
             // 不要なグループ削除
             var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
             foreach (var obj in moveCubeGroups)
@@ -126,29 +142,16 @@ namespace Main.Level
                 });
             if (!InitializePool())
                 Debug.LogError("プール作成の失敗");
-            //// デバッグ
-            //this.UpdateAsObservable()
-            //    .Subscribe(_ =>
-            //    {
-            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.UP]), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.DOWN] * -1f), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.LEFT] * -1f, 0f), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.RIGHT], 0f), Color.green);
-            //    });
         }
 
         /// <summary>
-        /// ステージの空間操作範囲を設定
-        /// GameManagerからの呼び出し
+        /// 疑似スタートを発火させる
+        /// SceneInfoManagerからの呼び出し
         /// </summary>
-        /// <param name="vector4">UP/DOWN/LEFT/RIGHT</param>
         /// <returns>成功／失敗</returns>
-        public bool SetStageScaleMaxDistanceFromGameManager(Vector4 vector4)
+        public bool PlayManualStartFromSceneInfoManager()
         {
-            stageScaleMaxDistance[(int)Direction.UP] = vector4.x;
-            stageScaleMaxDistance[(int)Direction.DOWN] = vector4.y;
-            stageScaleMaxDistance[(int)Direction.LEFT] = vector4.z;
-            stageScaleMaxDistance[(int)Direction.RIGHT] = vector4.w;
+            ManualStart();
             return true;
         }
 
@@ -159,10 +162,10 @@ namespace Main.Level
         /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <param name="level">レベルデザイン</param>
         /// <returns>セット処理完了／引数情報の一部にnull</returns>
-        private bool SetCollsion(GameObject[] moveCubes, Transform level)
+        private GameObject[] SetCollsion(GameObject[] moveCubes, Transform level)
         {
             // 取得したペアがない場合は空オブジェクトを返却
-            if (moveCubes == null || moveCubes.Length < -1 || level == null) return false;
+            if (moveCubes == null || moveCubes.Length < -1 || level == null) return null;
 
             foreach (var obj in moveCubes)
             {
@@ -224,7 +227,7 @@ namespace Main.Level
                     {
                         pressed.Value = false;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
-                        SceneInfoManager.Instance.SetSceneIdRedo();
+                        SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     });
                 // 全てのMoveCubeから左右にレイをとばして敵ギミックとFreezeを貫通したらTrue
@@ -241,7 +244,7 @@ namespace Main.Level
                     });
             }
 
-            return true;
+            return moveCubes;
         }
 
         /// <summary>
@@ -633,13 +636,13 @@ namespace Main.Level
                 {
                     // グループ化されている場合は親のRigidBodyをセット
                     var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
-                    if (obj.transform.position.x < 0f)
+                    if (obj.transform.parent.localPosition.x < transform.localPosition.x)
                     {
                         // 左空間
                         rbsLeft.Add(rb);
                         scrsLeft.Add(obj.GetComponent<MoveCbSmall>());
                     }
-                    else if (0f < obj.transform.position.x)
+                    else if (transform.localPosition.x < obj.transform.parent.localPosition.x)
                     {
                         //右空間
                         rbsRight.Add(rb);

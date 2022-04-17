@@ -72,7 +72,7 @@ namespace Main.Level
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                                SceneInfoManager.Instance.SetSceneIdRedo();
+                                SceneInfoManager.Instance.SetSceneIdUndo();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.UndoAction] = false;

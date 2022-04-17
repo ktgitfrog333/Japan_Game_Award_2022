@@ -104,7 +104,7 @@ namespace Main.UI
         /// <summary>
         /// 点滅演出
         /// </summary>
-        protected async void PlayFlashingMotion()
+        protected async Task PlayFlashingMotion()
         {
             // 点滅の演出
             await Task.Delay(80);
