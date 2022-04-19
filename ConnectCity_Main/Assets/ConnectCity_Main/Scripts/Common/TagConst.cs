@@ -31,5 +31,9 @@ namespace Main.Common.Const
         /// SpaceManagerのタグ名
         /// </summary>
         public static readonly string TAG_NAME_SPACEMANAGER = "SpaceManager";
+        /// <summary>
+        /// チュートリアル表示トリガーのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_TUTORIALTRIGGER = "TutorialTrigger";
     }
 }
