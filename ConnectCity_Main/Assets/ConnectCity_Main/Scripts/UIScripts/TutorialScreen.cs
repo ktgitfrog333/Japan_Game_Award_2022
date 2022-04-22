@@ -17,14 +17,29 @@ namespace Main.UI
     /// </summary>
     public class TutorialScreen : MonoBehaviour
     {
-        /// <summary>ビデオクリップ（リソースからセットする）</summary>
+        /// <summary>
+        /// ビデオクリップ（リソースからセットする）
+        /// チャンネル0：基本操作　移動について
+        /// チャンネル1：基本操作　ジャンプについて
+        /// チャンネル2：基本操作　コネクトシステムについて
+        /// T.B.D チャンネルx：基本操作　死亡条件について
+        /// T.B.D チャンネルx：基本操作　クリア条件について
+        /// T.B.D チャンネルx：ギミック　敵について
+        /// T.B.D チャンネルx：ギミック　重力について
+        /// T.B.D チャンネルx：ギミック　レーザー砲について
+        /// T.B.D チャンネルx：ギミック　ぼろいブロック・天井について
+        /// </summary>
         [SerializeField] private VideoClip[] channels;
         /// <summary>ビデオプレイヤー</summary>
         [SerializeField] private VideoPlayer videoPlayer;
         /// <summary>ビデオを再生させるトリガー</summary>
         [SerializeField] private GameObject[] triggers;
         /// <summary>出現演出の時間</summary>
-        [SerializeField] float duration = .3f;
+        [SerializeField] float durationFade = .3f;
+        /// <summary>点滅演出の時間</summary>
+        [SerializeField] float durationLoopFlash = .3f;
+        /// <summary>簡易タイプ</summary>
+        [SerializeField] Ease easeType = Ease.InCubic;
 
         private void Reset()
         {
@@ -41,6 +56,9 @@ namespace Main.UI
             // プレイヤー初期状態は表示させない
             var player = transform.GetChild(0);
             player.gameObject.SetActive(false);
+            var anims = transform.GetChild(1);
+            foreach (Transform anim in anims)
+                anim.gameObject.SetActive(false);
 
             foreach (var trigger in triggers)
             {
@@ -48,24 +66,81 @@ namespace Main.UI
                     .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                     .Subscribe(_ =>
                     {
-                        player.GetComponent<RawImage>().color = new Vector4(255f, 255f, 255f, 0f);
-                        player.gameObject.SetActive(true);
-                        player.GetComponent<RawImage>().DOFade(endValue: 1f, duration: duration)
-                            .OnComplete(() =>
+                        var compCnt = new IntReactiveProperty(0);
+                        if (!PlayFadeAndSetCompleteCount<RawImage>(player, compCnt, player.GetComponent<RawImage>()))
+                            Debug.LogError("RawImage:フェード処理の失敗");
+                        var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
+                        if (!PlayFadeAndSetCompleteCount<CanvasGroup>(anim, compCnt, anim.gameObject.GetComponent<CanvasGroup>()))
+                            Debug.LogError("CanvasGroup:フェード処理の失敗");
+
+                        compCnt.Where(x => 1 < x)
+                            .Subscribe(_ =>
                             {
-                                var name = trigger.name;
-                                if (!PlayVideoClip(System.Int32.Parse(name.Substring(name.IndexOf("_") + 1))))
+                                if (!PlayVideoClip(GetIdx(trigger.name)))
                                     Debug.LogError("ビデオクリップ再生処理の失敗");
+                                if (!PlayFlash(anim, GetIdx(trigger.name)))
+                                    Debug.LogError("点滅再生処理の失敗");
                             });
                     });
                 trigger.OnTriggerExitAsObservable()
                     .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                     .Subscribe(_ =>
                     {
-                        player.GetComponent<RawImage>().DOFade(endValue: 0f, duration: duration)
-                            .OnComplete(() => player.gameObject.SetActive(false));
+                        player.gameObject.SetActive(false);
+                        var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
+                        anim.gameObject.SetActive(false);
                     });
             }
+        }
+
+        /// <summary>
+        /// フェード処理の再生
+        /// 終了した際に完了カウントをカウントアップ
+        /// </summary>
+        /// <param name="tran">子オブジェクト</param>
+        /// <param name="count">完了カウント</param>
+        /// <returns></returns>
+        private bool PlayFadeAndSetCompleteCount<T>(Transform tran, IntReactiveProperty count, T type)
+        {
+            if (typeof(RawImage) == type.GetType())
+            {
+                tran.GetComponent<RawImage>().color = new Vector4(255f, 255f, 255f, 0f);
+                tran.gameObject.SetActive(true);
+                tran.GetComponent<RawImage>().DOFade(endValue: 1f, duration: durationFade)
+                    .OnComplete(() => count.Value++);
+            }
+            else if (typeof(CanvasGroup) == type.GetType())
+            {
+                tran.GetComponent<CanvasGroup>().alpha = 0f;
+                tran.gameObject.SetActive(true);
+                tran.GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
+                    .OnComplete(() => count.Value++);
+            }
+            else
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// UIのImageを点滅させる
+        /// コンポーネントが参照できないオブジェクトもある可能性があるためチャンネルで判定する
+        /// </summary>
+        /// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
+        /// <param name="channelIdx">再生させるビデオチャンネル</param>
+        /// <returns></returns>
+        private bool PlayFlash(Transform content, int channelIdx)
+        {
+            // 点滅が発生するチャンネルのみ実行
+            if (channelIdx == 0 ||
+                channelIdx == 1 ||
+                channelIdx == 2)
+            {
+                // 点滅させる
+                content.GetChild(0).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
+                    .SetEase(easeType)
+                    .SetLoops(-1, LoopType.Yoyo);
+            }
+            return true;
         }
 
         /// <summary>
@@ -85,6 +160,16 @@ namespace Main.UI
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 何番目から取得
+        /// </summary>
+        /// <param name="name">名前（.*_nからnを取得）</param>
+        /// <returns>インデックス</returns>
+        private int GetIdx(string name)
+        {
+            return System.Int32.Parse(name.Substring(name.IndexOf("_") + 1));
         }
     }
 }
