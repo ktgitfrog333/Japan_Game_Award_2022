@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using Main.Common;
 
 public class InputKey_Select : MonoBehaviour
 {
@@ -159,7 +160,8 @@ public class InputKey_Select : MonoBehaviour
         Select_Right_Arrow = GameObject.Find("Select_Right_Arrow_Image");
         Select_Stage_Frame = GameObject.Find("Select_Stage_Frame_Image");
         scroll = Stage_Scroll.Scroll1;
-        stage = Stage_Num.Stage1;
+        //stage = Stage_Num.Stage1;
+        stage = (Stage_Num)BrideScenes_SelectMain.Instance.LoadSceneId + 1;
         select_stage_pos = Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition;
         select_flame_image_01_pos = Select_Flame_Image_01.GetComponent<RectTransform>().anchoredPosition;
         select_flame_image_02_pos = Select_Flame_Image_02.GetComponent<RectTransform>().anchoredPosition;
@@ -244,7 +246,10 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene((int)stage - 1);
+                            GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
+                            await Task.Delay(3000);
+                            BrideScenes_SelectMain.Instance.PlayLoadScene();
                         }
                         break;
 
