@@ -246,10 +246,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene((int)stage - 1);
-                            GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
-                            await Task.Delay(3000);
-                            BrideScenes_SelectMain.Instance.PlayLoadScene();
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -1008,5 +1005,18 @@ public class InputKey_Select : MonoBehaviour
             await Task.Delay(3000);
             SceneManager.LoadScene("TitleScene");
         }
+    }
+
+    /// <summary>
+    /// セレクトシーンからメインシーンへの遷移
+    /// Select_Sceneから呼び出される想定の処理
+    /// </summary>
+    /// <param name="sceneId"></param>
+    async public void Select_SceneToMainScene(int sceneId)
+    {
+        BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene(sceneId - 1);
+        GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
+        await Task.Delay(3000);
+        BrideScenes_SelectMain.Instance.PlayLoadScene();
     }
 }
