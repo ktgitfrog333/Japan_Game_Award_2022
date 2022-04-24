@@ -35,6 +35,14 @@ namespace Main.Player
         [SerializeField] private ParticleSystem[] _particleSystems;
         /// <summary>ジャンプ状態</summary>
         private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
+        /// <summary>入力禁止</summary>
+        private bool _inputBan;
+        /// <summary>入力禁止</summary>
+        public bool InputBan
+        {
+            get => _inputBan;
+            set => _inputBan = value;
+        }
 
         private void Reset()
         {
@@ -72,6 +80,7 @@ namespace Main.Player
 
             // 移動入力に応じて移動座標をセット
             this.UpdateAsObservable()
+                .Where(_ => !_inputBan)
                 .Select(_ => Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed)
                 .Subscribe(x =>
                 {
@@ -80,6 +89,7 @@ namespace Main.Player
                 });
             // ジャンプ入力に応じてジャンプフラグをセット
             this.UpdateAsObservable()
+                .Where(_ => !_inputBan)
                 .Where(_ => !_isJumped.Value &&
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -125,6 +135,19 @@ namespace Main.Player
                     if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
                     _characterCtrl.Move(moveVelocity * Time.deltaTime);
                 });
+            // 死亡時からのリセット場合
+            // メッシュが無効になっているなら有効にする
+            // 死亡パーティクルが有効になっているなら無効にする
+            this.OnEnableAsObservable()
+                .Subscribe(_ =>
+                {
+                    var render = GetComponent<MeshRenderer>();
+                    if (!render.enabled)
+                        render.enabled = true;
+                    if (_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
+                        _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(false);
+                });
+
 
             // デバッグ用
             //this.UpdateAsObservable()
@@ -189,6 +212,7 @@ namespace Main.Player
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0f, transform.eulerAngles.z);
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
+            // T.B.D 仮SE
             SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
             await Task.Delay(3000);
             return true;

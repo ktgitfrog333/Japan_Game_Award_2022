@@ -9,6 +9,7 @@ using Main.Common;
 using Main.UI;
 using System.Threading.Tasks;
 using Main.Audio;
+using System.Linq;
 
 namespace Main.Level
 {
@@ -103,10 +104,16 @@ namespace Main.Level
             velocitySeted.Where(x => x)
                 .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
                 .Where(_ => velocitySeted.Value)
-                .Subscribe(_ => _spaceDirections.MoveSpeed = moveHSpeed);
+                .Subscribe(_ =>
+                {
+                    _spaceDirections.MoveSpeed = moveHSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(true);
+                });
             velocitySeted.Where(x => !x)
-                .Subscribe(_ => {
+                .Subscribe(_ =>
+                {
                     _spaceDirections.MoveSpeed = moveLSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(false);
                 });
 
             // 空間内のブロック座標をチェック
@@ -213,7 +220,10 @@ namespace Main.Level
                     .Select(_ => ConnectMoveCube())
                     .Subscribe(x =>
                     {
-                        if (!x) Debug.Log("MoveCubeのコネクト処理失敗");
+                        if (!x)
+                            Debug.LogError("MoveCubeのコネクト処理失敗");
+                        else
+                            Debug.Log("MoveCubeのコネクト処理成功");
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
@@ -225,7 +235,6 @@ namespace Main.Level
                 pressed.Where(x => x)
                     .Subscribe(async _ =>
                     {
-                        pressed.Value = false;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
@@ -239,7 +248,6 @@ namespace Main.Level
                 pressedEnem.Where(x => x)
                     .Subscribe(_ =>
                     {
-                        pressedEnem.Value = false;
                         GameManager.Instance.DestroyHumanEnemyFromSpaceManager();
                     });
             }
@@ -301,7 +309,8 @@ namespace Main.Level
         private ConnectDirection2D GetMinDistanceTheMoveCube(GameObject origin, GameObject parentObject)
         {
             // originとmeetの親内にある子同士を比較
-            var distancePair = new SortedDictionary<float, ConnectDirection2D>();
+            //var distancePair = new SortedDictionary<float, ConnectDirection2D>();
+            var distancePairList = new List<ConnectDirection2D>();
             for (var i = 0; i < origin.transform.parent.childCount; i++)
             {
                 // originとmeetの子オブジェクトのペアを作成
@@ -313,22 +322,54 @@ namespace Main.Level
                     // 距離が近いものから昇順に組み合わせをセットしていく
                     var meetChild = parentObject.transform.GetChild(j);
                     workPair.MeetMoveCube = meetChild.gameObject;
-                    distancePair[Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y))] = workPair;
+                    //distancePairList[Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y))] = workPair;
+                    workPair.Distance = Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y));
+                    distancePairList.Add(workPair);
                 }
             }
             // 取得したペアがない場合は空オブジェクトを返却
-            if (distancePair.Count < 1) return new ConnectDirection2D();
+            if (distancePairList.Count < 1) return new ConnectDirection2D();
 
-            var pair = new ConnectDirection2D();
-            // 最初の値（最小値）のみ取り出す
-            foreach (var p in distancePair)
-            {
-                pair.OriginMoveCube = p.Value.OriginMoveCube;
-                pair.MeetMoveCube = p.Value.MeetMoveCube;
-                break;
-            }
+            //Debug.Log("ペア一覧 start");
+            //if (1 < distancePair.Count)
+            //{
+            //    // お互いの距離が同じ場合は名前の昇順
+            //    var sort = new SortedDictionary<float, string>[2];
+            //    var distance = new float[2];
+            //    var objName = "";
+            //    var i = 0;
+            //    foreach (var pair1 in distancePair)
+            //    {
+            //        distance[i] = pair1.Key;
+            //        if (i < 1)
+            //            objName = pair1.Value.OriginMoveCube.name;
+            //        if (2 <= i)
+            //            break;
+            //    }
+            //    if (distance[0].Equals(distance[1]))
+            //    {
 
-            return pair;
+            //    }
+            //}
+            //foreach (var a in distancePair)
+            //{
+            //    Debug.Log(a.Key);
+            //    Debug.Log(a.Value.OriginMoveCube);
+            //    Debug.Log(a.Value.MeetMoveCube);
+            //}
+            //Debug.Log("ペア一覧 end");
+
+            //var pair = new ConnectDirection2D();
+            //// 最初の値（最小値）のみ取り出す
+            //foreach (var p in distancePairList)
+            //{
+            //    pair.OriginMoveCube = p.Value.OriginMoveCube;
+            //    pair.MeetMoveCube = p.Value.MeetMoveCube;
+            //    break;
+            //}
+
+            //return pair;
+            return distancePairList.OrderBy(value => value.Distance).ToArray()[0];
         }
 
         /// <summary>
@@ -363,6 +404,12 @@ namespace Main.Level
         /// <returns>接続完了／マッチング失敗</returns>
         private bool ConnectMoveCube()
         {
+            //Debug.Log("Ori_0:" + _connectDirections[0].OriginMoveCube);
+            //Debug.Log("Ori_1:" + _connectDirections[1].OriginMoveCube);
+            //Debug.Log("Mee_0:" + _connectDirections[0].MeetMoveCube);
+            //Debug.Log("Mee_1:" + _connectDirections[1].MeetMoveCube);
+            //Debug.Log("Ray_0:" + _connectDirections[0].OriginRayDire);
+            //Debug.Log("Ray_1:" + _connectDirections[1].OriginRayDire);
             // お互いが向かい合っている状態
             if (_connectDirections[0].OriginMoveCube.Equals(_connectDirections[1].MeetMoveCube) &&
                 _connectDirections[1].OriginMoveCube.Equals(_connectDirections[0].MeetMoveCube) &&
@@ -380,16 +427,20 @@ namespace Main.Level
                 switch (_connectDirections[0].OriginRayDire)
                 {
                     case Direction.UP:
-                        metTran.position = orgTran.position + Vector3.up;
+                        var uMove = (orgTran.position + Vector3.up) - metTran.position;
+                        metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
-                        metTran.position = orgTran.position + Vector3.down;
+                        var dMove = (orgTran.position + Vector3.down) - metTran.position;
+                        metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
-                        metTran.position = orgTran.position + Vector3.left;
+                        var lMove = (orgTran.position + Vector3.left) - metTran.position;
+                        metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
-                        metTran.position = orgTran.position + Vector3.right;
+                        var rMove = (orgTran.position + Vector3.right) - metTran.position;
+                        metTran.parent.position += rMove;
                         break;
                 }
 
@@ -760,6 +811,8 @@ namespace Main.Level
         public Direction OriginRayDire { get; set; }
         /// <summary>接続位置</summary>
         public Vector3 ContactsPoint { get; set; }
+        /// <summary>距離</summary>
+        public float Distance { get; set; }
     }
 
     /// <summary>
