@@ -265,7 +265,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -284,7 +284,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -303,7 +303,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -323,7 +323,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
@@ -380,7 +380,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -399,7 +399,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -418,7 +418,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -437,7 +437,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -457,7 +457,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
@@ -514,7 +514,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -533,7 +533,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -552,7 +552,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -571,7 +571,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -591,7 +591,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
@@ -648,7 +648,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -667,7 +667,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -686,7 +686,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -705,7 +705,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -725,7 +725,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
@@ -782,7 +782,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -801,7 +801,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -820,7 +820,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -839,7 +839,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -859,7 +859,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
@@ -916,7 +916,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -935,7 +935,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -954,7 +954,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -973,7 +973,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
 
@@ -992,7 +992,7 @@ public class InputKey_Select : MonoBehaviour
                         }
                         if(Input.GetKeyDown(KeyCode.Space))
                         {
-                            //
+                            Select_SceneToMainScene((int)stage - 1);
                         }
                         break;
                 }
