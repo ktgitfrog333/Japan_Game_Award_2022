@@ -87,6 +87,7 @@ namespace Main.Level
         /// </summary>
         private void ManualStart()
         {
+            _connectDirections = new List<ConnectDirection2D>();
             // ブロックの接続状況
             _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
             _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
@@ -309,7 +310,6 @@ namespace Main.Level
         private ConnectDirection2D GetMinDistanceTheMoveCube(GameObject origin, GameObject parentObject)
         {
             // originとmeetの親内にある子同士を比較
-            //var distancePair = new SortedDictionary<float, ConnectDirection2D>();
             var distancePairList = new List<ConnectDirection2D>();
             for (var i = 0; i < origin.transform.parent.childCount; i++)
             {
@@ -322,54 +322,32 @@ namespace Main.Level
                     // 距離が近いものから昇順に組み合わせをセットしていく
                     var meetChild = parentObject.transform.GetChild(j);
                     workPair.MeetMoveCube = meetChild.gameObject;
-                    //distancePairList[Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y))] = workPair;
                     workPair.Distance = Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y));
                     distancePairList.Add(workPair);
                 }
             }
             // 取得したペアがない場合は空オブジェクトを返却
-            if (distancePairList.Count < 1) return new ConnectDirection2D();
+            if (distancePairList.Count < 1)
+                return new ConnectDirection2D();
 
-            //Debug.Log("ペア一覧 start");
-            //if (1 < distancePair.Count)
-            //{
-            //    // お互いの距離が同じ場合は名前の昇順
-            //    var sort = new SortedDictionary<float, string>[2];
-            //    var distance = new float[2];
-            //    var objName = "";
-            //    var i = 0;
-            //    foreach (var pair1 in distancePair)
-            //    {
-            //        distance[i] = pair1.Key;
-            //        if (i < 1)
-            //            objName = pair1.Value.OriginMoveCube.name;
-            //        if (2 <= i)
-            //            break;
-            //    }
-            //    if (distance[0].Equals(distance[1]))
-            //    {
+            // 一回目と二回目の情報を保持する
+            // 一回目はOriginの昇順、二回目はMeetの昇順
+            if (-1 < _connectDirections.Count && _connectDirections.Count < 1)
+            {
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.OriginMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
+            }
+            else if (0 < _connectDirections.Count && _connectDirections.Count < 2)
+            {
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.MeetMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
+            }
 
-            //    }
-            //}
-            //foreach (var a in distancePair)
-            //{
-            //    Debug.Log(a.Key);
-            //    Debug.Log(a.Value.OriginMoveCube);
-            //    Debug.Log(a.Value.MeetMoveCube);
-            //}
-            //Debug.Log("ペア一覧 end");
-
-            //var pair = new ConnectDirection2D();
-            //// 最初の値（最小値）のみ取り出す
-            //foreach (var p in distancePairList)
-            //{
-            //    pair.OriginMoveCube = p.Value.OriginMoveCube;
-            //    pair.MeetMoveCube = p.Value.MeetMoveCube;
-            //    break;
-            //}
-
-            //return pair;
-            return distancePairList.OrderBy(value => value.Distance).ToArray()[0];
+            return new ConnectDirection2D();
         }
 
         /// <summary>
@@ -391,6 +369,7 @@ namespace Main.Level
             {
                 if (conn.OriginMoveCube.Equals(connectDirection.OriginMoveCube))
                 {
+                    _connectDirections = new List<ConnectDirection2D>();
                     return 0;
                 }
             }
@@ -404,12 +383,6 @@ namespace Main.Level
         /// <returns>接続完了／マッチング失敗</returns>
         private bool ConnectMoveCube()
         {
-            //Debug.Log("Ori_0:" + _connectDirections[0].OriginMoveCube);
-            //Debug.Log("Ori_1:" + _connectDirections[1].OriginMoveCube);
-            //Debug.Log("Mee_0:" + _connectDirections[0].MeetMoveCube);
-            //Debug.Log("Mee_1:" + _connectDirections[1].MeetMoveCube);
-            //Debug.Log("Ray_0:" + _connectDirections[0].OriginRayDire);
-            //Debug.Log("Ray_1:" + _connectDirections[1].OriginRayDire);
             // お互いが向かい合っている状態
             if (_connectDirections[0].OriginMoveCube.Equals(_connectDirections[1].MeetMoveCube) &&
                 _connectDirections[1].OriginMoveCube.Equals(_connectDirections[0].MeetMoveCube) &&
@@ -706,7 +679,7 @@ namespace Main.Level
                 // 動かす対象のRigidBody、Animatorを格納
                 if (0 < rbsLeft.Count)
                 {
-                    _spaceDirections.RbsLeftSpace = rbsLeft.ToArray();
+                    _spaceDirections.RbsLeftSpace = rbsLeft.Distinct().ToArray();
                     _spaceDirections.ScrLeftSpace = scrsLeft.ToArray();
                 }
                 else
@@ -716,7 +689,7 @@ namespace Main.Level
                 }
                 if (0 < rbsRight.Count)
                 {
-                    _spaceDirections.RbsRightSpace = rbsRight.ToArray();
+                    _spaceDirections.RbsRightSpace = rbsRight.Distinct().ToArray();
                     _spaceDirections.ScrRightSpace = scrsRight.ToArray();
                 }
                 else
