@@ -195,7 +195,8 @@ namespace Main.UI
             // 点滅が発生するチャンネルのみ実行
             if (channelIdx == 0 ||
                 channelIdx == 1 ||
-                channelIdx == 2)
+                channelIdx == 2 ||
+                channelIdx == 3)
             {
                 // 点滅させる
                 content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
