@@ -9,6 +9,7 @@ using Main.Common;
 using Main.UI;
 using System.Threading.Tasks;
 using Main.Audio;
+using System.Linq;
 
 namespace Main.Level
 {
@@ -86,6 +87,7 @@ namespace Main.Level
         /// </summary>
         private void ManualStart()
         {
+            _connectDirections = new List<ConnectDirection2D>();
             // ブロックの接続状況
             _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
             _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
@@ -103,10 +105,16 @@ namespace Main.Level
             velocitySeted.Where(x => x)
                 .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
                 .Where(_ => velocitySeted.Value)
-                .Subscribe(_ => _spaceDirections.MoveSpeed = moveHSpeed);
+                .Subscribe(_ =>
+                {
+                    _spaceDirections.MoveSpeed = moveHSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(true);
+                });
             velocitySeted.Where(x => !x)
-                .Subscribe(_ => {
+                .Subscribe(_ =>
+                {
                     _spaceDirections.MoveSpeed = moveLSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(false);
                 });
 
             // 空間内のブロック座標をチェック
@@ -213,7 +221,10 @@ namespace Main.Level
                     .Select(_ => ConnectMoveCube())
                     .Subscribe(x =>
                     {
-                        if (!x) Debug.Log("MoveCubeのコネクト処理失敗");
+                        if (!x)
+                            Debug.LogError("MoveCubeのコネクト処理失敗");
+                        else
+                            Debug.Log("MoveCubeのコネクト処理成功");
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
@@ -225,7 +236,6 @@ namespace Main.Level
                 pressed.Where(x => x)
                     .Subscribe(async _ =>
                     {
-                        pressed.Value = false;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
@@ -239,7 +249,6 @@ namespace Main.Level
                 pressedEnem.Where(x => x)
                     .Subscribe(_ =>
                     {
-                        pressedEnem.Value = false;
                         GameManager.Instance.DestroyHumanEnemyFromSpaceManager();
                     });
             }
@@ -301,7 +310,7 @@ namespace Main.Level
         private ConnectDirection2D GetMinDistanceTheMoveCube(GameObject origin, GameObject parentObject)
         {
             // originとmeetの親内にある子同士を比較
-            var distancePair = new SortedDictionary<float, ConnectDirection2D>();
+            var distancePairList = new List<ConnectDirection2D>();
             for (var i = 0; i < origin.transform.parent.childCount; i++)
             {
                 // originとmeetの子オブジェクトのペアを作成
@@ -313,22 +322,32 @@ namespace Main.Level
                     // 距離が近いものから昇順に組み合わせをセットしていく
                     var meetChild = parentObject.transform.GetChild(j);
                     workPair.MeetMoveCube = meetChild.gameObject;
-                    distancePair[Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y))] = workPair;
+                    workPair.Distance = Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y));
+                    distancePairList.Add(workPair);
                 }
             }
             // 取得したペアがない場合は空オブジェクトを返却
-            if (distancePair.Count < 1) return new ConnectDirection2D();
+            if (distancePairList.Count < 1)
+                return new ConnectDirection2D();
 
-            var pair = new ConnectDirection2D();
-            // 最初の値（最小値）のみ取り出す
-            foreach (var p in distancePair)
+            // 一回目と二回目の情報を保持する
+            // 一回目はOriginの昇順、二回目はMeetの昇順
+            if (-1 < _connectDirections.Count && _connectDirections.Count < 1)
             {
-                pair.OriginMoveCube = p.Value.OriginMoveCube;
-                pair.MeetMoveCube = p.Value.MeetMoveCube;
-                break;
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.OriginMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
+            }
+            else if (0 < _connectDirections.Count && _connectDirections.Count < 2)
+            {
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.MeetMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
             }
 
-            return pair;
+            return new ConnectDirection2D();
         }
 
         /// <summary>
@@ -350,6 +369,7 @@ namespace Main.Level
             {
                 if (conn.OriginMoveCube.Equals(connectDirection.OriginMoveCube))
                 {
+                    _connectDirections = new List<ConnectDirection2D>();
                     return 0;
                 }
             }
@@ -380,16 +400,20 @@ namespace Main.Level
                 switch (_connectDirections[0].OriginRayDire)
                 {
                     case Direction.UP:
-                        metTran.position = orgTran.position + Vector3.up;
+                        var uMove = (orgTran.position + Vector3.up) - metTran.position;
+                        metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
-                        metTran.position = orgTran.position + Vector3.down;
+                        var dMove = (orgTran.position + Vector3.down) - metTran.position;
+                        metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
-                        metTran.position = orgTran.position + Vector3.left;
+                        var lMove = (orgTran.position + Vector3.left) - metTran.position;
+                        metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
-                        metTran.position = orgTran.position + Vector3.right;
+                        var rMove = (orgTran.position + Vector3.right) - metTran.position;
+                        metTran.parent.position += rMove;
                         break;
                 }
 
@@ -655,7 +679,7 @@ namespace Main.Level
                 // 動かす対象のRigidBody、Animatorを格納
                 if (0 < rbsLeft.Count)
                 {
-                    _spaceDirections.RbsLeftSpace = rbsLeft.ToArray();
+                    _spaceDirections.RbsLeftSpace = rbsLeft.Distinct().ToArray();
                     _spaceDirections.ScrLeftSpace = scrsLeft.ToArray();
                 }
                 else
@@ -665,7 +689,7 @@ namespace Main.Level
                 }
                 if (0 < rbsRight.Count)
                 {
-                    _spaceDirections.RbsRightSpace = rbsRight.ToArray();
+                    _spaceDirections.RbsRightSpace = rbsRight.Distinct().ToArray();
                     _spaceDirections.ScrRightSpace = scrsRight.ToArray();
                 }
                 else
@@ -760,6 +784,8 @@ namespace Main.Level
         public Direction OriginRayDire { get; set; }
         /// <summary>接続位置</summary>
         public Vector3 ContactsPoint { get; set; }
+        /// <summary>距離</summary>
+        public float Distance { get; set; }
     }
 
     /// <summary>

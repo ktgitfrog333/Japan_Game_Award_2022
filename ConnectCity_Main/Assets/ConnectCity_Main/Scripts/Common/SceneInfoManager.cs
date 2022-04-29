@@ -79,8 +79,15 @@ namespace Main.Common
             instance = this;
         }
 
+        // ▼▼▼テスト用 結合時には消す▼▼▼
+        [SerializeField, Range(0, 29)] private int DemoUpdateScenesMap = 0;
+        // ▲▲▲テスト用 結合時には消す▲▲▲
+
         private void Start()
         {
+            // ▼▼▼テスト用 結合時には消す▼▼▼
+            UpdateScenesMap(DemoUpdateScenesMap);
+            // ▲▲▲テスト用 結合時には消す▲▲▲
             if (!StartStage())
                 Debug.LogError("ステージ開始処理の失敗");
         }
@@ -153,6 +160,7 @@ namespace Main.Common
         /// <param name="sceneID">現在のシーン名</param>
         public void UpdateScenesMap(int sceneID)
         {
+            Debug.Log("シーンIDの更新:[" + sceneID + "]");
             _sceneIdCrumb.Current = sceneID;
             // 次のシーン情報をシーン一覧から検索してセット
             if (_sceneIdCrumb.Current < STAGE_COUNT_MAX/* - 1*/)

@@ -179,6 +179,24 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// プレイヤーの操作禁止フラグを切り替え
+        /// </summary>
+        /// <param name="banFlag">操作禁止フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetBanPlayerFromSpaceManager(bool banFlag)
+        {
+            try
+            {
+                Player.GetComponent<PlayerController>().InputBan = banFlag;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// プレイヤーを死亡させる
         /// レーザー砲からの呼び出し
         /// </summary>
