@@ -40,6 +40,8 @@ namespace Main.UI
         [SerializeField] float durationLoopFlash = .3f;
         /// <summary>簡易タイプ</summary>
         [SerializeField] Ease easeType = Ease.InCubic;
+        /// <summary>入力操作アイコンの切替時間</summary>
+        [SerializeField, Range(3, 7)] private double switchInterval = 5d;
 
         private void Reset()
         {
@@ -73,23 +75,27 @@ namespace Main.UI
                         if (!PlayFadeAndSetCompleteCount(anim, compCnt))
                             Debug.LogError("CanvasGroup:フェード処理の失敗");
 
-                        //if (!PlayFadeAndSetCompleteCount<CanvasGroup>(anim, compCnt, anim.gameObject.GetComponent<CanvasGroup>()))
-                        //    Debug.LogError("CanvasGroup:フェード処理の失敗");
-
                         compCnt.Where(x => 1 < x)
                             .Subscribe(_ =>
                             {
                                 if (!PlayVideoClip(GetIdx(trigger.name)))
                                     Debug.LogError("ビデオクリップ再生処理の失敗");
-                                var subChaIdx = 0;
-                                Observable.Interval(System.TimeSpan.FromSeconds(3d))
-                                    .Subscribe(_ => subChaIdx = (subChaIdx == 0) ? 1 : 0)
+                                var subChaIdx = new IntReactiveProperty(0);
+                                Observable.Interval(System.TimeSpan.FromSeconds(switchInterval))
+                                    .Subscribe(_ => subChaIdx.Value = (subChaIdx.Value == 0) ? 1 : 0)
                                     .AddTo(this);
-                                // 時間差で切り替える
-                                if (!ChangeSubChannel(anim, subChaIdx))
-                                    Debug.LogError("コントローラー／キーボード表示切替の失敗");
-                                // メソッド
-                                if (!PlayFlash(anim, GetIdx(trigger.name), subChaIdx))
+                                subChaIdx.Where(x => x == 0 | x == 1)
+                                    .Subscribe(x =>
+                                    {
+                                        // 時間差で切り替える
+                                        if (!ChangeSubChannel(anim, x))
+                                            Debug.LogError("コントローラー／キーボード表示切替の失敗");
+                                    });
+                                // コントローラーとキーボードの点滅部分は常時開始させておく
+                                var s = 0;
+                                if (!PlayFlash(anim, GetIdx(trigger.name), s++))
+                                    Debug.LogError("点滅再生処理の失敗");
+                                if (!PlayFlash(anim, GetIdx(trigger.name), s++))
                                     Debug.LogError("点滅再生処理の失敗");
                             });
                     });
@@ -113,7 +119,6 @@ namespace Main.UI
         /// <returns>成功／失敗</returns>
         private bool ChangeSubChannel(Transform tran, int subChannelIdx)
         {
-            Debug.Log("ChangeSubChannel");
             try
             {
                 // 全部のアルファ値をゼロにする
@@ -138,21 +143,14 @@ namespace Main.UI
         /// <returns></returns>
         private bool PlayFadeAndSetCompleteCount(Transform tran, IntReactiveProperty count)
         {
-            //Debug.Log("PlayFadeAndSetCompleteCount_2");
             tran.gameObject.SetActive(true);
             for (var i = 0; i < tran.childCount; i++){
                 tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
                 tran.GetChild(i).gameObject.SetActive(true);
             }
 
-            //if (tran.GetChild(0).GetComponent<CanvasGroup>() != null)
-                tran.GetChild(0).GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
-                    .OnComplete(() => count.Value++);
-
-            //tran.GetComponent<CanvasGroup>().alpha = 0f;
-            //tran.gameObject.SetActive(true);
-            //tran.GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
-            //    .OnComplete(() => count.Value++);
+            tran.GetChild(0).GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
+                .OnComplete(() => count.Value++);
 
             return true;
         }
@@ -200,7 +198,7 @@ namespace Main.UI
                 channelIdx == 2)
             {
                 // 点滅させる
-                content.GetChild(0).GetChild(subChannelIdx).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
+                content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
                     .SetEase(easeType)
                     .SetLoops(-1, LoopType.Yoyo);
             }
