@@ -70,15 +70,26 @@ namespace Main.UI
                         if (!PlayFadeAndSetCompleteCount<RawImage>(player, compCnt, player.GetComponent<RawImage>()))
                             Debug.LogError("RawImage:フェード処理の失敗");
                         var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                        if (!PlayFadeAndSetCompleteCount<CanvasGroup>(anim, compCnt, anim.gameObject.GetComponent<CanvasGroup>()))
+                        if (!PlayFadeAndSetCompleteCount(anim, compCnt))
                             Debug.LogError("CanvasGroup:フェード処理の失敗");
+
+                        //if (!PlayFadeAndSetCompleteCount<CanvasGroup>(anim, compCnt, anim.gameObject.GetComponent<CanvasGroup>()))
+                        //    Debug.LogError("CanvasGroup:フェード処理の失敗");
 
                         compCnt.Where(x => 1 < x)
                             .Subscribe(_ =>
                             {
                                 if (!PlayVideoClip(GetIdx(trigger.name)))
                                     Debug.LogError("ビデオクリップ再生処理の失敗");
-                                if (!PlayFlash(anim, GetIdx(trigger.name)))
+                                var subChaIdx = 0;
+                                Observable.Interval(System.TimeSpan.FromSeconds(3d))
+                                    .Subscribe(_ => subChaIdx = (subChaIdx == 0) ? 1 : 0)
+                                    .AddTo(this);
+                                // 時間差で切り替える
+                                if (!ChangeSubChannel(anim, subChaIdx))
+                                    Debug.LogError("コントローラー／キーボード表示切替の失敗");
+                                // メソッド
+                                if (!PlayFlash(anim, GetIdx(trigger.name), subChaIdx))
                                     Debug.LogError("点滅再生処理の失敗");
                             });
                     });
@@ -91,6 +102,59 @@ namespace Main.UI
                         anim.gameObject.SetActive(false);
                     });
             }
+        }
+
+        /// <summary>
+        /// サブチャンネル
+        /// 0と1を切り替える
+        /// </summary>
+        /// <param name="tran">コンテンツ</param>
+        /// <param name="subChannelIdx">サブチャンネルのインデックス</param>
+        /// <returns>成功／失敗</returns>
+        private bool ChangeSubChannel(Transform tran, int subChannelIdx)
+        {
+            Debug.Log("ChangeSubChannel");
+            try
+            {
+                // 全部のアルファ値をゼロにする
+                for (var i = 0; i < tran.childCount; i++)
+                    tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
+                tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// フェード処理の再生
+        /// 終了した際に完了カウントをカウントアップ
+        /// </summary>
+        /// <param name="tran">子オブジェクト</param>
+        /// <param name="count">完了カウント</param>
+        /// <returns></returns>
+        private bool PlayFadeAndSetCompleteCount(Transform tran, IntReactiveProperty count)
+        {
+            //Debug.Log("PlayFadeAndSetCompleteCount_2");
+            tran.gameObject.SetActive(true);
+            for (var i = 0; i < tran.childCount; i++){
+                tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
+                tran.GetChild(i).gameObject.SetActive(true);
+            }
+
+            //if (tran.GetChild(0).GetComponent<CanvasGroup>() != null)
+                tran.GetChild(0).GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
+                    .OnComplete(() => count.Value++);
+
+            //tran.GetComponent<CanvasGroup>().alpha = 0f;
+            //tran.gameObject.SetActive(true);
+            //tran.GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
+            //    .OnComplete(() => count.Value++);
+
+            return true;
         }
 
         /// <summary>
@@ -128,7 +192,7 @@ namespace Main.UI
         /// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
         /// <param name="channelIdx">再生させるビデオチャンネル</param>
         /// <returns></returns>
-        private bool PlayFlash(Transform content, int channelIdx)
+        private bool PlayFlash(Transform content, int channelIdx, int subChannelIdx)
         {
             // 点滅が発生するチャンネルのみ実行
             if (channelIdx == 0 ||
@@ -136,7 +200,7 @@ namespace Main.UI
                 channelIdx == 2)
             {
                 // 点滅させる
-                content.GetChild(0).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
+                content.GetChild(0).GetChild(subChannelIdx).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
                     .SetEase(easeType)
                     .SetLoops(-1, LoopType.Yoyo);
             }
