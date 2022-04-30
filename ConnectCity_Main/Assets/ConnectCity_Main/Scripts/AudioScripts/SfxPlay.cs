@@ -75,6 +75,12 @@ namespace Main.Audio
         /// <summary>ゲームクリア</summary>
         me_game_clear = 3,
         /// <summary>ステージセレクト</summary>
-        se_select = 4
+        se_select = 4,
+        /// <summary>ジャンプ（候補１）</summary>
+        se_player_jump_No1,
+        /// <summary>ジャンプ（候補２）</summary>
+        se_player_jump_No3,
+        /// <summary>圧死音</summary>
+        se_player_dead
     }
 }
