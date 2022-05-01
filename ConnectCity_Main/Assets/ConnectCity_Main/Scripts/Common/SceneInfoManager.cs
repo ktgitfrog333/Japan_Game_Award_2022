@@ -26,6 +26,10 @@ namespace Main.Common
         public GameObject LevelDesign => levelDesign;
         /// <summary>レベルデザインオブジェクト名</summary>
         private static readonly string OBJECT_NAME_LEVELDESIGN = "LevelDesign";
+        /// <summary>Skyboxの設定</summary>
+        [SerializeField] private GameObject skyBoxSet;
+        /// <summary>Skyboxの設定オブジェクト名</summary>
+        private static readonly string OBJECT_NAME_SKYBOXSET = "SkyBoxSet";
         /// <summary>カメラのローカル位置</summary>
         [SerializeField] private Vector3[] cameraTransformLocalPoses;
         /// <summary>カメラのローカル角度</summary>
@@ -38,6 +42,10 @@ namespace Main.Common
         [SerializeField] private ClipToPlayBGM[] playBgmNames;
         /// <summary>最終ステージか否か</summary>
         [SerializeField] private bool[] finalStages;
+        /// <summary>ステージごとのSkybox</summary>
+        [SerializeField] private RenderSettingsSkybox[] skyboxs;
+        /// <summary>ゴールポイント解放となるコネクト回数</summary>
+        [SerializeField] private int[] clearConnectedCounters;
         /// <summary>最大ステージ数</summary>
         private static readonly int STAGE_COUNT_MAX = 30;
         /// <summary>メインシーンのシーン名</summary>
@@ -64,6 +72,8 @@ namespace Main.Common
                 bgmPlay = GameObject.Find(OBJECT_NAME_BGMPLAY);
             if (levelDesign == null)
                 levelDesign = GameObject.Find(OBJECT_NAME_LEVELDESIGN);
+            if (skyBoxSet == null)
+                skyBoxSet = GameObject.Find(OBJECT_NAME_SKYBOXSET);
         }
 
         private void Awake()
@@ -99,16 +109,24 @@ namespace Main.Common
         {
             try
             {
+                // Skyboxの設定
+                if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
+                    Debug.LogError("Skybox設定処理の失敗");
+                // 読み込むステージのみ有効
                 var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
                 stage.SetActive(true);
+                // コネクトシステムの初期設定
                 GameManager.Instance.SpaceManager.transform.parent = stage.transform;
                 GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
+                // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
                 GameManager.Instance.MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
                 GameManager.Instance.MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
                 GameManager.Instance.MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
+                // BGMの初期設定
                 bgmPlay.GetComponent<BgmPlay>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
+                // 最終ステージか否かの判断（クリア画面のUIに影響）
                 FinalStage = finalStages[_sceneIdCrumb.Current];
                 return true;
             }
