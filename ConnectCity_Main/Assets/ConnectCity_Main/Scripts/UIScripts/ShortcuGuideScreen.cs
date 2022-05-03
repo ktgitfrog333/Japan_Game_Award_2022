@@ -104,11 +104,8 @@ namespace Main.Level
                     {
                         var c = transform.GetChild(0);
                         c.GetChild((int)ShortcuActionMode.UndoAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.UndoAction).gameObject.SetActive(false);
                         c.GetChild((int)ShortcuActionMode.SelectAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.SelectAction).gameObject.SetActive(false);
                         c.GetChild((int)ShortcuActionMode.CheckAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.CheckAction).gameObject.SetActive(false);
                     }
                 });
         }
@@ -137,7 +134,6 @@ namespace Main.Level
         private float EnabledPushGageAndGetFillAmount(ShortcuActionMode mode, float time, float limit)
         {
             var content = transform.GetChild(0).GetChild((int)mode);
-            content.gameObject.SetActive(true);
             var fAmount = time / limit;
             content.GetChild(3).GetComponent<Image>().fillAmount = fAmount;
             return fAmount;
