@@ -14,10 +14,10 @@ namespace Main.UI
     {
         /// <summary>UI操作スクリプト</summary>
         [SerializeField] private ClearUIController firstElement;
-        /// <summary>ステージクリアのスプライト</summary>
-        [SerializeField] private Sprite _stageClear;
-        /// <summary>オールクリアのスプライト</summary>
-        [SerializeField] private Sprite _gameAllClear;
+        /// <summary>ステージクリアのテキスト</summary>
+        [SerializeField] private string stageClearText = "ステージクリア！";
+        /// <summary>オールクリアのテキスト</summary>
+        [SerializeField] private string gameAllClearText = "Congratulation！！";
 
         protected override void Awake()
         {
@@ -28,9 +28,9 @@ namespace Main.UI
         {
             Time.timeScale = 0f;
             if (SceneInfoManager.Instance.FinalStage)
-                transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = _gameAllClear;
+                transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = gameAllClearText;
             else
-                transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = _stageClear;
+                transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = stageClearText;
         }
 
         protected override void Initialize()

@@ -15,11 +15,11 @@ C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_Main
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-60262
+61755
 Successfully changed project path to: C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_Main
 C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_Main
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 32.60 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 32.12 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.25f1 (9b9180224418)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
@@ -35,37 +35,37 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56900
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56508
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.002000 seconds.
+Registered in 0.002014 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 31.67 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 29.55 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.512 seconds
+- Completed reload, in  0.507 seconds
 Domain Reload Profiling:
-	ReloadAssembly (512ms)
-		BeginReloadAssembly (49ms)
+	ReloadAssembly (507ms)
+		BeginReloadAssembly (50ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (401ms)
-			LoadAssemblies (47ms)
+		EndReloadAssembly (394ms)
+			LoadAssemblies (48ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (137ms)
+			SetupTypeCache (134ms)
 			ReleaseScriptCaches (0ms)
 			RebuildScriptCaches (26ms)
-			SetupLoadedEditorAssemblies (143ms)
+			SetupLoadedEditorAssemblies (132ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (3ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (32ms)
+				RefreshPlugins (30ms)
 				BeforeProcessingInitializeOnLoad (11ms)
-				ProcessInitializeOnLoadAttributes (74ms)
+				ProcessInitializeOnLoadAttributes (65ms)
 				ProcessInitializeOnLoadMethodAttributes (23ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
@@ -73,34 +73,34 @@ Domain Reload Profiling:
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.005299 seconds.
+Registered in 0.005435 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
 Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.873 seconds
+- Completed reload, in  0.908 seconds
 Domain Reload Profiling:
-	ReloadAssembly (874ms)
-		BeginReloadAssembly (125ms)
+	ReloadAssembly (909ms)
+		BeginReloadAssembly (126ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (16ms)
-		EndReloadAssembly (697ms)
-			LoadAssemblies (77ms)
+		EndReloadAssembly (726ms)
+			LoadAssemblies (79ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (260ms)
+			SetupTypeCache (266ms)
 			ReleaseScriptCaches (0ms)
 			RebuildScriptCaches (37ms)
-			SetupLoadedEditorAssemblies (250ms)
+			SetupLoadedEditorAssemblies (260ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (68ms)
-				ProcessInitializeOnLoadAttributes (164ms)
+				BeforeProcessingInitializeOnLoad (70ms)
+				ProcessInitializeOnLoadAttributes (171ms)
 				ProcessInitializeOnLoadMethodAttributes (8ms)
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
@@ -110,14 +110,14 @@ Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
-Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.35 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1770 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 149.5 MB.
-System memory in use after: 149.5 MB.
+System memory in use after: 149.6 MB.
 
 Unloading 21 unused Assets to reduce memory usage. Loaded Objects now: 2216.
-Total: 2.437300 ms (FindLiveObjects: 0.142100 ms CreateObjectMapping: 0.052200 ms MarkObjects: 2.184000 ms  DeleteObjects: 0.058200 ms)
+Total: 2.621000 ms (FindLiveObjects: 0.122200 ms CreateObjectMapping: 0.048900 ms MarkObjects: 2.382500 ms  DeleteObjects: 0.066300 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -131,176 +131,112 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Pause/game_pause_v2.png
-  artifactKey: Guid(18f250a497908c94d80e3570dd11a865) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Pause/game_pause_v2.png using Guid(18f250a497908c94d80e3570dd11a865) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b78073ae952a4e593ba9a875ad9efe44') in 0.090169 seconds 
-  Import took 0.092517 seconds .
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconCross.png
+  artifactKey: Guid(af0cbf2bd1a9f69478811d6ef6e5c2e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconCross.png using Guid(af0cbf2bd1a9f69478811d6ef6e5c2e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b7f7f736e0760c9b1e68be004fe53cc') in 0.095214 seconds 
+  Import took 0.097697 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.228391 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Pause/game_pause_v2.png
-  artifactKey: Guid(18f250a497908c94d80e3570dd11a865) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Pause/game_pause_v2.png using Guid(18f250a497908c94d80e3570dd11a865) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '766e907d16d6ad9ad138c134d691ad74') in 0.038156 seconds 
-  Import took 0.040494 seconds .
+  Time since last request: 4.745905 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconCross.png
+  artifactKey: Guid(af0cbf2bd1a9f69478811d6ef6e5c2e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconCross.png using Guid(af0cbf2bd1a9f69478811d6ef6e5c2e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '499d024f83188ae09b765a38b988b4d6') in 0.036936 seconds 
+  Import took 0.039389 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 145.218352 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/A_Key.png
+  artifactKey: Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/A_Key.png using Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '56873eb325ad57a26afd69d61cbd4246') in 0.013353 seconds 
+  Import took 0.016363 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 167.365695 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/B_Key.png
+  artifactKey: Guid(830d4e7bb37021b469b0570a8f80099c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/B_Key.png using Guid(830d4e7bb37021b469b0570a8f80099c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f43667b53e8649e1690d40f9dce9db8') in 0.007024 seconds 
+  Import took 0.014254 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.878425 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/B_Key.png
+  artifactKey: Guid(830d4e7bb37021b469b0570a8f80099c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/B_Key.png using Guid(830d4e7bb37021b469b0570a8f80099c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ba5747456e007b71526ea09333672014') in 0.009787 seconds 
+  Import took 0.012913 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1249.927332 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/TriggerIconRB.png
+  artifactKey: Guid(f252cdf002b4a774fb8b7385e7ff858e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/TriggerIconRB.png using Guid(f252cdf002b4a774fb8b7385e7ff858e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7fbf46f22a0c84456782b9cbb1e4b62') in 0.009278 seconds 
+  Import took 0.012455 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 841.811087 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconSideR.png
+  artifactKey: Guid(d98cfdecce23bfb4cbe0dae68df565dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconSideR.png using Guid(d98cfdecce23bfb4cbe0dae68df565dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '93eb11fa24375098adbe135cc96b9fbb') in 0.006411 seconds 
+  Import took 0.009878 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.107324 seconds.
+  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconSideR.png
+  artifactKey: Guid(d98cfdecce23bfb4cbe0dae68df565dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconSideR.png using Guid(d98cfdecce23bfb4cbe0dae68df565dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ea4705dc5983dd3e722ba4d462a96d5') in 0.011758 seconds 
+  Import took 0.015056 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.005116 seconds.
+Registered in 0.005609 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.33 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.831 seconds
+- Completed reload, in  0.823 seconds
 Domain Reload Profiling:
-	ReloadAssembly (831ms)
-		BeginReloadAssembly (101ms)
+	ReloadAssembly (823ms)
+		BeginReloadAssembly (92ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (30ms)
-		EndReloadAssembly (678ms)
-			LoadAssemblies (77ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (257ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (32ms)
-			SetupLoadedEditorAssemblies (234ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (61ms)
-				ProcessInitializeOnLoadAttributes (154ms)
-				ProcessInitializeOnLoadMethodAttributes (7ms)
-				AfterProcessingInitializeOnLoad (6ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (5ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1763 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 152.3 MB.
-System memory in use after: 152.4 MB.
-
-Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2225.
-Total: 2.262900 ms (FindLiveObjects: 0.127100 ms CreateObjectMapping: 0.045900 ms MarkObjects: 2.076400 ms  DeleteObjects: 0.012900 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.005137 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.817 seconds
-Domain Reload Profiling:
-	ReloadAssembly (817ms)
-		BeginReloadAssembly (97ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (3ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (27ms)
-		EndReloadAssembly (667ms)
-			LoadAssemblies (75ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (249ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (30ms)
-			SetupLoadedEditorAssemblies (233ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (4ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (62ms)
-				ProcessInitializeOnLoadAttributes (153ms)
-				ProcessInitializeOnLoadMethodAttributes (7ms)
-				AfterProcessingInitializeOnLoad (6ms)
-				EditorAssembliesLoaded (0ms)
-			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (5ms)
-Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.38 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1763 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 152.3 MB.
-System memory in use after: 152.4 MB.
-
-Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2227.
-Total: 2.427300 ms (FindLiveObjects: 0.128500 ms CreateObjectMapping: 0.046100 ms MarkObjects: 2.240000 ms  DeleteObjects: 0.012100 ms)
-
-AssetImportParameters requested are different than current active one (requested -> active):
-  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
-  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
-  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
-  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
-  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
-  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
-  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Prepare
-Registering precompiled user dll's ...
-Registered in 0.004905 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.840 seconds
-Domain Reload Profiling:
-	ReloadAssembly (840ms)
-		BeginReloadAssembly (107ms)
-			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (3ms)
-			BackupInstance (0ms)
-			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (34ms)
-		EndReloadAssembly (679ms)
+			CreateAndSetChildDomain (29ms)
+		EndReloadAssembly (680ms)
 			LoadAssemblies (76ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (257ms)
+			SetupTypeCache (255ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (30ms)
-			SetupLoadedEditorAssemblies (237ms)
+			RebuildScriptCaches (31ms)
+			SetupLoadedEditorAssemblies (239ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (63ms)
-				ProcessInitializeOnLoadAttributes (156ms)
-				ProcessInitializeOnLoadMethodAttributes (7ms)
+				BeforeProcessingInitializeOnLoad (62ms)
+				ProcessInitializeOnLoadAttributes (158ms)
+				ProcessInitializeOnLoadMethodAttributes (8ms)
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (5ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.35 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1763 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 152.3 MB.
 System memory in use after: 152.4 MB.
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2229.
-Total: 2.410000 ms (FindLiveObjects: 0.126100 ms CreateObjectMapping: 0.044300 ms MarkObjects: 2.227000 ms  DeleteObjects: 0.011800 ms)
+Total: 2.585300 ms (FindLiveObjects: 0.127500 ms CreateObjectMapping: 0.052300 ms MarkObjects: 2.391700 ms  DeleteObjects: 0.013100 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -315,48 +251,48 @@ AssetImportParameters requested are different than current active one (requested
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.005103 seconds.
+Registered in 0.005115 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.35 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.818 seconds
+- Completed reload, in  0.812 seconds
 Domain Reload Profiling:
-	ReloadAssembly (818ms)
-		BeginReloadAssembly (90ms)
+	ReloadAssembly (813ms)
+		BeginReloadAssembly (95ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (3ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (26ms)
-		EndReloadAssembly (669ms)
-			LoadAssemblies (75ms)
+		EndReloadAssembly (666ms)
+			LoadAssemblies (76ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (254ms)
+			SetupTypeCache (247ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (32ms)
-			SetupLoadedEditorAssemblies (232ms)
+			RebuildScriptCaches (31ms)
+			SetupLoadedEditorAssemblies (234ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (0ms)
 				BeforeProcessingInitializeOnLoad (62ms)
-				ProcessInitializeOnLoadAttributes (152ms)
+				ProcessInitializeOnLoadAttributes (153ms)
 				ProcessInitializeOnLoadMethodAttributes (7ms)
-				AfterProcessingInitializeOnLoad (6ms)
+				AfterProcessingInitializeOnLoad (7ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (5ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.34 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.37 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1763 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 152.3 MB.
-System memory in use after: 152.4 MB.
+System memory in use after: 152.5 MB.
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2231.
-Total: 2.360200 ms (FindLiveObjects: 0.127700 ms CreateObjectMapping: 0.043800 ms MarkObjects: 2.175300 ms  DeleteObjects: 0.012700 ms)
+Total: 2.351000 ms (FindLiveObjects: 0.123600 ms CreateObjectMapping: 0.044200 ms MarkObjects: 2.170100 ms  DeleteObjects: 0.012400 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -369,203 +305,59 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
-Received Import Request.
-  Time since last request: 4827.505456 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual
-  artifactKey: Guid(a707e313cd466d746a2c9c5475c077c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual using Guid(a707e313cd466d746a2c9c5475c077c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '84f54e9cef49ad27cab9066cce9aa551') in 0.006612 seconds 
-  Import took 0.009786 seconds .
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.006184 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.42 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.002 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1003ms)
+		BeginReloadAssembly (113ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (29ms)
+		EndReloadAssembly (825ms)
+			LoadAssemblies (88ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (296ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (34ms)
+			SetupLoadedEditorAssemblies (318ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (77ms)
+				ProcessInitializeOnLoadAttributes (218ms)
+				ProcessInitializeOnLoadMethodAttributes (11ms)
+				AfterProcessingInitializeOnLoad (7ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.43 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1763 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 152.4 MB.
+System memory in use after: 152.5 MB.
 
-========================================================================
-Received Import Request.
-  Time since last request: 86.835015 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/Y_Key.png
-  artifactKey: Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/Y_Key.png using Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ae935e4fbe70fa31a179b4c62aa165c4') in 0.058356 seconds 
-  Import took 0.060940 seconds .
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 2233.
+Total: 2.553800 ms (FindLiveObjects: 0.154400 ms CreateObjectMapping: 0.124000 ms MarkObjects: 2.258400 ms  DeleteObjects: 0.016000 ms)
 
-========================================================================
-Received Import Request.
-  Time since last request: 4.538691 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/Y_Key.png
-  artifactKey: Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/Y_Key.png using Guid(0f7906bcad2908446b6f9ec79fe3b28c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ae7e565e52e1f231985da80fbdcedb61') in 0.027465 seconds 
-  Import took 0.029879 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 6479.628626 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconConnectSystemRight.png
-  artifactKey: Guid(89fd4a06149b8c240b99fe9f1ecec049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconConnectSystemRight.png using Guid(89fd4a06149b8c240b99fe9f1ecec049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0b141cd239b567672e709feafc3b8e7c') in 0.044621 seconds 
-  Import took 0.070782 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.529512 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconMove.png
-  artifactKey: Guid(a14cd4b308ebdcb44b7170454881e9f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconMove.png using Guid(a14cd4b308ebdcb44b7170454881e9f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6f52fcf58bcaf95c418a6c88b2a35dc8') in 0.011446 seconds 
-  Import took 0.019315 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.673609 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconR.png
-  artifactKey: Guid(28ea66171cb771b42bc1790157411d82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconR.png using Guid(28ea66171cb771b42bc1790157411d82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '85dbb93f786dde9afeebdabd00f7517e') in 0.011001 seconds 
-  Import took 0.013955 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.417769 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconSpace.png
-  artifactKey: Guid(82523367af2864c4ebddf59e30b04e5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconSpace.png using Guid(82523367af2864c4ebddf59e30b04e5d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d512fa06805e631f781283b2899fbff') in 0.009819 seconds 
-  Import took 0.012205 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 248.848365 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconMove1.png
-  artifactKey: Guid(d90ac5b615d03b04eae3769936928053) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/Tutorial/KeyBordIconMove1.png using Guid(d90ac5b615d03b04eae3769936928053) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '663ffb4ed8bf4bbd6765ee3b5031d02f') in 0.011936 seconds 
-  Import took 0.015113 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 189.337341 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove.png
-  artifactKey: Guid(d90ac5b615d03b04eae3769936928053) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove.png using Guid(d90ac5b615d03b04eae3769936928053) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e00289b522b42d5b6ffc2588bdde11f9') in 0.015398 seconds 
-  Import took 0.018608 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 58.564985 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_ConnectSystemLeft_v2.png
-  artifactKey: Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_ConnectSystemLeft_v2.png using Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1d41e86958168b68182be691e015b82f') in 0.006465 seconds 
-  Import took 0.014321 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 11.071309 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png
-  artifactKey: Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png using Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d530c31c2e855d8b490ea2f851e5b2e') in 0.007954 seconds 
-  Import took 0.010774 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 5.429570 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png
-  artifactKey: Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png using Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c1277c0e3bf22db0ac8489962063a25') in 0.011311 seconds 
-  Import took 0.014020 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 934.956196 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png
-  artifactKey: Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconMove_v2.png using Guid(1bab7fc576fa8274ea940f1bfc3f7e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e627337da1be9a50137307a88eb0e838') in 0.015366 seconds 
-  Import took 0.019376 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 615.832938 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft.png
-  artifactKey: Guid(d59e88b2c7cbecd43861f801aee7f7ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft.png using Guid(d59e88b2c7cbecd43861f801aee7f7ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8a1d26095a685fb357b61a85a18017fa') in 0.018838 seconds 
-  Import took 0.026866 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 8.392465 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft.png
-  artifactKey: Guid(d59e88b2c7cbecd43861f801aee7f7ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft.png using Guid(d59e88b2c7cbecd43861f801aee7f7ce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2827c022501073141edfd8a9700b2176') in 0.012035 seconds 
-  Import took 0.015397 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 544.124277 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualCenter.png
-  artifactKey: Guid(6f65190497e339444a70aa21d2a31707) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualCenter.png using Guid(6f65190497e339444a70aa21d2a31707) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f42a3491081491329122c97e25aba4f2') in 0.008145 seconds 
-  Import took 0.016089 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.783897 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualCenter.png
-  artifactKey: Guid(6f65190497e339444a70aa21d2a31707) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualCenter.png using Guid(6f65190497e339444a70aa21d2a31707) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '53cb4b46bfaf21cd7890f8d77bc5d532') in 0.011305 seconds 
-  Import took 0.014510 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 1.933030 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight.png
-  artifactKey: Guid(055d9df00e424444680179eba848a114) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight.png using Guid(055d9df00e424444680179eba848a114) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ee174faa12ed4ef817ecab6fb2891ad') in 0.005448 seconds 
-  Import took 0.013446 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.458352 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight.png
-  artifactKey: Guid(055d9df00e424444680179eba848a114) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight.png using Guid(055d9df00e424444680179eba848a114) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6d600f71df5614e76a3d3a524d948a39') in 0.011270 seconds 
-  Import took 0.014330 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 1.151800 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight_2.png
-  artifactKey: Guid(941b93abd27caaa488c6c4ce9fe72b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight_2.png using Guid(941b93abd27caaa488c6c4ce9fe72b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '587586ca71ddb3720f8296b96dc85500') in 0.006065 seconds 
-  Import took 0.009181 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.415152 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight_2.png
-  artifactKey: Guid(941b93abd27caaa488c6c4ce9fe72b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualRight_2.png using Guid(941b93abd27caaa488c6c4ce9fe72b3b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acabced35566c0b14bf78e8af19c1be4') in 0.013052 seconds 
-  Import took 0.016344 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 16965.931314 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft_2.png
-  artifactKey: Guid(9dd56bf30ad7f7145aaaa2b067b4183a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft_2.png using Guid(9dd56bf30ad7f7145aaaa2b067b4183a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ad9e39cf63002a05242177a274f5a157') in 0.074978 seconds 
-  Import took 0.097066 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.959576 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft_2.png
-  artifactKey: Guid(9dd56bf30ad7f7145aaaa2b067b4183a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/KeyBordIconManualLeft_2.png using Guid(9dd56bf30ad7f7145aaaa2b067b4183a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7d73b657d850a40335a00dc651080cac') in 0.023231 seconds 
-  Import took 0.026644 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 6854.877970 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconStick.png
-  artifactKey: Guid(82c38f7e57365104c956c0a4dcc20e36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconStick.png using Guid(82c38f7e57365104c956c0a4dcc20e36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '085076fb6f3a1d7684fb93c891d843ea') in 0.033916 seconds 
-  Import took 0.055692 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 4.522506 seconds.
-  path: Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconStick.png
-  artifactKey: Guid(82c38f7e57365104c956c0a4dcc20e36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/ConnectCity_Main/Textures/UITextures/GameManual/ButtonIconStick.png using Guid(82c38f7e57365104c956c0a4dcc20e36) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '509003a7837ea615b4eaf2a626e6d533') in 0.016568 seconds 
-  Import took 0.019458 seconds .
-
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file
