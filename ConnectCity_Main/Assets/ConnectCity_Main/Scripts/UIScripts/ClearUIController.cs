@@ -21,6 +21,8 @@ namespace Main.UI
     {
         /// <summary>アクションモード</summary>
         [SerializeField] private ActionMode act;
+        /// <summary>リトライのSEパターン</summary>
+        [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
 
         protected override void OnEnable()
         {
@@ -121,7 +123,7 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         _menuClose = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                        SfxPlay.Instance.PlaySFX(retrySEPattern);
                         SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 

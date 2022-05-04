@@ -36,8 +36,8 @@ namespace Main.UI
             if (!@event)
                 @event = GameObject.Find("EventSystem").GetComponent<EventSystem>();
             @event.SetSelectedGameObject(firstObject);
+            firstElement.SelectSEMute = true;
             firstElement.Selected();
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
             Time.timeScale = 0f;
         }
 
@@ -56,7 +56,7 @@ namespace Main.UI
                     Input.GetMouseButtonDown(2))
                 .Subscribe(_ =>
                 {
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                     UIManager.Instance.CloseManual();
                 });
         }

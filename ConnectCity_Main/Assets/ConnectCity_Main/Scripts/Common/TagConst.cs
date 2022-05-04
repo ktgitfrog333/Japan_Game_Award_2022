@@ -35,5 +35,13 @@ namespace Main.Common.Const
         /// チュートリアル表示トリガーのタグ名
         /// </summary>
         public static readonly string TAG_NAME_TUTORIALTRIGGER = "TutorialTrigger";
+        /// <summary>
+        /// ゴールポイントのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_GOALPOINT = "GoalPoint";
+        /// <summary>
+        /// コネクトカウントダウンUIのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_CONNECTCOUNTSCREEN = "ConnectCountScreen";
     }
 }

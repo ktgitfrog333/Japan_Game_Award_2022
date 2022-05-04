@@ -22,6 +22,10 @@ namespace Main.Level
         [SerializeField] private float selectPushTimeLimit = 3f;
         /// <summary>遊び方の確認を実行するまで押下し続ける時間</summary>
         [SerializeField] private float manualPushTimeLimit = 3f;
+        /// <summary>遊び方の確認のSEパターン</summary>
+        [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
+        /// <summary>リトライのSEパターン</summary>
+        [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
 
         void Start()
         {
@@ -71,7 +75,7 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                SfxPlay.Instance.PlaySFX(retrySEPattern);
                                 SceneInfoManager.Instance.SetSceneIdUndo();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 x = 0f;
@@ -93,7 +97,7 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                SfxPlay.Instance.PlaySFX(manualSEPattern);
                                 UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
@@ -104,11 +108,8 @@ namespace Main.Level
                     {
                         var c = transform.GetChild(0);
                         c.GetChild((int)ShortcuActionMode.UndoAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.UndoAction).gameObject.SetActive(false);
                         c.GetChild((int)ShortcuActionMode.SelectAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.SelectAction).gameObject.SetActive(false);
                         c.GetChild((int)ShortcuActionMode.CheckAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
-                        c.GetChild((int)ShortcuActionMode.CheckAction).gameObject.SetActive(false);
                     }
                 });
         }
@@ -137,7 +138,6 @@ namespace Main.Level
         private float EnabledPushGageAndGetFillAmount(ShortcuActionMode mode, float time, float limit)
         {
             var content = transform.GetChild(0).GetChild((int)mode);
-            content.gameObject.SetActive(true);
             var fAmount = time / limit;
             content.GetChild(3).GetComponent<Image>().fillAmount = fAmount;
             return fAmount;

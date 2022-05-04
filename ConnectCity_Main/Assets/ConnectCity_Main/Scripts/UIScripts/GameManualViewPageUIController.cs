@@ -25,6 +25,13 @@ namespace Main.UI
         //[SerializeField] private EventTrigger eventTrigger;
         /// <summary>メニューを閉じる際に一度のみ実行するよう制御するフラグ</summary>
         private bool _menuClose;
+        /// <summary>ミュートにするか</summary>
+        private bool _selectSEMute;
+        /// <summary>ミュートにするか</summary>
+        public bool SelectSEMute
+        {
+            set => _selectSEMute = value;
+        }
 
         private void Awake()
         {
@@ -98,7 +105,9 @@ namespace Main.UI
         /// </summary>
         public void Selected()
         {
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+            if (!_selectSEMute)
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+            _selectSEMute = false;
             UIManager.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
         }
 
@@ -110,7 +119,7 @@ namespace Main.UI
             if (!_menuClose)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                 UIManager.Instance.CloseManual();
                 button.enabled = false;
             }
@@ -121,7 +130,7 @@ namespace Main.UI
             if (!_menuClose)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                 UIManager.Instance.CloseManual();
                 button.enabled = false;
             }
