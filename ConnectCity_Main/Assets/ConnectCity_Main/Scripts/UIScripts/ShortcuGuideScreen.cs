@@ -24,6 +24,8 @@ namespace Main.Level
         [SerializeField] private float manualPushTimeLimit = 3f;
         /// <summary>遊び方の確認のSEパターン</summary>
         [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
+        /// <summary>リトライのSEパターン</summary>
+        [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
 
         void Start()
         {
@@ -73,7 +75,7 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                SfxPlay.Instance.PlaySFX(retrySEPattern);
                                 SceneInfoManager.Instance.SetSceneIdUndo();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 x = 0f;

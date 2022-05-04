@@ -43,6 +43,8 @@ namespace Main.UI
         [SerializeField] private GameObject shortcuGuideScreen;
         /// <summary>ショートカット入力</summary>
         private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
+        /// <summary>遊び方の確認のSEパターン</summary>
+        [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
 
         private void Reset()
         {
@@ -81,7 +83,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     pauseScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                    SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
             // 空間操作可能な境界を表示切り替え操作の入力
             this.UpdateAsObservable()
@@ -90,7 +92,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     spaceScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                    SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
         }
 

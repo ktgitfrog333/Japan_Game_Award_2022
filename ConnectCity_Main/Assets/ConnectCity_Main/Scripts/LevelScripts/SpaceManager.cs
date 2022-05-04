@@ -391,6 +391,9 @@ namespace Main.Level
             return _connectDirections.Count;
         }
 
+        /// <summary>接続のSEパターン</summary>
+        [SerializeField] private ClipToPlay connectSEPattern = ClipToPlay.se_conect_No1;
+
         /// <summary>
         /// マッチング済みのペア同士を接続する
         /// </summary>
@@ -408,7 +411,7 @@ namespace Main.Level
 
                 if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f) , orgTran.parent.childCount + metTran.parent.childCount))
                     Debug.Log("パーティクル生成の失敗");
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                SfxPlay.Instance.PlaySFX(connectSEPattern);
 
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
