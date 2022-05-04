@@ -46,6 +46,8 @@ namespace Main.Common
         [SerializeField] private RenderSettingsSkybox[] skyboxs;
         /// <summary>ゴールポイント解放となるコネクト回数</summary>
         [SerializeField] private int[] clearConnectedCounters;
+        /// <summary>ゴールポイント解放となるコネクト回数</summary>
+        public int ClearConnectedCounter { get; set; }
         /// <summary>最大ステージ数</summary>
         private static readonly int STAGE_COUNT_MAX = 30;
         /// <summary>メインシーンのシーン名</summary>
@@ -128,6 +130,12 @@ namespace Main.Common
                 bgmPlay.GetComponent<BgmPlay>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
                 // 最終ステージか否かの判断（クリア画面のUIに影響）
                 FinalStage = finalStages[_sceneIdCrumb.Current];
+                // コネクト回数
+                ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
+                if (!GameManager.Instance.InitializeGoalPoint())
+                    Debug.LogError("ゴールポイント初期化の失敗");
+                if (!GameManager.Instance.CloseDoorFromSpaceManager())
+                    Debug.LogError("ゴール扉クローズ処理の失敗");
                 return true;
             }
             catch

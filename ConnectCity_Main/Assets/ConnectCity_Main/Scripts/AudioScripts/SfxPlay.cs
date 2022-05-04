@@ -81,6 +81,10 @@ namespace Main.Audio
         /// <summary>ジャンプ（候補２）</summary>
         se_player_jump_No3,
         /// <summary>圧死音</summary>
-        se_player_dead
+        se_player_dead,
+        /// <summary>遊び方表_開く音（候補１）</summary>
+        se_play_open_No2,
+        /// <summary>遊び方表_開く音（候補２）</summary>
+        se_play_open_No3,
     }
 }

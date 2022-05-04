@@ -50,6 +50,10 @@ namespace Main.Common
         [SerializeField] private GameObject mainCamera;
         /// <summary>カメラ</summary>
         public GameObject MainCamera { get { return mainCamera; } }
+        /// <summary>ゴールポイントのゲームオブジェクト</summary>
+        [SerializeField] private GameObject[] goalPoint;
+        /// <summary>ゴールポイントのゲームオブジェクト</summary>
+        public GameObject GoalPoint => goalPoint[SceneInfoManager.Instance.SceneIdCrumb.Current];
         /// <summary>T.B.D 重力操作ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] gravityControllers;
         /// <summary>T.B.D 敵ギミックのゲームオブジェクト</summary>
@@ -75,6 +79,8 @@ namespace Main.Common
                 spaceManager = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
             if (mainCamera == true)
                 mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+            if (goalPoint == null)
+                goalPoint = GameObject.FindGameObjectsWithTag(TAG_NAME_GOALPOINT);
             // T.B.D 重力操作ギミックの仮実装
             //if (gravityControllers == null && gravityControllers.length)
             //    gravityControllers = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
@@ -110,6 +116,49 @@ namespace Main.Common
             //_brokenCubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(brokenCubes);
             //if (_brokenCubeOffsets == null)
             //    Debug.LogError("ぼろいブロック初期状態の保存の失敗");
+        }
+
+        /// <summary>
+        /// ゴールポイント初期処理
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool InitializeGoalPoint()
+        {
+            return GoalPoint.GetComponent<GoalPoint>().Initialize();
+        }
+
+        /// <summary>
+        /// カウントダウン表示を更新
+        /// SpaceManagerからの呼び出し
+        /// </summary>
+        /// <param name="count">コネクト回数</param>
+        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateCountDownFromSpaceManager(int count, int maxCount)
+        {
+            return GoalPoint.GetComponent<GoalPoint>().UpdateCountDownFromGameManager(count, maxCount);
+        }
+
+        /// <summary>
+        /// ドアを開く
+        /// ゴール演出のイベント
+        /// SpaceManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool OpenDoorFromSpaceManager()
+        {
+            return GoalPoint.GetComponent<GoalPoint>().OpenDoorFromGameManager();
+        }
+
+        /// <summary>
+        /// ドアを閉める
+        /// ゴール演出のイベント
+        /// SpaceManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool CloseDoorFromSpaceManager()
+        {
+            return GoalPoint.GetComponent<GoalPoint>().CloseDoorFromGameManager();
         }
 
         /// <summary>

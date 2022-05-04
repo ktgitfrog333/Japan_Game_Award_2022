@@ -93,7 +93,21 @@ namespace Main.Level
             _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
             if (_cubeOffsets == null)
                 Debug.LogError("オブジェクト初期状態の保存の失敗");
-            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current));
+            // コネクト回数のチェック
+            var connectSuccess = new IntReactiveProperty();
+            connectSuccess.ObserveEveryValueChanged(x => x.Value)
+                .Do(x =>
+                {
+                    if (!GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
+                        Debug.LogError("カウントダウン更新処理の失敗");
+                })
+                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter <= x)
+                .Subscribe(_ =>
+                {
+                    if (!GameManager.Instance.OpenDoorFromSpaceManager())
+                        Debug.LogError("ゴール演出の失敗");
+                });
+            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current), connectSuccess);
             if (_moveCubes == null)
                 throw new System.Exception("オブジェクト取得の失敗");
             // 速度の初期値
@@ -170,7 +184,7 @@ namespace Main.Level
         /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <param name="level">レベルデザイン</param>
         /// <returns>セット処理完了／引数情報の一部にnull</returns>
-        private GameObject[] SetCollsion(GameObject[] moveCubes, Transform level)
+        private GameObject[] SetCollsion(GameObject[] moveCubes, Transform level, IntReactiveProperty count)
         {
             // 取得したペアがない場合は空オブジェクトを返却
             if (moveCubes == null || moveCubes.Length < -1 || level == null) return null;
@@ -224,7 +238,7 @@ namespace Main.Level
                         if (!x)
                             Debug.LogError("MoveCubeのコネクト処理失敗");
                         else
-                            Debug.Log("MoveCubeのコネクト処理成功");
+                            count.Value++;
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue

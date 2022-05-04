@@ -22,6 +22,8 @@ namespace Main.Level
         [SerializeField] private float selectPushTimeLimit = 3f;
         /// <summary>遊び方の確認を実行するまで押下し続ける時間</summary>
         [SerializeField] private float manualPushTimeLimit = 3f;
+        /// <summary>遊び方の確認のSEパターン</summary>
+        [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
 
         void Start()
         {
@@ -93,7 +95,7 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                SfxPlay.Instance.PlaySFX(manualSEPattern);
                                 UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
