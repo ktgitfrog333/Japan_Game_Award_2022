@@ -60,6 +60,9 @@ namespace Main.UI
                                 Time.timeScale = 1f;
                             break;
                         case SceneLoadType.PrefabLoad:
+                            // ゴール演出の後処理
+                            if (!UIManager.Instance.DestroyParticleFromFadeScreen())
+                                Debug.LogError("ゴール演出の後処理の失敗");
                             // 同じステージをリロードする場合はスタート演出を短くする
                             if (!UIManager.Instance.SetStartCutsceneContinueFromFadeScreen(SceneInfoManager.Instance.LoadSceneId == SceneInfoManager.Instance.SceneIdCrumb.Current))
                                 Debug.LogError("リスタートフラグセットの失敗");

@@ -5,6 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 using DG.Tweening;
 using System.Threading.Tasks;
+using Main.Common;
 
 namespace Main.Direction
 {
@@ -13,12 +14,12 @@ namespace Main.Direction
     /// </summary>
     public class EndCutscene : MonoBehaviour
     {
-        /// <summary>ゴールの位置</summary>
-        [SerializeField] private GameObject[] goalPositions;
         /// <summary>各カットの待機時間（秒）</summary>
         [SerializeField] private float[] cutsWaitForSec = { 1.5f, .5f, .5f };
         /// <summary>ブラックホールパーティクルのプレハブ</summary>
         [SerializeField] private GameObject blackHolePrefab;
+        /// <summary>ブラックホールパーティクルのプレハブ一時格納</summary>
+        private GameObject instanceBlackHolePrefab;
         /// <summary>キューブパーティクルのプレハブ</summary>
         [SerializeField] private GameObject diffusionCubesPrefab;
         /// <summary>カメラの拡大率</summary>
@@ -27,20 +28,18 @@ namespace Main.Direction
         [SerializeField] private float zoomDuration = .6f;
         /// <summary>拡散キューブのパーティクルが向かうターゲット当たり判定</summary>
         [SerializeField] private Vector3 boxColliderSize = new Vector3(0.5f, 0.5f, 0.5f);
-        /// <summary>追尾対象</summary>
-        public Transform Target => goalPositions[0].transform;
 
-        private void Reset()
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        public IEnumerator Initialize(System.IObserver<bool> observer)
         {
-            goalPositions = GameObject.FindGameObjectsWithTag("GoalPoint");
-        }
+            var target = GameManager.Instance.GoalPoint.transform;
 
-        private void Start()
-        {
             // カメラをズーム
             // ブラックホールと光が出現
             var cut1 = new BoolReactiveProperty();
-            Observable.FromCoroutine<bool>(observer => InstanceBlackHole(observer))
+            Observable.FromCoroutine<bool>(observer => InstanceBlackHole(observer, target))
                 .Subscribe(x => cut1.Value = x)
                 .AddTo(gameObject);
             // プレイヤーを非表示にしてキューブのパーティクル出現
@@ -50,7 +49,7 @@ namespace Main.Direction
                 .Where(x => x)
                 .Subscribe(_ =>
                 {
-                    Observable.FromCoroutine<bool>(observer => InstanceDiffusion(observer))
+                    Observable.FromCoroutine<bool>(observer => InstanceDiffusion(observer, target))
                         .Subscribe(x => cut2.Value = x)
                         .AddTo(gameObject);
                 });
@@ -58,9 +57,26 @@ namespace Main.Direction
                 .Where(x => x)
                 .Subscribe(_ =>
                 {
-                    // T.B.D ステージクリアロゴを表示させる
-                    Debug.Log("ステージクリアロゴが出現");
+                    observer.OnNext(true);
                 });
+            yield return null;
+        }
+
+        /// <summary>
+        /// プレハブが残っていた場合は削除
+        /// </summary>
+        public bool DestroyParticleFromFadeScreen()
+        {
+            try
+            {
+                if (instanceBlackHolePrefab != null)
+                    Destroy(instanceBlackHolePrefab);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -70,12 +86,12 @@ namespace Main.Direction
         /// </summary>
         /// <param name="observer">任意発行のObservber</param>
         /// <returns>コルーチン</returns>
-        private IEnumerator InstanceBlackHole(System.IObserver<bool> observer)
+        private IEnumerator InstanceBlackHole(System.IObserver<bool> observer, Transform target)
         {
             // カメラのズーム
             var camera = Camera.main;
             var zoomCompCnt = new IntReactiveProperty();
-            camera.transform.DOLocalMove(new Vector3(Target.position.x, camera.transform.position.y, camera.transform.position.z), zoomDuration)
+            camera.transform.DOLocalMove(new Vector3(target.position.x, target.position.y, camera.transform.position.z), zoomDuration)
                 .OnComplete(() => zoomCompCnt.Value++);
             camera.DOFieldOfView(fieldOfViewVolume, zoomDuration)
                 .OnComplete(() => zoomCompCnt.Value++);
@@ -84,7 +100,7 @@ namespace Main.Direction
                 .Subscribe(async _ =>
                 {
                     // ブラックホールのパーティクルを生成
-                    Instantiate(blackHolePrefab, Target.position, Quaternion.identity);
+                    instanceBlackHolePrefab = Instantiate(blackHolePrefab, target.position, Quaternion.identity);
 
                     await Task.Delay(((int)cutsWaitForSec[0]) * 1000);
 
@@ -102,10 +118,9 @@ namespace Main.Direction
         /// </summary>
         /// <param name="observer">任意発行のObservber</param>
         /// <returns>コルーチン</returns>
-        private IEnumerator InstanceDiffusion(System.IObserver<bool> observer)
+        private IEnumerator InstanceDiffusion(System.IObserver<bool> observer, Transform target)
         {
-            // T.B.D GameManagerからプレイヤーを検出
-            var player = GameObject.FindGameObjectWithTag("Player");
+            var player = GameManager.Instance.Player;
             player.transform.GetChild(2).gameObject.SetActive(false);
             var obj = Instantiate(diffusionCubesPrefab, player.transform.position, Quaternion.identity);
             var particle = obj.GetComponent<ParticleSystem>();
@@ -114,20 +129,20 @@ namespace Main.Direction
 
             var complated = false;
             var targetTrigger = new GameObject("DiffusionCubesTrigger");
-            targetTrigger.transform.position = Target.position;
+            targetTrigger.transform.position = target.position;
             targetTrigger.AddComponent<BoxCollider>().size = boxColliderSize;
-            var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(particle, Target);
+            var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(particle, target);
             obj.OnParticleCollisionAsObservable()
                 .Where(x => x.name.Equals("DiffusionCubesTrigger") && !complated)
                 .Subscribe(async _ =>
                 {
                     complated = true;
-                    Destroy(targetTrigger);
-                    StopCoroutine(coroutine);
-                    Destroy(obj);
 
                     await Task.Delay(((int)cutsWaitForSec[2]) * 1000);
 
+                    Destroy(targetTrigger);
+                    StopCoroutine(coroutine);
+                    Destroy(obj);
                     // 生成後にOnNextを発行
                     observer.OnNext(true);
                 });

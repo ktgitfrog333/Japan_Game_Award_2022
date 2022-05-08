@@ -101,7 +101,7 @@ namespace Main.Level
                     if (!GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
                         Debug.LogError("カウントダウン更新処理の失敗");
                 })
-                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter <= x)
+                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
                 .Subscribe(_ =>
                 {
                     if (!GameManager.Instance.OpenDoorFromSpaceManager())

@@ -50,6 +50,10 @@ namespace Main.UI
         [SerializeField] private GameObject startCutscene;
         /// <summary>スタート演出のオブジェクト名</summary>
         private static readonly string OBJECT_NAME_STARTCUTSCENE = "StartCutscene";
+        /// <summary>エンド演出</summary>
+        [SerializeField] private GameObject endCutscene;
+        /// <summary>エンド演出のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_ENDCUTSCENE = "EndCutscene";
 
         private void Reset()
         {
@@ -67,6 +71,8 @@ namespace Main.UI
                 shortcuGuideScreen = GameObject.Find(OBJECT_NAME_SHORTCUGUIDESCREEN);
             if (startCutscene == null)
                 startCutscene = GameObject.Find(OBJECT_NAME_STARTCUTSCENE);
+            if (endCutscene == null)
+                endCutscene = GameObject.Find(OBJECT_NAME_ENDCUTSCENE);
         }
 
         private void Awake()
@@ -229,6 +235,29 @@ namespace Main.UI
         {
             startCutscene.GetComponent<StartCutscene>().Continue = @continue;
             return true;
+        }
+
+        /// <summary>
+        /// ゴール演出の再生
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public BoolReactiveProperty PlayEndCutsceneFromGoalPoint()
+        {
+            var complete = new BoolReactiveProperty();
+            Observable.FromCoroutine<bool>(observer => endCutscene.GetComponent<EndCutscene>().Initialize(observer))
+                .Subscribe(x => complete.Value = x)
+                .AddTo(gameObject);
+            return complete;
+        }
+
+        /// <summary>
+        /// 残っているパーティクルを削除
+        /// フェードからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool DestroyParticleFromFadeScreen()
+        {
+            return endCutscene.GetComponent<EndCutscene>().DestroyParticleFromFadeScreen();
         }
     }
 }
