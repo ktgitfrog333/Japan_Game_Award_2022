@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using UniRx;
 using UniRx.Triggers;
+using Main.Common;
 
 namespace Main.Direction
 {
@@ -23,7 +24,7 @@ namespace Main.Direction
         [SerializeField] private GameObject[] playerPositions;
 
         /// <summary>追尾対象</summary>
-        public Transform Target => playerPositions[0].transform;
+        public Transform Target => playerPositions[SceneInfoManager.Instance.SceneIdCrumb.Current].transform;
 
         /// <summary>
         /// 流星のような挙動の再生
@@ -63,11 +64,14 @@ namespace Main.Direction
                         .Subscribe(_ =>
                         {
                             complated = true;
+                            // プレイヤーを有効にする
+                            GameManager.Instance.Player.SetActive(true);
                             if (!InstanceDiffusion())
                                 Debug.LogError("拡散パーティクル生成の失敗");
                             Destroy(targetTrigger);
                             StopCoroutine(coroutine);
                             diffusonShootingStar.Stop();
+                            _success.Value = false;
                             startCutscene.GetComponent<StartCutscene>().StopPlayAbleFromSootingMovement();
                         });
 

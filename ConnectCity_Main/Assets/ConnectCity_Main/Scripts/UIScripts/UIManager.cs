@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Main.Common.Const;
 using Main.Audio;
 using Main.Common;
+using Main.Direction;
 
 namespace Main.UI
 {
@@ -45,6 +46,10 @@ namespace Main.UI
         private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
         /// <summary>遊び方の確認のSEパターン</summary>
         [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
+        /// <summary>スタート演出</summary>
+        [SerializeField] private GameObject startCutscene;
+        /// <summary>スタート演出のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_STARTCUTSCENE = "StartCutscene";
 
         private void Reset()
         {
@@ -60,6 +65,8 @@ namespace Main.UI
                 clearScreen = GameObject.Find(OBJECT_NAME_CLEARSCREEN);
             if (shortcuGuideScreen == null)
                 shortcuGuideScreen = GameObject.Find(OBJECT_NAME_SHORTCUGUIDESCREEN);
+            if (startCutscene == null)
+                startCutscene = GameObject.Find(OBJECT_NAME_STARTCUTSCENE);
         }
 
         private void Awake()
@@ -199,6 +206,28 @@ namespace Main.UI
         public bool PlayManualStartFadeScreenFromSceneInfoManager()
         {
             fadeScreen.GetComponent<FadeScreen>().ManualStart();
+            return true;
+        }
+
+        /// <summary>
+        /// スタート演出の再生（ロング版／ショート版有り）
+        /// SceneInfoManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayStartCutsceneFromSceneInfoManager()
+        {
+            startCutscene.GetComponent<StartCutscene>().Initialize();
+            return true;
+        }
+
+        /// <summary>
+        /// スタート演出のモードをセット
+        /// </summary>
+        /// <param name="continue">コンティニューフラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetStartCutsceneContinueFromFadeScreen(bool @continue)
+        {
+            startCutscene.GetComponent<StartCutscene>().Continue = @continue;
             return true;
         }
     }

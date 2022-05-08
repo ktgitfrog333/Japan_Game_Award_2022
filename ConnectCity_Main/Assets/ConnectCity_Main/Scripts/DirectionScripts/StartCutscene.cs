@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using Main.Common;
+using TMPro;
+using System.Text;
+using UniRx;
+using UniRx.Triggers;
 
 namespace Main.Direction
 {
@@ -14,8 +19,14 @@ namespace Main.Direction
         [SerializeField] private GameObject cutSceneScreen;
         /// <summary>流星パーティクル</summary>
         [SerializeField] private GameObject sootingMovement;
+        /// <summary>流星パーティクルの位置</summary>
+        [SerializeField] private Vector3 sootingMovementLocalPosition = new Vector3(0f, 8.48f, 0f);
+        /// <summary>拡散パーティクル</summary>
+        [SerializeField] private GameObject diffusionLargePrefab;
         /// <summary>タイムライン制御</summary>
         private PlayableDirector _playable;
+        /// <summary>コンティニューフラグ</summary>
+        public bool Continue { get; set; }
 
         private void Reset()
         {
@@ -31,27 +42,45 @@ namespace Main.Direction
             }
         }
 
-        private void Start()
-        {
-            Initialize();
-        }
-
         /// <summary>
         /// 初期処理
         /// </summary>
         public void Initialize()
         {
-            _playable = GetComponent<PlayableDirector>();
-            _playable.Play();
-        }
+            if (!Continue)
+            {
+                // ステージ新規読み込み
 
-        /// <summary>
-        /// 死亡復帰の開始処理
-        /// 演出の短縮版
-        /// </summary>
-        public void InitializeContinue()
-        {
-            sootingMovement.SetActive(true);
+                // ステージ情報読み込み
+                var stage = SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current).gameObject;
+                sootingMovement.transform.parent = stage.transform;
+                sootingMovement.transform.localPosition = sootingMovementLocalPosition;
+
+                // ステージテキストを変更
+                var title = new StringBuilder().Append("ステージ")
+                    .Append(SceneInfoManager.Instance.SceneIdCrumb.Current + 1);
+                cutSceneScreen.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = title.ToString();
+
+                // プレイエイブル再生（再生終了のタイミングでプレイヤーを有効）
+                _playable = GetComponent<PlayableDirector>();
+                _playable.Play();
+            }
+            else
+            {
+                // コンティニュー
+
+                // プレイヤーを有効
+                GameManager.Instance.Player.SetActive(true);
+                // 拡散パーティクルのみ発生させる
+                var obj = Instantiate(diffusionLargePrefab, GameManager.Instance.Player.transform.position, Quaternion.identity);
+                var comp = obj.GetComponent<DiffusionLarge>().Completed;
+                comp.ObserveEveryValueChanged(x => x.Value)
+                    .Where(x => x)
+                    .Subscribe(_ =>
+                    {
+                        Destroy(obj);
+                    });
+            }
         }
 
         /// <summary>

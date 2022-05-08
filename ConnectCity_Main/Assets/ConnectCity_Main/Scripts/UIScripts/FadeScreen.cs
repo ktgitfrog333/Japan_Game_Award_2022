@@ -37,7 +37,9 @@ namespace Main.UI
                 .OnComplete(() =>
                 {
                     UIManager.Instance.enabled = true;
-                    GameManager.Instance.Player.SetActive(true);
+                    // スタート演出の中でプレイヤーを有効にする
+                    if (!UIManager.Instance.PlayStartCutsceneFromSceneInfoManager())
+                        Debug.LogError("スタート演出の失敗");
                 });
         }
 
@@ -58,6 +60,9 @@ namespace Main.UI
                                 Time.timeScale = 1f;
                             break;
                         case SceneLoadType.PrefabLoad:
+                            // 同じステージをリロードする場合はスタート演出を短くする
+                            if (!UIManager.Instance.SetStartCutsceneContinueFromFadeScreen(SceneInfoManager.Instance.LoadSceneId == SceneInfoManager.Instance.SceneIdCrumb.Current))
+                                Debug.LogError("リスタートフラグセットの失敗");
                             SceneInfoManager.Instance.UpdateScenesMap(SceneInfoManager.Instance.LoadSceneId);
                             if (!SceneInfoManager.Instance.StartStage())
                                 Debug.LogError("ステージ開始処理の失敗");
