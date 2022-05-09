@@ -26,6 +26,8 @@ namespace Main.Level
         [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
         /// <summary>リトライのSEパターン</summary>
         [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
+        /// <summary>入力禁止</summary>
+        public bool InputBan { get; set; } = false;
 
         void Start()
         {
@@ -33,6 +35,7 @@ namespace Main.Level
             var isPushedContents = new bool[3];
             // ボタン押下
             this.UpdateAsObservable()
+                .Where(_ => !InputBan)
                 .Subscribe(_ =>
                 {
                     if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTUNDO))

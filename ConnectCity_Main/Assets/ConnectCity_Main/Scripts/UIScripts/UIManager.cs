@@ -43,6 +43,8 @@ namespace Main.UI
         /// <summary>ショートカット入力</summary>
         [SerializeField] private GameObject shortcuGuideScreen;
         /// <summary>ショートカット入力</summary>
+        public GameObject ShortcuGuideScreen => shortcuGuideScreen;
+        /// <summary>ショートカット入力</summary>
         private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
         /// <summary>遊び方の確認のSEパターン</summary>
         [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;

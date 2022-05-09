@@ -79,38 +79,6 @@ namespace Main.Direction
                 });
         }
 
-        ///// <summary>
-        ///// 対象まで追尾する
-        ///// </summary>
-        ///// <param name="ps">パーティクル</param>
-        ///// <returns>コルーチン</returns>
-        //private IEnumerator CoroutineMoveShootTarget(ParticleSystem ps, Transform target)
-        //{
-        //    var loop = 0;
-        //    while (true)
-        //    {
-        //        var particles = new ParticleSystem.Particle[ps.main.maxParticles];
-        //        int count = ps.GetParticles(particles);
-        //        for (var i = 0; i < count; i++)
-        //        {
-        //            var forward = ps.transform.TransformPoint(particles[i].velocity);
-        //            var position = ps.transform.TransformPoint(particles[i].position);
-
-        //            // ターゲットへのベクトル
-        //            var direction = (target.TransformPoint(target.position) - position).normalized;
-
-        //            var period = 1 - (particles[i].remainingLifetime / particles[i].startLifetime);
-
-        //            particles[i].velocity = ps.transform.InverseTransformPoint(forward + direction * period);
-        //        }
-        //        ps.SetParticles(particles, count);
-        //        yield return new WaitForSeconds(.01f);
-        //        // ループ制限
-        //        loop++;
-        //        if (1000 < loop) break;
-        //    }
-        //}
-
         /// <summary>
         /// 拡散パーティクル生成
         /// </summary>
