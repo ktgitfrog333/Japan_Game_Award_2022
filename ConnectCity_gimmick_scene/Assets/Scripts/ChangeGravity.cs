@@ -7,10 +7,13 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class ChangeGravity : MonoBehaviour
 {
+    [SerializeField] private float moveSpeed = 3; //à⁄ìÆë¨ìx
     [SerializeField] private Vector3 localGravity;
     [SerializeField] private Direction direction;
     [SerializeField] private TriggerEvent onTriggerEnter = new TriggerEvent();
     [SerializeField] private TriggerEvent onTriggerStay = new TriggerEvent();
+    float moveX = 0f;
+    float moveZ = 0f;
     private Rigidbody rBody;
 
     // Start is called before the first frame update
@@ -18,13 +21,20 @@ public class ChangeGravity : MonoBehaviour
     {
         rBody = this.GetComponent<Rigidbody>();
         rBody.useGravity = false; //ç≈èâÇ…rigidBodyÇÃèdóÕÇégÇÌÇ»Ç≠Ç∑ÇÈ
+        localGravity = transform.forward;
     }
 
     // Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
+    void Update()
+    {
+        switch(direction)
+        {
+            case Direction.UP:
+                moveX = Input.GetAxis("Horizontal") * moveSpeed;
+                moveZ = Input.GetAxis("Vertical") * moveSpeed;
+                break;
+        }
+    }
 
     private void FixedUpdate()
     {
