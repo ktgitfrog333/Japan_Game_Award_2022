@@ -61,7 +61,7 @@ namespace Main.Level
                 // カウントダウン結果を格納
                 var result = maxCount - count;
                 // カウントがゼロなら顔文字「^^」へ表示を更新
-                _connectCountScreen.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = 0 < result ? result + "" : "^^";
+                _connectCountScreen.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = 0 < result ? result + "" : "";
                 return true;
             }
             catch
@@ -83,12 +83,16 @@ namespace Main.Level
                 // 扉を開くアニメーションを再生
                 transform.GetChild(1).GetComponent<Animation>().Play("open");
 
+                var complete = false;
                 // プレイヤーオブジェクトがゴールに触れる
                 transform.GetChild(0).OnTriggerEnterAsObservable()
-                    .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
-                    .Select(_ => PlayClearDirectionAndOpenClearScreen())
-                    .Where(x => !x)
-                    .Subscribe(_ => Debug.Log("ゴール演出エラー発生"));
+                    .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) && !complete)
+                    .Subscribe(_ =>
+                    {
+                        complete = true;
+                        if (!PlayClearDirectionAndOpenClearScreen())
+                            Debug.Log("ゴール演出エラー発生");
+                    });
 
                 return true;
             }
@@ -125,10 +129,18 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
-                // T.B.D プレイヤー操作を停止する処理を追加
-                // T.B.D ゴール演出を入れるなら追加
-                SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
-                UIManager.Instance.OpenClearScreen();
+                if (!GameManager.Instance.SetBanPlayerFromGoalPoint(true))
+                    Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                var complete = UIManager.Instance.PlayEndCutsceneFromGoalPoint();
+                complete.ObserveEveryValueChanged(x => x.Value)
+                    .Where(x => x)
+                    .Subscribe(_ =>
+                    {
+                        if (!GameManager.Instance.SetBanPlayerFromGoalPoint(false))
+                            Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
+                        UIManager.Instance.OpenClearScreen();
+                    });
 
                 return true;
             }

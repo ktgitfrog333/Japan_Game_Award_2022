@@ -17,7 +17,7 @@ namespace Main.UI
         /// <summary>オブジェクト位置のオフセット</summary>
         [SerializeField] private Vector3 _worldOffset;
         /// <summary>UI位置のオフセット</summary>
-        [SerializeField] private Vector2 offset = new Vector2(-30f, 140f);
+        [SerializeField] private Vector2 offset = new Vector2(-30f, 30f);
         /// <summary>パネルの位置</summary>
         private RectTransform _parentUI;
 

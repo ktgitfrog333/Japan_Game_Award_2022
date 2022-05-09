@@ -24,8 +24,7 @@ namespace Main.Level
         {
             var box = GetComponent<BoxCollider>();
             this.OnTriggerExitAsObservable()
-                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) ||
-                    x.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                 .Subscribe(_ => {
                     SfxPlay.Instance.PlaySFX(fallSEPattern);
                     SceneInfoManager.Instance.SetSceneIdUndo();

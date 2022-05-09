@@ -76,6 +76,9 @@ namespace Main.Level
         private PoolGroup _poolGroup;
         /// <summary>MoveCubes</summary>
         private GameObject[] _moveCubes;
+        /// <summary>入力禁止</summary>
+        public bool InputBan { get; set; } = false;
+
 
         private void Start()
         {
@@ -101,7 +104,7 @@ namespace Main.Level
                     if (!GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
                         Debug.LogError("カウントダウン更新処理の失敗");
                 })
-                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter <= x)
+                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
                 .Subscribe(_ =>
                 {
                     if (!GameManager.Instance.OpenDoorFromSpaceManager())
@@ -115,6 +118,7 @@ namespace Main.Level
             // 移動入力をチェック
             var velocitySeted = new BoolReactiveProperty();
             this.UpdateAsObservable()
+                .Where(_ => !InputBan)
                 .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight());
             velocitySeted.Where(x => x)
                 .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
@@ -393,6 +397,8 @@ namespace Main.Level
 
         /// <summary>接続のSEパターン</summary>
         [SerializeField] private ClipToPlay connectSEPattern = ClipToPlay.se_conect_No1;
+        /// <summary>接続演出が無効かどうか</summary>
+        public bool ConnectDirectionDisable { get; set; } = false;
 
         /// <summary>
         /// マッチング済みのペア同士を接続する
@@ -409,9 +415,12 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
-                if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f) , orgTran.parent.childCount + metTran.parent.childCount))
-                    Debug.Log("パーティクル生成の失敗");
-                SfxPlay.Instance.PlaySFX(connectSEPattern);
+                if (!ConnectDirectionDisable)
+                {
+                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
+                        Debug.Log("パーティクル生成の失敗");
+                    SfxPlay.Instance.PlaySFX(connectSEPattern);
+                }
 
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
@@ -760,9 +769,9 @@ namespace Main.Level
         {
             _poolGroup = new PoolGroup();
             _poolGroup.ConnectedRingPools = new Transform[connectedRingPrefabs.Length];
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
             return true;
         }
     }

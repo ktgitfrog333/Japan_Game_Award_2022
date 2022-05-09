@@ -114,6 +114,12 @@ namespace Main.Common
                 // Skyboxの設定
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
+                // スタート演出の間はブロックSEを鳴らさない
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = true;
+                // スタート演出の間は空間操作は無効
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                // スタート演出の間はショートカット入力は無効
+                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効
                 var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
                 stage.SetActive(true);

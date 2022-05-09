@@ -64,20 +64,25 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SpaceScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ClearScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\GameManualScrollView.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\DiffusionLarge.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\StartCutscene.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\GameManualViewPageUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ShortcuGuideScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LevelDesigns.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\GoalPoint.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LayerConst.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneInfoManager.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\EndCutscene.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SafeZone.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\BgmPlay.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\TextMaterialController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\PlayerScripts\PlayerController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\InputConst.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SpaceUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\BrideScenes_SelectMain.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\SootingMovement.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\LoadNow.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIManager.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\MoveCbSmall.cs" />
@@ -93,9 +98,31 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SkyBoxSet.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\ConnectCity_Main\UniRx\ReadMe.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\ConnectCity_Main\SciFi_Door\readme.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\ConnectCity_Main\Sharders\LevelSharders\ObjectTriplanar.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\ParticleEffects\ReadMe.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
