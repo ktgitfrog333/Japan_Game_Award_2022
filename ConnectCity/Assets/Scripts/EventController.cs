@@ -25,7 +25,7 @@ namespace TitleSelect
         /// </summary>
         public void Selected()
         {
-            EventRP.Value = 0;
+            EventRP.Value = (int)EventCommand.Selected;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace TitleSelect
         /// </summary>
         public void DeSelected()
         {
-            EventRP.Value = 1;
+            EventRP.Value = (int)EventCommand.DeSelected;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace TitleSelect
         /// </summary>
         public void Submited()
         {
-            EventRP.Value = 2;
+            EventRP.Value = (int)EventCommand.Submited;
         }
 
         /// <summary>
@@ -49,7 +49,22 @@ namespace TitleSelect
         /// </summary>
         public void Canceled()
         {
-            EventRP.Value = 3;
+            EventRP.Value = (int)EventCommand.Canceled;
         }
+    }
+
+    /// <summary>
+    /// コマンドの種類
+    /// </summary>
+    public enum EventCommand
+    {
+        /// <summary>選択された</summary>
+        Selected,
+        /// <summary>選択解除された</summary>
+        DeSelected,
+        /// <summary>実行された</summary>
+        Submited,
+        /// <summary>キャンセルされた</summary>
+        Canceled,
     }
 }

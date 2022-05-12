@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UniRx;
+using UniRx.Triggers;
 
 namespace TitleSelect
 {
@@ -30,6 +32,14 @@ namespace TitleSelect
         public void Fadeout()
         {
             this.background_image.DOFade(endValue: 1f, duration: duration);
+        }
+
+        public IEnumerator Fadeout(System.IObserver<bool> observer)
+        {
+            background_image.DOFade(endValue: 1f, duration: duration)
+                .SetUpdate(true)
+                .OnComplete(() => observer.OnNext(true));
+            yield return null;
         }
     }
 }
