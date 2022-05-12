@@ -69,6 +69,7 @@ namespace TitleSelect
                     {
                         OpenClosePanel(false, pushGameStartPanel);
                         OpenClosePanel(true, gameStartExitPanel);
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                     }
                 });
             // ゲームを開始
@@ -86,11 +87,13 @@ namespace TitleSelect
                             pausePencilLogoImage.SetActive(false);
                             OpenClosePanel(false, gameStartExitPanel);
                             OpenClosePanel(true, pushGameStartPanel);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
                             Observable.FromCoroutine<bool>(observer => fadeInOutCanvas.transform.GetChild(0).GetComponent<FadeInOut>().Fadeout(observer))
                                 .Subscribe(_ => SceneManager.LoadScene("SelectScene"))
                                 .AddTo(gameObject);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                             break;
                         default:
                             break;
@@ -106,15 +109,21 @@ namespace TitleSelect
                         case EventCommand.Selected:
                             pausePencilLogoImage.SetActive(true);
                             pausePencilLogoImage.transform.position = gameStartExitPanel.transform.GetChild(1).position + Vector3.left * curPosOffsetGameStartExit;
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+                            break;
+                        case EventCommand.DeSelected:
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             break;
                         case EventCommand.Canceled:
                             pausePencilLogoImage.SetActive(false);
                             OpenClosePanel(false, gameStartExitPanel);
                             OpenClosePanel(true, pushGameStartPanel);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
                             OpenClosePanel(false, gameStartExitPanel);
                             OpenClosePanel(true, gameExitConfirmPanel, true);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                             break;
                         default:
                             break;
@@ -135,9 +144,13 @@ namespace TitleSelect
                             pausePencilLogoImage.SetActive(false);
                             OpenClosePanel(false, gameExitConfirmPanel);
                             OpenClosePanel(true, gameStartExitPanel);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
-                            Quit();
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                            Observable.FromCoroutine<bool>(observer => fadeInOutCanvas.transform.GetChild(0).GetComponent<FadeInOut>().Fadeout(observer))
+                                .Subscribe(_ => Quit())
+                                .AddTo(gameObject);
                             break;
                         default:
                             break;
@@ -153,16 +166,22 @@ namespace TitleSelect
                         case EventCommand.Selected:
                             pausePencilLogoImage.SetActive(true);
                             pausePencilLogoImage.transform.position = gameExitConfirmPanel.transform.GetChild(2).position + Vector3.left * curPosOffsetGameExitConfirm;
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+                            break;
+                        case EventCommand.DeSelected:
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             break;
                         case EventCommand.Canceled:
                             pausePencilLogoImage.SetActive(false);
                             OpenClosePanel(false, gameExitConfirmPanel);
                             OpenClosePanel(true, gameStartExitPanel);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
                             pausePencilLogoImage.SetActive(false);
                             OpenClosePanel(false, gameExitConfirmPanel);
                             OpenClosePanel(true, gameStartExitPanel);
+                            SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                             break;
                         default:
                             break;

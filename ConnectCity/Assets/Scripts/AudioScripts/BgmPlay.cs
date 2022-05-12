@@ -44,13 +44,11 @@ namespace TitleSelect
     /// </summary>
     public enum ClipToPlayBGM
     {
-        /// <summary>ステージ1～10のBGM？</summary>
-        Main_No1,
-        /// <summary>ステージ11～20のBGM？</summary>
-        Main_No2,
-        /// <summary>ステージ21～30のBGM？</summary>
-        Main_No3,
-        /// <summary>どれかのステージのBGM？</summary>
-        Main_No8,
+        /// <summary>セレクトBGM（候補１）</summary>
+        Select_No1 = 0,
+        /// <summary>セレクトBGM（候補２）／タイトルBGM（候補１）</summary>
+        Title_No1 = 1,
+        /// <summary>タイトルBGM（候補２）</summary>
+        Title_No3 = 2,
     }
 }
