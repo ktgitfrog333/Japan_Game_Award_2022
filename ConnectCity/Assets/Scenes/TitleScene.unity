@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 5d133deeaa66ed445853e946ff25e073, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8fa432d3d66e3db47aeaa7ecb0c7cc5e, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.2397553, g: 0.29664096, b: 0.3188853, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -552,6 +552,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5645020081782769449, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5645020082398961898, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
       propertyPath: m_Name
       value: TitleCanvas
@@ -644,6 +648,30 @@ PrefabInstance:
       propertyPath: fadeInOutCanvas
       value: 
       objectReference: {fileID: 6697623495004973470}
+    - target: {fileID: 5645020082888297914, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645020082888297914, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645020082888297914, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 370
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645020083310173247, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645020083310173247, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645020083310173247, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 250
+      objectReference: {fileID: 0}
     - target: {fileID: 5645020083465184763, guid: b1ddcf41b5dde594cbad34aef7d4ea84, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

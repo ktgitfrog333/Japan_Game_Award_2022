@@ -62,7 +62,6 @@ namespace TitleSelect
 
             // プッシュゲームスタート
             pushState[0].ObserveEveryValueChanged(x => x.Value)
-                .Do(_ => Debug.Log(pushGameStartPanel))
                 .Subscribe(x =>
                 {
                     if (x.Equals((int)EventCommand.Submited))
@@ -74,7 +73,6 @@ namespace TitleSelect
                 });
             // ゲームを開始
             gStartExitState[0].ObserveEveryValueChanged(x => x.Value)
-                .Do(_ => Debug.Log(gameStartExitPanel))
                 .Subscribe(x =>
                 {
                     switch ((EventCommand)x)
@@ -101,8 +99,7 @@ namespace TitleSelect
                 });
             // ゲームを終了
             gStartExitState[1].ObserveEveryValueChanged(x => x.Value)
-                .Do(_ => Debug.Log(gameStartExitPanel))
-                .Subscribe(x =>
+               .Subscribe(x =>
                 {
                     switch ((EventCommand)x)
                     {
@@ -131,7 +128,6 @@ namespace TitleSelect
                 });
             // ゲームを終了しますか？　＞　はい
             gExitConfirmState[0].ObserveEveryValueChanged(x => x.Value)
-                .Do(_ => Debug.Log(gameExitConfirmPanel))
                 .Subscribe(x =>
                 {
                     switch ((EventCommand)x)
@@ -158,7 +154,6 @@ namespace TitleSelect
                 });
             // ゲームを終了しますか？　＞　いいえ
             gExitConfirmState[1].ObserveEveryValueChanged(x => x.Value)
-                .Do(_ => Debug.Log(gameExitConfirmPanel))
                 .Subscribe(x =>
                 {
                     switch ((EventCommand)x)

@@ -22,12 +22,12 @@ namespace TitleSelect
 
         private void Awake()
         {
-            // シングルトンのため複数生成禁止
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            //// シングルトンのため複数生成禁止
+            //if (null != instance)
+            //{
+            //    Destroy(gameObject);
+            //    return;
+            //}
 
             instance = this;
         }
