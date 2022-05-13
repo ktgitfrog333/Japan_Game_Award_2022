@@ -6,6 +6,8 @@ using static Main.Common.Const.TagConst;
 using System.Threading.Tasks;
 using Main.Level;
 using Main.Common.LevelDesign;
+using System.Linq;
+using Gimmick;
 
 namespace Main.Common
 {
@@ -56,12 +58,11 @@ namespace Main.Common
         public GameObject GoalPoint => goalPoint[SceneInfoManager.Instance.SceneIdCrumb.Current];
         /// <summary>T.B.D 重力操作ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] gravityControllers;
-        /// <summary>T.B.D 敵ギミックのゲームオブジェクト</summary>
-        [SerializeField] private GameObject[] humanEnemies;
-        /// <summary>T.B.D 敵ギミックの初期状態</summary>
-        private ObjectsOffset[] _humanEnemieOffsets;
-        /// <summary>T.B.D 敵ギミックの初期状態</summary>
-        public ObjectsOffset[] HumanEnemieOffsets => _humanEnemieOffsets;
+        /// <summary>敵ギミックのオーナー</summary>
+        [SerializeField] private GameObject robotEnemiesOwner;
+        /// <summary>敵ギミックのオーナー</summary>
+        public GameObject RobotEnemiesOwner => robotEnemiesOwner;
+
         /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] turretEnemies;
         /// <summary>T.B.D ぼろいブロックのゲームオブジェクト</summary>
@@ -73,20 +74,23 @@ namespace Main.Common
 
         private void Reset()
         {
-            if (player == null)
-                player = GameObject.FindGameObjectsWithTag(TAG_NAME_PLAYER);
+            if (player == null || player.Length == 0)
+                player = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneInfoManager", TAG_NAME_PLAYER, true);
             if (spaceManager == null)
                 spaceManager = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
-            if (mainCamera == true)
+            if (mainCamera == null)
                 mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            if (goalPoint == null)
-                goalPoint = GameObject.FindGameObjectsWithTag(TAG_NAME_GOALPOINT);
+            if (goalPoint == null || goalPoint.Length == 0)
+                goalPoint = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneInfoManager", TAG_NAME_GOALPOINT, true);
             // T.B.D 重力操作ギミックの仮実装
             //if (gravityControllers == null && gravityControllers.length)
             //    gravityControllers = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
-            // T.B.D 敵ギミックの仮実装
-            //if (humanEnemies == null && humanEnemies.length)
-            //    humanEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            
+            // 敵ギミックの実装
+            if (robotEnemiesOwner == null)
+                robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
+
+            //robotEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_ROBOT_EMEMY);
             // T.B.D レーザー砲ギミックの仮実装
             //if (turretEnemies == null && turretEnemies.length)
             //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
@@ -108,10 +112,9 @@ namespace Main.Common
             _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
             if (_playerOffsets == null)
                 Debug.LogError("オブジェクト初期状態の保存の失敗");
-            // T.B.D 敵ギミックの仮実装
-            //_humanEnemieOffsets = LevelDesisionIsObjected.SaveObjectOffset(humanEnemies);
-            //if (_humanEnemieOffsets == null)
-            //    Debug.LogError("敵ギミック初期状態の保存の失敗");
+            // 敵ギミック
+            if (!robotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
+                Debug.Log("敵起動処理の失敗");
             // T.B.D ぼろいブロックの仮実装
             //_brokenCubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(brokenCubes);
             //if (_brokenCubeOffsets == null)
@@ -189,10 +192,9 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveHumanEnemyFromSpaceManager(Vector3 moveVelocity)
+        public bool MoveRobotEnemyFromSpaceManager(Vector3 moveVelocity, GameObject hitObject)
         {
-            // T.B.D 敵オブジェクトを動かす処理を入れる
-            return true;
+            return hitObject.GetComponent<Robot_Enemy>().MoveChatactorFromGameManager(moveVelocity);
         }
 
         /// <summary>
@@ -222,7 +224,7 @@ namespace Main.Common
         /// 敵からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromHumanEnemies()
+        public async Task<bool> DeadPlayerFromRobotEnemies()
         {
             return await player[SceneInfoManager.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
@@ -280,10 +282,9 @@ namespace Main.Common
         /// コネクトシステム処理からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DestroyHumanEnemyFromSpaceManager()
+        public bool DestroyHumanEnemyFromSpaceManager(GameObject hitObject)
         {
-            // T.B.D 敵ギミック破壊処理を呼ぶ
-            return true;
+            return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromGameManager();
         }
     }
 }

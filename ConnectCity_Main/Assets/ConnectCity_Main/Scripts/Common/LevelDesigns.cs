@@ -40,12 +40,27 @@ namespace Main.Common.LevelDesign
         /// <returns>レイのヒット判定の有無</returns>
         public static bool IsOnPlayeredAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask)
         {
+            var hits = new RaycastHit[1];
+            return IsOnPlayeredAndInfo(postion, rayOriginOffset, rayDirection, rayMaxDistance, layerMask, out hits);
+        }
+
+        /// <summary>
+        /// 敵が上に乗っているかの判定
+        /// </summary>
+        /// <param name="postion">位置・スケール</param>
+        /// <param name="rayOriginOffset">始点</param>
+        /// <param name="rayDirection">終点</param>
+        /// <param name="rayMaxDistance">最大距離</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>レイのヒット判定の有無</returns>
+        public static bool IsOnPlayeredAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask, out RaycastHit[] hits)
+        {
+            hits = new RaycastHit[1];
             if (layerMask < 0) return IsGrounded(postion, rayOriginOffset, rayDirection, rayMaxDistance);
 
             var ray = new Ray(postion + rayOriginOffset, rayDirection);
             Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
-            var raycastHits = new RaycastHit[1];
-            var hitCount = Physics.RaycastNonAlloc(ray, raycastHits, rayMaxDistance, layerMask);
+            var hitCount = Physics.RaycastNonAlloc(ray, hits, rayMaxDistance, layerMask);
             return hitCount >= 1f;
         }
 
@@ -113,6 +128,36 @@ namespace Main.Common.LevelDesign
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// レベルデザイン内の各ステージ内から対象のオブジェクトをリストで取得
+        /// タグ名を設定する
+        /// </summary>
+        /// <param name="levelName">レベルデザインオブジェクト名</param>
+        /// <param name="sceneInfoName">シーン情報オブジェクト名</param>
+        /// <param name="findObjectTag">取得対象オブジェクトのタグ名</param>
+        /// <param name="errorCheck">エラーチェック有無</param>
+        /// <returns>オブジェクトの配列</returns>
+        public static GameObject[] GetGameObjectsInLevelDesign(string levelName,string sceneInfoName, string findObjectTag, bool errorCheck)
+        {
+            var gameObjList = new List<GameObject>();
+            var l = GameObject.Find(levelName);
+            // レベルデザイン内の各ステージ
+            foreach (Transform stage in l.transform)
+            {
+                foreach (Transform c in stage)
+                {
+                    if (c.CompareTag(findObjectTag))
+                    {
+                        gameObjList.Add(c.gameObject);
+                    }
+                }
+            }
+            if (errorCheck && gameObjList.Count < GameObject.Find(sceneInfoName).GetComponent<SceneInfoManager>().StageCountMax)
+                Debug.LogError("の数が足りません");
+
+            return gameObjList.ToArray();
         }
     }
 

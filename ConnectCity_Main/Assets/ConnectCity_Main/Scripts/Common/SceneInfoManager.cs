@@ -6,6 +6,7 @@ using Main.Audio;
 using Main.Level;
 using Main.UI;
 using Main.Common.LevelDesign;
+using Gimmick;
 
 namespace Main.Common
 {
@@ -49,7 +50,9 @@ namespace Main.Common
         /// <summary>ゴールポイント解放となるコネクト回数</summary>
         public int ClearConnectedCounter { get; set; }
         /// <summary>最大ステージ数</summary>
-        private static readonly int STAGE_COUNT_MAX = 30;
+        [SerializeField] private int stageCountMax = 30;
+        /// <summary>最大ステージ数</summary>
+        public int StageCountMax => stageCountMax;
         /// <summary>メインシーンのシーン名</summary>
         private static readonly string SCENE_NAME_MAIN = "Main_Scene";
         /// <summary>セレクトシーンのシーン名</summary>
@@ -176,9 +179,9 @@ namespace Main.Common
                 Debug.LogError("プレイヤーリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            // T.B.D 敵ギミックの仮実装
-            //if (!LevelDesisionIsObjected.ResetObjectFromSceneInfoManager(stage, GameManager.Instance.HumanEnemieOffsets))
-            //    Debug.LogError("敵オブジェクトリセット処理の失敗");
+            // 敵ギミック
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
+                Debug.LogError("敵オブジェクトリセット処理の失敗");
             // T.B.D ぼろいブロックの仮実装
             //if (!LevelDesisionIsObjected.ResetObjectFromSceneInfoManager(stage, GameManager.Instance.BrokenCubeOffsets))
             //    Debug.LogError("ぼろいブロックリセット処理の失敗");
@@ -195,7 +198,7 @@ namespace Main.Common
             Debug.Log("シーンIDの更新:[" + sceneID + "]");
             _sceneIdCrumb.Current = sceneID;
             // 次のシーン情報をシーン一覧から検索してセット
-            if (_sceneIdCrumb.Current < STAGE_COUNT_MAX/* - 1*/)
+            if (_sceneIdCrumb.Current < stageCountMax/* - 1*/)
             {
                 // 次のシーンが存在する場合はセット
                 _sceneIdCrumb.Next = _sceneIdCrumb.Current + 1;
