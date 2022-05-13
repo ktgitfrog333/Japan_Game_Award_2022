@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 8161372200648079676}
   - component: {fileID: 1213278995374299707}
   m_Layer: 0
-  m_Name: dashpanel
+  m_Name: ChangeGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,12 +227,6 @@ MonoBehaviour:
   moveSpeed: 3
   localGravity: {x: 0, y: 0, z: 0}
   direction: 0
-  onTriggerEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onTriggerStay:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &7763027738739107206
 GameObject:
   m_ObjectHideFlags: 0
