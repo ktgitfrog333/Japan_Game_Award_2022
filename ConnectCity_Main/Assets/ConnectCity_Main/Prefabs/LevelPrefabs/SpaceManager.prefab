@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1696018376661584598}
   m_Layer: 0
   m_Name: SpaceManager
-  m_TagString: Untagged
+  m_TagString: SpaceManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b89589f4fba97448dabca832a45767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveLSpeed: 0.3
-  moveHSpeed: 3.5
-  gearChgDelaySec: 1.7
+  moveLSpeed: 25
+  moveHSpeed: 50
+  gearChgDelaySec: 1
   moveCubeGroup: {fileID: 5020951347855527081, guid: 0ebdf4144f7d0254ea791f15d2b8ff37, type: 3}
   connectedRingPrefabs:
   - {fileID: 2459271673136080777, guid: 6e19ae9463937644e8f51a84848532c0, type: 3}
@@ -69,7 +69,4 @@ MonoBehaviour:
   rayDirectionDown: {x: 0, y: -1, z: 0}
   rayMaxDistanceDownLong: 1.6
   deadMagnitude: 0.9
-  _connectedRingPools:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  connectSEPattern: 19

@@ -1154,6 +1154,8 @@ MonoBehaviour:
   undoPushTimeLimit: 3
   selectPushTimeLimit: 3
   manualPushTimeLimit: 3
+  manualSEPattern: 9
+  retrySEPattern: 10
 --- !u!1 &3801963611772412772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,7 +1501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3801963612050197143}
   - component: {fileID: 3801963612050197141}
-  - component: {fileID: 5690841901411079549}
+  - component: {fileID: 3801963611159732137}
   m_Layer: 5
   m_Name: BackScreen
   m_TagString: Untagged
@@ -1537,7 +1539,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3801963612050197128}
   m_CullTransparentMesh: 1
---- !u!114 &5690841901411079549
+--- !u!114 &3801963611159732137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1546,16 +1548,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3801963612050197128}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: -850
+    m_Bottom: 5
+  m_ChildAlignment: 7
+  m_Spacing: -900
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

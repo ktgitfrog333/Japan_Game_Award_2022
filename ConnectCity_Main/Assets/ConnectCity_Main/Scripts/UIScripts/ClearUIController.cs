@@ -21,6 +21,8 @@ namespace Main.UI
     {
         /// <summary>アクションモード</summary>
         [SerializeField] private ActionMode act;
+        /// <summary>リトライのSEパターン</summary>
+        [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
 
         protected override void OnEnable()
         {
@@ -112,7 +114,7 @@ namespace Main.UI
         /// <summary>
         /// 選択項目の決定時に呼び出すメソッド
         /// </summary>
-        public override void Submited()
+        public override async void Submited()
         {
             // 各項目によって変わる
             switch (act.clearMode)
@@ -121,12 +123,13 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         _menuClose = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.SetSceneIdRedo();
+                        SfxPlay.Instance.PlaySFX(retrySEPattern);
+                        SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
-                        PlayFlashingMotion();
+                        await PlayFlashingMotion();
+                        UIManager.Instance.CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.SelectAction:
@@ -137,7 +140,8 @@ namespace Main.UI
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                         _menuClose = true;
                         button.enabled = false;
-                        PlayFlashingMotion();
+                        await PlayFlashingMotion();
+                        UIManager.Instance.CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.ProceedAction:
@@ -149,7 +153,8 @@ namespace Main.UI
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
-                        PlayFlashingMotion();
+                        await PlayFlashingMotion();
+                        UIManager.Instance.CloseClearScreen();
                     }
                     break;
                 default:

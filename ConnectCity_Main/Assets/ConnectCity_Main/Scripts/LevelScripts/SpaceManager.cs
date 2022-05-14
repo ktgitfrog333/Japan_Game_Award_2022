@@ -9,6 +9,7 @@ using Main.Common;
 using Main.UI;
 using System.Threading.Tasks;
 using Main.Audio;
+using System.Linq;
 
 namespace Main.Level
 {
@@ -63,41 +64,82 @@ namespace Main.Level
         [SerializeField] private float rayMaxDistanceDownLong = 1.6f;
         /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
         [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
-        /// <summary>ステージ範囲（UP/DOWN/LEFT/RIGHT）</summary>
-        [SerializeField] private float[] stageScaleMaxDistance = new float[4];
+        /// <summary>MoveCubeの初期状態</summary>
+        private ObjectsOffset[] _cubeOffsets;
+        /// <summary>MoveCubeの初期状態</summary>
+        public ObjectsOffset[] CubeOffsets => _cubeOffsets;
         /// <summary>空間操作に必要なRigidBody、Velocity</summary>
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
         /// <summary>ブロックの接続状況</summary>
         private List<ConnectDirection2D> _connectDirections = new List<ConnectDirection2D>();
         /// <summary>プールのグループ</summary>
         private PoolGroup _poolGroup;
+        /// <summary>MoveCubes</summary>
+        private GameObject[] _moveCubes;
+        /// <summary>入力禁止</summary>
+        public bool InputBan { get; set; } = false;
+
 
         private void Start()
         {
+            ManualStart();
+        }
+
+        /// <summary>
+        /// 疑似スタート
+        /// </summary>
+        private void ManualStart()
+        {
+            _connectDirections = new List<ConnectDirection2D>();
             // ブロックの接続状況
-            var moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-            if (!SetCollsion(moveCubes, GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_LEVELDESIGN).transform))
+            _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
+            _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
+            if (_cubeOffsets == null)
+                Debug.LogError("オブジェクト初期状態の保存の失敗");
+            // コネクト回数のチェック
+            var connectSuccess = new IntReactiveProperty();
+            connectSuccess.ObserveEveryValueChanged(x => x.Value)
+                .Do(x =>
+                {
+                    if (!GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
+                        Debug.LogError("カウントダウン更新処理の失敗");
+                })
+                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
+                .Subscribe(_ =>
+                {
+                    if (!GameManager.Instance.OpenDoorFromSpaceManager())
+                        Debug.LogError("ゴール演出の失敗");
+                });
+            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current), connectSuccess);
+            if (_moveCubes == null)
                 throw new System.Exception("オブジェクト取得の失敗");
             // 速度の初期値
             _spaceDirections.MoveSpeed = moveLSpeed;
             // 移動入力をチェック
             var velocitySeted = new BoolReactiveProperty();
             this.UpdateAsObservable()
+                .Where(_ => !InputBan)
                 .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight());
             velocitySeted.Where(x => x)
                 .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
                 .Where(_ => velocitySeted.Value)
-                .Subscribe(_ => _spaceDirections.MoveSpeed = moveHSpeed);
+                .Subscribe(_ =>
+                {
+                    _spaceDirections.MoveSpeed = moveHSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(true);
+                });
             velocitySeted.Where(x => !x)
-                .Subscribe(_ => {
+                .Subscribe(_ =>
+                {
                     _spaceDirections.MoveSpeed = moveLSpeed;
+                    GameManager.Instance.SetBanPlayerFromSpaceManager(false);
                 });
 
             // 空間内のブロック座標をチェック
             this.UpdateAsObservable()
-                .Select(_ => CheckPositionAndSetMoveCubesComponents(moveCubes))
+                .Select(_ => CheckPositionAndSetMoveCubesComponents(_moveCubes))
                 .Where(x => !x)
-                .Subscribe(_ => Debug.LogError("制御対象RigidBody格納の失敗"));
+                .Subscribe(_ => Debug.Log("制御対象RigidBody格納の失敗"));
             // 不要なグループ削除
             var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
             foreach (var obj in moveCubeGroups)
@@ -126,29 +168,16 @@ namespace Main.Level
                 });
             if (!InitializePool())
                 Debug.LogError("プール作成の失敗");
-            //// デバッグ
-            //this.UpdateAsObservable()
-            //    .Subscribe(_ =>
-            //    {
-            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.UP]), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(0f, stageScaleMaxDistance[(int)Direction.DOWN] * -1f), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.LEFT] * -1f, 0f), Color.green);
-            //        Debug.DrawRay(Vector3.zero, new Vector3(stageScaleMaxDistance[(int)Direction.RIGHT], 0f), Color.green);
-            //    });
         }
 
         /// <summary>
-        /// ステージの空間操作範囲を設定
-        /// GameManagerからの呼び出し
+        /// 疑似スタートを発火させる
+        /// SceneInfoManagerからの呼び出し
         /// </summary>
-        /// <param name="vector4">UP/DOWN/LEFT/RIGHT</param>
         /// <returns>成功／失敗</returns>
-        public bool SetStageScaleMaxDistanceFromGameManager(Vector4 vector4)
+        public bool PlayManualStartFromSceneInfoManager()
         {
-            stageScaleMaxDistance[(int)Direction.UP] = vector4.x;
-            stageScaleMaxDistance[(int)Direction.DOWN] = vector4.y;
-            stageScaleMaxDistance[(int)Direction.LEFT] = vector4.z;
-            stageScaleMaxDistance[(int)Direction.RIGHT] = vector4.w;
+            ManualStart();
             return true;
         }
 
@@ -159,10 +188,10 @@ namespace Main.Level
         /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <param name="level">レベルデザイン</param>
         /// <returns>セット処理完了／引数情報の一部にnull</returns>
-        private bool SetCollsion(GameObject[] moveCubes, Transform level)
+        private GameObject[] SetCollsion(GameObject[] moveCubes, Transform level, IntReactiveProperty count)
         {
             // 取得したペアがない場合は空オブジェクトを返却
-            if (moveCubes == null || moveCubes.Length < -1 || level == null) return false;
+            if (moveCubes == null || moveCubes.Length < -1 || level == null) return null;
 
             foreach (var obj in moveCubes)
             {
@@ -188,19 +217,20 @@ namespace Main.Level
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
                 // 敵ギミックの接地判定
+                RaycastHit[] hits = new RaycastHit[1];
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.transform.parent.OnCollisionEnterAsObservable()
@@ -210,7 +240,10 @@ namespace Main.Level
                     .Select(_ => ConnectMoveCube())
                     .Subscribe(x =>
                     {
-                        if (!x) Debug.Log("MoveCubeのコネクト処理失敗");
+                        if (!x)
+                            Debug.LogError("MoveCubeのコネクト処理失敗");
+                        else
+                            count.Value++;
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
@@ -222,26 +255,25 @@ namespace Main.Level
                 pressed.Where(x => x)
                     .Subscribe(async _ =>
                     {
-                        pressed.Value = false;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
-                        SceneInfoManager.Instance.SetSceneIdRedo();
+                        SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     });
                 // 全てのMoveCubeから左右にレイをとばして敵ギミックとFreezeを貫通したらTrue
                 var pressedEnem = new ReactiveProperty<bool>();
                 obj.UpdateAsObservable()
                     .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
-                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_HUMANENEMIES))
+                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_ROBOTENEMIES, out hits))
                     .Subscribe(x => pressedEnem.Value = x);
                 pressedEnem.Where(x => x)
                     .Subscribe(_ =>
                     {
-                        pressedEnem.Value = false;
-                        GameManager.Instance.DestroyHumanEnemyFromSpaceManager();
+                        // T.B.D 敵オブジェクトを壊す
+                        //GameManager.Instance.DestroyHumanEnemyFromSpaceManager(hits[0].transform.gameObject);
                     });
             }
 
-            return true;
+            return moveCubes;
         }
 
         /// <summary>
@@ -298,7 +330,7 @@ namespace Main.Level
         private ConnectDirection2D GetMinDistanceTheMoveCube(GameObject origin, GameObject parentObject)
         {
             // originとmeetの親内にある子同士を比較
-            var distancePair = new SortedDictionary<float, ConnectDirection2D>();
+            var distancePairList = new List<ConnectDirection2D>();
             for (var i = 0; i < origin.transform.parent.childCount; i++)
             {
                 // originとmeetの子オブジェクトのペアを作成
@@ -310,22 +342,32 @@ namespace Main.Level
                     // 距離が近いものから昇順に組み合わせをセットしていく
                     var meetChild = parentObject.transform.GetChild(j);
                     workPair.MeetMoveCube = meetChild.gameObject;
-                    distancePair[Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y))] = workPair;
+                    workPair.Distance = Vector2.Distance(new Vector2(orgChild.transform.position.x, orgChild.transform.position.y), new Vector2(meetChild.position.x, meetChild.position.y));
+                    distancePairList.Add(workPair);
                 }
             }
             // 取得したペアがない場合は空オブジェクトを返却
-            if (distancePair.Count < 1) return new ConnectDirection2D();
+            if (distancePairList.Count < 1)
+                return new ConnectDirection2D();
 
-            var pair = new ConnectDirection2D();
-            // 最初の値（最小値）のみ取り出す
-            foreach (var p in distancePair)
+            // 一回目と二回目の情報を保持する
+            // 一回目はOriginの昇順、二回目はMeetの昇順
+            if (-1 < _connectDirections.Count && _connectDirections.Count < 1)
             {
-                pair.OriginMoveCube = p.Value.OriginMoveCube;
-                pair.MeetMoveCube = p.Value.MeetMoveCube;
-                break;
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.OriginMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
+            }
+            else if (0 < _connectDirections.Count && _connectDirections.Count < 2)
+            {
+                IOrderedEnumerable<ConnectDirection2D> sortList = distancePairList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.MeetMoveCube.name);
+                foreach (var sort in sortList)
+                    return sort;
             }
 
-            return pair;
+            return new ConnectDirection2D();
         }
 
         /// <summary>
@@ -347,12 +389,18 @@ namespace Main.Level
             {
                 if (conn.OriginMoveCube.Equals(connectDirection.OriginMoveCube))
                 {
+                    _connectDirections = new List<ConnectDirection2D>();
                     return 0;
                 }
             }
             _connectDirections.Add(connectDirection);
             return _connectDirections.Count;
         }
+
+        /// <summary>接続のSEパターン</summary>
+        [SerializeField] private ClipToPlay connectSEPattern = ClipToPlay.se_conect_No1;
+        /// <summary>接続演出が無効かどうか</summary>
+        public bool ConnectDirectionDisable { get; set; } = false;
 
         /// <summary>
         /// マッチング済みのペア同士を接続する
@@ -369,24 +417,31 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
-                if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f) , orgTran.parent.childCount + metTran.parent.childCount))
-                    Debug.Log("パーティクル生成の失敗");
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                if (!ConnectDirectionDisable)
+                {
+                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
+                        Debug.Log("パーティクル生成の失敗");
+                    SfxPlay.Instance.PlaySFX(connectSEPattern);
+                }
 
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
                 {
                     case Direction.UP:
-                        metTran.position = orgTran.position + Vector3.up;
+                        var uMove = (orgTran.position + Vector3.up) - metTran.position;
+                        metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
-                        metTran.position = orgTran.position + Vector3.down;
+                        var dMove = (orgTran.position + Vector3.down) - metTran.position;
+                        metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
-                        metTran.position = orgTran.position + Vector3.left;
+                        var lMove = (orgTran.position + Vector3.left) - metTran.position;
+                        metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
-                        metTran.position = orgTran.position + Vector3.right;
+                        var rMove = (orgTran.position + Vector3.right) - metTran.position;
+                        metTran.parent.position += rMove;
                         break;
                 }
 
@@ -483,8 +538,22 @@ namespace Main.Level
         /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
         /// </summary>
         /// <param name="moveCube">対象のMoveCube</param>
+        /// <param name="layerName">レイヤー名</param>
         /// <returns>挟まっている／離れている</returns>
         private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName)
+        {
+            RaycastHit[] hits = new RaycastHit[1];
+            return CheckDirectionMoveCubeToPlayer(moveCube, layerName, out hits);
+        }
+
+        /// <summary>
+        /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
+        /// </summary>
+        /// <param name="moveCube">対象のMoveCube</param>
+        /// <param name="layerName">レイヤー名</param>
+        /// <param name="hits">ヒットオブジェクト（参照用）</param>
+        /// <returns>挟まっている／離れている</returns>
+        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName, out RaycastHit[] hits)
         {
             var rOrgOffL = rayOriginOffsetLeft;
             var rOrgDireL = rayDirectionLeft;
@@ -498,14 +567,15 @@ namespace Main.Level
             var rOrgOffDownAry = GetThreePointHorizontal(rayOriginOffsetDown, .5f);
             var rOrgDireDown = rayDirectionDown;
             var rMaxDisDown = rayMaxDistanceDownLong;
+            hits = new RaycastHit[1];
 
             // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
             // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
             // 左
             if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                 {
                     return true;
                 }
@@ -513,8 +583,8 @@ namespace Main.Level
             // 右
             if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                 {
                     return true;
                 }
@@ -524,8 +594,8 @@ namespace Main.Level
                 // 上
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }
@@ -533,8 +603,8 @@ namespace Main.Level
                 // 下
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }
@@ -633,13 +703,13 @@ namespace Main.Level
                 {
                     // グループ化されている場合は親のRigidBodyをセット
                     var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
-                    if (obj.transform.position.x < 0f)
+                    if (obj.transform.parent.localPosition.x < transform.localPosition.x)
                     {
                         // 左空間
                         rbsLeft.Add(rb);
                         scrsLeft.Add(obj.GetComponent<MoveCbSmall>());
                     }
-                    else if (0f < obj.transform.position.x)
+                    else if (transform.localPosition.x < obj.transform.parent.localPosition.x)
                     {
                         //右空間
                         rbsRight.Add(rb);
@@ -652,7 +722,7 @@ namespace Main.Level
                 // 動かす対象のRigidBody、Animatorを格納
                 if (0 < rbsLeft.Count)
                 {
-                    _spaceDirections.RbsLeftSpace = rbsLeft.ToArray();
+                    _spaceDirections.RbsLeftSpace = rbsLeft.Distinct().ToArray();
                     _spaceDirections.ScrLeftSpace = scrsLeft.ToArray();
                 }
                 else
@@ -662,7 +732,7 @@ namespace Main.Level
                 }
                 if (0 < rbsRight.Count)
                 {
-                    _spaceDirections.RbsRightSpace = rbsRight.ToArray();
+                    _spaceDirections.RbsRightSpace = rbsRight.Distinct().ToArray();
                     _spaceDirections.ScrRightSpace = scrsRight.ToArray();
                 }
                 else
@@ -716,9 +786,9 @@ namespace Main.Level
         {
             _poolGroup = new PoolGroup();
             _poolGroup.ConnectedRingPools = new Transform[connectedRingPrefabs.Length];
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
+            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
             return true;
         }
     }
@@ -757,6 +827,8 @@ namespace Main.Level
         public Direction OriginRayDire { get; set; }
         /// <summary>接続位置</summary>
         public Vector3 ContactsPoint { get; set; }
+        /// <summary>距離</summary>
+        public float Distance { get; set; }
     }
 
     /// <summary>

@@ -7,6 +7,8 @@ using UniRx.Triggers;
 using Main.Common.LevelDesign;
 using Main.Audio;
 using Main.UI;
+using Main.Common;
+using UnityEngine.UI;
 
 namespace Main.Level
 {
@@ -15,6 +17,9 @@ namespace Main.Level
     /// </summary>
     public class GoalPoint : MonoBehaviour
     {
+        /// <summary>コネクト残り回数のカウントダウンスクリーンプレハブ</summary>
+        [SerializeField] private GameObject connectCountScreenPrefab;
+        private GameObject _connectCountScreen;
         /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
         private static readonly Vector3 ISGROUNDED_RAY_ORIGIN_OFFSET = new Vector3(0f, 0.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
@@ -22,14 +27,98 @@ namespace Main.Level
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
         private static readonly float ISGROUNDED_RAY_MAX_DISTANCE = 1.5f;
 
-        private void Start()
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool Initialize()
         {
-            // プレイヤーオブジェクトがゴールに触れる
-            this.OnTriggerEnterAsObservable()
-                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
-                .Select(_ => PlayClearDirectionAndOpenClearScreen())
-                .Where(x => !x)
-                .Subscribe(_ => Debug.Log("ゴール演出エラー発生"));
+            if (_connectCountScreen == null)
+            {
+                GameObject screen = GameObject.FindGameObjectWithTag(TagConst.TAG_NAME_CONNECTCOUNTSCREEN);
+                if (screen == null)
+                {
+                    // コネクト回数カウントダウンUIを生成
+                    screen = Instantiate(connectCountScreenPrefab);
+                }
+                screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.MainCamera.GetComponent<Camera>());
+                _connectCountScreen = screen;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// カウントダウン表示を更新
+        /// GameManagerからの呼び出し
+        /// </summary>
+        /// <param name="count">コネクト回数</param>
+        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateCountDownFromGameManager(int count, int maxCount)
+        {
+            try
+            {
+                // カウントダウン結果を格納
+                var result = maxCount - count;
+                // カウントがゼロなら顔文字「^^」へ表示を更新
+                _connectCountScreen.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = 0 < result ? result + "" : "";
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// ドアを開く
+        /// ゴール演出のイベント
+        /// GameManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool OpenDoorFromGameManager()
+        {
+            try
+            {
+                // 扉を開くアニメーションを再生
+                transform.GetChild(1).GetComponent<Animation>().Play("open");
+
+                var complete = false;
+                // プレイヤーオブジェクトがゴールに触れる
+                transform.GetChild(0).OnTriggerEnterAsObservable()
+                    .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) && !complete)
+                    .Subscribe(_ =>
+                    {
+                        complete = true;
+                        if (!PlayClearDirectionAndOpenClearScreen())
+                            Debug.Log("ゴール演出エラー発生");
+                    });
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// ドアを閉じる
+        /// GameManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool CloseDoorFromGameManager()
+        {
+            try
+            {
+                // 扉を開くアニメーションを再生
+                transform.GetChild(1).GetComponent<Animation>().Play("close");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -40,10 +129,18 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
-                // T.B.D プレイヤー操作を停止する処理を追加
-                // T.B.D ゴール演出を入れるなら追加
-                SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
-                UIManager.Instance.OpenClearScreen();
+                if (!GameManager.Instance.SetBanPlayerFromGoalPoint(true))
+                    Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                var complete = UIManager.Instance.PlayEndCutsceneFromGoalPoint();
+                complete.ObserveEveryValueChanged(x => x.Value)
+                    .Where(x => x)
+                    .Subscribe(_ =>
+                    {
+                        if (!GameManager.Instance.SetBanPlayerFromGoalPoint(false))
+                            Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
+                        UIManager.Instance.OpenClearScreen();
+                    });
 
                 return true;
             }

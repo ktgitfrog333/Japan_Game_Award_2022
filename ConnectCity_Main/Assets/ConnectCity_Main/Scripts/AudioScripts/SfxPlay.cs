@@ -68,13 +68,47 @@ namespace Main.Audio
     {
         /// <summary>メニューを開く</summary>
         se_menu = 0,
-        /// <summary>メニューを閉じる</summary>
-        se_close = 1,
+        /// <summary>キャンセル</summary>
+        se_cancel = 1,
         /// <summary>項目の決定</summary>
         se_decided = 2,
         /// <summary>ゲームクリア</summary>
         me_game_clear = 3,
         /// <summary>ステージセレクト</summary>
-        se_select = 4
+        se_select = 4,
+        /// <summary>ジャンプ（候補１）</summary>
+        se_player_jump_No1,
+        /// <summary>ジャンプ（候補２）</summary>
+        se_player_jump_No3,
+        /// <summary>圧死音</summary>
+        se_player_dead,
+        /// <summary>遊び方表_開く音（候補１）</summary>
+        se_play_open_No2,
+        /// <summary>遊び方表_開く音（候補２）</summary>
+        se_play_open_No3,
+        /// <summary>リトライ（候補１）</summary>
+        se_retry_No1,
+        /// <summary>リトライ（候補２）</summary>
+        se_retry_No3,
+        /// <summary>レーザー（候補１）</summary>
+        se_laser_No1,
+        /// <summary>レーザー（候補２）</summary>
+        se_laser_No3,
+        /// <summary>浮遊音</summary>
+        se_block_float,
+        /// <summary>崩壊音（候補１）</summary>
+        se_collapse_No1,
+        /// <summary>崩壊音（候補２）</summary>
+        se_collapse_No3,
+        /// <summary>落下音（候補１）</summary>
+        se_player_fall_No1,
+        /// <summary>落下音（候補２）</summary>
+        se_player_fall_No3,
+        /// <summary>接続音（候補１）</summary>
+        se_conect_No1,
+        /// <summary>接続音（候補２）</summary>
+        se_conect_No2,
+        /// <summary>接続音（候補３）</summary>
+        se_conect_No3,
     }
 }

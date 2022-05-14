@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Main.Audio;
 using Main.Level;
-using TitleSelect;
 using Main.UI;
+using Main.Common.LevelDesign;
+using Gimmick;
 
 namespace Main.Common
 {
@@ -20,26 +21,16 @@ namespace Main.Common
         private static readonly string OBJECT_NAME_BGMPLAY = "BgmPlay";
         /// <summary>最終ステージのフラグ</summary>
         public bool FinalStage { get; set; } = false;
-        /// <summary>セーフゾーンのリソース管理プレハブ</summary>
-        [SerializeField] private GameObject safeZone;
-        /// <summary>セーフゾーンのリソース管理オブジェクト名</summary>
-        private static readonly string OBJECT_NAME_SAFEZONE = "SafeZone";
         /// <summary>レベルデザイン</summary>
         [SerializeField] private GameObject levelDesign;
+        /// <summary>レベルデザイン</summary>
+        public GameObject LevelDesign => levelDesign;
         /// <summary>レベルデザインオブジェクト名</summary>
         private static readonly string OBJECT_NAME_LEVELDESIGN = "LevelDesign";
-        /// <summary>空間操作</summary>
-        [SerializeField] private GameObject spaceManager;
-        /// <summary>空間操作オブジェクト名</summary>
-        private static readonly string OBJECT_NAME_SPACEMANAGER = "SpaceManager";
-        /// <summary>ステージごとの空間操作範囲</summary>
-        [SerializeField] private Vector4[] stageScaleMaxDistances;
-        /// <summary>プレイヤーのローカル位置</summary>
-        [SerializeField] private Vector3[] playerTransformLocalPoses;
-        /// <summary>プレイヤーのローカル角度</summary>
-        [SerializeField] private Vector3[] playerTransformLocalAngles;
-        /// <summary>プレイヤーのローカルスケール</summary>
-        [SerializeField] private Vector3[] playerTransformLocalScales;
+        /// <summary>Skyboxの設定</summary>
+        [SerializeField] private GameObject skyBoxSet;
+        /// <summary>Skyboxの設定オブジェクト名</summary>
+        private static readonly string OBJECT_NAME_SKYBOXSET = "SkyBoxSet";
         /// <summary>カメラのローカル位置</summary>
         [SerializeField] private Vector3[] cameraTransformLocalPoses;
         /// <summary>カメラのローカル角度</summary>
@@ -52,34 +43,42 @@ namespace Main.Common
         [SerializeField] private ClipToPlayBGM[] playBgmNames;
         /// <summary>最終ステージか否か</summary>
         [SerializeField] private bool[] finalStages;
-        /// <summary>セーフゾーンの中心</summary>
-        [SerializeField] private Vector3[] safeZoneBoxCenters;
-        /// <summary>セーフゾーンのサイズ</summary>
-        [SerializeField] private Vector3[] safeZoneBoxSizes;
-        /// <summary>セーフゾーンの位置</summary>
-        [SerializeField] private Vector3[] safeZoneInsPoses;
+        /// <summary>ステージごとのSkybox</summary>
+        [SerializeField] private RenderSettingsSkybox[] skyboxs;
+        /// <summary>ゴールポイント解放となるコネクト回数</summary>
+        [SerializeField] private int[] clearConnectedCounters;
+        /// <summary>ゴールポイント解放となるコネクト回数</summary>
+        public int ClearConnectedCounter { get; set; }
         /// <summary>最大ステージ数</summary>
-        private static readonly int STAGE_COUNT_MAX = 30;
+        [SerializeField] private int stageCountMax = 30;
+        /// <summary>最大ステージ数</summary>
+        public int StageCountMax => stageCountMax;
+        /// <summary>メインシーンのシーン名</summary>
+        private static readonly string SCENE_NAME_MAIN = "Main_Scene";
+        /// <summary>セレクトシーンのシーン名</summary>
+        private static readonly string SCENE_NAME_SELECT = "SelectScene";
 
         private static SceneInfoManager instance;
         public static SceneInfoManager Instance { get { return instance; } }
         /// <summary>シーンマップ</summary>
         private SceneIdCrumb _sceneIdCrumb;
+        /// <summary>シーンマップ</summary>
+        public SceneIdCrumb SceneIdCrumb => _sceneIdCrumb;
         /// <summary>読み込ませるシーン</summary>
         private string _loadSceneName;
         /// <summary>読み込ませるステージID</summary>
         private int _loadSceneId;
+        /// <summary>読み込ませるステージID</summary>
+        public int LoadSceneId => _loadSceneId;
 
         private void Reset()
         {
             if (bgmPlay == null)
                 bgmPlay = GameObject.Find(OBJECT_NAME_BGMPLAY);
-            if (safeZone == null)
-                safeZone = GameObject.Find(OBJECT_NAME_SAFEZONE);
             if (levelDesign == null)
                 levelDesign = GameObject.Find(OBJECT_NAME_LEVELDESIGN);
-            if (spaceManager == null)
-                spaceManager = GameObject.Find(OBJECT_NAME_SPACEMANAGER);
+            if (skyBoxSet == null)
+                skyBoxSet = GameObject.Find(OBJECT_NAME_SKYBOXSET);
         }
 
         private void Awake()
@@ -95,35 +94,97 @@ namespace Main.Common
             instance = this;
         }
 
+        // ▼▼▼テスト用 結合時には消す▼▼▼
+        //[SerializeField, Range(0, 29)] private int DemoUpdateScenesMap = 0;
+        // ▲▲▲テスト用 結合時には消す▲▲▲
+
         private void Start()
         {
-            StartStage();
+            // ▼▼▼テスト用 結合時には消す▼▼▼
+            //UpdateScenesMap(DemoUpdateScenesMap);
+            // ▲▲▲テスト用 結合時には消す▲▲▲
+            if (!StartStage())
+                Debug.LogError("ステージ開始処理の失敗");
         }
 
         /// <summary>
         /// ステージ読み込みの設定
         /// </summary>
-        private void StartStage()
+        public bool StartStage()
         {
+            try
+            {
+                // Skyboxの設定
+                if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
+                    Debug.LogError("Skybox設定処理の失敗");
+                // スタート演出の間はブロックSEを鳴らさない
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = true;
+                // スタート演出の間は空間操作は無効
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                // スタート演出の間はショートカット入力は無効
+                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
+                // 読み込むステージのみ有効
+                var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
+                stage.SetActive(true);
+                // コネクトシステムの初期設定
+                GameManager.Instance.SpaceManager.transform.parent = stage.transform;
+                GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
+                // カメラの初期設定
+                GameManager.Instance.MainCamera.transform.parent = stage.transform;
+                GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
+                GameManager.Instance.MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
+                GameManager.Instance.MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
+                GameManager.Instance.MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
+                // BGMの初期設定
+                bgmPlay.GetComponent<BgmPlay>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
+                // 最終ステージか否かの判断（クリア画面のUIに影響）
+                FinalStage = finalStages[_sceneIdCrumb.Current];
+                // コネクト回数
+                ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
+                if (!GameManager.Instance.InitializeGoalPoint())
+                    Debug.LogError("ゴールポイント初期化の失敗");
+                if (!GameManager.Instance.CloseDoorFromSpaceManager())
+                    Debug.LogError("ゴール扉クローズ処理の失敗");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 疑似スタートイベント発火
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFromSceneInfoManager()
+        {
+            if (!UIManager.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
+                Debug.Log("フェード演出開始処理の失敗");
+            if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+                Debug.Log("空間操作開始処理の失敗");
+            if (!GameManager.Instance.PlayManualStartFromSceneInfoManager())
+                Debug.Log("GameManager開始処理の失敗");
+            return true;
+        }
+
+        /// <summary>
+        /// ステージリセットの設定
+        /// </summary>
+        private bool EndStage()
+        {
+            // T.B.D 該当ステージプレハブ内の情報をリセットする
             var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
-            stage.SetActive(true);
-            spaceManager.transform.parent = stage.transform;
-            if (!GameManager.Instance.SetStageScaleMaxDistanceFromSpaceManager(stageScaleMaxDistances[_sceneIdCrumb.Current]))
-                Debug.LogError("ステージの空間操作範囲設定の失敗");
-            GameManager.Instance.Player.transform.parent = stage.transform;
-            GameManager.Instance.Player.transform.localPosition = playerTransformLocalPoses[_sceneIdCrumb.Current];
-            GameManager.Instance.Player.transform.localEulerAngles = playerTransformLocalAngles[_sceneIdCrumb.Current];
-            GameManager.Instance.Player.transform.localScale = playerTransformLocalScales[_sceneIdCrumb.Current];
-            GameManager.Instance.MainCamera.transform.parent = stage.transform;
-            GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
-            GameManager.Instance.MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
-            GameManager.Instance.MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
-            GameManager.Instance.MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
-            bgmPlay.GetComponent<BgmPlay>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
-            FinalStage = finalStages[_sceneIdCrumb.Current];
-            safeZone.GetComponent<SafeZone>().BoxCenter = safeZoneBoxCenters[_sceneIdCrumb.Current];
-            safeZone.GetComponent<SafeZone>().BoxSize = safeZoneBoxSizes[_sceneIdCrumb.Current];
-            safeZone.GetComponent<SafeZone>().InsPosition = safeZoneInsPoses[_sceneIdCrumb.Current];
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.PlayerOffsets))
+                Debug.LogError("プレイヤーリセット処理の失敗");
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
+                Debug.LogError("空間操作オブジェクトリセット処理の失敗");
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
+                Debug.LogError("敵オブジェクトリセット処理の失敗");
+            if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
+                Debug.Log("ぼろいブロック・天井復活処理の失敗");
+            stage.SetActive(false);
+            return true;
         }
 
         /// <summary>
@@ -132,9 +193,10 @@ namespace Main.Common
         /// <param name="sceneID">現在のシーン名</param>
         public void UpdateScenesMap(int sceneID)
         {
+            Debug.Log("シーンIDの更新:[" + sceneID + "]");
             _sceneIdCrumb.Current = sceneID;
             // 次のシーン情報をシーン一覧から検索してセット
-            if (_sceneIdCrumb.Current < STAGE_COUNT_MAX - 1)
+            if (_sceneIdCrumb.Current < stageCountMax/* - 1*/)
             {
                 // 次のシーンが存在する場合はセット
                 _sceneIdCrumb.Next = _sceneIdCrumb.Current + 1;
@@ -149,7 +211,7 @@ namespace Main.Common
         /// <summary>
         /// 現在のシーンを次のシーンへセット
         /// </summary>
-        public void SetSceneIdRedo()
+        public void SetSceneIdUndo()
         {
             _loadSceneId = _sceneIdCrumb.Current;
         }
@@ -164,12 +226,12 @@ namespace Main.Common
 
         /// <summary>
         /// メインシーンを次のシーンへセット
-        /// Select_Sceneから呼び出される想定の処理
+        /// SelectSceneから呼び出される想定の処理
         /// </summary>
         /// <param name="sceneId"></param>
         public void SetMainSceneNameIdFromSelect_Scene(int sceneId)
         {
-            _loadSceneName = "Main_Scene";
+            _loadSceneName = SCENE_NAME_MAIN;
             _loadSceneId = sceneId;
         }
 
@@ -179,17 +241,26 @@ namespace Main.Common
         /// </summary>
         public void SetSelectSceneNameIdFromMain_Scene()
         {
-            _loadSceneName = "Select_Scene";
+            _loadSceneName = SCENE_NAME_SELECT;
             BrideScenes_SelectMain.Instance.LoadSceneId = _sceneIdCrumb.Current;
         }
 
         /// <summary>
         /// シーンロード開始
         /// </summary>
-        public void PlayLoadScene()
+        public SceneLoadType PlayLoadScene()
         {
-            SceneManager.sceneLoaded += LoadedGameScene;
-            SceneManager.LoadScene(_loadSceneName);
+            if (!string.IsNullOrEmpty(_loadSceneName))
+            {
+                SceneManager.sceneLoaded += LoadedGameScene;
+                SceneManager.LoadScene(_loadSceneName);
+                return SceneLoadType.SceneLoad;
+            }
+            else
+            {
+                // メインシーン間でのステージ遷移
+                return EndStage() ? SceneLoadType.PrefabLoad : SceneLoadType.Error;
+            }
         }
 
         /// <summary>
@@ -214,5 +285,18 @@ namespace Main.Common
         public int Current { get; set; }
         /// <summary>次のメインシーンのステージID</summary>
         public int Next { get; set; }
+    }
+
+    /// <summary>
+    /// シーン読み込みタイプ
+    /// </summary>
+    public enum SceneLoadType
+    {
+        /// <summary>シーン遷移</summary>
+        SceneLoad
+            /// <summary>プレハブ化された疑似シーン遷移（メインシーンのみ）</summary>
+            , PrefabLoad
+            /// <summary>エラー</summary>
+            , Error
     }
 }

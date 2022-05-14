@@ -2,17 +2,19 @@ using Main.Common;
 using Main.Level;
 using System.Collections;
 using System.Collections.Generic;
-using TitleSelect;
 using UnityEngine;
+using Main.Common.Const;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private bool flag;
+    [SerializeField, Range(0, 29)] private int updateScenesMap = 0;
+    private bool flag;
     private bool singleOpe;
 
     private void Start()
     {
-        Debug.Log(BrideScenes_SelectMain.Instance.LoadSceneId);
+        //Debug.Log(BrideScenes_SelectMain.Instance.LoadSceneId);
+        SceneInfoManager.Instance.UpdateScenesMap(updateScenesMap);
     }
 
     private void Update()
@@ -26,6 +28,7 @@ public class Test : MonoBehaviour
                 BrideScenes_SelectMain.Instance.PlayLoadScene();
             }
         }
+        //Debug.Log(Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS_KEYBOD));
     }
 
     //[SerializeField] private bool gravityControllerActive;

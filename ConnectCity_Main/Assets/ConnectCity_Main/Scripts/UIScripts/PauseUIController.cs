@@ -79,7 +79,7 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         _menuClose = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                         UIManager.Instance.CloseMenu();
                         button.enabled = false;
                     }
@@ -97,7 +97,7 @@ namespace Main.UI
             if (_menuClose == false)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                 UIManager.Instance.CloseMenu();
                 button.enabled = false;
             }

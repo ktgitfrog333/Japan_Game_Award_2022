@@ -62,7 +62,7 @@ namespace Main.UI
             if (_menuClose == false)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                 UIManager.Instance.CloseSpaceScreen();
                 button.enabled = false;
             }

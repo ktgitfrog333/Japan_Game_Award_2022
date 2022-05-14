@@ -26,6 +26,6 @@ namespace Main.Common.Const
         /// <summary>
         /// 敵ギミックのレイヤー名
         /// </summary>
-        public static readonly string LAYER_NAME_HUMANENEMIES = "HumanEnemies";
+        public static readonly string LAYER_NAME_ROBOTENEMIES = "Robot_Ememy";
     }
 }

@@ -50,7 +50,7 @@ namespace Main.Level
         public void OnAirHover()
         {
             // 移動SE
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+            SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
             // 移動中にパーティクルで枠をつける
             if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
                 _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(true);
@@ -63,7 +63,7 @@ namespace Main.Level
         /// </summary>
         public void OnFreeze()
         {
-            // todo 止まった時にエフェクトを止める
+            // T.B.D 止まった時にエフェクトを止める
             if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
                 _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(false);
         }

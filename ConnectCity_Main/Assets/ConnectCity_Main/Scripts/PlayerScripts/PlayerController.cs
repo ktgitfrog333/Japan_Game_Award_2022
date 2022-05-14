@@ -14,7 +14,6 @@ namespace Main.Player
     /// プレイヤー操作制御
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(Animator))]
     public class PlayerController : MonoBehaviour
     {
         /// <summary>移動速度</summary>
@@ -33,8 +32,29 @@ namespace Main.Player
         [SerializeField] private Animator _playerAnimation;
         /// <summary>パーティクルシステムの配列</summary>
         [SerializeField] private ParticleSystem[] _particleSystems;
+        /// <summary>操作状況に応じて変化する光パーティクル</summary>
+        [SerializeField] private ParticleSystem signalHeartLight;
+        /// <summary>進む信号カラー</summary>
+        [SerializeField] private Color GoLight = new Color(0f, 255f, 182f, 255f);
+        /// <summary>停止信号カラー</summary>
+        [SerializeField] private Color StopLight = new Color(255f, 70f, 0f, 255f);
+        /// <summary>
+        /// ジャンプSEの設定
+        /// T.B.D ジャンプSEの候補１ or 候補２を決める
+        /// </summary>
+        [SerializeField] private ClipToPlay _SEJump = ClipToPlay.se_player_jump_No1;
+        /// <summary>圧死音SEの設定</summary>
+        [SerializeField] private ClipToPlay _SEDead = ClipToPlay.se_player_dead;
         /// <summary>ジャンプ状態</summary>
         private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
+        /// <summary>入力禁止</summary>
+        private BoolReactiveProperty _inputBan;
+        /// <summary>入力禁止</summary>
+        public bool InputBan
+        {
+            get => _inputBan.Value;
+            set => _inputBan.Value = value;
+        }
 
         private void Reset()
         {
@@ -50,17 +70,23 @@ namespace Main.Player
             if (_characterCtrl == null)
                 _characterCtrl = GetComponent<CharacterController>();
             if (_playerAnimation == null)
-                _playerAnimation = GetComponent<Animator>();
+                _playerAnimation = transform.GetChild(2).GetComponent<Animator>();
             if (_particleSystems.Length <= 0f)
             {
                 var particleList = new List<ParticleSystem>();
                 for (var i = 0; i < transform.childCount; i++)
                 {
-                    particleList.Add(transform.GetChild(i).GetComponent<ParticleSystem>());
+                    if (transform.GetChild(i).GetComponent<ParticleSystem>() != null)
+                    {
+                        particleList.Add(transform.GetChild(i).GetComponent<ParticleSystem>());
+                    }
                 }
                 if (particleList.Count < 1) Debug.LogError("パーティクルのセットが失敗");
                 _particleSystems = particleList.ToArray();
             }
+            // 操作状態のパーティクル
+            if (signalHeartLight == null)
+                signalHeartLight = transform.GetChild(2).GetChild(3).GetComponent<ParticleSystem>();
         }
 
         private void Start()
@@ -70,16 +96,34 @@ namespace Main.Player
             // 移動先の座標（X軸の移動、Y軸のジャンプのみ）
             var moveVelocity = new Vector3();
 
+            _inputBan = new BoolReactiveProperty();
+            _inputBan.ObserveEveryValueChanged(x => x.Value)
+                .Subscribe(x =>
+                {
+                    signalHeartLight.Stop();
+                    var m = signalHeartLight.main;
+                    signalHeartLight.Play();
+                    if (!x)
+                        m.startColor = GoLight;
+                    else
+                    {
+                        m.startColor = StopLight;
+                        moveVelocity = Vector3.zero;
+                    }
+                });
             // 移動入力に応じて移動座標をセット
             this.UpdateAsObservable()
+                .Where(_ => !_inputBan.Value)
                 .Select(_ => Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed)
                 .Subscribe(x =>
                 {
                     moveVelocity.x = x;
-                    transform.LookAt(transform.position + new Vector3(moveVelocity.x, 0f, 0f));
+                    // 移動時にx座標反転（元オブジェクト補正）
+                    transform.LookAt(transform.position + new Vector3((moveVelocity.x) * -1f, 0f, 0f));
                 });
             // ジャンプ入力に応じてジャンプフラグをセット
             this.UpdateAsObservable()
+                .Where(_ => !_inputBan.Value)
                 .Where(_ => !_isJumped.Value &&
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
@@ -91,8 +135,7 @@ namespace Main.Player
                 .Subscribe(_ =>
                 {
                     moveVelocity.y = jumpSpeed;
-                // T.B.D ジャンプSEがはいるが、ひとまず決定音を鳴らす
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                    SfxPlay.Instance.PlaySFX(_SEJump);
                     if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
                         _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
                     _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
@@ -107,11 +150,6 @@ namespace Main.Player
                 .Where(x => x)
                 .Subscribe(x => {
                     moveVelocity.y = 0f;
-                // T.B.D 着地SEが入るが、ひとまずメニューを閉じる音を鳴らす
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
-                    if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
-                        _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
-                    _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
                 });
             // 空中にいる際の移動座標をセット
             this.UpdateAsObservable()
@@ -125,6 +163,19 @@ namespace Main.Player
                     if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
                     _characterCtrl.Move(moveVelocity * Time.deltaTime);
                 });
+            // 死亡時からのリセット場合
+            // メッシュが無効になっているなら有効にする
+            // 死亡パーティクルが有効になっているなら無効にする
+            this.OnEnableAsObservable()
+                .Subscribe(_ =>
+                {
+                    var model = transform.GetChild(2);
+                    if (!model.gameObject.activeSelf)
+                        model.gameObject.SetActive(true);
+                    if (_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
+                        _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(false);
+                });
+
 
             // デバッグ用
             //this.UpdateAsObservable()
@@ -160,7 +211,6 @@ namespace Main.Player
                 if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
                     _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
                 _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
             }
         }
 
@@ -183,13 +233,14 @@ namespace Main.Player
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromGameManager()
         {
-            var render = GetComponent<MeshRenderer>();
-            if (render.enabled)
-                render.enabled = false;
+            var model = transform.GetChild(2);
+            if (model.gameObject.activeSelf)
+                model.gameObject.SetActive(false);
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0f, transform.eulerAngles.z);
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_close);
+            // 圧死音SE
+            SfxPlay.Instance.PlaySFX(_SEDead);
             await Task.Delay(3000);
             return true;
         }

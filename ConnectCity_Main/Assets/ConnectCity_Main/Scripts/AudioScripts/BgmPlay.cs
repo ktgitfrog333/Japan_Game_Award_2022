@@ -45,6 +45,12 @@ namespace Main.Audio
     public enum ClipToPlayBGM
     {
         /// <summary>ステージ1～10のBGM？</summary>
-        bgm_section_01
+        Main_No1,
+        /// <summary>ステージ11～20のBGM？</summary>
+        Main_No2,
+        /// <summary>ステージ21～30のBGM？</summary>
+        Main_No3,
+        /// <summary>どれかのステージのBGM？</summary>
+        Main_No8,
     }
 }

@@ -7,6 +7,8 @@ using UniRx.Triggers;
 using UnityEngine.UI;
 using Main.Common.Const;
 using Main.Audio;
+using Main.Common;
+using Main.Direction;
 
 namespace Main.UI
 {
@@ -41,7 +43,19 @@ namespace Main.UI
         /// <summary>ショートカット入力</summary>
         [SerializeField] private GameObject shortcuGuideScreen;
         /// <summary>ショートカット入力</summary>
+        public GameObject ShortcuGuideScreen => shortcuGuideScreen;
+        /// <summary>ショートカット入力</summary>
         private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
+        /// <summary>遊び方の確認のSEパターン</summary>
+        [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
+        /// <summary>スタート演出</summary>
+        [SerializeField] private GameObject startCutscene;
+        /// <summary>スタート演出のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_STARTCUTSCENE = "StartCutscene";
+        /// <summary>エンド演出</summary>
+        [SerializeField] private GameObject endCutscene;
+        /// <summary>エンド演出のオブジェクト名</summary>
+        private static readonly string OBJECT_NAME_ENDCUTSCENE = "EndCutscene";
 
         private void Reset()
         {
@@ -57,6 +71,10 @@ namespace Main.UI
                 clearScreen = GameObject.Find(OBJECT_NAME_CLEARSCREEN);
             if (shortcuGuideScreen == null)
                 shortcuGuideScreen = GameObject.Find(OBJECT_NAME_SHORTCUGUIDESCREEN);
+            if (startCutscene == null)
+                startCutscene = GameObject.Find(OBJECT_NAME_STARTCUTSCENE);
+            if (endCutscene == null)
+                endCutscene = GameObject.Find(OBJECT_NAME_ENDCUTSCENE);
         }
 
         private void Awake()
@@ -80,7 +98,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     pauseScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                    SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
             // 空間操作可能な境界を表示切り替え操作の入力
             this.UpdateAsObservable()
@@ -89,7 +107,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     spaceScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_menu);
+                    SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
         }
 
@@ -156,10 +174,16 @@ namespace Main.UI
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
             await Task.Delay(3000);
             // 子オブジェクトは一度非表示にする
-            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
+            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount - (SceneInfoManager.Instance.FinalStage ? 1 : 0); i++)
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
 
             clearScreen.GetComponent<ClearScreen>().AutoSelectContent();
+        }
+
+        public async void CloseClearScreen()
+        {
+            await Task.Delay(500);
+            clearScreen.SetActive(false);
         }
 
         /// <summary>
@@ -181,6 +205,61 @@ namespace Main.UI
             fadeScreen.GetComponent<FadeScreen>().DrawLoadNowFadeOut();
 
             return true;
+        }
+
+        /// <summary>
+        /// フェード演出UIのスタートイベント内の処理を疑似発火
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayManualStartFadeScreenFromSceneInfoManager()
+        {
+            fadeScreen.GetComponent<FadeScreen>().ManualStart();
+            return true;
+        }
+
+        /// <summary>
+        /// スタート演出の再生（ロング版／ショート版有り）
+        /// SceneInfoManagerからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayStartCutsceneFromSceneInfoManager()
+        {
+            startCutscene.GetComponent<StartCutscene>().Initialize();
+            return true;
+        }
+
+        /// <summary>
+        /// スタート演出のモードをセット
+        /// </summary>
+        /// <param name="continue">コンティニューフラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetStartCutsceneContinueFromFadeScreen(bool @continue)
+        {
+            startCutscene.GetComponent<StartCutscene>().Continue = @continue;
+            return true;
+        }
+
+        /// <summary>
+        /// ゴール演出の再生
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public BoolReactiveProperty PlayEndCutsceneFromGoalPoint()
+        {
+            var complete = new BoolReactiveProperty();
+            Observable.FromCoroutine<bool>(observer => endCutscene.GetComponent<EndCutscene>().Initialize(observer))
+                .Subscribe(x => complete.Value = x)
+                .AddTo(gameObject);
+            return complete;
+        }
+
+        /// <summary>
+        /// 残っているパーティクルを削除
+        /// フェードからの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool DestroyParticleFromFadeScreen()
+        {
+            return endCutscene.GetComponent<EndCutscene>().DestroyParticleFromFadeScreen();
         }
     }
 }
