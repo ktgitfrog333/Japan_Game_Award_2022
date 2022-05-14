@@ -7,6 +7,7 @@ using Main.Common.Const;
 using UniRx;
 using UniRx.Triggers;
 using Main.Common;
+using Main.Common.LevelDesign;
 
 namespace Gimmick
 {
@@ -25,27 +26,7 @@ namespace Gimmick
         {
             var localGravity = new Vector3();
 
-            switch (direction)
-            {
-                case Direction.UP:
-                    // 重力を上向きにセット
-                    localGravity = Vector3.up * moveSpeed;
-                    break;
-                case Direction.DOWN:
-                    // 重力を下向きにセット
-                    localGravity = Vector3.down * moveSpeed;
-                    break;
-                case Direction.LEFT:
-                    // 重力を左向きにセット
-                    localGravity = Vector3.left * moveSpeed;
-                    break;
-                case Direction.RIGHT:
-                    // 重力を右向きにセット
-                    localGravity = Vector3.right * moveSpeed;
-                    break;
-                default:
-                    break;
-            }
+            localGravity = LevelDesisionIsObjected.GetVectorFromDirection(direction) * moveSpeed;
 
             this.OnTriggerEnterAsObservable()
                 .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
@@ -73,17 +54,5 @@ namespace Gimmick
         {
             return GameManager.Instance.MoveCharactorFromGravityController(localGravity);
         }
-    }
-
-    public enum Direction
-    {
-        /// <summary>上</summary>
-        UP
-    /// <summary>下</summary>
-    , DOWN
-    /// <summary>左</summary>
-    , LEFT
-    /// <summary>右</summary>
-    , RIGHT
     }
 }

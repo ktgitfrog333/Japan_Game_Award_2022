@@ -95,13 +95,13 @@ namespace Main.Common
         }
 
         // ▼▼▼テスト用 結合時には消す▼▼▼
-        [SerializeField, Range(0, 29)] private int DemoUpdateScenesMap = 0;
+        //[SerializeField, Range(0, 29)] private int DemoUpdateScenesMap = 0;
         // ▲▲▲テスト用 結合時には消す▲▲▲
 
         private void Start()
         {
             // ▼▼▼テスト用 結合時には消す▼▼▼
-            UpdateScenesMap(DemoUpdateScenesMap);
+            //UpdateScenesMap(DemoUpdateScenesMap);
             // ▲▲▲テスト用 結合時には消す▲▲▲
             if (!StartStage())
                 Debug.LogError("ステージ開始処理の失敗");

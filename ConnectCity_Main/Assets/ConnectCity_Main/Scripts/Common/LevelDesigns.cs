@@ -159,6 +159,34 @@ namespace Main.Common.LevelDesign
 
             return gameObjList.ToArray();
         }
+
+        /// <summary>
+        /// ベクター情報を取得
+        /// </summary>
+        /// <param name="direction">enumの向き</param>
+        /// <returns>ローカルのベクター情報</returns>
+        public static Vector3 GetVectorFromDirection(Direction direction)
+        {
+            var v = new Vector3();
+            switch (direction)
+            {
+                case Direction.UP:
+                    // 重力を上向きにセット
+                    return Vector3.up;
+                case Direction.DOWN:
+                    // 重力を下向きにセット
+                    return Vector3.down;
+                case Direction.LEFT:
+                    // 重力を左向きにセット
+                    return Vector3.left;
+                case Direction.RIGHT:
+                    // 重力を右向きにセット
+                    return Vector3.right;
+                default:
+                    break;
+            }
+            return v;
+        }
     }
 
     /// <summary>
@@ -170,5 +198,20 @@ namespace Main.Common.LevelDesign
         public GameObject GameObjectObj { get; set; }
         /// <summary>位置</summary>
         public Vector3 localPosition { get; set; }
+    }
+
+    /// <summary>
+    /// 向き
+    /// </summary>
+    public enum Direction
+    {
+        /// <summary>上</summary>
+        UP,
+        /// <summary>下</summary>
+        DOWN,
+        /// <summary>左</summary>
+        LEFT,
+        /// <summary>右</summary>
+        RIGHT,
     }
 }

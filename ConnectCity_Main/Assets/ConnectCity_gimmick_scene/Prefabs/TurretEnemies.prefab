@@ -4771,7 +4771,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 01726f0222ac82c428f3b25246f191a6, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9590,7 +9589,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 4f0077caf53021a45ac23e48be8a0caf, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9907,14 +9905,14 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0.040957928, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 0, b: 0.040957928, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 17348
+      ctime0: 0
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -9950,6 +9948,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4918853471698667123}
+  - component: {fileID: 2848801258060335101}
+  - component: {fileID: 6772676135163295291}
   m_Layer: 0
   m_Name: TurretEnemies
   m_TagString: Untagged
@@ -9974,6 +9974,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2848801258060335101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924227357480085615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c7208b68916f3541902d7d0b71ad152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletDirection: 2
+  bulletSpeed: 0.5
+  bulletInterval: 4
+  bulletSubInterval: 0.05
+  rayOriginOffset: {x: 0, y: 0.16, z: 0}
+  turretEnemiesSE: 12
+--- !u!65 &6772676135163295291
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924227357480085615}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 4, z: 4}
+  m_Center: {x: 0, y: 1.4, z: -0.84}
 --- !u!1 &4924271143836232343
 GameObject:
   m_ObjectHideFlags: 0
@@ -10000,7 +10031,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4924271143836232343}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 2.6378508, z: 0}
+  m_LocalPosition: {x: -0, y: 2.06, z: 0}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_Children:
   - {fileID: 4926223308059297849}
@@ -14850,7 +14881,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: fed665eb592f66c4c8ab674d70185458, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
