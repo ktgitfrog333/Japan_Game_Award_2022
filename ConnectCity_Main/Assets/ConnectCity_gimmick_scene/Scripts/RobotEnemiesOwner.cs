@@ -27,7 +27,7 @@ namespace Gimmick
             {
                 _robotEmems = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_ROBOT_EMEMY);
                 _robotEmemOffsets = LevelDesisionIsObjected.SaveObjectOffset(_robotEmems);
-                if (_robotEmemOffsets == null)
+                if (_robotEmems != null && 0 < _robotEmems.Length && _robotEmemOffsets == null)
                     Debug.LogError("オブジェクト初期状態の保存の失敗");
                 return true;
             }

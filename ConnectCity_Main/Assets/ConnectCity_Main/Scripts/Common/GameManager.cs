@@ -198,7 +198,6 @@ namespace Main.Common
         }
 
         /// <summary>
-        /// T.B.D 重力操作ギミックの仮実装(GameManager.Instance.MoveCharactorFromGravityController(3.5fなど);)
         /// 重力操作ギミックオブジェクトからプレイヤーオブジェクトへ
         /// プレイヤー操作指令を実行して、実行結果を返却する
         /// </summary>

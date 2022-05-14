@@ -3,30 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Main.Common.Const;
+using UniRx;
+using UniRx.Triggers;
+using Main.Common;
 
 namespace Gimmick
 {
     /// <summary>
     /// 重力操作ギミック
     /// </summary>
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(BoxCollider))]
     public class ChangeGravity : MonoBehaviour
     {
-        [SerializeField] private float moveSpeed = 3; //移動速度
-        [SerializeField] private Vector3 localGravity;
+        /// <summary>移動速度</summary>
+        [SerializeField] private float moveSpeed = .3f;
+        /// <summary>重力の方向（設定値）</summary>
         [SerializeField] private Direction direction;
-        float moveX = 0f;
-        float moveZ = 0f;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            localGravity = transform.forward;
-        }
+            var localGravity = new Vector3();
 
-        // Update is called once per frame
-        void Update()
-        {
             switch (direction)
             {
                 case Direction.UP:
@@ -48,13 +46,33 @@ namespace Gimmick
                 default:
                     break;
             }
+
+            this.OnTriggerEnterAsObservable()
+                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
+                .Subscribe(_ =>
+                {
+                    if (!MovePlayerFromChangeGravity(localGravity))
+                        Debug.LogError("重力操作処理の失敗");
+                });
+            this.OnTriggerExitAsObservable()
+                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
+                .Subscribe(_ =>
+                {
+                    if (!MovePlayerFromChangeGravity(localGravity))
+                        Debug.LogError("重力操作処理の失敗");
+                });
         }
 
-        private void OnTriggerEnter(Collider other)
+        /// <summary>
+        /// 重力操作ギミックオブジェクトからプレイヤーオブジェクトへ
+        /// プレイヤー操作指令を実行して、実行結果を返却する
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool MovePlayerFromChangeGravity(Vector3 localGravity)
         {
-            localGravity = Vector3.zero;
+            return GameManager.Instance.MoveCharactorFromGravityController(localGravity);
         }
-
     }
 
     public enum Direction
