@@ -217,19 +217,20 @@ namespace Main.Level
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
                 // 敵ギミックの接地判定
+                RaycastHit[] hits = new RaycastHit[1];
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_HUMANENEMIES)))
-                    .Select(_ => GameManager.Instance.MoveHumanEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.transform.parent.OnCollisionEnterAsObservable()
@@ -262,12 +263,13 @@ namespace Main.Level
                 var pressedEnem = new ReactiveProperty<bool>();
                 obj.UpdateAsObservable()
                     .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
-                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_HUMANENEMIES))
+                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_ROBOTENEMIES, out hits))
                     .Subscribe(x => pressedEnem.Value = x);
                 pressedEnem.Where(x => x)
                     .Subscribe(_ =>
                     {
-                        GameManager.Instance.DestroyHumanEnemyFromSpaceManager();
+                        // T.B.D 敵オブジェクトを壊す
+                        //GameManager.Instance.DestroyHumanEnemyFromSpaceManager(hits[0].transform.gameObject);
                     });
             }
 
@@ -536,8 +538,22 @@ namespace Main.Level
         /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
         /// </summary>
         /// <param name="moveCube">対象のMoveCube</param>
+        /// <param name="layerName">レイヤー名</param>
         /// <returns>挟まっている／離れている</returns>
         private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName)
+        {
+            RaycastHit[] hits = new RaycastHit[1];
+            return CheckDirectionMoveCubeToPlayer(moveCube, layerName, out hits);
+        }
+
+        /// <summary>
+        /// MoveCubeと壁の間にプレイヤーが挟まれた状態かをチェック
+        /// </summary>
+        /// <param name="moveCube">対象のMoveCube</param>
+        /// <param name="layerName">レイヤー名</param>
+        /// <param name="hits">ヒットオブジェクト（参照用）</param>
+        /// <returns>挟まっている／離れている</returns>
+        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName, out RaycastHit[] hits)
         {
             var rOrgOffL = rayOriginOffsetLeft;
             var rOrgDireL = rayDirectionLeft;
@@ -551,14 +567,15 @@ namespace Main.Level
             var rOrgOffDownAry = GetThreePointHorizontal(rayOriginOffsetDown, .5f);
             var rOrgDireDown = rayDirectionDown;
             var rMaxDisDown = rayMaxDistanceDownLong;
+            hits = new RaycastHit[1];
 
             // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
             // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
             // 左
             if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                 {
                     return true;
                 }
@@ -566,8 +583,8 @@ namespace Main.Level
             // 右
             if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                 {
                     return true;
                 }
@@ -577,8 +594,8 @@ namespace Main.Level
                 // 上
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }
@@ -586,8 +603,8 @@ namespace Main.Level
                 // 下
                 if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }

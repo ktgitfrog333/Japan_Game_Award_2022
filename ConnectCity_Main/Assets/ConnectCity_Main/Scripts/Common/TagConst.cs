@@ -43,5 +43,13 @@ namespace Main.Common.Const
         /// コネクトカウントダウンUIのタグ名
         /// </summary>
         public static readonly string TAG_NAME_CONNECTCOUNTSCREEN = "ConnectCountScreen";
+        /// <summary>
+        /// 敵ロボットのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_ROBOT_EMEMY = "Robot_Ememy";
+        /// <summary>
+        /// ぼろいブロック・天井のタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_BREAKBLOOK = "BreakBlook";
     }
 }
