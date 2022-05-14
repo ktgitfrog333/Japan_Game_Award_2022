@@ -12,12 +12,11 @@ GameObject:
   - component: {fileID: 9166291589879519816}
   - component: {fileID: 2602566616283768461}
   - component: {fileID: 4408133940486173313}
-  - component: {fileID: 8658823262538864231}
   - component: {fileID: 6575395537885302772}
   - component: {fileID: 7573150807931231442}
   m_Layer: 0
   m_Name: BreakBlook
-  m_TagString: Untagged
+  m_TagString: BreakBlook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,19 +97,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8658823262538864231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2458486982963340055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cc16cd4ab4091543b08edbf4db0c233, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToFall: 5
 --- !u!54 &6575395537885302772
 Rigidbody:
   m_ObjectHideFlags: 0

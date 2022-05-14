@@ -47,5 +47,9 @@ namespace Main.Common.Const
         /// 敵ロボットのタグ名
         /// </summary>
         public static readonly string TAG_NAME_ROBOT_EMEMY = "Robot_Ememy";
+        /// <summary>
+        /// ぼろいブロック・天井のタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_BREAKBLOOK = "BreakBlook";
     }
 }

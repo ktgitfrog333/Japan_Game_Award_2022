@@ -179,12 +179,10 @@ namespace Main.Common
                 Debug.LogError("プレイヤーリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            // 敵ギミック
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.LogError("敵オブジェクトリセット処理の失敗");
-            // T.B.D ぼろいブロックの仮実装
-            //if (!LevelDesisionIsObjected.ResetObjectFromSceneInfoManager(stage, GameManager.Instance.BrokenCubeOffsets))
-            //    Debug.LogError("ぼろいブロックリセット処理の失敗");
+            if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
+                Debug.Log("ぼろいブロック・天井復活処理の失敗");
             stage.SetActive(false);
             return true;
         }
