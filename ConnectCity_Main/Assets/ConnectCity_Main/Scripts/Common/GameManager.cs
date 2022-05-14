@@ -85,7 +85,6 @@ namespace Main.Common
             if (robotEnemiesOwner == null)
                 robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
 
-            //robotEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_ROBOT_EMEMY);
             // T.B.D レーザー砲ギミックの仮実装
             //if (turretEnemies == null && turretEnemies.length)
             //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
