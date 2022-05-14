@@ -898,8 +898,8 @@ namespace TitleSelect
                     Select_Flame_Image_28.SetActive(true);
                     Select_Flame_Image_29.SetActive(true);
                     Select_Flame_Image_30.SetActive(true);
-                    Select_Left_Arrow.SetActive(false);
-                    Select_Right_Arrow.SetActive(true);
+                    Select_Left_Arrow.SetActive(true);
+                    Select_Right_Arrow.SetActive(false);
                     switch (stage)
                     {
                         case Stage_Num.Stage26:
