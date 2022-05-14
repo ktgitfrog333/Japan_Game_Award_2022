@@ -1016,7 +1016,7 @@ namespace TitleSelect
         /// <param name="sceneId"></param>
         async public void Select_SceneToMainScene(int sceneId)
         {
-            BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene(sceneId - 1);
+            BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene(sceneId);
             GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
             await Task.Delay(3000);
             BrideScenes_SelectMain.Instance.PlayLoadScene();
