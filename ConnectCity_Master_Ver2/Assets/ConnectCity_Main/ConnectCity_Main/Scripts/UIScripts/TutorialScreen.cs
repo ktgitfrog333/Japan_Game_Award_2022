@@ -176,7 +176,8 @@ namespace Main.UI
                 tran.GetComponent<CanvasGroup>().alpha = 0f;
                 tran.gameObject.SetActive(true);
                 tran.GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationFade)
-                    .OnComplete(() => count.Value++);
+                    .OnComplete(() => count.Value++)
+                    .SetLink(gameObject);
             }
             else
                 return false;
@@ -201,7 +202,8 @@ namespace Main.UI
                 // 点滅させる
                 content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
                     .SetEase(easeType)
-                    .SetLoops(-1, LoopType.Yoyo);
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetLink(gameObject);
             }
             return true;
         }

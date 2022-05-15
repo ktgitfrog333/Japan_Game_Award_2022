@@ -83,14 +83,6 @@ namespace Main.Common
 
         private void Awake()
         {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            DontDestroyOnLoad(gameObject);
-
             instance = this;
         }
 
@@ -180,7 +172,7 @@ namespace Main.Common
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
-                Debug.LogError("敵オブジェクトリセット処理の失敗");
+                Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
             stage.SetActive(false);
