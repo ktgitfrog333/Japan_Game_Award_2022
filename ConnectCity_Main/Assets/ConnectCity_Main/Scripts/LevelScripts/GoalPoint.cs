@@ -44,6 +44,8 @@ namespace Main.Level
                 screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.MainCamera.GetComponent<Camera>());
                 _connectCountScreen = screen;
             }
+
+            UpdateCountDownFromGameManager(0, SceneInfoManager.Instance.ClearConnectedCounter);
             return true;
         }
 
