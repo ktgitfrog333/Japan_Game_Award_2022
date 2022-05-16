@@ -58,6 +58,8 @@ namespace TitleSelect
             var startEnd = false;
             var yesNo = false;
 
+            Cursor.visible = false;
+
             pushImage.SetActive(true);
             gamestartImage.SetActive(false);
             gamefinishImage.SetActive(false);
