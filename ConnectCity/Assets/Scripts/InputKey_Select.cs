@@ -195,6 +195,8 @@ namespace TitleSelect
             select_flame_image_28_pos = Select_Flame_Image_28.GetComponent<RectTransform>().anchoredPosition;
             select_flame_image_29_pos = Select_Flame_Image_29.GetComponent<RectTransform>().anchoredPosition;
             select_flame_image_30_pos = Select_Flame_Image_30.GetComponent<RectTransform>().anchoredPosition;
+
+            Cursor.visible = false;
         }
 
         // Update is called once per frame
