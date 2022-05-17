@@ -76,6 +76,23 @@ namespace Main.Direction
                         });
 
                     StartCoroutine(coroutine);
+
+                    Observable.FromCoroutine<bool>(observer => TechnicalParticleMotion.CoroutineMoveShootTargetLimit(observer, .5f))
+                        .Where(_ => !complated)
+                        .Subscribe(x =>
+                        {
+                            complated = x;
+                            // プレイヤーを有効にする
+                            GameManager.Instance.Player.SetActive(true);
+                            if (!InstanceDiffusion())
+                                Debug.LogError("拡散パーティクル生成の失敗");
+                            Destroy(targetTrigger);
+                            StopCoroutine(coroutine);
+                            diffusonShootingStar.Stop();
+                            _success.Value = false;
+                            startCutscene.GetComponent<StartCutscene>().StopPlayAbleFromSootingMovement();
+                        })
+                        .AddTo(gameObject);
                 });
         }
 
@@ -126,6 +143,17 @@ namespace Main.Direction
                 loop++;
                 if (1000 < loop) break;
             }
+        }
+
+        /// <summary>
+        /// 演出のタイムリミット
+        /// </summary>
+        /// <param name="observer"></param>
+        /// <returns></returns>
+        public static IEnumerator CoroutineMoveShootTargetLimit(System.IObserver<bool> observer, float limitTime)
+        {
+            yield return new WaitForSeconds(limitTime);
+            observer.OnNext(true);
         }
     }
 }

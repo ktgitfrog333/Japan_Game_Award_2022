@@ -9,7 +9,7 @@ namespace Main.Common
     /// </summary>
     public class MouseCursorBan : MonoBehaviour
     {
-        private void Start()
+        private void Update()
         {
             Cursor.visible = false;
         }
