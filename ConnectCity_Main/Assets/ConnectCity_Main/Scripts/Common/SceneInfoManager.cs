@@ -121,6 +121,8 @@ namespace Main.Common
                 // コネクトシステムの初期設定
                 GameManager.Instance.SpaceManager.transform.parent = stage.transform;
                 GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
+                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+                    Debug.Log("空間操作開始処理の失敗");
                 // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
@@ -153,8 +155,8 @@ namespace Main.Common
         {
             if (!UIManager.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
                 Debug.Log("フェード演出開始処理の失敗");
-            if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
-                Debug.Log("空間操作開始処理の失敗");
+            //if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+            //    Debug.Log("空間操作開始処理の失敗");
             if (!GameManager.Instance.PlayManualStartFromSceneInfoManager())
                 Debug.Log("GameManager開始処理の失敗");
             return true;
@@ -165,7 +167,7 @@ namespace Main.Common
         /// </summary>
         private bool EndStage()
         {
-            // T.B.D 該当ステージプレハブ内の情報をリセットする
+            // 該当ステージプレハブ内の情報をリセットする
             var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.PlayerOffsets))
                 Debug.LogError("プレイヤーリセット処理の失敗");
