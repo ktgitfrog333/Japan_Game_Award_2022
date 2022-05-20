@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using Main.Common;
+using UniRx;
 
 namespace TitleSelect
 {
@@ -1016,12 +1017,12 @@ namespace TitleSelect
         /// Select_SceneÇ©ÇÁåƒÇ—èoÇ≥ÇÍÇÈëzíËÇÃèàóù
         /// </summary>
         /// <param name="sceneId"></param>
-        async public void Select_SceneToMainScene(int sceneId)
+        public void Select_SceneToMainScene(int sceneId)
         {
             BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene(sceneId);
-            GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
-            await Task.Delay(3000);
-            BrideScenes_SelectMain.Instance.PlayLoadScene();
+            Observable.FromCoroutine<bool>(observer => GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout(observer))
+                .Subscribe(_ => BrideScenes_SelectMain.Instance.PlayLoadScene())
+                .AddTo(gameObject);
         }
     }
 }
