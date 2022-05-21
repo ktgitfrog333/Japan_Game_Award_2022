@@ -19,7 +19,7 @@ namespace Main.Direction
         /// <summary>ブラックホールパーティクルのプレハブ</summary>
         [SerializeField] private GameObject blackHolePrefab;
         /// <summary>ブラックホールパーティクルのプレハブ一時格納</summary>
-        private GameObject instanceBlackHolePrefab;
+        private string instanceBlackHolePrefab = "InstanceBlackHolePrefab";
         /// <summary>キューブパーティクルのプレハブ</summary>
         [SerializeField] private GameObject diffusionCubesPrefab;
         /// <summary>カメラの拡大率</summary>
@@ -69,8 +69,9 @@ namespace Main.Direction
         {
             try
             {
-                if (instanceBlackHolePrefab != null)
-                    Destroy(instanceBlackHolePrefab);
+                var g = GameObject.Find(instanceBlackHolePrefab);
+                if (g != null)
+                    Destroy(g);
                 return true;
             }
             catch
@@ -91,7 +92,7 @@ namespace Main.Direction
             // カメラのズーム
             var camera = Camera.main;
             var zoomCompCnt = new IntReactiveProperty();
-            camera.transform.DOLocalMove(new Vector3(target.position.x, target.position.y, camera.transform.position.z), zoomDuration)
+            camera.transform.DOLocalMove(new Vector3(target.localPosition.x, target.localPosition.y, camera.transform.localPosition.z), zoomDuration)
                 .OnComplete(() => zoomCompCnt.Value++);
             camera.DOFieldOfView(fieldOfViewVolume, zoomDuration)
                 .OnComplete(() => zoomCompCnt.Value++);
@@ -100,7 +101,7 @@ namespace Main.Direction
                 .Subscribe(async _ =>
                 {
                     // ブラックホールのパーティクルを生成
-                    instanceBlackHolePrefab = Instantiate(blackHolePrefab, target.position, Quaternion.identity);
+                    SetPool(Instantiate(blackHolePrefab, target.position, Quaternion.identity));
 
                     await Task.Delay(((int)cutsWaitForSec[0]) * 1000);
 
@@ -123,6 +124,7 @@ namespace Main.Direction
             var player = GameManager.Instance.Player;
             player.transform.GetChild(2).gameObject.SetActive(false);
             var obj = Instantiate(diffusionCubesPrefab, player.transform.position, Quaternion.identity);
+            SetPool(obj);
             var particle = obj.GetComponent<ParticleSystem>();
 
             yield return new WaitForSeconds(cutsWaitForSec[1]);
@@ -131,6 +133,7 @@ namespace Main.Direction
             var targetTrigger = new GameObject("DiffusionCubesTrigger");
             targetTrigger.transform.position = target.position;
             targetTrigger.AddComponent<BoxCollider>().size = boxColliderSize;
+            SetPool(targetTrigger);
             var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(particle, target);
             obj.OnParticleCollisionAsObservable()
                 .Where(x => x.name.Equals("DiffusionCubesTrigger") && !complated)
@@ -149,6 +152,20 @@ namespace Main.Direction
             StartCoroutine(coroutine);
             // OnNext任意発行のためコルーチンのタイミングでフックさせない
             yield return null;
+        }
+
+        /// <summary>
+        /// プールへオブジェクトをセットする
+        /// </summary>
+        /// <param name="gameObject">プールさせるオブジェクト</param>
+        private void SetPool(GameObject gameObject)
+        {
+            var pool = GameObject.Find(instanceBlackHolePrefab);
+            if (pool == null)
+            {
+                pool = new GameObject(instanceBlackHolePrefab);
+            }
+            gameObject.transform.parent = pool.transform;
         }
     }
 }
