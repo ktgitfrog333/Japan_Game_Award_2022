@@ -100,9 +100,10 @@ namespace Main.UI
                     pauseScreen.SetActive(true);
                     SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
-            // 空間操作可能な境界を表示切り替え操作の入力
+            // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
             this.UpdateAsObservable()
                 .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
+                    !clearScreen.activeSelf &&
                     !spaceScreen.activeSelf)
                 .Subscribe(_ =>
                 {

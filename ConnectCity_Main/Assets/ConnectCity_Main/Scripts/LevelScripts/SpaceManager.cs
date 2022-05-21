@@ -78,12 +78,8 @@ namespace Main.Level
         private GameObject[] _moveCubes;
         /// <summary>入力禁止</summary>
         public bool InputBan { get; set; } = false;
-
-
-        private void Start()
-        {
-            ManualStart();
-        }
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         /// <summary>
         /// 疑似スタート
@@ -91,9 +87,16 @@ namespace Main.Level
         private void ManualStart()
         {
             _connectDirections = new List<ConnectDirection2D>();
+            _spaceDirections = new SpaceDirection2D();
             // ブロックの接続状況
             _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-            _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
+            if (_moveCubes.Length == 0)
+                Debug.LogError("MobeCubeの取得失敗");
+            // 既にグループ化されている場合は初期値を更新しない
+            var group = _moveCubes.Where(x => x.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
+                .Select(x => x);
+            if (group.ToList().Count == 0)
+                _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
             if (_cubeOffsets == null)
                 Debug.LogError("オブジェクト初期状態の保存の失敗");
             // コネクト回数のチェック
@@ -101,7 +104,7 @@ namespace Main.Level
             connectSuccess.ObserveEveryValueChanged(x => x.Value)
                 .Do(x =>
                 {
-                    if (!GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
+                    if (!InputBan && 0 < x && !GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
                         Debug.LogError("カウントダウン更新処理の失敗");
                 })
                 .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
@@ -119,7 +122,8 @@ namespace Main.Level
             var velocitySeted = new BoolReactiveProperty();
             this.UpdateAsObservable()
                 .Where(_ => !InputBan)
-                .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight());
+                .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight())
+                .AddTo(_compositeDisposable);
             velocitySeted.Where(x => x)
                 .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
                 .Where(_ => velocitySeted.Value)
@@ -127,19 +131,21 @@ namespace Main.Level
                 {
                     _spaceDirections.MoveSpeed = moveHSpeed;
                     GameManager.Instance.SetBanPlayerFromSpaceManager(true);
-                });
+                })
+                .AddTo(_compositeDisposable);
             velocitySeted.Where(x => !x)
                 .Subscribe(_ =>
                 {
                     _spaceDirections.MoveSpeed = moveLSpeed;
                     GameManager.Instance.SetBanPlayerFromSpaceManager(false);
-                });
+                })
+                .AddTo(_compositeDisposable);
 
             // 空間内のブロック座標をチェック
             this.UpdateAsObservable()
                 .Select(_ => CheckPositionAndSetMoveCubesComponents(_moveCubes))
                 .Where(x => !x)
-                .Subscribe(_ => Debug.Log("制御対象RigidBody格納の失敗"));
+                .Subscribe(_ => Debug.LogError("制御対象RigidBody格納の失敗"));
             // 不要なグループ削除
             var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
             foreach (var obj in moveCubeGroups)
@@ -155,7 +161,8 @@ namespace Main.Level
                         _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
                     if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.ScrLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
                         Debug.Log("左空間：MoveCubeの制御を破棄");
-                });
+                })
+                .AddTo(_compositeDisposable);
             // 右空間の制御
             this.FixedUpdateAsObservable()
                 .Where(_ => 0f < _spaceDirections.MoveVelocityRightSpace.magnitude && _spaceDirections.RbsRightSpace != null && 0 < _spaceDirections.RbsRightSpace.Length)
@@ -164,10 +171,19 @@ namespace Main.Level
                     if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
                         _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
                     if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
-                        Debug.Log("左空間：MoveCubeの制御を破棄");
-                });
+                        Debug.Log("右空間：MoveCubeの制御を破棄");
+                })
+                .AddTo(_compositeDisposable);
             if (!InitializePool())
                 Debug.LogError("プール作成の失敗");
+        }
+
+        /// <summary>
+        /// 管理系の処理を破棄
+        /// </summary>
+        public void DisposeAllFromSceneInfoManager()
+        {
+            _compositeDisposable.Clear();
         }
 
         /// <summary>
@@ -193,6 +209,7 @@ namespace Main.Level
             // 取得したペアがない場合は空オブジェクトを返却
             if (moveCubes == null || moveCubes.Length < -1 || level == null) return null;
 
+            var isDead = false;
             foreach (var obj in moveCubes)
             {
                 // 空間内にあるMoveCubeを個々に親オブジェクトをセット
@@ -241,24 +258,28 @@ namespace Main.Level
                     .Subscribe(x =>
                     {
                         if (!x)
-                            Debug.LogError("MoveCubeのコネクト処理失敗");
+                            Debug.Log("MoveCubeのコネクト処理失敗");
                         else
-                            count.Value++;
+                        {
+                            if (!InputBan)
+                                count.Value++;
+                        }
                         _connectDirections = new List<ConnectDirection2D>();
                     });
                 // 全てのMoveCubeから左右にレイをとばしてプレイヤーとFreezeを貫通したらTrue
-                var pressed = new ReactiveProperty<bool>();
-                obj.UpdateAsObservable()
-                    .Where(_ => _spaceDirections.MoveSpeed == moveHSpeed)
-                    .Select(_ => CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_PLAYER))
-                    .Subscribe(x => pressed.Value = x);
-                pressed.Where(x => x)
+                obj.transform.parent.OnCollisionEnterAsObservable()
+                    .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_PLAYER) &&
+                    _spaceDirections.MoveSpeed == moveHSpeed &&
+                    CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_PLAYER) &&
+                    !isDead)
                     .Subscribe(async _ =>
                     {
+                        isDead = true;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     });
+
                 // 全てのMoveCubeから左右にレイをとばして敵ギミックとFreezeを貫通したらTrue
                 var pressedEnem = new ReactiveProperty<bool>();
                 obj.UpdateAsObservable()
@@ -399,8 +420,6 @@ namespace Main.Level
 
         /// <summary>接続のSEパターン</summary>
         [SerializeField] private ClipToPlay connectSEPattern = ClipToPlay.se_conect_No1;
-        /// <summary>接続演出が無効かどうか</summary>
-        public bool ConnectDirectionDisable { get; set; } = false;
 
         /// <summary>
         /// マッチング済みのペア同士を接続する
@@ -417,7 +436,7 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
-                if (!ConnectDirectionDisable)
+                if (!InputBan)
                 {
                     if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
                         Debug.Log("パーティクル生成の失敗");
@@ -760,6 +779,8 @@ namespace Main.Level
         {
             for (var i = 0; i < rigidBodySpace.Length; i++)
             {
+                //if (rigidBodySpace[i] == null)
+                //    continue;
                 if (moveVelocitySpace.Equals(Vector3.zero))
                 {
                     rigidBodySpace[i].velocity = Vector3.zero;

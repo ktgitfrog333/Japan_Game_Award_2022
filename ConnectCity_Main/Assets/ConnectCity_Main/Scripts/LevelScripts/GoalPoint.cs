@@ -44,6 +44,19 @@ namespace Main.Level
                 screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.MainCamera.GetComponent<Camera>());
                 _connectCountScreen = screen;
             }
+
+            if (!UpdateCountDown(0, SceneInfoManager.Instance.ClearConnectedCounter))
+                Debug.LogError("カウンター初期値セットの失敗");
+            if (SceneInfoManager.Instance.ClearConnectedCounter == 0)
+            {
+                if (!OpenDoor())
+                    Debug.LogError("ドアを開ける処理の失敗");
+            }
+            else
+            {
+                if (!CloseDoor())
+                    Debug.LogError("ドアを閉める処理の失敗");
+            }
             return true;
         }
 
@@ -55,6 +68,18 @@ namespace Main.Level
         /// <param name="maxCount">クリア条件のコネクト必要回数</param>
         /// <returns>成功／失敗</returns>
         public bool UpdateCountDownFromGameManager(int count, int maxCount)
+        {
+            return UpdateCountDown(count, maxCount);
+        }
+
+
+        /// <summary>
+        /// カウントダウン表示を更新
+        /// </summary>
+        /// <param name="count">コネクト回数</param>
+        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
+        /// <returns>成功／失敗</returns>
+        private bool UpdateCountDown(int count, int maxCount)
         {
             try
             {
@@ -78,20 +103,32 @@ namespace Main.Level
         /// <returns>成功／失敗</returns>
         public bool OpenDoorFromGameManager()
         {
+            return OpenDoor();
+        }
+
+        /// <summary>
+        /// ドアを開く
+        /// ゴール演出のイベント
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool OpenDoor()
+        {
             try
             {
                 // 扉を開くアニメーションを再生
                 transform.GetChild(1).GetComponent<Animation>().Play("open");
 
+                var disposable = new SingleAssignmentDisposable();
                 var complete = false;
                 // プレイヤーオブジェクトがゴールに触れる
-                transform.GetChild(0).OnTriggerEnterAsObservable()
+                disposable.Disposable = transform.GetChild(0).OnTriggerEnterAsObservable()
                     .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) && !complete)
                     .Subscribe(_ =>
                     {
                         complete = true;
                         if (!PlayClearDirectionAndOpenClearScreen())
                             Debug.Log("ゴール演出エラー発生");
+                        disposable.Dispose();
                     });
 
                 return true;
@@ -108,6 +145,15 @@ namespace Main.Level
         /// </summary>
         /// <returns>成功／失敗</returns>
         public bool CloseDoorFromGameManager()
+        {
+            return CloseDoor();
+        }
+
+        /// <summary>
+        /// ドアを閉じる
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool CloseDoor()
         {
             try
             {

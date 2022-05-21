@@ -73,6 +73,9 @@ namespace Main.Common.LevelDesign
         /// <returns>成功／失敗</returns>
         public static bool LoadObjectOffset(GameObject StagePrefab, ObjectsOffset[] objectsOffset)
         {
+            // 必要なオブジェクトが存在しないなら失敗
+            if (StagePrefab == null || objectsOffset == null || (objectsOffset != null && objectsOffset.Length == 0))
+                return false;
             foreach (var off in objectsOffset)
             {
                 off.GameObjectObj.transform.parent = StagePrefab.transform;

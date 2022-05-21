@@ -81,13 +81,11 @@ namespace Main.Direction
                     .Subscribe(_ =>
                     {
                         Destroy(obj);
-                        // SE再生を戻す
-                        GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = false;
-                        // 空間操作を許可
-                        GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
-                        // ショートカット入力を許可
-                        UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
                     });
+                // 空間操作を許可
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
+                // ショートカット入力を許可
+                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
             }
         }
 
@@ -98,8 +96,6 @@ namespace Main.Direction
         public void StopPlayAbleFromSootingMovement()
         {
             _playable.Stop();
-            // SE再生を戻す
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = false;
             // 空間操作を許可
             GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
             // ショートカット入力を許可

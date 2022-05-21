@@ -83,14 +83,6 @@ namespace Main.Common
 
         private void Awake()
         {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            DontDestroyOnLoad(gameObject);
-
             instance = this;
         }
 
@@ -117,8 +109,6 @@ namespace Main.Common
                 // Skyboxの設定
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
-                // スタート演出の間はブロックSEを鳴らさない
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = true;
                 // スタート演出の間は空間操作は無効
                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
@@ -129,6 +119,8 @@ namespace Main.Common
                 // コネクトシステムの初期設定
                 GameManager.Instance.SpaceManager.transform.parent = stage.transform;
                 GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
+                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+                    Debug.Log("空間操作開始処理の失敗");
                 // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
@@ -143,8 +135,6 @@ namespace Main.Common
                 ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
                 if (!GameManager.Instance.InitializeGoalPoint())
                     Debug.LogError("ゴールポイント初期化の失敗");
-                if (!GameManager.Instance.CloseDoorFromSpaceManager())
-                    Debug.LogError("ゴール扉クローズ処理の失敗");
                 return true;
             }
             catch
@@ -161,8 +151,8 @@ namespace Main.Common
         {
             if (!UIManager.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
                 Debug.Log("フェード演出開始処理の失敗");
-            if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
-                Debug.Log("空間操作開始処理の失敗");
+            //if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+            //    Debug.Log("空間操作開始処理の失敗");
             if (!GameManager.Instance.PlayManualStartFromSceneInfoManager())
                 Debug.Log("GameManager開始処理の失敗");
             return true;
@@ -173,14 +163,15 @@ namespace Main.Common
         /// </summary>
         private bool EndStage()
         {
-            // T.B.D 該当ステージプレハブ内の情報をリセットする
+            // 該当ステージプレハブ内の情報をリセットする
             var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.PlayerOffsets))
                 Debug.LogError("プレイヤーリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
+            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().DisposeAllFromSceneInfoManager();
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
-                Debug.LogError("敵オブジェクトリセット処理の失敗");
+                Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
             stage.SetActive(false);
