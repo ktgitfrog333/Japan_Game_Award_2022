@@ -162,7 +162,25 @@ namespace TitleSelect
             Select_Left_Arrow = GameObject.Find("Select_Left_Arrow_Image");
             Select_Right_Arrow = GameObject.Find("Select_Right_Arrow_Image");
             Select_Stage_Frame = GameObject.Find("Select_Stage_Frame_Image");
-            scroll = Stage_Scroll.Scroll1;
+            if((int)Stage_Num.Stage1 <= (int)stage && (int)stage <= (int)Stage_Num.Stage5)
+            {
+                scroll = Stage_Scroll.Scroll1;
+            }else if((int)Stage_Num.Stage6 <= (int)stage && (int)stage <= (int)Stage_Num.Stage10)
+            {
+                scroll = Stage_Scroll.Scroll2;
+            }else if((int)Stage_Num.Stage11 <= (int)stage && (int)stage <= (int)Stage_Num.Stage15)
+            {
+                scroll = Stage_Scroll.Scroll3;
+            }else if((int)Stage_Num.Stage16 <= (int)stage && (int)stage <= (int)Stage_Num.Stage20)
+            {
+                scroll = Stage_Scroll.Scroll4;
+            }else if((int)Stage_Num.Stage21 <= (int)stage && (int)stage <= (int)Stage_Num.Stage25)
+            {
+                scroll = Stage_Scroll.Scroll5
+            }else if((int)Stage_Num.Stage26 <= (int)stage && (int)stage <= (int)Stage_Num.Stage30)
+            {
+                scroll = Stage_Scroll.Scroll6;
+            }
             //stage = Stage_Num.Stage1;
             stage = (Stage_Num)BrideScenes_SelectMain.Instance.LoadSceneId + 1;
             select_stage_pos = Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition;
