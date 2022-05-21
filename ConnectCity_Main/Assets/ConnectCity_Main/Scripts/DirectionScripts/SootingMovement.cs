@@ -124,6 +124,9 @@ namespace Main.Direction
             while (true)
             {
                 var particles = new ParticleSystem.Particle[ps.main.maxParticles];
+                // 停止処理にてパーティクルが削除された場合はコルーチンを強制終了
+                if (ps == null)
+                    break;
                 int count = ps.GetParticles(particles);
                 for (var i = 0; i < count; i++)
                 {

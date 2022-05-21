@@ -109,8 +109,6 @@ namespace Main.Common
                 // Skyboxの設定
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
-                // スタート演出の間はブロックSEを鳴らさない
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().ConnectDirectionDisable = true;
                 // スタート演出の間は空間操作は無効
                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
@@ -137,8 +135,6 @@ namespace Main.Common
                 ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
                 if (!GameManager.Instance.InitializeGoalPoint())
                     Debug.LogError("ゴールポイント初期化の失敗");
-                if (!GameManager.Instance.CloseDoorFromSpaceManager())
-                    Debug.LogError("ゴール扉クローズ処理の失敗");
                 return true;
             }
             catch
@@ -173,6 +169,7 @@ namespace Main.Common
                 Debug.LogError("プレイヤーリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
+            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().DisposeAllFromSceneInfoManager();
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
