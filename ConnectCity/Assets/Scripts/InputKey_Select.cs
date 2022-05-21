@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using Main.Common;
+using UniRx;
 
 namespace TitleSelect
 {
@@ -195,6 +196,8 @@ namespace TitleSelect
             select_flame_image_28_pos = Select_Flame_Image_28.GetComponent<RectTransform>().anchoredPosition;
             select_flame_image_29_pos = Select_Flame_Image_29.GetComponent<RectTransform>().anchoredPosition;
             select_flame_image_30_pos = Select_Flame_Image_30.GetComponent<RectTransform>().anchoredPosition;
+
+            Cursor.visible = false;
         }
 
         // Update is called once per frame
@@ -1014,12 +1017,12 @@ namespace TitleSelect
         /// Select_SceneÇ©ÇÁåƒÇ—èoÇ≥ÇÍÇÈëzíËÇÃèàóù
         /// </summary>
         /// <param name="sceneId"></param>
-        async public void Select_SceneToMainScene(int sceneId)
+        public void Select_SceneToMainScene(int sceneId)
         {
             BrideScenes_SelectMain.Instance.SetMainSceneNameIdFromSelect_Scene(sceneId);
-            GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
-            await Task.Delay(3000);
-            BrideScenes_SelectMain.Instance.PlayLoadScene();
+            Observable.FromCoroutine<bool>(observer => GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout(observer))
+                .Subscribe(_ => BrideScenes_SelectMain.Instance.PlayLoadScene())
+                .AddTo(gameObject);
         }
     }
 }
