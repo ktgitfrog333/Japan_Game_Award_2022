@@ -67,8 +67,10 @@ namespace Main.Common
         /// <summary>ぼろいブロック・天井のオーナー</summary>
         public GameObject BreakBlookOwner => breakBlookOwner;
 
-        /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
-        [SerializeField] private GameObject[] turretEnemies;
+        /// <summary>レーザー砲ギミックのオーナー</summary>
+        [SerializeField] private GameObject turretEnemiesOwner;
+        /// <summary>レーザー砲ギミックのオーナー</summary>
+        public GameObject TurretEnemiesOwner => turretEnemiesOwner;
 
         private void Reset()
         {
@@ -84,10 +86,8 @@ namespace Main.Common
                 breakBlookOwner = GameObject.Find("BreakBlookOwner");
             if (robotEnemiesOwner == null)
                 robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
-
-            // T.B.D レーザー砲ギミックの仮実装
-            //if (turretEnemies == null && turretEnemies.length)
-            //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            if (turretEnemiesOwner == null)
+                turretEnemiesOwner = GameObject.Find("TurretEnemiesOwner");
         }
 
         private void Start()

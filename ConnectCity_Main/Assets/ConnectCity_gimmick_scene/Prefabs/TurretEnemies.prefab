@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4918661730841119583}
   - component: {fileID: 5085267669494096603}
   - component: {fileID: 5085006464393041437}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4827,7 +4827,7 @@ GameObject:
   - component: {fileID: 4918774692268886035}
   - component: {fileID: 5085278638127945111}
   - component: {fileID: 5086676983541568521}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9645,7 +9645,7 @@ GameObject:
   - component: {fileID: 4918608091369182225}
   - component: {fileID: 4911042831536043633}
   - component: {fileID: 4899999371840587725}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMachine_FireBurster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9727,7 +9727,7 @@ GameObject:
   - component: {fileID: 4918634256774972417}
   - component: {fileID: 4910174129090058589}
   - component: {fileID: 4900101439734393563}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMachine_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9810,7 +9810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4926223308059297849}
   - component: {fileID: 5041826263632781515}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9950,9 +9950,9 @@ GameObject:
   - component: {fileID: 4918853471698667123}
   - component: {fileID: 2848801258060335101}
   - component: {fileID: 6772676135163295291}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretEnemies
-  m_TagString: Untagged
+  m_TagString: TurretEnemies
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9990,6 +9990,8 @@ MonoBehaviour:
   bulletSpeed: 0.5
   bulletInterval: 4
   bulletSubInterval: 0.05
+  bulletDistanceDown: 0.1
+  bulletDuration: 3
   rayOriginOffset: {x: 0, y: 0.16, z: 0}
   turretEnemiesSE: 12
 --- !u!65 &6772676135163295291
@@ -10016,7 +10018,7 @@ GameObject:
   - component: {fileID: 4926193549366576325}
   - component: {fileID: 4910109910235660061}
   - component: {fileID: 4900076857919645841}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMachine_Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10098,7 +10100,7 @@ GameObject:
   - component: {fileID: 4926235695283744485}
   - component: {fileID: 4910436014008468893}
   - component: {fileID: 4900172235037342347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMachine_Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10180,7 +10182,7 @@ GameObject:
   - component: {fileID: 4918647041996233291}
   - component: {fileID: 5085300686241047561}
   - component: {fileID: 5085881566954651581}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14937,7 +14939,7 @@ GameObject:
   - component: {fileID: 4919017090685219089}
   - component: {fileID: 4910573402701968069}
   - component: {fileID: 4901678585115931921}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonMachine_Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15017,7 +15019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4918591164846498427}
   - component: {fileID: 5031421673357404249}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15111,7 +15113,7 @@ GameObject:
   - component: {fileID: 4926142167154289267}
   - component: {fileID: 4911785663927448707}
   - component: {fileID: 4900148068543141155}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Robot_Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15191,7 +15193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4926116601174162577}
   - component: {fileID: 5031360685162292123}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

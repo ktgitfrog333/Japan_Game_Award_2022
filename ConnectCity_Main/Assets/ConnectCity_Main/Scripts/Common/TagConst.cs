@@ -51,5 +51,9 @@ namespace Main.Common.Const
         /// ぼろいブロック・天井のタグ名
         /// </summary>
         public static readonly string TAG_NAME_BREAKBLOOK = "BreakBlook";
+        /// <summary>
+        /// レーザー砲のタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_TURRETENEMIES = "TurretEnemies";
     }
 }
