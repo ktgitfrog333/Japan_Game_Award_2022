@@ -286,8 +286,8 @@ namespace Main.Level
                 obj.UpdateAsObservable()
                     .Where(_ => (LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER))) &&
-                        (CheckPushingPlayer(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, obj, GameManager.Instance.Player.transform.position) ||
-                        CheckPushingPlayer(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, GameManager.Instance.Player.transform.position)))
+                        (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, obj, GameManager.Instance.Player.transform.position) ||
+                        CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, GameManager.Instance.Player.transform.position)))
                     .Subscribe(_ =>
                     {
                         if (!GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
@@ -295,21 +295,42 @@ namespace Main.Level
                     });
                 // 敵ギミックの接地判定
                 RaycastHit[] hits = new RaycastHit[1];
+                //obj.UpdateAsObservable()
+                //    .Select(_ => obj)
+                //    .Where(x => LevelDesisionIsObjected.IsOnPlayeredAndInfo(x.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES)))
+                //    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
+                //    .Where(x => !x)
+                //    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
-                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
-                    .Where(x => !x)
-                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
+                    .Select(_ => obj)
+                    .Where(x => LevelDesisionIsObjected.IsOnPlayeredAndInfo(x.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES)))
+                    .Subscribe(x =>
+                    {
+                        var left = LevelDesisionIsObjected.IsOnEnemiesAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        if (left != null && CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, left.transform.position))
+                            if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
+                                Debug.LogError("敵ギミック操作指令の失敗");
+                    });
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
-                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
-                    .Where(x => !x)
-                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
-                obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
-                    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
-                    .Where(x => !x)
-                    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
+                    .Select(_ => obj)
+                    .Where(x => LevelDesisionIsObjected.IsOnPlayeredAndInfo(x.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES)))
+                    .Subscribe(x =>
+                    {
+                        var right = LevelDesisionIsObjected.IsOnEnemiesAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        if (right != null && CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, right.transform.position))
+                            if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
+                                Debug.LogError("敵ギミック操作指令の失敗");
+                    });
+                //obj.UpdateAsObservable()
+                //    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                //    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
+                //    .Where(x => !x)
+                //    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
+                //obj.UpdateAsObservable()
+                //    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                //    .Select(_ => GameManager.Instance.MoveRobotEnemyFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, hits[0].transform.gameObject))
+                //    .Where(x => !x)
+                //    .Subscribe(_ => Debug.LogError("敵ギミック操作指令の失敗"));
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                     .Select(x => GetMatchingMoveCubes(obj, x.gameObject, x.contacts[0].point))
@@ -358,14 +379,14 @@ namespace Main.Level
         }
 
         /// <summary>
-        /// プレイヤーを横から押す動きを許可するかの判定
+        /// ある動的オブジェクトを横から押す動きを許可するかの判定
         /// </summary>
         /// <param name="rbsLeftOrRightSpace">左／右空間のRigidbody</param>
         /// <param name="moveVelocityLeftOrRightSpace">左／右空間のVelocity</param>
         /// <param name="targetCube">対象の空間操作ブロック</param>
-        /// <param name="targetPlayer">対象のプレイヤー位置</param>
+        /// <param name="targetActor">対象の動的オブジェクト位置</param>
         /// <returns>移動可／移動不可</returns>
-        private bool CheckPushingPlayer(Rigidbody[] rbsLeftOrRightSpace, Vector3 moveVelocityLeftOrRightSpace, GameObject targetCube, Vector3 targetPlayer)
+        private bool CheckPushingActor(Rigidbody[] rbsLeftOrRightSpace, Vector3 moveVelocityLeftOrRightSpace, GameObject targetCube, Vector3 targetActor)
         {
             // 対象のブロックが[左／右]空間に存在するか
             // 親を見るのではなく、子を取り出して参照
@@ -380,8 +401,8 @@ namespace Main.Level
             {
                 // [左]プレイヤー：[右]ブロック　かつ　左方向の移動（プッシュ）
                 // [左]ブロック：[右]プレイヤー　かつ　右方向の移動（プッシュ）
-                if ((targetPlayer.x < targetCube.transform.position.x && moveVelocityLeftOrRightSpace.x < 0f) ||
-                    (targetCube.transform.position.x < targetPlayer.x && 0f < moveVelocityLeftOrRightSpace.x))
+                if ((targetActor.x < targetCube.transform.position.x && moveVelocityLeftOrRightSpace.x < 0f) ||
+                    (targetCube.transform.position.x < targetActor.x && 0f < moveVelocityLeftOrRightSpace.x))
                 {
                     return true;
                 }

@@ -37,6 +37,21 @@ namespace Gimmick
         [SerializeField] private Vector3 rayDirection = Vector3.down;
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
         [SerializeField] private float rayMaxDistance = 0.8f;
+        [SerializeField] private Vector3 rayOriginOffsetLeft = new Vector3(.1f, 0f);
+        /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+        [SerializeField] private Vector3 rayDirectionLeft = Vector3.left;
+        /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+        [SerializeField] private float rayMaxDistanceLeft = .8f;
+        ///// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+        //[SerializeField] private float rayMaxDistanceLeftLong = 1.6f;
+        /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+        [SerializeField] private Vector3 rayOriginOffsetRight = new Vector3(-.1f, 0f);
+        /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+        [SerializeField] private Vector3 rayDirectionRight = Vector3.right;
+        /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+        [SerializeField] private float rayMaxDistanceRight = .8f;
+        ///// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
+        //[SerializeField] private float rayMaxDistanceRightLong = 1.6f;
 
         private void Reset()
         {
@@ -74,6 +89,15 @@ namespace Gimmick
 
             // 移動
             this.FixedUpdateAsObservable()
+                // 近くにブロックが存在しない
+                // <<左にブロックが有り　かつ　>>右に移動
+                // >>右にブロックが有り　かつ　<<左に移動
+                .Where(_ => (!LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE))) ||
+                    (LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
+                    0f < moveVelocity.x) ||
+                    (LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
+                    moveVelocity.x < 0f))
                 .Subscribe(_ => {
                     if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
                     _characterCtrl.Move(moveVelocity * Time.deltaTime);
