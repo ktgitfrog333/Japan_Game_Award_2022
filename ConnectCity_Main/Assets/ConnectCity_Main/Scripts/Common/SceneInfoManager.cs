@@ -110,7 +110,8 @@ namespace Main.Common
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
                 // スタート演出の間は空間操作は無効
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan)
+                    GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
                 UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効

@@ -163,10 +163,13 @@ namespace Main.UI
         {
             try
             {
-                // 全部のアルファ値をゼロにする
-                for (var i = 0; i < tran.childCount; i++)
-                    tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
-                tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
+                if (tran != null)
+                {
+                    // 全部のアルファ値をゼロにする
+                    for (var i = 0; i < tran.childCount; i++)
+                        tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
+                    tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
+                }
 
                 return true;
             }
