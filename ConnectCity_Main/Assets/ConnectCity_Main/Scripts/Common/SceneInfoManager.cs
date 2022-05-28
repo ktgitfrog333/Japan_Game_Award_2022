@@ -110,7 +110,8 @@ namespace Main.Common
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
                 // スタート演出の間は空間操作は無効
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan)
+                    GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
                 UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効
@@ -121,6 +122,8 @@ namespace Main.Common
                 GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
                 if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
                     Debug.Log("空間操作開始処理の失敗");
+                if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
+                    Debug.Log("レーザー砲起動処理の失敗");
                 // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
@@ -174,6 +177,8 @@ namespace Main.Common
                 Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
+            if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
+                Debug.Log("レーザー砲終了処理の失敗");
             stage.SetActive(false);
             return true;
         }

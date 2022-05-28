@@ -17,7 +17,7 @@ namespace Gimmick
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
+            if (collision.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) && 0f < collision.relativeVelocity.magnitude)
             {
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Renderer>().enabled = false;

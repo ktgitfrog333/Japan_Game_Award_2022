@@ -19,15 +19,12 @@ namespace Main.UI
     {
         /// <summary>
         /// ビデオクリップ（リソースからセットする）
-        /// チャンネル0：基本操作　移動について
-        /// チャンネル1：基本操作　ジャンプについて
-        /// チャンネル2：基本操作　コネクトシステムについて
-        /// T.B.D チャンネルx：基本操作　死亡条件について
-        /// T.B.D チャンネルx：基本操作　クリア条件について
-        /// T.B.D チャンネルx：ギミック　敵について
-        /// T.B.D チャンネルx：ギミック　重力について
-        /// T.B.D チャンネルx：ギミック　レーザー砲について
-        /// T.B.D チャンネルx：ギミック　ぼろいブロック・天井について
+        /// チャンネル0：チュートリアル①_移動
+        /// チャンネル1：チュートリアル②_ジャンプ
+        /// チャンネル2：チュートリアル③_空間操作
+        /// チャンネル3：チュートリアル④_コネクト
+        /// チャンネル4：チュートリアル⑤_空間操作_上下左右
+        /// チャンネル5：チュートリアル⑥_再利用
         /// </summary>
         [SerializeField] private VideoClip[] channels;
         /// <summary>ビデオプレイヤー</summary>
@@ -42,6 +39,12 @@ namespace Main.UI
         [SerializeField] Ease easeType = Ease.InCubic;
         /// <summary>入力操作アイコンの切替時間</summary>
         [SerializeField, Range(3, 7)] private double switchInterval = 5d;
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
+        /// <summary>コントローラー操作の点滅DOTweenイベント</summary>
+        private Tweener _flashTweenerController;
+        /// <summary>キーボード操作の点滅DOTweenイベント</summary>
+        private Tweener _flashTweenerKeybord;
 
         private void Reset()
         {
@@ -71,41 +74,80 @@ namespace Main.UI
                         var compCnt = new IntReactiveProperty(0);
                         if (!PlayFadeAndSetCompleteCount<RawImage>(player, compCnt, player.GetComponent<RawImage>()))
                             Debug.LogError("RawImage:フェード処理の失敗");
-                        var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                        if (!PlayFadeAndSetCompleteCount(anim, compCnt))
-                            Debug.LogError("CanvasGroup:フェード処理の失敗");
+                        var animIdx = GetIdx(trigger.name);
+                        if (animIdx == 0 ||
+                            animIdx == 1 ||
+                            animIdx == 2 ||
+                            animIdx == 3)
+                        {
+                            var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
+                            if (!PlayFadeAndSetCompleteCount(anim, compCnt))
+                                Debug.LogError("CanvasGroup:フェード処理の失敗");
+                        }
+                        else if (animIdx == 4 ||
+                            animIdx == 5)
+                        {
+                            // UI表示無しの場合はカウントのみ
+                            compCnt.Value++;
+                        }
+                        else
+                        {
+                            Debug.LogError("範囲外インデックス指定");
+                        }
 
                         compCnt.Where(x => 1 < x)
                             .Subscribe(_ =>
                             {
                                 if (!PlayVideoClip(GetIdx(trigger.name)))
                                     Debug.LogError("ビデオクリップ再生処理の失敗");
-                                var subChaIdx = new IntReactiveProperty(0);
-                                Observable.Interval(System.TimeSpan.FromSeconds(switchInterval))
-                                    .Subscribe(_ => subChaIdx.Value = (subChaIdx.Value == 0) ? 1 : 0)
-                                    .AddTo(this);
-                                subChaIdx.Where(x => x == 0 | x == 1)
-                                    .Subscribe(x =>
-                                    {
+                                if (animIdx == 0 ||
+                                    animIdx == 1 ||
+                                    animIdx == 2 ||
+                                    animIdx == 3)
+                                {
+                                    var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
+                                    var subChaIdx = new IntReactiveProperty(0);
+                                    Observable.Interval(System.TimeSpan.FromSeconds(switchInterval))
+                                        .Subscribe(_ => subChaIdx.Value = (subChaIdx.Value == 0) ? 1 : 0)
+                                        .AddTo(_compositeDisposable);
+                                    subChaIdx.Where(x => x == 0 | x == 1)
+                                        .Subscribe(x =>
+                                        {
                                         // 時間差で切り替える
                                         if (!ChangeSubChannel(anim, x))
-                                            Debug.LogError("コントローラー／キーボード表示切替の失敗");
-                                    });
-                                // コントローラーとキーボードの点滅部分は常時開始させておく
-                                var s = 0;
-                                if (!PlayFlash(anim, GetIdx(trigger.name), s++))
-                                    Debug.LogError("点滅再生処理の失敗");
-                                if (!PlayFlash(anim, GetIdx(trigger.name), s++))
-                                    Debug.LogError("点滅再生処理の失敗");
+                                                Debug.LogError("コントローラー／キーボード表示切替の失敗");
+                                        })
+                                        .AddTo(_compositeDisposable);
+                                    // コントローラーとキーボードの点滅部分は常時開始させておく
+                                    var s = 0;
+                                    _flashTweenerController = PlayFlash(anim, GetIdx(trigger.name), s++);
+                                    _flashTweenerKeybord = PlayFlash(anim, GetIdx(trigger.name), s++);
+                                }
                             });
                     });
                 trigger.OnTriggerExitAsObservable()
                     .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                     .Subscribe(_ =>
                     {
+                        var animIdx = GetIdx(trigger.name);
+                        if (animIdx == 0 ||
+                            animIdx == 1 ||
+                            animIdx == 2 ||
+                            animIdx == 3)
+                        {
+                            var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
+                            // コントローラーとキーボードの点滅部分は常時開始させておく
+                            var s = 0;
+                            if (!ResetFlash(anim, GetIdx(trigger.name), s++))
+                                Debug.LogError("点滅アルファ値リセット処理の失敗");
+                            if (!ResetFlash(anim, GetIdx(trigger.name), s++))
+                                Debug.LogError("点滅アルファ値リセット処理の失敗");
+                            anim.gameObject.SetActive(false);
+                            _flashTweenerController.Kill();
+                            _flashTweenerKeybord.Kill();
+                            _compositeDisposable.Clear();
+                        }
                         player.gameObject.SetActive(false);
-                        var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                        anim.gameObject.SetActive(false);
                     });
             }
         }
@@ -121,10 +163,13 @@ namespace Main.UI
         {
             try
             {
-                // 全部のアルファ値をゼロにする
-                for (var i = 0; i < tran.childCount; i++)
-                    tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
-                tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
+                if (tran != null)
+                {
+                    // 全部のアルファ値をゼロにする
+                    for (var i = 0; i < tran.childCount; i++)
+                        tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
+                    tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
+                }
 
                 return true;
             }
@@ -191,7 +236,7 @@ namespace Main.UI
         /// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
         /// <param name="channelIdx">再生させるビデオチャンネル</param>
         /// <returns></returns>
-        private bool PlayFlash(Transform content, int channelIdx, int subChannelIdx)
+        private Tweener PlayFlash(Transform content, int channelIdx, int subChannelIdx)
         {
             // 点滅が発生するチャンネルのみ実行
             if (channelIdx == 0 ||
@@ -200,10 +245,31 @@ namespace Main.UI
                 channelIdx == 3)
             {
                 // 点滅させる
-                content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
+                var t = content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
                     .SetEase(easeType)
                     .SetLoops(-1, LoopType.Yoyo)
                     .SetLink(gameObject);
+                return t;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// UIのImageのアルファ値をリセットする
+        /// コンポーネントが参照できないオブジェクトもある可能性があるためチャンネルで判定する
+        /// </summary>
+        /// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
+        /// <param name="channelIdx">再生させるビデオチャンネル</param>
+        /// <returns></returns>
+        private bool ResetFlash(Transform content, int channelIdx, int subChannelIdx)
+        {
+            // 点滅が発生するチャンネルのみ実行
+            if (channelIdx == 0 ||
+                channelIdx == 1 ||
+                channelIdx == 2 ||
+                channelIdx == 3)
+            {
+                content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().alpha = 1f;
             }
             return true;
         }

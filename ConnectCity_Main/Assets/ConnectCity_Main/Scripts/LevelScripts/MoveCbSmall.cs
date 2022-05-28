@@ -46,24 +46,52 @@ namespace Main.Level
         /// <summary>
         /// 移動中に光をまとわせる
         /// 移動アニメーションで発火
+        /// ※デッドロジックだが今Animatorを消すと影響範囲が広いため、消さずに残す
         /// </summary>
         public void OnAirHover()
         {
             // 移動SE
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
+            //SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
+            // 移動中にパーティクルで枠をつける
+            //if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
+            //    _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(true);
+            //_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Play();
+        }
+
+        /// <summary>
+        /// 移動中に光をまとわせる
+        /// 空間操作からの呼び出し
+        /// </summary>
+        public void OnAirHoverFromSpaceManager()
+        {
             // 移動中にパーティクルで枠をつける
             if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
                 _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(true);
-            _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Play();
+            if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].isPlaying)
+                _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Play();
         }
 
         /// <summary>
         /// エフェクトの停止
         /// オブジェクト硬直アニメーションで発火
+        /// ※デッドロジックだが今Animatorを消すと影響範囲が広いため、消さずに残す
         /// </summary>
         public void OnFreeze()
         {
             // T.B.D 止まった時にエフェクトを止める
+            //if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
+            //    _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// エフェクトの停止
+        /// 空間操作からの呼び出し
+        /// </summary>
+        public void OnFreezeFromSpaceManager()
+        {
+            // 止まった時にエフェクトを止める
+            if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].isPlaying)
+                _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].Stop();
             if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
                 _particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.SetActive(false);
         }

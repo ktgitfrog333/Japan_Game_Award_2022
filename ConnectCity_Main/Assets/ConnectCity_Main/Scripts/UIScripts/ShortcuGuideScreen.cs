@@ -81,6 +81,7 @@ namespace Main.Level
                                 SfxPlay.Instance.PlaySFX(retrySEPattern);
                                 SceneInfoManager.Instance.SetSceneIdUndo();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
                             }
@@ -92,6 +93,7 @@ namespace Main.Level
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                                 SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
                             }
