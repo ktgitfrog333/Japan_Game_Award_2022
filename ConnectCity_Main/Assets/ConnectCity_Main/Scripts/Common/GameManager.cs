@@ -103,8 +103,6 @@ namespace Main.Common
             _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
             if (_playerOffsets == null)
                 Debug.LogError("オブジェクト初期状態の保存の失敗");
-            if (!robotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
-                Debug.Log("敵起動処理の失敗");
         }
 
         /// <summary>

@@ -124,6 +124,8 @@ namespace Main.Common
                     Debug.Log("空間操作開始処理の失敗");
                 if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
                     Debug.Log("レーザー砲起動処理の失敗");
+                if (!GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
+                    Debug.Log("敵起動処理の失敗");
                 // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];

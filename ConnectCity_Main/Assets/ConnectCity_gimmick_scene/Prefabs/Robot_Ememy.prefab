@@ -976,7 +976,7 @@ GameObject:
   - component: {fileID: 8149615112750587258}
   - component: {fileID: 8216651363671094409}
   - component: {fileID: 3307318463051804211}
-  - component: {fileID: 647355411}
+  - component: {fileID: 3599494077771424327}
   m_Layer: 9
   m_Name: Robot_Ememy
   m_TagString: Robot_Ememy
@@ -1040,6 +1040,13 @@ MonoBehaviour:
   rayOriginOffset: {x: 0, y: 0.1, z: 0}
   rayDirection: {x: 0, y: -1, z: 0}
   rayMaxDistance: 0.8
+  rayOriginOffsetLeft: {x: 0.1, y: 0, z: 0}
+  rayDirectionLeft: {x: -1, y: 0, z: 0}
+  rayMaxDistanceLeft: 0.8
+  rayOriginOffsetRight: {x: -0.1, y: 0, z: 0}
+  rayDirectionRight: {x: 1, y: 0, z: 0}
+  rayMaxDistanceRight: 0.8
+  smashedPosition: {x: 0, y: 0, z: -100}
 --- !u!143 &3307318463051804211
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1058,7 +1065,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.82, z: 0}
---- !u!136 &647355411
+--- !u!136 &3599494077771424327
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1068,8 +1075,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.15
-  m_Height: 4.91
+  m_Radius: 1.4
+  m_Height: 4.79
   m_Direction: 1
   m_Center: {x: 0, y: 1.82, z: 0}
 --- !u!1 &5203860452471012218
