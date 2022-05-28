@@ -146,13 +146,6 @@ namespace Main.Level
                     GameManager.Instance.SetBanPlayerFromSpaceManager(false);
                 })
                 .AddTo(_compositeDisposable);
-            //velocitySeted.ObserveEveryValueChanged(x => x.Value)
-            //    .Subscribe(x =>
-            //    {
-            //        // 移動SEを再生
-            //        if (x)
-            //            SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
-            //    });
 
             // 空間内のブロック座標をチェック
             this.UpdateAsObservable()
@@ -171,11 +164,43 @@ namespace Main.Level
                 obj.ObserveEveryValueChanged(x => x.transform.childCount < 1)
                     .Where(x => x)
                     .Subscribe(_ => Destroy(obj));
+            // SEの制御（左空間）
             var leftMoveSE = false;
+            var leftVelocityMagnitude = new FloatReactiveProperty();
+            leftVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
+                .Subscribe(x =>
+                {
+                    // 0より大きくなった時に一度だけ
+                    if (!leftMoveSE && CheckMovementLeftOrRightSpace(_inputBan, x, _spaceDirections.RbsLeftSpace))
+                    {
+                        leftMoveSE = true;
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
+                    }
+                    else if (0 == x && leftMoveSE)
+                        leftMoveSE = false;
+                })
+                .AddTo(_compositeDisposable);
+            // SEの制御（右空間）
             var rightMoveSE = false;
+            var rightVelocityMagnitude = new FloatReactiveProperty();
+            rightVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
+                .Subscribe(x =>
+                {
+                    // 0より大きくなった時に一度だけ
+                    if (!rightMoveSE && CheckMovementLeftOrRightSpace(_inputBan, x, _spaceDirections.RbsRightSpace))
+                    {
+                        rightMoveSE = true;
+                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
+                    }
+                    else if (0 == x && rightMoveSE)
+                        rightMoveSE = false;
+                })
+                .AddTo(_compositeDisposable);
+
             // 左空間の制御
             this.FixedUpdateAsObservable()
-                .Where(_ => !_inputBan && 0f < _spaceDirections.MoveVelocityLeftSpace.magnitude && _spaceDirections.RbsLeftSpace != null && 0 < _spaceDirections.RbsLeftSpace.Length)
+                .Do(_ => leftVelocityMagnitude.Value = _spaceDirections.MoveVelocityLeftSpace.magnitude)
+                .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityLeftSpace.magnitude, _spaceDirections.RbsLeftSpace))
                 .Subscribe(_ =>
                 {
                     if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
@@ -186,7 +211,8 @@ namespace Main.Level
                 .AddTo(_compositeDisposable);
             // 右空間の制御
             this.FixedUpdateAsObservable()
-                .Where(_ => !_inputBan && 0f < _spaceDirections.MoveVelocityRightSpace.magnitude && _spaceDirections.RbsRightSpace != null && 0 < _spaceDirections.RbsRightSpace.Length)
+                .Do(_ => rightVelocityMagnitude.Value = _spaceDirections.MoveVelocityRightSpace.magnitude)
+                .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityRightSpace.magnitude, _spaceDirections.RbsRightSpace))
                 .Subscribe(_ =>
                 {
                     if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
@@ -197,6 +223,18 @@ namespace Main.Level
                 .AddTo(_compositeDisposable);
             if (!InitializePool())
                 Debug.LogError("プール作成の失敗");
+        }
+
+        /// <summary>
+        /// 空間操作が可能かをチェックする
+        /// </summary>
+        /// <param name="inputBan">操作可否</param>
+        /// <param name="velocitySpaceMagnitude">空間操作のVelocity</param>
+        /// <param name="rigidbodiesSpace">左／右空間のRigidbodyの配列</param>
+        /// <returns>移動可</returns>
+        private bool CheckMovementLeftOrRightSpace(bool inputBan, float velocitySpaceMagnitude, Rigidbody[] rigidbodiesSpace)
+        {
+            return !inputBan && 0f < velocitySpaceMagnitude && rigidbodiesSpace != null && 0 < rigidbodiesSpace.Length;
         }
 
         /// <summary>
