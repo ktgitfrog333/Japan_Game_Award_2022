@@ -7,6 +7,8 @@ using Main.Common.LevelDesign;
 using Main.Common.Const;
 using Main.Audio;
 using System.Threading.Tasks;
+using Main.Common;
+using Main.Level;
 
 namespace Main.Player
 {
@@ -161,11 +163,13 @@ namespace Main.Player
             this.FixedUpdateAsObservable()
                 .Subscribe(_ => {
                     if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
-                    _characterCtrl.Move(moveVelocity * Time.deltaTime);
+                    if (_characterCtrl.enabled)
+                        _characterCtrl.Move(moveVelocity * Time.deltaTime);
                 });
             // 死亡時からのリセット場合
             // メッシュが無効になっているなら有効にする
             // 死亡パーティクルが有効になっているなら無効にする
+            // キャラクターコントローラーが有効になっているなら有効にする
             this.OnEnableAsObservable()
                 .Subscribe(_ =>
                 {
@@ -174,6 +178,8 @@ namespace Main.Player
                         model.gameObject.SetActive(true);
                     if (_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                         _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(false);
+                    if (!GetComponent<CharacterController>().enabled)
+                        GetComponent<CharacterController>().enabled = true;
                 });
 
 
@@ -235,12 +241,16 @@ namespace Main.Player
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)
+            {
                 model.gameObject.SetActive(false);
+                GetComponent<CharacterController>().enabled = false;
+            }
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0f, transform.eulerAngles.z);
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
             SfxPlay.Instance.PlaySFX(_SEDead);
+            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
             await Task.Delay(3000);
             return true;
         }

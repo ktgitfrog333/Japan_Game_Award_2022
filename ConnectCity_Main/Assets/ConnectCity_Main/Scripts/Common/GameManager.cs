@@ -67,8 +67,10 @@ namespace Main.Common
         /// <summary>ぼろいブロック・天井のオーナー</summary>
         public GameObject BreakBlookOwner => breakBlookOwner;
 
-        /// <summary>T.B.D レーザー砲ギミックのゲームオブジェクト</summary>
-        [SerializeField] private GameObject[] turretEnemies;
+        /// <summary>レーザー砲ギミックのオーナー</summary>
+        [SerializeField] private GameObject turretEnemiesOwner;
+        /// <summary>レーザー砲ギミックのオーナー</summary>
+        public GameObject TurretEnemiesOwner => turretEnemiesOwner;
 
         private void Reset()
         {
@@ -84,10 +86,8 @@ namespace Main.Common
                 breakBlookOwner = GameObject.Find("BreakBlookOwner");
             if (robotEnemiesOwner == null)
                 robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
-
-            // T.B.D レーザー砲ギミックの仮実装
-            //if (turretEnemies == null && turretEnemies.length)
-            //    turretEnemies = GameObject.FindGameObjectsWithTag(TAG_NAME_DUMMY);
+            if (turretEnemiesOwner == null)
+                turretEnemiesOwner = GameObject.Find("TurretEnemiesOwner");
         }
 
         private void Start()
@@ -222,6 +222,16 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool SetBanPlayerFromSpaceManager(bool banFlag)
         {
+            return SetBanPlayerFromGameManager(banFlag);
+        }
+
+        /// <summary>
+        /// プレイヤーの操作禁止フラグを切り替え
+        /// </summary>
+        /// <param name="banFlag">操作禁止フラグ</param>
+        /// <returns>成功／失敗</returns>
+        private bool SetBanPlayerFromGameManager(bool banFlag)
+        {
             try
             {
                 Player.GetComponent<PlayerController>().InputBan = banFlag;
@@ -241,15 +251,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool SetBanPlayerFromGoalPoint(bool banFlag)
         {
-            try
-            {
-                Player.GetComponent<PlayerController>().InputBan = banFlag;
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return SetBanPlayerFromGameManager(banFlag);
         }
 
         /// <summary>

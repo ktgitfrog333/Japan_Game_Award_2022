@@ -177,13 +177,13 @@ namespace Main.Level
             {
                 if (!GameManager.Instance.SetBanPlayerFromGoalPoint(true))
                     Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                // 空間操作を禁止
+                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 var complete = UIManager.Instance.PlayEndCutsceneFromGoalPoint();
                 complete.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
                     .Subscribe(_ =>
                     {
-                        if (!GameManager.Instance.SetBanPlayerFromGoalPoint(false))
-                            Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
                         SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
                         UIManager.Instance.OpenClearScreen();
                     });

@@ -65,6 +65,28 @@ namespace Main.Common.LevelDesign
         }
 
         /// <summary>
+        /// 敵が上に乗っているかの判定
+        /// </summary>
+        /// <param name="postion">位置・スケール</param>
+        /// <param name="rayOriginOffset">始点</param>
+        /// <param name="rayDirection">終点</param>
+        /// <param name="rayMaxDistance">最大距離</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>レイのヒット判定の有無</returns>
+        public static GameObject IsOnEnemiesAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask/*, out RaycastHit[] hits*/)
+        {
+            var ray = new Ray(postion + rayOriginOffset, rayDirection);
+            Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, rayMaxDistance, layerMask))
+            {
+                //Debug.Log(hit.transform.gameObject);
+            }
+
+            return hit.transform == null ? null : hit.transform.gameObject;
+        }
+
+        /// <summary>
         /// オブジェクト状態をリセット
         /// SceneInfoManagerからの呼び出し
         /// </summary>
