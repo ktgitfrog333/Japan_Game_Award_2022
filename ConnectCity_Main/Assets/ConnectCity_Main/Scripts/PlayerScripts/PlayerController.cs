@@ -251,6 +251,7 @@ namespace Main.Player
             // 圧死音SE
             SfxPlay.Instance.PlaySFX(_SEDead);
             GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+            _inputBan.Value = true;
             await Task.Delay(3000);
             return true;
         }
