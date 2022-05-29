@@ -76,6 +76,8 @@ namespace TitleSelect
         public Vector3 select_flame_image_28_pos;
         public Vector3 select_flame_image_29_pos;
         public Vector3 select_flame_image_30_pos;
+        bool select_decide;
+        bool select_cancel;
 
         public Text text;
         public enum Stage_Num
@@ -162,6 +164,8 @@ namespace TitleSelect
             Select_Left_Arrow = GameObject.Find("Select_Left_Arrow_Image");
             Select_Right_Arrow = GameObject.Find("Select_Right_Arrow_Image");
             Select_Stage_Frame = GameObject.Find("Select_Stage_Frame_Image");
+            select_decide = false;
+            select_cancel = false;
             //stage = Stage_Num.Stage1;
             stage = (Stage_Num)BrideScenes_SelectMain.Instance.LoadSceneId + 1;
             if ((int)Stage_Num.Stage1 <= (int)stage && (int)stage <= (int)Stage_Num.Stage5)
@@ -270,8 +274,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if(select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -292,8 +300,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -314,8 +326,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -336,8 +352,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -359,8 +379,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -419,8 +443,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -441,8 +469,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -463,8 +495,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -485,8 +521,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -508,8 +548,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -568,8 +612,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -590,8 +638,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -612,8 +664,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -634,8 +690,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -657,8 +717,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -717,8 +781,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -739,8 +807,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -761,8 +833,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -783,8 +859,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -806,8 +886,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -866,8 +950,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -888,8 +976,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -910,8 +1002,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -932,8 +1028,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -955,8 +1055,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -1015,8 +1119,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1037,8 +1145,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1059,8 +1171,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1081,8 +1197,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1102,8 +1222,12 @@ namespace TitleSelect
                             }
                             if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -1112,10 +1236,14 @@ namespace TitleSelect
 
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Input_Cancel"))
             {
-                GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
-                await Task.Delay(3000);
-                SceneManager.LoadScene("TitleScene");
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
+                if(select_cancel == false)
+                {
+                    select_cancel = true;
+                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
+                    GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
+                    await Task.Delay(3000);
+                    SceneManager.LoadScene("TitleScene");
+                }
             }
         }
 
