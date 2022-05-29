@@ -76,6 +76,8 @@ namespace TitleSelect
         public Vector3 select_flame_image_28_pos;
         public Vector3 select_flame_image_29_pos;
         public Vector3 select_flame_image_30_pos;
+        bool select_decide;
+        bool select_cancel;
 
         public Text text;
         public enum Stage_Num
@@ -162,6 +164,8 @@ namespace TitleSelect
             Select_Left_Arrow = GameObject.Find("Select_Left_Arrow_Image");
             Select_Right_Arrow = GameObject.Find("Select_Right_Arrow_Image");
             Select_Stage_Frame = GameObject.Find("Select_Stage_Frame_Image");
+            select_decide = false;
+            select_cancel = false;
             //stage = Stage_Num.Stage1;
             stage = (Stage_Num)BrideScenes_SelectMain.Instance.LoadSceneId + 1;
             if ((int)Stage_Num.Stage1 <= (int)stage && (int)stage <= (int)Stage_Num.Stage5)
@@ -263,15 +267,19 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_01_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage1);
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage2;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if(select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -280,20 +288,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_02_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage2);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage1;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage3;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -302,20 +314,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_03_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage3);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage2;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage4;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -324,20 +340,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_04_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage4);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage3;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage5;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -346,21 +366,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_05_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage5);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage4;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll2;
                                 stage = Stage_Num.Stage6;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -406,21 +430,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_06_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage6);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll1;
                                 stage = Stage_Num.Stage5;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage7;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -429,20 +457,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_07_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage7);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage6;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage8;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -451,20 +483,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_08_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage8);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage7;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage9;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -473,20 +509,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_09_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage9);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage8;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage10;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -495,21 +535,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_10_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage10);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage9;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll3;
                                 stage = Stage_Num.Stage11;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -555,21 +599,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_11_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage11);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll2;
                                 stage = Stage_Num.Stage10;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage12;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -578,20 +626,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_12_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage12);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage11;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage13;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -600,20 +652,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_13_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage13);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage12;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage14;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -622,20 +678,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_14_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage14);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage13;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage15;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -644,21 +704,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_15_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage15);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage14;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll4;
                                 stage = Stage_Num.Stage16;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -704,21 +768,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_16_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage16);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll3;
                                 stage = Stage_Num.Stage15;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage17;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -727,20 +795,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_17_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage17);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage16;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage18;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -749,20 +821,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_18_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage18);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage17;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage19;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -771,20 +847,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_19_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage19);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage18;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage20;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -793,21 +873,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_20_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage20);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage19;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll5;
                                 stage = Stage_Num.Stage21;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -853,21 +937,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_21_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage21);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll4;
                                 stage = Stage_Num.Stage20;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage22;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -876,20 +964,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_22_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage22);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage21;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage23;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -898,20 +990,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_23_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage23);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage22;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage24;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -920,20 +1016,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_24_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage24);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage23;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage25;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -942,21 +1042,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_25_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage25);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage24;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll6;
                                 stage = Stage_Num.Stage26;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
@@ -1002,21 +1106,25 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_26_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage26);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 scroll = Stage_Scroll.Scroll5;
                                 stage = Stage_Num.Stage25;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage27;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1025,20 +1133,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_27_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage27);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage26;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage28;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1047,20 +1159,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_28_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage28);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage27;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage29;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1069,20 +1185,24 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_29_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage29);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage28;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 stage = Stage_Num.Stage30;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
 
@@ -1091,31 +1211,39 @@ namespace TitleSelect
                             select_stage_pos.y = select_flame_image_30_pos.y;
                             Select_Stage_Frame.GetComponent<RectTransform>().anchoredPosition = select_stage_pos;
                             GameObject.Find("Select_Comment_Image").GetComponent<Select_Comment>().Comment((int)Stage_Num.Stage30);
-                            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetButtonDown("Left_Input"))
                             {
                                 stage = Stage_Num.Stage29;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (Input.GetKeyDown(KeyCode.RightArrow))
+                            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetButtonDown("Right_Input"))
                             {
                                 //
                             }
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
                             {
-                                Select_SceneToMainScene((int)stage - 1);
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                if (select_decide == false)
+                                {
+                                    select_decide = true;
+                                    Select_SceneToMainScene((int)stage - 1);
+                                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
+                                }
                             }
                             break;
                     }
                     break;
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Input_Cancel"))
             {
-                GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
-                await Task.Delay(3000);
-                SceneManager.LoadScene("TitleScene");
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
+                if(select_cancel == false)
+                {
+                    select_cancel = true;
+                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
+                    GameObject.Find("FadeInOutPanel").GetComponent<FadeInOut>().Fadeout();
+                    await Task.Delay(3000);
+                    SceneManager.LoadScene("TitleScene");
+                }
             }
         }
 
