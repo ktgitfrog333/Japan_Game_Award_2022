@@ -104,7 +104,9 @@ namespace Main.UI
             this.UpdateAsObservable()
                 .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
                     !clearScreen.activeSelf &&
-                    !spaceScreen.activeSelf)
+                    !spaceScreen.activeSelf &&
+                    !pauseScreen.activeSelf &&
+                    !gameManualScrollView.activeSelf)
                 .Subscribe(_ =>
                 {
                     spaceScreen.SetActive(true);
@@ -142,6 +144,7 @@ namespace Main.UI
         /// <param name="active">有効／無効</param>
         public void GameManualScrollViewSetActiveFromUIManager(bool active)
         {
+            CloseSpaceScreen();
             gameManualScrollView.SetActive(active);
         }
 

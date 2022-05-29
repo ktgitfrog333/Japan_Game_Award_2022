@@ -135,9 +135,11 @@ namespace Main.Direction
             targetTrigger.AddComponent<BoxCollider>().size = boxColliderSize;
             SetPool(targetTrigger);
             var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(particle, target);
-            obj.OnParticleCollisionAsObservable()
-                .Where(x => x.name.Equals("DiffusionCubesTrigger") && !complated)
-                .Subscribe(async _ =>
+            StartCoroutine(coroutine);
+
+            Observable.FromCoroutine<bool>(observer => TechnicalParticleMotion.CoroutineMoveShootTargetLimit(observer, .5f))
+                .Where(_ => !complated)
+                .Subscribe(async x =>
                 {
                     complated = true;
 
@@ -148,8 +150,9 @@ namespace Main.Direction
                     Destroy(obj);
                     // 生成後にOnNextを発行
                     observer.OnNext(true);
-                });
-            StartCoroutine(coroutine);
+                })
+                .AddTo(gameObject);
+
             // OnNext任意発行のためコルーチンのタイミングでフックさせない
             yield return null;
         }
