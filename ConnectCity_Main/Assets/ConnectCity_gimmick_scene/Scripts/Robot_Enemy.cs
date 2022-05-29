@@ -52,6 +52,10 @@ namespace Gimmick
         [SerializeField] private float rayMaxDistanceRight = .8f;
         ///// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
         //[SerializeField] private float rayMaxDistanceRightLong = 1.6f;
+        /// <summary>敵を吹き飛ばす先の座標（死亡状態）</summary>
+        [SerializeField] private Vector3 smashedPosition = Vector3.back * 100f;
+        /// <summary>死亡状態</summary>
+        private bool _isDead;
 
         private void Reset()
         {
@@ -59,6 +63,17 @@ namespace Gimmick
                 _characterCtrl = GetComponent<CharacterController>();
             if (_playerAnimation == null)
                 _playerAnimation = GetComponent<Animator>();
+        }
+
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        public void Initialize()
+        {
+            if (_isDead)
+                _isDead = false;
+            if (!_characterCtrl.enabled)
+                _characterCtrl.enabled = true;
         }
 
         void Start()
@@ -100,14 +115,16 @@ namespace Gimmick
                     moveVelocity.x < 0f))
                 .Subscribe(_ => {
                     if (!PlayPlayerAnimation(moveVelocity)) Debug.LogError("移動アニメーション処理に失敗");
-                    _characterCtrl.Move(moveVelocity * Time.deltaTime);
+                    if (_characterCtrl.enabled)
+                        _characterCtrl.Move(moveVelocity * Time.deltaTime);
                 });
             
             // プレイヤーを死亡させる
             this.OnTriggerEnterAsObservable()
-                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
+                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) && !_isDead)
                 .Subscribe(async _ =>
                 {
+                    _isDead = true;
                     await GameManager.Instance.DeadPlayerFromRobotEnemies();
                     SceneInfoManager.Instance.SetSceneIdUndo();
                     UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
@@ -136,7 +153,8 @@ namespace Gimmick
         {
             if (_characterCtrl == null)
                 return false;
-            _characterCtrl.Move(moveVelocity);
+            if (_characterCtrl.enabled)
+                _characterCtrl.Move(moveVelocity);
             return true;
         }
 
@@ -146,15 +164,12 @@ namespace Gimmick
         /// <returns>成功／失敗</returns>
         public bool DeadPlayerFromGameManager()
         {
-            foreach (Transform m in transform)
-            {
-                if (m.gameObject.activeSelf)
-                    m.gameObject.SetActive(false);
-            }
             // 圧死時のパーティクル
             Instantiate(diedLight, transform.position, Quaternion.identity);
             // 圧死音SE
             SfxPlay.Instance.PlaySFX(ClipToPlay.se_player_dead);
+            _characterCtrl.enabled = false;
+            transform.localPosition = smashedPosition;
             return true;
         }
     }
