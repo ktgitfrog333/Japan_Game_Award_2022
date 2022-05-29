@@ -276,12 +276,17 @@ namespace Main.Level
                 var group = Instantiate(moveCubeGroup, obj.transform.position, Quaternion.identity);
                 group.transform.parent = level;
                 obj.transform.parent = group.transform;
+
+                var rOrgOffAry = GetThreePointHorizontal(rayOriginOffset, .5f);
                 // プレイヤーの接地判定
                 obj.UpdateAsObservable()
-                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
+                    .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[2], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
                     .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                     .Where(x => !x)
-                    .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"));
+                    .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"))
+                    .AddTo(_compositeDisposable);
                 // プレイヤーを押せるように入れたものだが逆に引くことも可能となってしまっているためそれを治す
                 obj.UpdateAsObservable()
                     .Where(_ => (LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
@@ -292,7 +297,8 @@ namespace Main.Level
                     {
                         if (!GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                             Debug.LogError("プレイヤー操作指令の失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 // 敵ギミックの接地判定
                 RaycastHit[] hits = new RaycastHit[1];
                 obj.UpdateAsObservable()
@@ -303,7 +309,8 @@ namespace Main.Level
                         var top = LevelDesisionIsObjected.IsOnEnemiesAndInfo(x.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
                         if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
                             Debug.LogError("敵ギミック操作指令の失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 obj.UpdateAsObservable()
                     .Select(_ => obj)
                     .Where(x => LevelDesisionIsObjected.IsOnPlayeredAndInfo(x.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES)))
@@ -315,7 +322,8 @@ namespace Main.Level
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, left.transform.position)))
                             if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
                                 Debug.LogError("敵ギミック操作指令の失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 obj.UpdateAsObservable()
                     .Select(_ => obj)
                     .Where(x => LevelDesisionIsObjected.IsOnPlayeredAndInfo(x.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES)))
@@ -327,7 +335,8 @@ namespace Main.Level
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, right.transform.position)))
                             if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
                                 Debug.LogError("敵ギミック操作指令の失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                     .Select(x => GetMatchingMoveCubes(obj, x.gameObject, x.contacts[0].point))
@@ -343,7 +352,8 @@ namespace Main.Level
                                 count.Value++;
                         }
                         _connectDirections = new List<ConnectDirection2D>();
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 // プレイヤーとの衝突
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_PLAYER) &&
@@ -356,7 +366,8 @@ namespace Main.Level
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneInfoManager.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 // 敵との衝突
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY) &&
@@ -367,7 +378,8 @@ namespace Main.Level
                         var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES);
                         if (target != null)
                             GameManager.Instance.DestroyHumanEnemyFromSpaceManager(target);
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
             }
 
             return moveCubes;

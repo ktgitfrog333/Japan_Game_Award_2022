@@ -120,6 +120,7 @@ namespace Main.Level
 
                 var disposable = new SingleAssignmentDisposable();
                 var complete = false;
+                transform.GetChild(0).GetComponent<SphereCollider>().enabled = true;
                 // プレイヤーオブジェクトがゴールに触れる
                 disposable.Disposable = transform.GetChild(0).OnTriggerEnterAsObservable()
                     .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER) && !complete)
@@ -157,8 +158,9 @@ namespace Main.Level
         {
             try
             {
-                // 扉を開くアニメーションを再生
+                // 扉を閉めるアニメーションを再生
                 transform.GetChild(1).GetComponent<Animation>().Play("close");
+                transform.GetChild(0).GetComponent<SphereCollider>().enabled = false;
                 return true;
             }
             catch
