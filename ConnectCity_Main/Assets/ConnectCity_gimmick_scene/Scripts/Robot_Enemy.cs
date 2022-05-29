@@ -149,7 +149,7 @@ namespace Gimmick
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactorFromGameManager(Vector3 moveVelocity)
+        public bool MoveRobotEnemyFromGameManager(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
