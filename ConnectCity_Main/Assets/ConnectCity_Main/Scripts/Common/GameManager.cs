@@ -8,6 +8,8 @@ using Main.Level;
 using Main.Common.LevelDesign;
 using System.Linq;
 using Gimmick;
+using UniRx;
+using UniRx.Triggers;
 
 namespace Main.Common
 {
@@ -71,6 +73,10 @@ namespace Main.Common
         [SerializeField] private GameObject turretEnemiesOwner;
         /// <summary>レーザー砲ギミックのオーナー</summary>
         public GameObject TurretEnemiesOwner => turretEnemiesOwner;
+        /// <summary>メソッドをコールさせる優先順位</summary>
+        private OmnibusCallCode _omnibusCall = OmnibusCallCode.None;
+        /// <summary>優先メソッドをコール中の待機時間</summary>
+        [SerializeField] private int omnibusCallDelayTime = 10;
 
         private void Reset()
         {
@@ -93,6 +99,16 @@ namespace Main.Common
         private void Start()
         {
             ManualStart();
+            this.UpdateAsObservable()
+                .Subscribe(async _ =>
+                {
+                    if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceManager))
+                    {
+                        // ProjectSettings > Physics > Sleep Threshold（1フレームの待機時間）
+                        await Task.Delay(omnibusCallDelayTime);
+                    }
+                    _omnibusCall = OmnibusCallCode.None;
+                });
         }
 
         /// <summary>
@@ -167,6 +183,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveCharactorFromSpaceManager(Vector3 moveVelocity)
         {
+            _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceManager;
             return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
         }
 
@@ -178,7 +195,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveRobotEnemyFromSpaceManager(Vector3 moveVelocity, GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().MoveChatactorFromGameManager(moveVelocity);
+            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemyFromGameManager(moveVelocity);
         }
 
         /// <summary>
@@ -189,6 +206,11 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveCharactorFromGravityController(Vector3 moveVelocity)
         {
+            // 空間操作による呼び出しがあるなら実行しない
+            if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceManager))
+                return true;
+
+            _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
             return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
         }
 
@@ -272,4 +294,13 @@ namespace Main.Common
             return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromGameManager();
         }
     }
+}
+/// <summary>
+/// メソッドをコールする際に複数実行の場合、優先順位を決める
+/// </summary>
+public enum OmnibusCallCode
+{
+    None,
+    MoveCharactorFromSpaceManager,
+    MoveCharactorFromGravityController
 }

@@ -28,14 +28,7 @@ namespace Gimmick
 
             localGravity = LevelDesisionIsObjected.GetVectorFromDirection(direction) * moveSpeed;
 
-            this.OnTriggerEnterAsObservable()
-                .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
-                .Subscribe(_ =>
-                {
-                    if (!MovePlayerFromChangeGravity(localGravity))
-                        Debug.LogError("重力操作処理の失敗");
-                });
-            this.OnTriggerExitAsObservable()
+            this.OnTriggerStayAsObservable()
                 .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                 .Subscribe(_ =>
                 {
@@ -50,7 +43,7 @@ namespace Gimmick
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MovePlayerFromChangeGravity(Vector3 localGravity)
+        private bool MovePlayerFromChangeGravity(Vector3 localGravity)
         {
             return GameManager.Instance.MoveCharactorFromGravityController(localGravity);
         }

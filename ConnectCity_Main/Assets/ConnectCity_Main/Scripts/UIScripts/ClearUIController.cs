@@ -129,6 +129,7 @@ namespace Main.UI
 
                         button.enabled = false;
                         await PlayFlashingMotion();
+                        Deselected();
                         UIManager.Instance.CloseClearScreen();
                     }
                     break;
