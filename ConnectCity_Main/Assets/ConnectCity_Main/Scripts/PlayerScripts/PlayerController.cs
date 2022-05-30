@@ -154,9 +154,12 @@ namespace Main.Player
                     moveVelocity.y = 0f;
                 });
             // 空中にいる際の移動座標をセット
+            var rOrgOffAry = LevelDesisionIsObjected.GetTwoPointHorizontal(rayOriginOffset, .5f);
             this.UpdateAsObservable()
-                .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
-                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
                 .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
 
             // 移動
