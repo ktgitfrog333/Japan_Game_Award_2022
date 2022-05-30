@@ -38,7 +38,7 @@ namespace Main.UI
             if (!firstElement)
                 firstElement = transform.GetChild(0).GetChild(1).GetComponent<ClearUIController>();
             if (!firstObject)
-                firstObject = GameObject.Find("GameRetryButton");
+                firstObject = GameObject.Find("GameProceedButton");
             base.Initialize();
         }
 

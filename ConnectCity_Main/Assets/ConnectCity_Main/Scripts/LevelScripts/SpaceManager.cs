@@ -277,7 +277,7 @@ namespace Main.Level
                 group.transform.parent = level;
                 obj.transform.parent = group.transform;
 
-                var rOrgOffAry = GetThreePointHorizontal(rayOriginOffset, .5f);
+                var rOrgOffAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffset, .5f);
                 // プレイヤーの接地判定
                 obj.UpdateAsObservable()
                     .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
@@ -337,7 +337,7 @@ namespace Main.Level
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
-                obj.transform.parent.OnCollisionEnterAsObservable()
+                obj.transform.parent.OnCollisionStayAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                     .Select(x => GetMatchingMoveCubes(obj, x.gameObject, x.contacts[0].point))
                     .Where(x => 2 == SetGroupMattingMoveCube(x))
@@ -700,10 +700,10 @@ namespace Main.Level
             var rOrgOffR = rayOriginOffsetRight;
             var rOrgDireR = rayDirectionRight;
             var rMaxDisR = rayMaxDistanceRightLong;
-            var rOrgOffUpAry = GetThreePointHorizontal(rayOriginOffsetUp, .5f);
+            var rOrgOffUpAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffsetUp, .5f);
             var rOrgDireUp = rayDirectionUp;
             var rMaxDisUp = rayMaxDistanceUpLong;
-            var rOrgOffDownAry = GetThreePointHorizontal(rayOriginOffsetDown, .5f);
+            var rOrgOffDownAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffsetDown, .5f);
             var rOrgDireDown = rayDirectionDown;
             var rMaxDisDown = rayMaxDistanceDownLong;
             hits = new RaycastHit[1];
@@ -779,10 +779,10 @@ namespace Main.Level
             var rOrgOffR = rayOriginOffsetRight;
             var rOrgDireR = rayDirectionRight;
             var rMaxDisR = rayMaxDistanceRightLong;
-            var rOrgOffUpAry = GetThreePointHorizontal(rayOriginOffsetUp, .5f);
+            var rOrgOffUpAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffsetUp, .5f);
             var rOrgDireUp = rayDirectionUp;
             var rMaxDisUp = rayMaxDistanceUpLong;
-            var rOrgOffDownAry = GetThreePointHorizontal(rayOriginOffsetDown, .5f);
+            var rOrgOffDownAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffsetDown, .5f);
             var rOrgDireDown = rayDirectionDown;
             var rMaxDisDown = rayMaxDistanceDownLong;
             hits = new RaycastHit[1];
@@ -827,22 +827,6 @@ namespace Main.Level
             return null;
         }
 
-        /// <summary>
-        /// レイの光線を3本たてる
-        /// 補正値によって幅を調整する
-        /// </summary>
-        /// <param name="rayOriginOffset">基準点（中央点）</param>
-        /// <param name="range">幅を広げる範囲</param>
-        /// <returns>3点ベクター</returns>
-        private Vector3[] GetThreePointHorizontal(Vector3 rayOriginOffset, float range)
-        {
-            var idx = 0;
-            var result = new Vector3[3];
-            result[idx++] = new Vector3(-1f * range, rayOriginOffset.y);
-            result[idx++] = rayOriginOffset;
-            result[idx++] = new Vector3(1f * range, rayOriginOffset.y);
-            return result;
-        }
 
         /// <summary>
         /// 操作入力を元に制御情報を更新

@@ -212,6 +212,39 @@ namespace Main.Common.LevelDesign
             }
             return v;
         }
+
+        /// <summary>
+        /// レイの光線を3本たてる
+        /// 補正値によって幅を調整する
+        /// </summary>
+        /// <param name="rayOriginOffset">基準点（中央点）</param>
+        /// <param name="range">幅を広げる範囲</param>
+        /// <returns>3点ベクター</returns>
+        public static Vector3[] GetThreePointHorizontal(Vector3 rayOriginOffset, float range)
+        {
+            var idx = 0;
+            var result = new Vector3[3];
+            result[idx++] = new Vector3(-1f * range, rayOriginOffset.y);
+            result[idx++] = rayOriginOffset;
+            result[idx++] = new Vector3(1f * range, rayOriginOffset.y);
+            return result;
+        }
+
+        /// <summary>
+        /// レイの光線を2本たてる
+        /// 補正値によって幅を調整する
+        /// </summary>
+        /// <param name="rayOriginOffset">基準点（中央点）</param>
+        /// <param name="range">幅を広げる範囲</param>
+        /// <returns>2点ベクター</returns>
+        public static Vector3[] GetTwoPointHorizontal(Vector3 rayOriginOffset, float range)
+        {
+            var idx = 0;
+            var result = new Vector3[2];
+            result[idx++] = new Vector3(rayOriginOffset.x - range / 2f, rayOriginOffset.y);
+            result[idx++] = new Vector3(rayOriginOffset.x + range / 2f, rayOriginOffset.y);
+            return result;
+        }
     }
 
     /// <summary>
