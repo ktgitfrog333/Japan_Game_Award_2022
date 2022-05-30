@@ -337,7 +337,7 @@ namespace Main.Level
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
-                obj.transform.parent.OnCollisionEnterAsObservable()
+                obj.transform.parent.OnCollisionStayAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                     .Select(x => GetMatchingMoveCubes(obj, x.gameObject, x.contacts[0].point))
                     .Where(x => 2 == SetGroupMattingMoveCube(x))
