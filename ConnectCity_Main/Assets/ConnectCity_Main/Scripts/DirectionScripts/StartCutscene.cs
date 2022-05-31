@@ -86,6 +86,8 @@ namespace Main.Direction
                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
                 // ショートカット入力を許可
                 UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+                if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+                    Debug.Log("ぼろいブロック・天井復活処理の失敗");
             }
         }
 
@@ -100,6 +102,8 @@ namespace Main.Direction
             GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
             // ショートカット入力を許可
             UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+            if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+                Debug.Log("ぼろいブロック・天井復活処理の失敗");
         }
     }
 }

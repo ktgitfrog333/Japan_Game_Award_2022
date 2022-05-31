@@ -9,6 +9,7 @@ using Main.Common.Const;
 using Main.Audio;
 using Main.Common;
 using Main.Direction;
+using Main.Player;
 
 namespace Main.UI
 {
@@ -97,6 +98,7 @@ namespace Main.UI
                     !pauseScreen.activeSelf)
                 .Subscribe(_ =>
                 {
+                    GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = true;
                     pauseScreen.SetActive(true);
                     SfxPlay.Instance.PlaySFX(manualSEPattern);
                 });
@@ -120,10 +122,10 @@ namespace Main.UI
         public async void CloseMenu()
         {
             await Task.Delay(500);
-            // T.B.D プレイヤー/ギミックその他のオブジェクトを無効にする
             pauseScreen.SetActive(false);
             if (Time.timeScale == 0f)
                 Time.timeScale = 1f;
+            GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = false;
         }
 
         /// <summary>
@@ -145,6 +147,8 @@ namespace Main.UI
         public void GameManualScrollViewSetActiveFromUIManager(bool active)
         {
             CloseSpaceScreen();
+            // 遊び方表が開いている間はプレイヤーの操作を禁止する
+            GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = active;
             gameManualScrollView.SetActive(active);
         }
 
@@ -171,6 +175,7 @@ namespace Main.UI
         /// </summary>
         public async void OpenClearScreen()
         {
+            CloseSpaceScreen();
             clearScreen.SetActive(true);
 
             // 子オブジェクトは一度非表示にする
@@ -178,8 +183,12 @@ namespace Main.UI
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
             await Task.Delay(3000);
             // 子オブジェクトは一度非表示にする
-            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount - (SceneInfoManager.Instance.FinalStage ? 1 : 0); i++)
+            for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
+            {
+                if (i == 1 && SceneInfoManager.Instance.FinalStage)
+                    continue;
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
+            }
 
             clearScreen.GetComponent<ClearScreen>().AutoSelectContent();
         }

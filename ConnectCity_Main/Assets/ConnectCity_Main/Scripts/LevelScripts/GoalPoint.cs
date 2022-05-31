@@ -181,6 +181,8 @@ namespace Main.Level
                     Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
                 // 空間操作を禁止
                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                // ショートカット入力を禁止
+                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 var complete = UIManager.Instance.PlayEndCutsceneFromGoalPoint();
                 complete.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
