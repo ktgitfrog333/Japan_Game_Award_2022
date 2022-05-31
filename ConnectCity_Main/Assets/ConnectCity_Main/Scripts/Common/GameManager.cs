@@ -131,6 +131,27 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// ぼろいブロック・天井の初期処理
+        /// ディレイ付きの初期処理
+        /// ※空間操作ブロックの衝突判定のタイミングより後に実行させる必要があり、暫定対応
+        /// 開始演出からの呼び出し
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool DelayInitializeBreakBlocksFromStartCutscene()
+        {
+            return breakBlookOwner.GetComponent<BreakBlookOwner>().DelayInitializeBreakBlocksFromGameManager();
+        }
+
+        /// <summary>
+        /// ぼろいブロック・天井の監視の停止
+        /// SceneInfoManagerからの呼び出し
+        /// </summary>
+        public void DisposeAllBreakBlooksFromSceneInfoManager()
+        {
+            breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAllFromGameManager();
+        }
+
+        /// <summary>
         /// カウントダウン表示を更新
         /// SpaceManagerからの呼び出し
         /// </summary>

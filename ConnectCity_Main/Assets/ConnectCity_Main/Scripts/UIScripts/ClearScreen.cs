@@ -28,9 +28,19 @@ namespace Main.UI
         {
             Time.timeScale = 0f;
             if (SceneInfoManager.Instance.FinalStage)
+            {
                 transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = gameAllClearText;
+                // 最終ステージの場合もう一度遊ぶを一番上にする
+                firstElement = transform.GetChild(0).GetChild(2).GetComponent<ClearUIController>();
+                firstObject = transform.GetChild(0).GetChild(2).gameObject;
+            }
             else
+            {
                 transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = stageClearText;
+                // デフォルトは次のステージへ進むを一番上にする
+                firstElement = transform.GetChild(0).GetChild(1).GetComponent<ClearUIController>();
+                firstObject = transform.GetChild(0).GetChild(1).gameObject;
+            }
         }
 
         protected override void Initialize()
@@ -38,7 +48,7 @@ namespace Main.UI
             if (!firstElement)
                 firstElement = transform.GetChild(0).GetChild(1).GetComponent<ClearUIController>();
             if (!firstObject)
-                firstObject = GameObject.Find("GameProceedButton");
+                firstObject = transform.GetChild(0).GetChild(1).gameObject;
             base.Initialize();
         }
 

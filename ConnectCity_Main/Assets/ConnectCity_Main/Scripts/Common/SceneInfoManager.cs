@@ -126,6 +126,8 @@ namespace Main.Common
                     Debug.Log("レーザー砲起動処理の失敗");
                 if (!GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
                     Debug.Log("敵起動処理の失敗");
+                if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
+                    Debug.Log("ぼろいブロック・天井復活処理の失敗");
                 // カメラの初期設定
                 GameManager.Instance.MainCamera.transform.parent = stage.transform;
                 GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
@@ -177,10 +179,10 @@ namespace Main.Common
             GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().DisposeAllFromSceneInfoManager();
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.Log("敵オブジェクトリセット処理の失敗");
-            if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
-                Debug.Log("ぼろいブロック・天井復活処理の失敗");
             if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
                 Debug.Log("レーザー砲終了処理の失敗");
+            // ぼろいブロック・天井の監視を終了
+            GameManager.Instance.DisposeAllBreakBlooksFromSceneInfoManager();
             stage.SetActive(false);
             return true;
         }
