@@ -205,7 +205,7 @@ namespace Main.Level
                 {
                     if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
                         _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
-                    if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.ScrLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
+                    if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
                         Debug.Log("左空間：MoveCubeの制御を破棄");
                 })
                 .AddTo(_compositeDisposable);
@@ -217,7 +217,7 @@ namespace Main.Level
                 {
                     if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
                         _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
-                    if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
+                    if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
                         Debug.Log("右空間：MoveCubeの制御を破棄");
                 })
                 .AddTo(_compositeDisposable);
@@ -422,6 +422,7 @@ namespace Main.Level
         /// </summary>
         /// <param name="originObject">衝突を受けたオブジェクト</param>
         /// <param name="meetParentObject">衝突したオブジェクト</param>
+        /// <param name="contactsPoint">衝突位置の座標</param>
         /// <returns>MoveCubeのペアと角度／空（親オブジェクト内の子オブジェクトが存在しない）</returns>
         private ConnectDirection2D GetMatchingMoveCubes(GameObject originObject, GameObject meetParentObject, Vector3 contactsPoint)
         {
@@ -885,19 +886,20 @@ namespace Main.Level
         /// <summary>
         /// 動かすブロックの位置が左空間・右空間かを調べて、各空間操作用のリストへ格納
         /// </summary>
+        /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <returns>処理結果の成功／失敗</returns>
-        private bool CheckPositionAndSetMoveCubesComponents(GameObject[] gameObjects)
+        private bool CheckPositionAndSetMoveCubesComponents(GameObject[] moveCubes)
         {
-            if (0 < gameObjects.Length)
+            if (0 < moveCubes.Length)
             {
-                // RididBodyのリスト
+                // RigidBodyのリスト
                 var rbsLeft = new List<Rigidbody>();
                 var rbsRight = new List<Rigidbody>();
                 // Animatorのリスト
                 var scrsLeft = new List<MoveCbSmall>();
                 var scrsRight = new List<MoveCbSmall>();
 
-                foreach (var obj in gameObjects)
+                foreach (var obj in moveCubes)
                 {
                     // グループ化されている場合は親のRigidBodyをセット
                     var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
@@ -992,7 +994,7 @@ namespace Main.Level
         /// <param name="moveVelocitySpace">移動ベクトル</param>
         /// <param name="moveSpeed">移動速度（初動／移動）</param>
         /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
-        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
+        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, Vector3 moveVelocitySpace, float moveSpeed)
         {
             for (var i = 0; i < rigidBodySpace.Length; i++)
             {
@@ -1096,11 +1098,11 @@ namespace Main.Level
     /// </summary>
     public enum ParticleSystemPoolIdx
     {
-        /// <summary>0番目</summary>
-        FIRST
         /// <summary>1番目</summary>
-            , SECOND
+        FIRST,
         /// <summary>2番目</summary>
-            , THIRD
+        SECOND,
+        /// <summary>3番目</summary>
+        THIRD,
     }
 }

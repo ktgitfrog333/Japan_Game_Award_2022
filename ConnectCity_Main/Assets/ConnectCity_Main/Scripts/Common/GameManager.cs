@@ -58,8 +58,6 @@ namespace Main.Common
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         public GameObject GoalPoint => goalPoint[SceneInfoManager.Instance.SceneIdCrumb.Current];
-        /// <summary>T.B.D 重力操作ギミックのゲームオブジェクト</summary>
-        [SerializeField] private GameObject[] gravityControllers;
         /// <summary>敵ギミックのオーナー</summary>
         [SerializeField] private GameObject robotEnemiesOwner;
         /// <summary>敵ギミックのオーナー</summary>
