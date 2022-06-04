@@ -88,7 +88,7 @@ namespace Main.Common.LevelDesign
 
         /// <summary>
         /// オブジェクト状態をリセット
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
         /// <param name="StagePrefab">ステージプレハブ</param>
         /// <param name="objectsOffset">オブジェクトリスト</param>

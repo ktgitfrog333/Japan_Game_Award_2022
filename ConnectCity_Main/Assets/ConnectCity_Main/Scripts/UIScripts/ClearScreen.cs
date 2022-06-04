@@ -59,7 +59,7 @@ namespace Main.UI
 
         /// <summary>
         /// 最初の項目を選択する外部インターフェース
-        /// UIManagerから呼ばれる想定
+        /// UIOwnerから呼ばれる想定
         /// </summary>
         public void AutoSelectContent()
         {

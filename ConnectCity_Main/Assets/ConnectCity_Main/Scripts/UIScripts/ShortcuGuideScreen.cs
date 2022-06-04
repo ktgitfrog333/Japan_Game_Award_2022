@@ -103,7 +103,7 @@ namespace Main.Level
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
                                 SfxPlay.Instance.PlaySFX(manualSEPattern);
-                                UIOwner.Instance.GameManualScrollViewSetActiveFromUIManager(true);
+                                UIOwner.Instance.GameManualScrollViewSetActiveFromUIOwner(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
                             }

@@ -106,7 +106,7 @@ namespace Main.UI
             if (!_selectSEMute)
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
             _selectSEMute = false;
-            UIOwner.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
+            UIOwner.Instance.GameManualScrollViewScrollPageFromUIOwner(_pageIndex);
         }
 
         public void Canceled()

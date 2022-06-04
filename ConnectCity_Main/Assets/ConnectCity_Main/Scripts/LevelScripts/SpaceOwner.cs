@@ -110,13 +110,13 @@ namespace Main.Level
             connectSuccess.ObserveEveryValueChanged(x => x.Value)
                 .Do(x =>
                 {
-                    if (!_inputBan && 0 < x && !LevelOwner.Instance.UpdateCountDownFromSpaceManager(x, SceneOwner.Instance.ClearConnectedCounter))
+                    if (!_inputBan && 0 < x && !LevelOwner.Instance.UpdateCountDownFromSpaceOwner(x, SceneOwner.Instance.ClearConnectedCounter))
                         Debug.LogError("カウントダウン更新処理の失敗");
                 })
                 .Where(x => SceneOwner.Instance.ClearConnectedCounter == x)
                 .Subscribe(_ =>
                 {
-                    if (!LevelOwner.Instance.OpenDoorFromSpaceManager())
+                    if (!LevelOwner.Instance.OpenDoorFromSpaceOwner())
                         Debug.LogError("ゴール演出の失敗");
                 });
             _moveCubes = SetCollsion(_moveCubes, SceneOwner.Instance.LevelDesign.transform.GetChild(SceneOwner.Instance.SceneIdCrumb.Current), connectSuccess);
@@ -136,14 +136,14 @@ namespace Main.Level
                 .Subscribe(_ =>
                 {
                     _spaceDirections.MoveSpeed = moveHSpeed;
-                    LevelOwner.Instance.SetBanPlayerFromSpaceManager(true);
+                    LevelOwner.Instance.SetBanPlayerFromSpaceOwner(true);
                 })
                 .AddTo(_compositeDisposable);
             velocitySeted.Where(x => !x)
                 .Subscribe(_ =>
                 {
                     _spaceDirections.MoveSpeed = moveLSpeed;
-                    LevelOwner.Instance.SetBanPlayerFromSpaceManager(false);
+                    LevelOwner.Instance.SetBanPlayerFromSpaceOwner(false);
                 })
                 .AddTo(_compositeDisposable);
 
@@ -240,17 +240,17 @@ namespace Main.Level
         /// <summary>
         /// 管理系の処理を破棄
         /// </summary>
-        public void DisposeAllFromSceneInfoManager()
+        public void DisposeAllFromSceneOwner()
         {
             _compositeDisposable.Clear();
         }
 
         /// <summary>
         /// 疑似スタートを発火させる
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneInfoManager()
+        public bool PlayManualStartFromSceneOwner()
         {
             ManualStart();
             return true;
@@ -283,7 +283,7 @@ namespace Main.Level
                     .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[2], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
-                    .Select(_ => LevelOwner.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Select(_ => LevelOwner.Instance.MoveCharactorFromSpaceOwner(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"))
                     .AddTo(_compositeDisposable);
@@ -295,7 +295,7 @@ namespace Main.Level
                         CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, LevelOwner.Instance.Player.transform.position)))
                     .Subscribe(_ =>
                     {
-                        if (!LevelOwner.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                        if (!LevelOwner.Instance.MoveCharactorFromSpaceOwner(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                             Debug.LogError("プレイヤー操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -307,7 +307,7 @@ namespace Main.Level
                     .Subscribe(x =>
                     {
                         var top = LevelDesisionIsObjected.IsOnEnemiesAndInfo(x.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                        if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
+                        if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceOwner(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
                             Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -320,7 +320,7 @@ namespace Main.Level
                         if (left != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, left.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, left.transform.position)))
-                            if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
+                            if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceOwner(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -333,7 +333,7 @@ namespace Main.Level
                         if (right != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, right.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, right.transform.position)))
-                            if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
+                            if (!LevelOwner.Instance.MoveRobotEnemyFromSpaceOwner(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -363,7 +363,7 @@ namespace Main.Level
                     .Subscribe(async _ =>
                     {
                         isDead = true;
-                        await LevelOwner.Instance.DeadPlayerFromSpaceManager();
+                        await LevelOwner.Instance.DeadPlayerFromSpaceOwner();
                         SceneOwner.Instance.SetSceneIdUndo();
                         UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                     })
@@ -377,7 +377,7 @@ namespace Main.Level
                     {
                         var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES);
                         if (target != null)
-                            LevelOwner.Instance.DestroyHumanEnemyFromSpaceManager(target);
+                            LevelOwner.Instance.DestroyHumanEnemyFromSpaceOwner(target);
                     })
                     .AddTo(_compositeDisposable);
             }
@@ -964,14 +964,14 @@ namespace Main.Level
                         {
                             foreach (Transform child in group.transform)
                             {
-                                child.GetComponent<MoveCbSmall>().OnAirHoverFromSpaceManager();
+                                child.GetComponent<MoveCbSmall>().OnAirHoverFromSpaceOwner();
                             }
                         }
                         else
                         {
                             foreach (Transform child in group.transform)
                             {
-                                child.GetComponent<MoveCbSmall>().OnFreezeFromSpaceManager();
+                                child.GetComponent<MoveCbSmall>().OnFreezeFromSpaceOwner();
                             }
                         }
                     }

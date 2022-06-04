@@ -62,7 +62,7 @@ namespace Main.Level
         /// 移動中に光をまとわせる
         /// 空間操作からの呼び出し
         /// </summary>
-        public void OnAirHoverFromSpaceManager()
+        public void OnAirHoverFromSpaceOwner()
         {
             // 移動中にパーティクルで枠をつける
             if (!_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].gameObject.activeSelf)
@@ -87,7 +87,7 @@ namespace Main.Level
         /// エフェクトの停止
         /// 空間操作からの呼び出し
         /// </summary>
-        public void OnFreezeFromSpaceManager()
+        public void OnFreezeFromSpaceOwner()
         {
             // 止まった時にエフェクトを止める
             if (_particleSystems[(int)MoveCbSmallEffectIdx.MoveDust].isPlaying)

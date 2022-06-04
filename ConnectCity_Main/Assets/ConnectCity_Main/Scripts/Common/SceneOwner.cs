@@ -205,7 +205,7 @@ namespace Main.Common
                 // コネクトシステムの初期設定
                 LevelOwner.Instance.SpaceOwner.transform.parent = stage.transform;
                 LevelOwner.Instance.SpaceOwner.transform.localPosition = Vector3.zero;
-                if (!LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneInfoManager())
+                if (!LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneOwner())
                     Debug.Log("空間操作開始処理の失敗");
                 if (!LevelOwner.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
                     Debug.Log("レーザー砲起動処理の失敗");
@@ -239,11 +239,11 @@ namespace Main.Common
         /// 疑似スタートイベント発火
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneInfoManager()
+        public bool PlayManualStartFromSceneOwner()
         {
-            if (!UIOwner.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
+            if (!UIOwner.Instance.PlayManualStartFadeScreenFromSceneOwner())
                 Debug.Log("フェード演出開始処理の失敗");
-            if (!LevelOwner.Instance.PlayManualStartFromSceneInfoManager())
+            if (!LevelOwner.Instance.PlayManualStartFromSceneOwner())
                 Debug.Log("LevelOwner開始処理の失敗");
             return true;
         }
@@ -259,13 +259,13 @@ namespace Main.Common
                 Debug.LogError("プレイヤーリセット処理の失敗");
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneInfoManager();
+            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneOwner();
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, LevelOwner.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!LevelOwner.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
                 Debug.Log("レーザー砲終了処理の失敗");
             // ぼろいブロック・天井の監視を終了
-            LevelOwner.Instance.DisposeAllBreakBlooksFromSceneInfoManager();
+            LevelOwner.Instance.DisposeAllBreakBlooksFromSceneOwner();
             stage.SetActive(false);
             return true;
         }

@@ -100,7 +100,7 @@ namespace Main.Common
             this.UpdateAsObservable()
                 .Subscribe(async _ =>
                 {
-                    if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceManager))
+                    if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
                     {
                         // ProjectSettings > Physics > Sleep Threshold（1フレームの待機時間）
                         await Task.Delay(omnibusCallDelayTime);
@@ -142,21 +142,21 @@ namespace Main.Common
 
         /// <summary>
         /// ぼろいブロック・天井の監視の停止
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
-        public void DisposeAllBreakBlooksFromSceneInfoManager()
+        public void DisposeAllBreakBlooksFromSceneOwner()
         {
             breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAllFromLevelOwner();
         }
 
         /// <summary>
         /// カウントダウン表示を更新
-        /// SpaceManagerからの呼び出し
+        /// SpaceOwnerからの呼び出し
         /// </summary>
         /// <param name="count">コネクト回数</param>
         /// <param name="maxCount">クリア条件のコネクト必要回数</param>
         /// <returns>成功／失敗</returns>
-        public bool UpdateCountDownFromSpaceManager(int count, int maxCount)
+        public bool UpdateCountDownFromSpaceOwner(int count, int maxCount)
         {
             return GoalPoint.GetComponent<GoalPoint>().UpdateCountDownFromLevelOwner(count, maxCount);
         }
@@ -164,10 +164,10 @@ namespace Main.Common
         /// <summary>
         /// ドアを開く
         /// ゴール演出のイベント
-        /// SpaceManagerからの呼び出し
+        /// SpaceOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool OpenDoorFromSpaceManager()
+        public bool OpenDoorFromSpaceOwner()
         {
             return GoalPoint.GetComponent<GoalPoint>().OpenDoorFromLevelOwner();
         }
@@ -175,20 +175,20 @@ namespace Main.Common
         /// <summary>
         /// ドアを閉める
         /// ゴール演出のイベント
-        /// SpaceManagerからの呼び出し
+        /// SpaceOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool CloseDoorFromSpaceManager()
+        public bool CloseDoorFromSpaceOwner()
         {
             return GoalPoint.GetComponent<GoalPoint>().CloseDoorFromLevelOwner();
         }
 
         /// <summary>
         /// 疑似スタートを発火させる
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneInfoManager()
+        public bool PlayManualStartFromSceneOwner()
         {
             ManualStart();
             return true;
@@ -200,9 +200,9 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveCharactorFromSpaceManager(Vector3 moveVelocity)
+        public bool MoveCharactorFromSpaceOwner(Vector3 moveVelocity)
         {
-            _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceManager;
+            _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceOwner;
             return Player.GetComponent<PlayerController>().MoveChatactorFromLevelOwner(moveVelocity);
         }
 
@@ -212,7 +212,7 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveRobotEnemyFromSpaceManager(Vector3 moveVelocity, GameObject hitObject)
+        public bool MoveRobotEnemyFromSpaceOwner(Vector3 moveVelocity, GameObject hitObject)
         {
             return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemyFromLevelOwner(moveVelocity);
         }
@@ -226,7 +226,7 @@ namespace Main.Common
         public bool MoveCharactorFromGravityController(Vector3 moveVelocity)
         {
             // 空間操作による呼び出しがあるなら実行しない
-            if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceManager))
+            if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
                 return true;
 
             _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
@@ -238,7 +238,7 @@ namespace Main.Common
         /// コネクトシステム処理からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromSpaceManager()
+        public async Task<bool> DeadPlayerFromSpaceOwner()
         {
             return await Player.GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
@@ -259,7 +259,7 @@ namespace Main.Common
         /// </summary>
         /// <param name="banFlag">操作禁止フラグ</param>
         /// <returns>成功／失敗</returns>
-        public bool SetBanPlayerFromSpaceManager(bool banFlag)
+        public bool SetBanPlayerFromSpaceOwner(bool banFlag)
         {
             return SetBanPlayerFromLevelOwner(banFlag);
         }
@@ -308,7 +308,7 @@ namespace Main.Common
         /// コネクトシステム処理からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DestroyHumanEnemyFromSpaceManager(GameObject hitObject)
+        public bool DestroyHumanEnemyFromSpaceOwner(GameObject hitObject)
         {
             return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromLevelOwner();
         }
@@ -320,6 +320,6 @@ namespace Main.Common
 public enum OmnibusCallCode
 {
     None,
-    MoveCharactorFromSpaceManager,
+    MoveCharactorFromSpaceOwner,
     MoveCharactorFromGravityController
 }

@@ -38,7 +38,7 @@ namespace Main.UI
                 {
                     UIOwner.Instance.enabled = true;
                     // スタート演出の中でプレイヤーを有効にする
-                    if (!UIOwner.Instance.PlayStartCutsceneFromSceneInfoManager())
+                    if (!UIOwner.Instance.PlayStartCutsceneFromSceneOwner())
                         Debug.LogError("スタート演出の失敗");
                 });
         }
@@ -69,7 +69,7 @@ namespace Main.UI
                             SceneOwner.Instance.UpdateScenesMap(SceneOwner.Instance.LoadSceneId);
                             if (!SceneOwner.Instance.StartStage())
                                 Debug.LogError("ステージ開始処理の失敗");
-                            if (!SceneOwner.Instance.PlayManualStartFromSceneInfoManager())
+                            if (!SceneOwner.Instance.PlayManualStartFromSceneOwner())
                                 Debug.LogError("疑似スタートイベント発火処理の失敗");
                             if (Time.timeScale == 0f)
                                 Time.timeScale = 1f;

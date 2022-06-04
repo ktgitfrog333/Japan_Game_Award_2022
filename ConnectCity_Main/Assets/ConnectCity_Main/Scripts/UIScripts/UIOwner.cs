@@ -132,8 +132,8 @@ namespace Main.UI
         public async void CloseManual()
         {
             await Task.Delay(500);
-            GameManualScrollViewResetFromUIManager();
-            GameManualScrollViewSetActiveFromUIManager(false);
+            GameManualScrollViewResetFromUIOwner();
+            GameManualScrollViewSetActiveFromUIOwner(false);
             if (Time.timeScale == 0f)
                 Time.timeScale = 1f;
         }
@@ -142,7 +142,7 @@ namespace Main.UI
         /// 遊び方の確認を有効にする
         /// </summary>
         /// <param name="active">有効／無効</param>
-        public void GameManualScrollViewSetActiveFromUIManager(bool active)
+        public void GameManualScrollViewSetActiveFromUIOwner(bool active)
         {
             CloseSpaceScreen();
             // 遊び方表が開いている間はプレイヤーの操作を禁止する
@@ -154,7 +154,7 @@ namespace Main.UI
         /// 遊び方の確認を選択した際に表示される
         /// 1ページ目にリセット
         /// </summary>
-        public void GameManualScrollViewResetFromUIManager()
+        public void GameManualScrollViewResetFromUIOwner()
         {
             gameManualScrollView.GetComponent<GameManualScrollView>().ResetPage();
         }
@@ -163,7 +163,7 @@ namespace Main.UI
         /// 遊び方の確認を選択した際に表示される
         /// 1ページ目にリセット
         /// </summary>
-        public void GameManualScrollViewScrollPageFromUIManager(int pageIndex)
+        public void GameManualScrollViewScrollPageFromUIOwner(int pageIndex)
         {
             gameManualScrollView.GetComponent<GameManualScrollView>().ScrollPage(pageIndex);
         }
@@ -222,7 +222,7 @@ namespace Main.UI
         /// フェード演出UIのスタートイベント内の処理を疑似発火
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFadeScreenFromSceneInfoManager()
+        public bool PlayManualStartFadeScreenFromSceneOwner()
         {
             fadeScreen.GetComponent<FadeScreen>().ManualStart();
             return true;
@@ -230,10 +230,10 @@ namespace Main.UI
 
         /// <summary>
         /// スタート演出の再生（ロング版／ショート版有り）
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayStartCutsceneFromSceneInfoManager()
+        public bool PlayStartCutsceneFromSceneOwner()
         {
             startCutscene.GetComponent<StartCutscene>().Initialize();
             return true;
