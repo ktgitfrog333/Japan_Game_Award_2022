@@ -33,20 +33,36 @@ namespace Main.Common
         private static readonly string OBJECT_NAME_SKYBOXSET = "SkyBoxSet";
         /// <summary>カメラのローカル位置</summary>
         [SerializeField] private Vector3[] cameraTransformLocalPoses;
+        /// <summary>カメラのローカル位置</summary>
+        public Vector3[] CameraTransformLocalPoses => cameraTransformLocalPoses;
         /// <summary>カメラのローカル角度</summary>
         [SerializeField] private Vector3[] cameraTransformLocalAngles;
+        /// <summary>カメラのローカル角度</summary>
+        public Vector3[] CameraTransformLocalAngles => cameraTransformLocalAngles;
         /// <summary>カメラのローカルスケール</summary>
         [SerializeField] private Vector3[] cameraTransformLocalScales;
+        /// <summary>カメラのローカルスケール</summary>
+        public Vector3[] CameraTransformLocalScales => cameraTransformLocalScales;
         /// <summary>カメラの視界範囲</summary>
         [SerializeField] private float[] fieldOfViews;
+        /// <summary>カメラの視界範囲</summary>
+        public float[] FieldOfViews => fieldOfViews;
         /// <summary>BGMを鳴らす番号</summary>
         [SerializeField] private ClipToPlayBGM[] playBgmNames;
+        /// <summary>BGMを鳴らす番号</summary>
+        public ClipToPlayBGM[] PlayBgmNames => playBgmNames;
         /// <summary>最終ステージか否か</summary>
         [SerializeField] private bool[] finalStages;
+        /// <summary>最終ステージか否か</summary>
+        public bool[] FinalStages => finalStages;
         /// <summary>ステージごとのSkybox</summary>
         [SerializeField] private RenderSettingsSkybox[] skyboxs;
+        /// <summary>ステージごとのSkybox</summary>
+        public RenderSettingsSkybox[] Skyboxs => skyboxs;
         /// <summary>ゴールポイント解放となるコネクト回数</summary>
         [SerializeField] private int[] clearConnectedCounters;
+        /// <summary>ゴールポイント解放となるコネクト回数</summary>
+        public int[] ClearConnectedCounters => clearConnectedCounters;
         /// <summary>ゴールポイント解放となるコネクト回数</summary>
         public int ClearConnectedCounter { get; set; }
         /// <summary>最大ステージ数</summary>
