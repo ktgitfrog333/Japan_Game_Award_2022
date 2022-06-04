@@ -79,13 +79,13 @@ namespace Main.Common
         private void Reset()
         {
             if (player == null || player.Length == 0)
-                player = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneInfoManager", TAG_NAME_PLAYER, true);
+                player = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneOwner", TAG_NAME_PLAYER, true);
             if (spaceOwner == null)
                 spaceOwner = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
             if (mainCamera == null)
                 mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             if (goalPoint == null || goalPoint.Length == 0)
-                goalPoint = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneInfoManager", TAG_NAME_GOALPOINT, true);
+                goalPoint = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneOwner", TAG_NAME_GOALPOINT, true);
             if (breakBlookOwner == null)
                 breakBlookOwner = GameObject.Find("BreakBlookOwner");
             if (robotEnemiesOwner == null)

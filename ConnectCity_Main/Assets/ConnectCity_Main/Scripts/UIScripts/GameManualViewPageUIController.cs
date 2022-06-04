@@ -94,8 +94,6 @@ namespace Main.UI
         {
             button.OnSelectAsObservable()
                 .Subscribe(_ => Selected());
-            //button.OnSubmitAsObservable()
-            //    .Subscribe(_ => Submited());
             button.OnCancelAsObservable()
                 .Subscribe(_ => Canceled());
         }
@@ -110,20 +108,6 @@ namespace Main.UI
             _selectSEMute = false;
             UIOwner.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
         }
-
-        ///// <summary>
-        ///// 選択項目の決定時に呼び出すメソッド
-        ///// </summary>
-        //public void Submited()
-        //{
-        //    if (!_menuClose)
-        //    {
-        //        _menuClose = true;
-        //        SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-        //        UIManager.Instance.CloseManual();
-        //        button.enabled = false;
-        //    }
-        //}
 
         public void Canceled()
         {
