@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5552559685150214613}
   - component: {fileID: 5552559685150214610}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: UIOwner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5552559685150214611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09564e9913fca784cb7bd74705f40d59, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ccdd9271efa2334ba5b40ecd0c815de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spaceScreen: {fileID: 0}
+  fadeScreen: {fileID: 0}
   pauseScreen: {fileID: 0}
+  gameManualScrollView: {fileID: 0}
+  clearScreen: {fileID: 0}
+  shortcuGuideScreen: {fileID: 0}
+  startCutscene: {fileID: 0}
+  endCutscene: {fileID: 0}

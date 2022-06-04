@@ -198,7 +198,7 @@ namespace Main.Common
                 if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan)
                     GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
-                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
+                UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効
                 var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
                 stage.SetActive(true);
@@ -241,7 +241,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool PlayManualStartFromSceneInfoManager()
         {
-            if (!UIManager.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
+            if (!UIOwner.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
                 Debug.Log("フェード演出開始処理の失敗");
             //if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
             //    Debug.Log("空間操作開始処理の失敗");

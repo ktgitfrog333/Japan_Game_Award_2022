@@ -108,7 +108,7 @@ namespace Main.UI
             if (!_selectSEMute)
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
             _selectSEMute = false;
-            UIManager.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
+            UIOwner.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
         }
 
         ///// <summary>
@@ -131,7 +131,7 @@ namespace Main.UI
             {
                 _menuClose = true;
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIManager.Instance.CloseManual();
+                UIOwner.Instance.CloseManual();
                 button.enabled = false;
             }
         }

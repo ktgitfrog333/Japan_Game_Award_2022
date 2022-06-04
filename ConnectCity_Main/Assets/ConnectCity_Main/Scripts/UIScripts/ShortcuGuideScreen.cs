@@ -80,7 +80,7 @@ namespace Main.Level
                             {
                                 SfxPlay.Instance.PlaySFX(retrySEPattern);
                                 SceneOwner.Instance.SetSceneIdUndo();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                                UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
@@ -92,7 +92,7 @@ namespace Main.Level
                             {
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                                 SceneOwner.Instance.SetSelectSceneNameIdFromMain_Scene();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                                UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
@@ -103,7 +103,7 @@ namespace Main.Level
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
                                 SfxPlay.Instance.PlaySFX(manualSEPattern);
-                                UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
+                                UIOwner.Instance.GameManualScrollViewSetActiveFromUIManager(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
                             }

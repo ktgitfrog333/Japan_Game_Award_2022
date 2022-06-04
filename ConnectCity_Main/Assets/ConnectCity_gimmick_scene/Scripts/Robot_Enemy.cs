@@ -127,7 +127,7 @@ namespace Gimmick
                     _isDead = true;
                     await GameManager.Instance.DeadPlayerFromRobotEnemies();
                     SceneOwner.Instance.SetSceneIdUndo();
-                    UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                 });
         }
 

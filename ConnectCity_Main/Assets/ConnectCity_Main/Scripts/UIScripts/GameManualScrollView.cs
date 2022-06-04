@@ -57,7 +57,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                    UIManager.Instance.CloseManual();
+                    UIOwner.Instance.CloseManual();
                 });
         }
 

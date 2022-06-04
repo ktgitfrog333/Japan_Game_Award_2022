@@ -28,7 +28,7 @@ namespace Main.Level
                 .Subscribe(_ => {
                     SfxPlay.Instance.PlaySFX(fallSEPattern);
                     SceneOwner.Instance.SetSceneIdUndo();
-                    UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                 });
         }
     }

@@ -365,7 +365,7 @@ namespace Main.Level
                         isDead = true;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
                         SceneOwner.Instance.SetSceneIdUndo();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                     })
                     .AddTo(_compositeDisposable);
                 // 敵との衝突

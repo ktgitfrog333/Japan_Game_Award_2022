@@ -98,7 +98,7 @@ namespace Main.UI
             {
                 _menuClose = true;
                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIManager.Instance.CloseMenu();
+                UIOwner.Instance.CloseMenu();
                 button.enabled = false;
             }
         }

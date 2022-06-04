@@ -182,14 +182,14 @@ namespace Main.Level
                 // 空間操作を禁止
                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                 // ショートカット入力を禁止
-                UIManager.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
-                var complete = UIManager.Instance.PlayEndCutsceneFromGoalPoint();
+                UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
+                var complete = UIOwner.Instance.PlayEndCutsceneFromGoalPoint();
                 complete.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
                     .Subscribe(_ =>
                     {
                         SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
-                        UIManager.Instance.OpenClearScreen();
+                        UIOwner.Instance.OpenClearScreen();
                     });
 
                 return true;

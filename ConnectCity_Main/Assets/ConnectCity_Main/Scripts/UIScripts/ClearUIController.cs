@@ -125,12 +125,12 @@ namespace Main.UI
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(retrySEPattern);
                         SceneOwner.Instance.SetSceneIdUndo();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         await PlayFlashingMotion();
                         Deselected();
-                        UIManager.Instance.CloseClearScreen();
+                        UIOwner.Instance.CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.SelectAction:
@@ -138,11 +138,11 @@ namespace Main.UI
                     {
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                         SceneOwner.Instance.SetSelectSceneNameIdFromMain_Scene();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
                         _menuClose = true;
                         button.enabled = false;
                         await PlayFlashingMotion();
-                        UIManager.Instance.CloseClearScreen();
+                        UIOwner.Instance.CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.ProceedAction:
@@ -151,11 +151,11 @@ namespace Main.UI
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                         SceneOwner.Instance.SetSceneIdNext();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         await PlayFlashingMotion();
-                        UIManager.Instance.CloseClearScreen();
+                        UIOwner.Instance.CloseClearScreen();
                     }
                     break;
                 default:

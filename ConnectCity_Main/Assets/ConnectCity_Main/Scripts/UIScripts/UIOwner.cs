@@ -16,10 +16,10 @@ namespace Main.UI
     /// <summary>
     /// ポーズ画面などのUIを制御する
     /// </summary>
-    public class UIManager : MonoBehaviour
+    public class UIOwner : MonoBehaviour
     {
-        private static UIManager instance;
-        public static UIManager Instance { get { return instance; } }
+        private static UIOwner instance;
+        public static UIOwner Instance { get { return instance; } }
 
         /// <summary>空間操作可能な境界</summary>
         [SerializeField] private GameObject spaceScreen;

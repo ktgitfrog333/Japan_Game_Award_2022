@@ -129,7 +129,7 @@ namespace Gimmick
         {
             await GameManager.Instance.DeadPlayerFromTurretEnemies();
             SceneOwner.Instance.SetSceneIdUndo();
-            UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+            UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
         }
 
         /// <summary>
