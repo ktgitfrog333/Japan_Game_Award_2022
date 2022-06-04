@@ -180,7 +180,7 @@ namespace Main.Level
                 if (!GameManager.Instance.SetBanPlayerFromGoalPoint(true))
                     Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
                 // 空間操作を禁止
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
                 // ショートカット入力を禁止
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 var complete = UIOwner.Instance.PlayEndCutsceneFromGoalPoint();

@@ -47,9 +47,9 @@ namespace Main.Common
         /// <summary>プレイヤーの初期状態</summary>
         public ObjectsOffset[] PlayerOffsets => _playerOffsets;
         /// <summary>空間操作</summary>
-        [SerializeField] private GameObject spaceManager;
+        [SerializeField] private GameObject spaceOwner;
         /// <summary>空間操作</summary>
-        public GameObject SpaceManager => spaceManager;
+        public GameObject SpaceOwner => spaceOwner;
         /// <summary>カメラ</summary>
         [SerializeField] private GameObject mainCamera;
         /// <summary>カメラ</summary>
@@ -80,8 +80,8 @@ namespace Main.Common
         {
             if (player == null || player.Length == 0)
                 player = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneInfoManager", TAG_NAME_PLAYER, true);
-            if (spaceManager == null)
-                spaceManager = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
+            if (spaceOwner == null)
+                spaceOwner = GameObject.FindGameObjectWithTag(TAG_NAME_SPACEMANAGER);
             if (mainCamera == null)
                 mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             if (goalPoint == null || goalPoint.Length == 0)

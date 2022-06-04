@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{EE075DD3-6D0F-06D8-6FB4-98FB15E38CB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -64,6 +63,7 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneDataReader.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\Select_Comment.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\FadeScreen.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIOwner.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\FadeInOut.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\SelectCanvas.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\SfxPlay.cs" />
@@ -104,10 +104,8 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\BrideScenes_SelectMain.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\SootingMovement.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\LoadNow.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\MoveCbSmall.cs" />
     <Compile Include="Assets\ConnectCity_Main\SciFi_Door\Script\door.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SpaceManager.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\RegistButtonNavi.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\GameManager.cs" />
@@ -120,6 +118,7 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ConnectCountScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SkyBoxSet.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SpaceOwner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

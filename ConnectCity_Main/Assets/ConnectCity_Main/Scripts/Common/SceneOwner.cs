@@ -195,17 +195,17 @@ namespace Main.Common
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
                 // スタート演出の間は空間操作は無効
-                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan)
-                    GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                if (!GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan)
+                    GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効
                 var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
                 stage.SetActive(true);
                 // コネクトシステムの初期設定
-                GameManager.Instance.SpaceManager.transform.parent = stage.transform;
-                GameManager.Instance.SpaceManager.transform.localPosition = Vector3.zero;
-                if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
+                GameManager.Instance.SpaceOwner.transform.parent = stage.transform;
+                GameManager.Instance.SpaceOwner.transform.localPosition = Vector3.zero;
+                if (!GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneInfoManager())
                     Debug.Log("空間操作開始処理の失敗");
                 if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
                     Debug.Log("レーザー砲起動処理の失敗");
@@ -243,8 +243,6 @@ namespace Main.Common
         {
             if (!UIOwner.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
                 Debug.Log("フェード演出開始処理の失敗");
-            //if (!GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().PlayManualStartFromSceneInfoManager())
-            //    Debug.Log("空間操作開始処理の失敗");
             if (!GameManager.Instance.PlayManualStartFromSceneInfoManager())
                 Debug.Log("GameManager開始処理の失敗");
             return true;
@@ -259,9 +257,9 @@ namespace Main.Common
             var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.PlayerOffsets))
                 Debug.LogError("プレイヤーリセット処理の失敗");
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().CubeOffsets))
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().DisposeAllFromSceneInfoManager();
+            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneInfoManager();
             if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.Log("敵オブジェクトリセット処理の失敗");
             if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1696018376661584597}
   - component: {fileID: 1696018376661584598}
   m_Layer: 0
-  m_Name: SpaceManager
+  m_Name: SpaceOwner
   m_TagString: SpaceManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1696018376661584596}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b89589f4fba97448dabca832a45767, type: 3}
+  m_Script: {fileID: 11500000, guid: d041594f9bf693c49ae939abb9c8a85b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveLSpeed: 25
@@ -69,4 +69,3 @@ MonoBehaviour:
   rayDirectionDown: {x: 0, y: -1, z: 0}
   rayMaxDistanceDownLong: 1.6
   deadMagnitude: 0.9
-  connectSEPattern: 19

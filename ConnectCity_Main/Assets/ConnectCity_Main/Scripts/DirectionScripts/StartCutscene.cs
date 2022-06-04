@@ -83,7 +83,7 @@ namespace Main.Direction
                         Destroy(obj);
                     });
                 // 空間操作を許可
-                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
+                GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
                 // ショートカット入力を許可
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
                 if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())
@@ -99,7 +99,7 @@ namespace Main.Direction
         {
             _playable.Stop();
             // 空間操作を許可
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = false;
+            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
             // ショートカット入力を許可
             UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
             if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())

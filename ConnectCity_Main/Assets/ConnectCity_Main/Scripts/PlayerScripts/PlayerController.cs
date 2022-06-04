@@ -253,7 +253,7 @@ namespace Main.Player
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
             SfxPlay.Instance.PlaySFX(_SEDead);
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;
