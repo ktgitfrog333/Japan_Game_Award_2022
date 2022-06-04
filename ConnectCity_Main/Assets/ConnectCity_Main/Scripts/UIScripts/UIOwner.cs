@@ -96,7 +96,7 @@ namespace Main.UI
                     !pauseScreen.activeSelf)
                 .Subscribe(_ =>
                 {
-                    GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = true;
+                    LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = true;
                     pauseScreen.SetActive(true);
                     SfxPlay.Instance.PlaySFX(ClipToPlay.se_play_open_No2);
                 });
@@ -123,7 +123,7 @@ namespace Main.UI
             pauseScreen.SetActive(false);
             if (Time.timeScale == 0f)
                 Time.timeScale = 1f;
-            GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = false;
+            LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = false;
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Main.UI
         {
             CloseSpaceScreen();
             // 遊び方表が開いている間はプレイヤーの操作を禁止する
-            GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = active;
+            LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = active;
             gameManualScrollView.SetActive(active);
         }
 

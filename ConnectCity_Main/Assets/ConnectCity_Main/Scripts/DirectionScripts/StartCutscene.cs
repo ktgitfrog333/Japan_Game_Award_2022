@@ -72,9 +72,9 @@ namespace Main.Direction
                 // コンティニュー
 
                 // プレイヤーを有効
-                GameManager.Instance.Player.SetActive(true);
+                LevelOwner.Instance.Player.SetActive(true);
                 // 拡散パーティクルのみ発生させる
-                var obj = Instantiate(diffusionLargePrefab, GameManager.Instance.Player.transform.position, Quaternion.identity);
+                var obj = Instantiate(diffusionLargePrefab, LevelOwner.Instance.Player.transform.position, Quaternion.identity);
                 var comp = obj.GetComponent<DiffusionLarge>().Completed;
                 comp.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
@@ -83,10 +83,10 @@ namespace Main.Direction
                         Destroy(obj);
                     });
                 // 空間操作を許可
-                GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+                LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
                 // ショートカット入力を許可
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-                if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+                if (!LevelOwner.Instance.DelayInitializeBreakBlocksFromStartCutscene())
                     Debug.Log("ぼろいブロック・天井復活処理の失敗");
             }
         }
@@ -99,10 +99,10 @@ namespace Main.Direction
         {
             _playable.Stop();
             // 空間操作を許可
-            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
             // ショートカット入力を許可
             UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-            if (!GameManager.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+            if (!LevelOwner.Instance.DelayInitializeBreakBlocksFromStartCutscene())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
         }
     }

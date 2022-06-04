@@ -65,7 +65,7 @@ namespace Main.Direction
                         {
                             complated = true;
                             // プレイヤーを有効にする
-                            GameManager.Instance.Player.SetActive(true);
+                            LevelOwner.Instance.Player.SetActive(true);
                             if (!InstanceDiffusion())
                                 Debug.LogError("拡散パーティクル生成の失敗");
                             Destroy(targetTrigger);
@@ -83,7 +83,7 @@ namespace Main.Direction
                         {
                             complated = x;
                             // プレイヤーを有効にする
-                            GameManager.Instance.Player.SetActive(true);
+                            LevelOwner.Instance.Player.SetActive(true);
                             if (!InstanceDiffusion())
                                 Debug.LogError("拡散パーティクル生成の失敗");
                             Destroy(targetTrigger);

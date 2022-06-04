@@ -17,23 +17,23 @@ namespace Main.Common
     /// ゲームオブジェクト間の関数実行の指令はこのオブジェクトを仲介する
     /// T.B.D SFXやPauseScreenなどシングルトンにしてしまっている物はここに集約させる？
     /// </summary>
-    public class GameManager : MonoBehaviour
+    public class LevelOwner : MonoBehaviour
     {
         /// <summary>クラス自身</summary>
-        private static GameManager instance;
+        private static LevelOwner instance;
         /// <summary>シングルトンのインスタンス</summary>
-        public static GameManager Instance
+        public static LevelOwner Instance
         {
             get { return instance; }
         }
         private void Awake()
         {
-            // シングルトンのため複数生成禁止
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            //// シングルトンのため複数生成禁止
+            //if (null != instance)
+            //{
+            //    Destroy(gameObject);
+            //    return;
+            //}
 
             instance = this;
         }
@@ -137,7 +137,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool DelayInitializeBreakBlocksFromStartCutscene()
         {
-            return breakBlookOwner.GetComponent<BreakBlookOwner>().DelayInitializeBreakBlocksFromGameManager();
+            return breakBlookOwner.GetComponent<BreakBlookOwner>().DelayInitializeBreakBlocksFromLevelOwner();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Main.Common
         /// </summary>
         public void DisposeAllBreakBlooksFromSceneInfoManager()
         {
-            breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAllFromGameManager();
+            breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAllFromLevelOwner();
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool UpdateCountDownFromSpaceManager(int count, int maxCount)
         {
-            return GoalPoint.GetComponent<GoalPoint>().UpdateCountDownFromGameManager(count, maxCount);
+            return GoalPoint.GetComponent<GoalPoint>().UpdateCountDownFromLevelOwner(count, maxCount);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool OpenDoorFromSpaceManager()
         {
-            return GoalPoint.GetComponent<GoalPoint>().OpenDoorFromGameManager();
+            return GoalPoint.GetComponent<GoalPoint>().OpenDoorFromLevelOwner();
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool CloseDoorFromSpaceManager()
         {
-            return GoalPoint.GetComponent<GoalPoint>().CloseDoorFromGameManager();
+            return GoalPoint.GetComponent<GoalPoint>().CloseDoorFromLevelOwner();
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Main.Common
         public bool MoveCharactorFromSpaceManager(Vector3 moveVelocity)
         {
             _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceManager;
-            return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveChatactorFromLevelOwner(moveVelocity);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool MoveRobotEnemyFromSpaceManager(Vector3 moveVelocity, GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemyFromGameManager(moveVelocity);
+            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemyFromLevelOwner(moveVelocity);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Main.Common
                 return true;
 
             _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
-            return Player.GetComponent<PlayerController>().MoveChatactorFromGameManager(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveChatactorFromLevelOwner(moveVelocity);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromSpaceManager()
         {
-            return await Player.GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await Player.GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromRobotEnemies()
         {
-            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool SetBanPlayerFromSpaceManager(bool banFlag)
         {
-            return SetBanPlayerFromGameManager(banFlag);
+            return SetBanPlayerFromLevelOwner(banFlag);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace Main.Common
         /// </summary>
         /// <param name="banFlag">操作禁止フラグ</param>
         /// <returns>成功／失敗</returns>
-        private bool SetBanPlayerFromGameManager(bool banFlag)
+        private bool SetBanPlayerFromLevelOwner(bool banFlag)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool SetBanPlayerFromGoalPoint(bool banFlag)
         {
-            return SetBanPlayerFromGameManager(banFlag);
+            return SetBanPlayerFromLevelOwner(banFlag);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromTurretEnemies()
         {
-            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public bool DestroyHumanEnemyFromSpaceManager(GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromGameManager();
+            return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromLevelOwner();
         }
     }
 }

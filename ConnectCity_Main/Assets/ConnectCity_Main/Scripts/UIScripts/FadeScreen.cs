@@ -32,7 +32,7 @@ namespace Main.UI
         /// </summary>
         private void DrawLoadNowFadeIn()
         {
-            GameManager.Instance.Player.SetActive(false);
+            LevelOwner.Instance.Player.SetActive(false);
             transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 0f, duration: 1f)
                 .OnComplete(() =>
                 {

@@ -195,37 +195,37 @@ namespace Main.Common
                 if (!skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(skyboxs[_sceneIdCrumb.Current]))
                     Debug.LogError("Skybox設定処理の失敗");
                 // スタート演出の間は空間操作は無効
-                if (!GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan)
-                    GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                if (!LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan)
+                    LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
                 // スタート演出の間はショートカット入力は無効
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 // 読み込むステージのみ有効
                 var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
                 stage.SetActive(true);
                 // コネクトシステムの初期設定
-                GameManager.Instance.SpaceOwner.transform.parent = stage.transform;
-                GameManager.Instance.SpaceOwner.transform.localPosition = Vector3.zero;
-                if (!GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneInfoManager())
+                LevelOwner.Instance.SpaceOwner.transform.parent = stage.transform;
+                LevelOwner.Instance.SpaceOwner.transform.localPosition = Vector3.zero;
+                if (!LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneInfoManager())
                     Debug.Log("空間操作開始処理の失敗");
-                if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
+                if (!LevelOwner.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
                     Debug.Log("レーザー砲起動処理の失敗");
-                if (!GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
+                if (!LevelOwner.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
                     Debug.Log("敵起動処理の失敗");
-                if (!GameManager.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
+                if (!LevelOwner.Instance.BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
                     Debug.Log("ぼろいブロック・天井復活処理の失敗");
                 // カメラの初期設定
-                GameManager.Instance.MainCamera.transform.parent = stage.transform;
-                GameManager.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
-                GameManager.Instance.MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
-                GameManager.Instance.MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
-                GameManager.Instance.MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
+                LevelOwner.Instance.MainCamera.transform.parent = stage.transform;
+                LevelOwner.Instance.MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
+                LevelOwner.Instance.MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
+                LevelOwner.Instance.MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
+                LevelOwner.Instance.MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
                 // BGMの初期設定
                 bgmPlay.GetComponent<BgmPlay>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
                 // 最終ステージか否かの判断（クリア画面のUIに影響）
                 FinalStage = finalStages[_sceneIdCrumb.Current];
                 // コネクト回数
                 ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
-                if (!GameManager.Instance.InitializeGoalPoint())
+                if (!LevelOwner.Instance.InitializeGoalPoint())
                     Debug.LogError("ゴールポイント初期化の失敗");
                 return true;
             }
@@ -243,8 +243,8 @@ namespace Main.Common
         {
             if (!UIOwner.Instance.PlayManualStartFadeScreenFromSceneInfoManager())
                 Debug.Log("フェード演出開始処理の失敗");
-            if (!GameManager.Instance.PlayManualStartFromSceneInfoManager())
-                Debug.Log("GameManager開始処理の失敗");
+            if (!LevelOwner.Instance.PlayManualStartFromSceneInfoManager())
+                Debug.Log("LevelOwner開始処理の失敗");
             return true;
         }
 
@@ -255,17 +255,17 @@ namespace Main.Common
         {
             // 該当ステージプレハブ内の情報をリセットする
             var stage = levelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.PlayerOffsets))
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, LevelOwner.Instance.PlayerOffsets))
                 Debug.LogError("プレイヤーリセット処理の失敗");
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))
                 Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneInfoManager();
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
+            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneInfoManager();
+            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, LevelOwner.Instance.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                 Debug.Log("敵オブジェクトリセット処理の失敗");
-            if (!GameManager.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
+            if (!LevelOwner.Instance.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
                 Debug.Log("レーザー砲終了処理の失敗");
             // ぼろいブロック・天井の監視を終了
-            GameManager.Instance.DisposeAllBreakBlooksFromSceneInfoManager();
+            LevelOwner.Instance.DisposeAllBreakBlooksFromSceneInfoManager();
             stage.SetActive(false);
             return true;
         }

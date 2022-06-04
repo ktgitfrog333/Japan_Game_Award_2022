@@ -41,7 +41,7 @@ namespace Main.Level
                     // コネクト回数カウントダウンUIを生成
                     screen = Instantiate(connectCountScreenPrefab);
                 }
-                screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.MainCamera.GetComponent<Camera>());
+                screen.GetComponent<ConnectCountScreen>().Initialize(transform, LevelOwner.Instance.MainCamera.GetComponent<Camera>());
                 _connectCountScreen = screen;
             }
 
@@ -62,12 +62,12 @@ namespace Main.Level
 
         /// <summary>
         /// カウントダウン表示を更新
-        /// GameManagerからの呼び出し
+        /// LevelOwnerからの呼び出し
         /// </summary>
         /// <param name="count">コネクト回数</param>
         /// <param name="maxCount">クリア条件のコネクト必要回数</param>
         /// <returns>成功／失敗</returns>
-        public bool UpdateCountDownFromGameManager(int count, int maxCount)
+        public bool UpdateCountDownFromLevelOwner(int count, int maxCount)
         {
             return UpdateCountDown(count, maxCount);
         }
@@ -98,10 +98,10 @@ namespace Main.Level
         /// <summary>
         /// ドアを開く
         /// ゴール演出のイベント
-        /// GameManagerからの呼び出し
+        /// LevelOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool OpenDoorFromGameManager()
+        public bool OpenDoorFromLevelOwner()
         {
             return OpenDoor();
         }
@@ -142,10 +142,10 @@ namespace Main.Level
 
         /// <summary>
         /// ドアを閉じる
-        /// GameManagerからの呼び出し
+        /// LevelOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool CloseDoorFromGameManager()
+        public bool CloseDoorFromLevelOwner()
         {
             return CloseDoor();
         }
@@ -177,10 +177,10 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
-                if (!GameManager.Instance.SetBanPlayerFromGoalPoint(true))
+                if (!LevelOwner.Instance.SetBanPlayerFromGoalPoint(true))
                     Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
                 // 空間操作を禁止
-                GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
                 // ショートカット入力を禁止
                 UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 var complete = UIOwner.Instance.PlayEndCutsceneFromGoalPoint();

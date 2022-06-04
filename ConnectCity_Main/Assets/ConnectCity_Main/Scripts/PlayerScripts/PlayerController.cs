@@ -228,7 +228,7 @@ namespace Main.Player
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactorFromGameManager(Vector3 moveVelocity)
+        public bool MoveChatactorFromLevelOwner(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -240,7 +240,7 @@ namespace Main.Player
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromGameManager()
+        public async Task<bool> DeadPlayerFromLevelOwner()
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)
@@ -253,7 +253,7 @@ namespace Main.Player
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
             SfxPlay.Instance.PlaySFX(_SEDead);
-            GameManager.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;
