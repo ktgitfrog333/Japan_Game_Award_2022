@@ -9,12 +9,12 @@ namespace Main.Common
     /// <summary>
     /// シーンデータの書き込みとファイル出力
     /// </summary>
-    [RequireComponent(typeof(SceneInfoManager))]
+    [RequireComponent(typeof(SceneOwner))]
     public class SceneDataWritter : MonoBehaviour
     {
         private void Reset()
         {
-            var sceneInfoManager = GetComponent<SceneInfoManager>();
+            var sceneInfoManager = GetComponent<SceneOwner>();
             if (!DeleteConfiguration())
                 Debug.Log("削除失敗");
             if (!SaveSceneConfiguration(sceneInfoManager))
@@ -45,7 +45,7 @@ namespace Main.Common
         /// 設定の保存
         /// </summary>
         /// <returns></returns>
-        private bool SaveSceneConfiguration(SceneInfoManager sceneInfoManager)
+        private bool SaveSceneConfiguration(SceneOwner sceneInfoManager)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Main.Common
         /// </summary>
         /// <param name="index">行番号</param>
         /// <returns>一行分のレコード</returns>
-        private string[] GetRecord(int index, SceneInfoManager sceneInfoManager)
+        private string[] GetRecord(int index, SceneOwner sceneInfoManager)
         {
             var scene = new List<string>();
             scene.Add(ConvStringOfVector3(sceneInfoManager.CameraTransformLocalPoses[index]));

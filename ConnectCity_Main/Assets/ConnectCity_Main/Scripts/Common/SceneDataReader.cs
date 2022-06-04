@@ -8,16 +8,16 @@ namespace Main.Common
     /// <summary>
     /// シーンデータの読み込みとオブジェクトへ反映
     /// </summary>
-    [RequireComponent(typeof(SceneInfoManager))]
+    [RequireComponent(typeof(SceneOwner))]
     public class SceneDataReader : MonoBehaviour
     {
         private void Reset()
         {
-            if (!LoadSceneConfiguration(GetComponent<SceneInfoManager>()))
+            if (!LoadSceneConfiguration(GetComponent<SceneOwner>()))
                 Debug.Log("読み込みエラー");
         }
 
-        private bool LoadSceneConfiguration(SceneInfoManager sceneInfoManager)
+        private bool LoadSceneConfiguration(SceneOwner sceneInfoManager)
         {
             try
             {

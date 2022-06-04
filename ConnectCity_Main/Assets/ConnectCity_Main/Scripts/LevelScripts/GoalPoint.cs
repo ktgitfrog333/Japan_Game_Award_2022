@@ -45,9 +45,9 @@ namespace Main.Level
                 _connectCountScreen = screen;
             }
 
-            if (!UpdateCountDown(0, SceneInfoManager.Instance.ClearConnectedCounter))
+            if (!UpdateCountDown(0, SceneOwner.Instance.ClearConnectedCounter))
                 Debug.LogError("カウンター初期値セットの失敗");
-            if (SceneInfoManager.Instance.ClearConnectedCounter == 0)
+            if (SceneOwner.Instance.ClearConnectedCounter == 0)
             {
                 if (!OpenDoor())
                     Debug.LogError("ドアを開ける処理の失敗");

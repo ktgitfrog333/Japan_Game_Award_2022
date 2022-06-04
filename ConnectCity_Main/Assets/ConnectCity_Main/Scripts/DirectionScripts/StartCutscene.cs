@@ -54,13 +54,13 @@ namespace Main.Direction
                 // ステージ新規読み込み
 
                 // ステージ情報読み込み
-                var stage = SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current).gameObject;
+                var stage = SceneOwner.Instance.LevelDesign.transform.GetChild(SceneOwner.Instance.SceneIdCrumb.Current).gameObject;
                 sootingMovement.transform.parent = stage.transform;
                 sootingMovement.transform.localPosition = sootingMovementLocalPosition;
 
                 // ステージテキストを変更
                 var title = new StringBuilder().Append("ステージ")
-                    .Append(SceneInfoManager.Instance.SceneIdCrumb.Current + 1);
+                    .Append(SceneOwner.Instance.SceneIdCrumb.Current + 1);
                 cutSceneScreen.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = title.ToString();
 
                 // プレイエイブル再生（再生終了のタイミングでプレイヤーを有効）

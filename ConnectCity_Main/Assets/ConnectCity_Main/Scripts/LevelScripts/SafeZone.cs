@@ -27,7 +27,7 @@ namespace Main.Level
                 .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                 .Subscribe(_ => {
                     SfxPlay.Instance.PlaySFX(fallSEPattern);
-                    SceneInfoManager.Instance.SetSceneIdUndo();
+                    SceneOwner.Instance.SetSceneIdUndo();
                     UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                 });
         }

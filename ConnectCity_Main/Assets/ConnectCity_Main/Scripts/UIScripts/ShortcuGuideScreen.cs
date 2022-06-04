@@ -79,7 +79,7 @@ namespace Main.Level
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
                                 SfxPlay.Instance.PlaySFX(retrySEPattern);
-                                SceneInfoManager.Instance.SetSceneIdUndo();
+                                SceneOwner.Instance.SetSceneIdUndo();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;
@@ -91,7 +91,7 @@ namespace Main.Level
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.SelectAction, x, selectPushTimeLimit))
                             {
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                                SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
+                                SceneOwner.Instance.SetSelectSceneNameIdFromMain_Scene();
                                 UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
                                 x = 0f;

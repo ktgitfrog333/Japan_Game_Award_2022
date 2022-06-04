@@ -46,7 +46,7 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        if (!SceneInfoManager.Instance.FinalStage)
+                        if (!SceneOwner.Instance.FinalStage)
                         {
                             n.mode = Navigation.Mode.Explicit;
                             n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
@@ -65,7 +65,7 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        if (!SceneInfoManager.Instance.FinalStage)
+                        if (!SceneOwner.Instance.FinalStage)
                         {
                             n.mode = Navigation.Mode.Explicit;
                             n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
@@ -124,7 +124,7 @@ namespace Main.UI
                     {
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(retrySEPattern);
-                        SceneInfoManager.Instance.SetSceneIdUndo();
+                        SceneOwner.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
@@ -137,7 +137,7 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
+                        SceneOwner.Instance.SetSelectSceneNameIdFromMain_Scene();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                         _menuClose = true;
                         button.enabled = false;
@@ -150,7 +150,7 @@ namespace Main.UI
                     {
                         _menuClose = true;
                         SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.SetSceneIdNext();
+                        SceneOwner.Instance.SetSceneIdNext();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;

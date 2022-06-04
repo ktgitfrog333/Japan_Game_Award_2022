@@ -53,7 +53,7 @@ namespace Main.UI
                 .OnComplete(() =>
                 {
                     // ロード処理の終了通知を受け取ったら一時停止を解除
-                    switch (SceneInfoManager.Instance.PlayLoadScene())
+                    switch (SceneOwner.Instance.PlayLoadScene())
                     {
                         case SceneLoadType.SceneLoad:
                             if (Time.timeScale == 0f)
@@ -64,12 +64,12 @@ namespace Main.UI
                             if (!UIManager.Instance.DestroyParticleFromFadeScreen())
                                 Debug.LogError("ゴール演出の後処理の失敗");
                             // 同じステージをリロードする場合はスタート演出を短くする
-                            if (!UIManager.Instance.SetStartCutsceneContinueFromFadeScreen(SceneInfoManager.Instance.LoadSceneId == SceneInfoManager.Instance.SceneIdCrumb.Current))
+                            if (!UIManager.Instance.SetStartCutsceneContinueFromFadeScreen(SceneOwner.Instance.LoadSceneId == SceneOwner.Instance.SceneIdCrumb.Current))
                                 Debug.LogError("リスタートフラグセットの失敗");
-                            SceneInfoManager.Instance.UpdateScenesMap(SceneInfoManager.Instance.LoadSceneId);
-                            if (!SceneInfoManager.Instance.StartStage())
+                            SceneOwner.Instance.UpdateScenesMap(SceneOwner.Instance.LoadSceneId);
+                            if (!SceneOwner.Instance.StartStage())
                                 Debug.LogError("ステージ開始処理の失敗");
-                            if (!SceneInfoManager.Instance.PlayManualStartFromSceneInfoManager())
+                            if (!SceneOwner.Instance.PlayManualStartFromSceneInfoManager())
                                 Debug.LogError("疑似スタートイベント発火処理の失敗");
                             if (Time.timeScale == 0f)
                                 Time.timeScale = 1f;

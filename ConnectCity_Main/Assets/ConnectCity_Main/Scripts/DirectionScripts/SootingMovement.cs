@@ -24,7 +24,7 @@ namespace Main.Direction
         [SerializeField] private GameObject[] playerPositions;
 
         /// <summary>追尾対象</summary>
-        public Transform Target => playerPositions[SceneInfoManager.Instance.SceneIdCrumb.Current].transform;
+        public Transform Target => playerPositions[SceneOwner.Instance.SceneIdCrumb.Current].transform;
 
         /// <summary>
         /// 流星のような挙動の再生

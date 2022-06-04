@@ -47,8 +47,6 @@ namespace Main.UI
         public GameObject ShortcuGuideScreen => shortcuGuideScreen;
         /// <summary>ショートカット入力</summary>
         private static readonly string OBJECT_NAME_SHORTCUGUIDESCREEN = "ShortcuGuideScreen";
-        /// <summary>遊び方の確認のSEパターン</summary>
-        [SerializeField] private ClipToPlay manualSEPattern = ClipToPlay.se_play_open_No2;
         /// <summary>スタート演出</summary>
         [SerializeField] private GameObject startCutscene;
         /// <summary>スタート演出のオブジェクト名</summary>
@@ -100,7 +98,7 @@ namespace Main.UI
                 {
                     GameManager.Instance.Player.GetComponent<PlayerController>().InputBan = true;
                     pauseScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(manualSEPattern);
+                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_play_open_No2);
                 });
             // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
             this.UpdateAsObservable()
@@ -112,7 +110,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     spaceScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(manualSEPattern);
+                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_play_open_No2);
                 });
         }
 
@@ -185,7 +183,7 @@ namespace Main.UI
             // 子オブジェクトは一度非表示にする
             for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
             {
-                if (i == 1 && SceneInfoManager.Instance.FinalStage)
+                if (i == 1 && SceneOwner.Instance.FinalStage)
                     continue;
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
             }

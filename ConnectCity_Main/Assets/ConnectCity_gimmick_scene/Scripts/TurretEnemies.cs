@@ -128,7 +128,7 @@ namespace Gimmick
         private async void DeadPlayer()
         {
             await GameManager.Instance.DeadPlayerFromTurretEnemies();
-            SceneInfoManager.Instance.SetSceneIdUndo();
+            SceneOwner.Instance.SetSceneIdUndo();
             UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
         }
 

@@ -110,16 +110,16 @@ namespace Main.Level
             connectSuccess.ObserveEveryValueChanged(x => x.Value)
                 .Do(x =>
                 {
-                    if (!_inputBan && 0 < x && !GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
+                    if (!_inputBan && 0 < x && !GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneOwner.Instance.ClearConnectedCounter))
                         Debug.LogError("カウントダウン更新処理の失敗");
                 })
-                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
+                .Where(x => SceneOwner.Instance.ClearConnectedCounter == x)
                 .Subscribe(_ =>
                 {
                     if (!GameManager.Instance.OpenDoorFromSpaceManager())
                         Debug.LogError("ゴール演出の失敗");
                 });
-            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current), connectSuccess);
+            _moveCubes = SetCollsion(_moveCubes, SceneOwner.Instance.LevelDesign.transform.GetChild(SceneOwner.Instance.SceneIdCrumb.Current), connectSuccess);
             if (_moveCubes == null)
                 throw new System.Exception("オブジェクト取得の失敗");
             // 速度の初期値
@@ -364,7 +364,7 @@ namespace Main.Level
                     {
                         isDead = true;
                         await GameManager.Instance.DeadPlayerFromSpaceManager();
-                        SceneInfoManager.Instance.SetSceneIdUndo();
+                        SceneOwner.Instance.SetSceneIdUndo();
                         UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
                     })
                     .AddTo(_compositeDisposable);

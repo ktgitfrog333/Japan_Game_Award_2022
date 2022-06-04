@@ -27,7 +27,7 @@ namespace Main.UI
         protected override void OnEnable()
         {
             Time.timeScale = 0f;
-            if (SceneInfoManager.Instance.FinalStage)
+            if (SceneOwner.Instance.FinalStage)
             {
                 transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>().text = gameAllClearText;
                 // 最終ステージの場合もう一度遊ぶを一番上にする

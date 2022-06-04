@@ -41,7 +41,7 @@ namespace Main.Common
         /// <summary>プレイヤーのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] player;
         /// <summary>プレイヤーのゲームオブジェクト</summary>
-        public GameObject Player => player[SceneInfoManager.Instance.SceneIdCrumb.Current];
+        public GameObject Player => player[SceneOwner.Instance.SceneIdCrumb.Current];
         /// <summary>プレイヤーの初期状態</summary>
         private ObjectsOffset[] _playerOffsets;
         /// <summary>プレイヤーの初期状態</summary>
@@ -57,7 +57,7 @@ namespace Main.Common
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
-        public GameObject GoalPoint => goalPoint[SceneInfoManager.Instance.SceneIdCrumb.Current];
+        public GameObject GoalPoint => goalPoint[SceneOwner.Instance.SceneIdCrumb.Current];
         /// <summary>敵ギミックのオーナー</summary>
         [SerializeField] private GameObject robotEnemiesOwner;
         /// <summary>敵ギミックのオーナー</summary>
@@ -250,7 +250,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromRobotEnemies()
         {
-            return await player[SceneInfoManager.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromTurretEnemies()
         {
-            return await player[SceneInfoManager.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
+            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromGameManager();
         }
 
         /// <summary>

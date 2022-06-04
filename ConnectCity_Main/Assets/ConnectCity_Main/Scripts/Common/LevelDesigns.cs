@@ -179,7 +179,7 @@ namespace Main.Common.LevelDesign
                     }
                 }
             }
-            if (errorCheck && gameObjList.Count < GameObject.Find(sceneInfoName).GetComponent<SceneInfoManager>().StageCountMax)
+            if (errorCheck && gameObjList.Count < GameObject.Find(sceneInfoName).GetComponent<SceneOwner>().StageCountMax)
                 Debug.LogError("の数が足りません");
 
             return gameObjList.ToArray();
