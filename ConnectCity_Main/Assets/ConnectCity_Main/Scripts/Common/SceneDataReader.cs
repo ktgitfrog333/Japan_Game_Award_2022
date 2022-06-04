@@ -13,8 +13,8 @@ namespace Main.Common
     {
         private void Reset()
         {
-            //if (!LoadSceneConfiguration(GetComponent<SceneInfoManager>()))
-            //    Debug.Log("読み込みエラー");
+            if (!LoadSceneConfiguration(GetComponent<SceneInfoManager>()))
+                Debug.Log("読み込みエラー");
         }
 
         private bool LoadSceneConfiguration(SceneInfoManager sceneInfoManager)
@@ -33,13 +33,11 @@ namespace Main.Common
 
                 for (var i = 0; i < csvDatas.Count; i++)
                 {
-                    Debug.Log(i);
                     if (i == 0)
                         // タイトル行はスキップ
                         continue;
-                    if (!sceneInfoManager.SetSceneConfig(i, csvDatas[i]))
+                    if (!sceneInfoManager.SetSceneConfig(i - 1, csvDatas[i]))
                         Debug.LogError("シーン設定追加の失敗");
-                    //var data = csvDatas[i];
                 }
                 return true;
             }
