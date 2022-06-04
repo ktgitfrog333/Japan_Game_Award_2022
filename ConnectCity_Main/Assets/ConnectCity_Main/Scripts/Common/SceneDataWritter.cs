@@ -71,14 +71,14 @@ namespace Main.Common
         private string[] GetTitlesRecord()
         {
             var scene = new List<string>();
-            scene.Add("CameraTransformLocalPoses");
-            scene.Add("CameraTransformLocalAngles");
-            scene.Add("CameraTransformLocalScales");
-            scene.Add("Field of Views");
-            scene.Add("PlayBgnNames");
-            scene.Add("FinalStages");
-            scene.Add("Skyboxs");
-            scene.Add("ClearConnectedCounters");
+            scene.Add(SceneConfigColumns.CameraTransformLocalPoses + "");
+            scene.Add(SceneConfigColumns.CameraTransformLocalAngles + "");
+            scene.Add(SceneConfigColumns.CameraTransformLocalScales + "");
+            scene.Add(SceneConfigColumns.FieldOfViews + "");
+            scene.Add(SceneConfigColumns.PlayBgnNames + "");
+            scene.Add(SceneConfigColumns.FinalStages + "");
+            scene.Add(SceneConfigColumns.Skyboxs + "");
+            scene.Add(SceneConfigColumns.ClearConnectedCounters + "");
             return scene.ToArray();
         }
 
@@ -114,5 +114,20 @@ namespace Main.Common
                     .Append(value.z + "f")
                     .ToString();
         }
+    }
+
+    /// <summary>
+    /// 設定ファイルのカラム情報
+    /// </summary>
+    public enum SceneConfigColumns
+    {
+        CameraTransformLocalPoses,
+        CameraTransformLocalAngles,
+        CameraTransformLocalScales,
+        FieldOfViews,
+        PlayBgnNames,
+        FinalStages,
+        Skyboxs,
+        ClearConnectedCounters,
     }
 }

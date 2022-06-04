@@ -116,6 +116,75 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// シーン設定をセット
+        /// </summary>
+        /// <param name="index">シーン番号</param>
+        /// <param name="datas">１ステージのデータ分</param>
+        /// <returns></returns>
+        public bool SetSceneConfig(int index, string[] datas)
+        {
+            try
+            {
+                for (var j = 0; j < datas.Length; j++)
+                {
+                    var child = datas[j];
+                    switch (j)
+                    {
+                        case (int)SceneConfigColumns.CameraTransformLocalPoses:
+                            cameraTransformLocalPoses[index] = ConvVector3OfString(child);
+                            break;
+                        case (int)SceneConfigColumns.CameraTransformLocalAngles:
+                            cameraTransformLocalAngles[index] = ConvVector3OfString(child);
+                            break;
+                        case (int)SceneConfigColumns.CameraTransformLocalScales:
+                            cameraTransformLocalScales[index] = ConvVector3OfString(child);
+                            break;
+                        case (int)SceneConfigColumns.FieldOfViews:
+                            fieldOfViews[index] = float.Parse(child);
+                            break;
+                        case (int)SceneConfigColumns.PlayBgnNames:
+                            playBgmNames[index] = (ClipToPlayBGM)int.Parse(child);
+                            break;
+                        case (int)SceneConfigColumns.FinalStages:
+                            // 0はfalse　1はtrue
+                            finalStages[index] = int.Parse(child) == 1;
+                            break;
+                        case (int)SceneConfigColumns.Skyboxs:
+                            skyboxs[index] = (RenderSettingsSkybox)int.Parse(child);
+                            break;
+                        case (int)SceneConfigColumns.ClearConnectedCounters:
+                            clearConnectedCounters[index] = int.Parse(child);
+                            break;
+                        default:
+                            Debug.LogError("カラム不備");
+                            break;
+                    }
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 文字列をベクターに変換して取得
+        /// fを消して配列に変換
+        /// </summary>
+        /// <param name="value">文字列変換データ</param>
+        /// <returns>3点ベクター</returns>
+        private Vector3 ConvVector3OfString(string value)
+        {
+            if (value.IndexOf("f") < 0)
+                Debug.LogError("フォーマット不正");
+            var array = value.Split('f');
+            if (array.Length != 4)
+                Debug.LogError("フォーマット不正");
+            return new Vector3(float.Parse(array[0]), float.Parse(array[1]), float.Parse(array[2]));
+        }
+
+        /// <summary>
         /// ステージ読み込みの設定
         /// </summary>
         public bool StartStage()
