@@ -54,13 +54,13 @@ namespace Main.Direction
                 // ステージ新規読み込み
 
                 // ステージ情報読み込み
-                var stage = SceneOwner.Instance.LevelDesign.transform.GetChild(SceneOwner.Instance.SceneIdCrumb.Current).gameObject;
+                var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current).gameObject;
                 sootingMovement.transform.parent = stage.transform;
                 sootingMovement.transform.localPosition = sootingMovementLocalPosition;
 
                 // ステージテキストを変更
                 var title = new StringBuilder().Append("ステージ")
-                    .Append(SceneOwner.Instance.SceneIdCrumb.Current + 1);
+                    .Append(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current + 1);
                 cutSceneScreen.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = title.ToString();
 
                 // プレイエイブル再生（再生終了のタイミングでプレイヤーを有効）
@@ -72,9 +72,9 @@ namespace Main.Direction
                 // コンティニュー
 
                 // プレイヤーを有効
-                LevelOwner.Instance.Player.SetActive(true);
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(true);
                 // 拡散パーティクルのみ発生させる
-                var obj = Instantiate(diffusionLargePrefab, LevelOwner.Instance.Player.transform.position, Quaternion.identity);
+                var obj = Instantiate(diffusionLargePrefab, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position, Quaternion.identity);
                 var comp = obj.GetComponent<DiffusionLarge>().Completed;
                 comp.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
@@ -83,10 +83,10 @@ namespace Main.Direction
                         Destroy(obj);
                     });
                 // 空間操作を許可
-                LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
                 // ショートカット入力を許可
-                UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-                if (!LevelOwner.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocksFromStartCutscene())
                     Debug.Log("ぼろいブロック・天井復活処理の失敗");
             }
         }
@@ -99,10 +99,10 @@ namespace Main.Direction
         {
             _playable.Stop();
             // 空間操作を許可
-            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
             // ショートカット入力を許可
-            UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-            if (!LevelOwner.Instance.DelayInitializeBreakBlocksFromStartCutscene())
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocksFromStartCutscene())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
         }
     }

@@ -34,7 +34,7 @@ namespace Main.Direction
         /// </summary>
         public IEnumerator Initialize(System.IObserver<bool> observer)
         {
-            var target = LevelOwner.Instance.GoalPoint.transform;
+            var target = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().GoalPoint.transform;
 
             // カメラをズーム
             // ブラックホールと光が出現
@@ -121,7 +121,7 @@ namespace Main.Direction
         /// <returns>コルーチン</returns>
         private IEnumerator InstanceDiffusion(System.IObserver<bool> observer, Transform target)
         {
-            var player = LevelOwner.Instance.Player;
+            var player = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player;
             player.transform.GetChild(2).gameObject.SetActive(false);
             var obj = Instantiate(diffusionCubesPrefab, player.transform.position, Quaternion.identity);
             SetPool(obj);

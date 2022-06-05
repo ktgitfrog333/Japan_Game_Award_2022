@@ -125,9 +125,9 @@ namespace Gimmick
                 .Subscribe(async _ =>
                 {
                     _isDead = true;
-                    await LevelOwner.Instance.DeadPlayerFromRobotEnemies();
-                    SceneOwner.Instance.SetSceneIdUndo();
-                    UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayerFromRobotEnemies();
+                    GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
         }
 
@@ -167,7 +167,7 @@ namespace Gimmick
             // 圧死時のパーティクル
             Instantiate(diedLight, transform.position, Quaternion.identity);
             // 圧死音SE
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_player_dead);
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_player_dead);
             _characterCtrl.enabled = false;
             transform.localPosition = smashedPosition;
             return true;

@@ -137,7 +137,7 @@ namespace Main.Player
                 .Subscribe(_ =>
                 {
                     moveVelocity.y = jumpSpeed;
-                    SfxPlay.Instance.PlaySFX(_SEJump);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEJump);
                     if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
                         _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
                     _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
@@ -252,8 +252,8 @@ namespace Main.Player
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
-            SfxPlay.Instance.PlaySFX(_SEDead);
-            LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEDead);
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;

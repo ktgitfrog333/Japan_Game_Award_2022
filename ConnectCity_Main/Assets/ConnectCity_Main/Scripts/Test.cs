@@ -14,7 +14,7 @@ public class Test : MonoBehaviour
     private void Start()
     {
         //Debug.Log(BrideScenes_SelectMain.Instance.LoadSceneId);
-        SceneOwner.Instance.UpdateScenesMap(updateScenesMap);
+        GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().UpdateScenesMap(updateScenesMap);
     }
 
     private void Update()

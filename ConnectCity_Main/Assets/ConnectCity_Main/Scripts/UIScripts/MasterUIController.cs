@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -84,7 +85,7 @@ namespace Main.UI
             _common.SelectContent();
             if (frame != null)
                 frame.SetActive(true);
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_select);
         }
 
         /// <summary>

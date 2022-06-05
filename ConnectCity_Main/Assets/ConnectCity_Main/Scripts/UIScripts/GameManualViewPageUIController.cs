@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -104,9 +105,9 @@ namespace Main.UI
         public void Selected()
         {
             if (!_selectSEMute)
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_select);
             _selectSEMute = false;
-            UIOwner.Instance.GameManualScrollViewScrollPageFromUIOwner(_pageIndex);
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().GameManualScrollViewScrollPageFromUIOwner(_pageIndex);
         }
 
         public void Canceled()
@@ -114,8 +115,8 @@ namespace Main.UI
             if (!_menuClose)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIOwner.Instance.CloseManual();
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseManual();
                 button.enabled = false;
             }
         }

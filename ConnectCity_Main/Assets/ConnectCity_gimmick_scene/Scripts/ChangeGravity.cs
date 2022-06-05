@@ -45,7 +45,7 @@ namespace Gimmick
         /// <returns>成功／失敗</returns>
         private bool MovePlayerFromChangeGravity(Vector3 localGravity)
         {
-            return LevelOwner.Instance.MoveCharactorFromGravityController(localGravity);
+            return GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorFromGravityController(localGravity);
         }
     }
 }

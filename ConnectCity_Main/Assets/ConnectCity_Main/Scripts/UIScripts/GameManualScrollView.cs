@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -56,8 +57,8 @@ namespace Main.UI
                     Input.GetMouseButtonDown(2))
                 .Subscribe(_ =>
                 {
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                    UIOwner.Instance.CloseManual();
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
+                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseManual();
                 });
         }
 

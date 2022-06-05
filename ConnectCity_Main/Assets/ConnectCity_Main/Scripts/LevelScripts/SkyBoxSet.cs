@@ -12,6 +12,11 @@ namespace Main.Level
         /// <summary>ステージごとのSkybox</summary>
         [SerializeField] private Material[] skyboxs;
 
+        /// <summary>
+        /// スカイボックスを設定
+        /// </summary>
+        /// <param name="idx">パターン番号</param>
+        /// <returns></returns>
         public bool SetRenderSkybox(RenderSettingsSkybox idx)
         {
             try

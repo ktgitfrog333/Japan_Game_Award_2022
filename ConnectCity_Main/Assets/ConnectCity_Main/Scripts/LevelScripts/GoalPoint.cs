@@ -41,13 +41,13 @@ namespace Main.Level
                     // コネクト回数カウントダウンUIを生成
                     screen = Instantiate(connectCountScreenPrefab);
                 }
-                screen.GetComponent<ConnectCountScreen>().Initialize(transform, LevelOwner.Instance.MainCamera.GetComponent<Camera>());
+                screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.GetComponent<Camera>());
                 _connectCountScreen = screen;
             }
 
-            if (!UpdateCountDown(0, SceneOwner.Instance.ClearConnectedCounter))
+            if (!UpdateCountDown(0, GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().ClearConnectedCounter))
                 Debug.LogError("カウンター初期値セットの失敗");
-            if (SceneOwner.Instance.ClearConnectedCounter == 0)
+            if (GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().ClearConnectedCounter == 0)
             {
                 if (!OpenDoor())
                     Debug.LogError("ドアを開ける処理の失敗");
@@ -177,19 +177,19 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
-                if (!LevelOwner.Instance.SetBanPlayerFromGoalPoint(true))
+                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetBanPlayerFromGoalPoint(true))
                     Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
                 // 空間操作を禁止
-                LevelOwner.Instance.SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
                 // ショートカット入力を禁止
-                UIOwner.Instance.ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
-                var complete = UIOwner.Instance.PlayEndCutsceneFromGoalPoint();
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
+                var complete = GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayEndCutsceneFromGoalPoint();
                 complete.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
                     .Subscribe(_ =>
                     {
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.me_game_clear);
-                        UIOwner.Instance.OpenClearScreen();
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.me_game_clear);
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().OpenClearScreen();
                     });
 
                 return true;

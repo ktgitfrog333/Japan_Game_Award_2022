@@ -24,7 +24,7 @@ namespace Main.Direction
         [SerializeField] private GameObject[] playerPositions;
 
         /// <summary>追尾対象</summary>
-        public Transform Target => playerPositions[SceneOwner.Instance.SceneIdCrumb.Current].transform;
+        public Transform Target => playerPositions[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].transform;
 
         /// <summary>
         /// 流星のような挙動の再生
@@ -65,7 +65,7 @@ namespace Main.Direction
                         {
                             complated = true;
                             // プレイヤーを有効にする
-                            LevelOwner.Instance.Player.SetActive(true);
+                            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(true);
                             if (!InstanceDiffusion())
                                 Debug.LogError("拡散パーティクル生成の失敗");
                             Destroy(targetTrigger);
@@ -83,7 +83,7 @@ namespace Main.Direction
                         {
                             complated = x;
                             // プレイヤーを有効にする
-                            LevelOwner.Instance.Player.SetActive(true);
+                            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(true);
                             if (!InstanceDiffusion())
                                 Debug.LogError("拡散パーティクル生成の失敗");
                             Destroy(targetTrigger);

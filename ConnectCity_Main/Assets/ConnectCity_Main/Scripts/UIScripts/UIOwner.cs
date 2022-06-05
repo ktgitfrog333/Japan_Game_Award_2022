@@ -18,9 +18,6 @@ namespace Main.UI
     /// </summary>
     public class UIOwner : MonoBehaviour
     {
-        private static UIOwner instance;
-        public static UIOwner Instance { get { return instance; } }
-
         /// <summary>空間操作可能な境界</summary>
         [SerializeField] private GameObject spaceScreen;
         /// <summary>空間操作可能な境界のオブジェクト名</summary>
@@ -76,17 +73,6 @@ namespace Main.UI
                 endCutscene = GameObject.Find(OBJECT_NAME_ENDCUTSCENE);
         }
 
-        private void Awake()
-        {
-            if (null != instance)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-        }
-
         private void Start()
         {
             // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
@@ -96,9 +82,9 @@ namespace Main.UI
                     !pauseScreen.activeSelf)
                 .Subscribe(_ =>
                 {
-                    LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = true;
+                    GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = true;
                     pauseScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_play_open_No2);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
                 });
             // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
             this.UpdateAsObservable()
@@ -110,7 +96,7 @@ namespace Main.UI
                 .Subscribe(_ =>
                 {
                     spaceScreen.SetActive(true);
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_play_open_No2);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
                 });
         }
 
@@ -123,7 +109,7 @@ namespace Main.UI
             pauseScreen.SetActive(false);
             if (Time.timeScale == 0f)
                 Time.timeScale = 1f;
-            LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = false;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = false;
         }
 
         /// <summary>
@@ -146,7 +132,7 @@ namespace Main.UI
         {
             CloseSpaceScreen();
             // 遊び方表が開いている間はプレイヤーの操作を禁止する
-            LevelOwner.Instance.Player.GetComponent<PlayerController>().InputBan = active;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = active;
             gameManualScrollView.SetActive(active);
         }
 
@@ -183,7 +169,7 @@ namespace Main.UI
             // 子オブジェクトは一度非表示にする
             for (int i = 1; i < clearScreen.transform.GetChild(0).childCount; i++)
             {
-                if (i == 1 && SceneOwner.Instance.FinalStage)
+                if (i == 1 && GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().FinalStage)
                     continue;
                 clearScreen.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
             }

@@ -14,34 +14,22 @@ using UniRx.Triggers;
 namespace Main.Common
 {
     /// <summary>
-    /// ゲームオブジェクト間の関数実行の指令はこのオブジェクトを仲介する
-    /// T.B.D SFXやPauseScreenなどシングルトンにしてしまっている物はここに集約させる？
+    /// レベルデザインのオーナー
     /// </summary>
     public class LevelOwner : MonoBehaviour
     {
-        /// <summary>クラス自身</summary>
-        private static LevelOwner instance;
-        /// <summary>シングルトンのインスタンス</summary>
-        public static LevelOwner Instance
-        {
-            get { return instance; }
-        }
-        private void Awake()
-        {
-            //// シングルトンのため複数生成禁止
-            //if (null != instance)
-            //{
-            //    Destroy(gameObject);
-            //    return;
-            //}
-
-            instance = this;
-        }
-
+        /// <summary>レベルデザイン</summary>
+        [SerializeField] private GameObject levelDesign;
+        /// <summary>レベルデザイン</summary>
+        public GameObject LevelDesign => levelDesign;
+        /// <summary>Skyboxの設定</summary>
+        [SerializeField] private GameObject skyBoxSet;
+        /// <summary>Skyboxの設定</summary>
+        public GameObject SkyBoxSet => skyBoxSet;
         /// <summary>プレイヤーのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] player;
         /// <summary>プレイヤーのゲームオブジェクト</summary>
-        public GameObject Player => player[SceneOwner.Instance.SceneIdCrumb.Current];
+        public GameObject Player => player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
         /// <summary>プレイヤーの初期状態</summary>
         private ObjectsOffset[] _playerOffsets;
         /// <summary>プレイヤーの初期状態</summary>
@@ -57,7 +45,7 @@ namespace Main.Common
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
-        public GameObject GoalPoint => goalPoint[SceneOwner.Instance.SceneIdCrumb.Current];
+        public GameObject GoalPoint => goalPoint[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
         /// <summary>敵ギミックのオーナー</summary>
         [SerializeField] private GameObject robotEnemiesOwner;
         /// <summary>敵ギミックのオーナー</summary>
@@ -78,6 +66,10 @@ namespace Main.Common
 
         private void Reset()
         {
+            if (levelDesign == null)
+                levelDesign = GameObject.Find("LevelDesign");
+            if (skyBoxSet == null)
+                skyBoxSet = GameObject.Find("SkyBoxSet");
             if (player == null || player.Length == 0)
                 player = LevelDesisionIsObjected.GetGameObjectsInLevelDesign("LevelDesign", "SceneOwner", TAG_NAME_PLAYER, true);
             if (spaceOwner == null)
@@ -107,6 +99,17 @@ namespace Main.Common
                     }
                     _omnibusCall = OmnibusCallCode.None;
                 });
+        }
+
+        /// <summary>
+        /// スカイボックスを設定
+        /// SceneOwnerからの呼び出し
+        /// </summary>
+        /// <param name="idx">パターン番号</param>
+        /// <returns></returns>
+        public bool SetRenderSkyboxFromSceneOwner(RenderSettingsSkybox idx)
+        {
+            return skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(idx);
         }
 
         /// <summary>
@@ -250,7 +253,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromRobotEnemies()
         {
-            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
+            return await player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
 
         /// <summary>
@@ -300,7 +303,7 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         public async Task<bool> DeadPlayerFromTurretEnemies()
         {
-            return await player[SceneOwner.Instance.SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
+            return await player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
         }
 
         /// <summary>

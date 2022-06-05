@@ -26,9 +26,9 @@ namespace Main.Level
             this.OnTriggerExitAsObservable()
                 .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
                 .Subscribe(_ => {
-                    SfxPlay.Instance.PlaySFX(fallSEPattern);
-                    SceneOwner.Instance.SetSceneIdUndo();
-                    UIOwner.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(fallSEPattern);
+                    GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
         }
     }

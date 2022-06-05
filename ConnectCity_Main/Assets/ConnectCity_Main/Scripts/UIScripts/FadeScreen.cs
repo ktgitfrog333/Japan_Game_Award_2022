@@ -23,7 +23,7 @@ namespace Main.UI
         /// </summary>
         public void ManualStart()
         {
-            UIOwner.Instance.enabled = false;
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().enabled = false;
             DrawLoadNowFadeIn();
         }
 
@@ -32,13 +32,13 @@ namespace Main.UI
         /// </summary>
         private void DrawLoadNowFadeIn()
         {
-            LevelOwner.Instance.Player.SetActive(false);
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(false);
             transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 0f, duration: 1f)
                 .OnComplete(() =>
                 {
-                    UIOwner.Instance.enabled = true;
+                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().enabled = true;
                     // スタート演出の中でプレイヤーを有効にする
-                    if (!UIOwner.Instance.PlayStartCutsceneFromSceneOwner())
+                    if (!GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayStartCutsceneFromSceneOwner())
                         Debug.LogError("スタート演出の失敗");
                 });
         }
@@ -53,7 +53,7 @@ namespace Main.UI
                 .OnComplete(() =>
                 {
                     // ロード処理の終了通知を受け取ったら一時停止を解除
-                    switch (SceneOwner.Instance.PlayLoadScene())
+                    switch (GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().PlayLoadScene())
                     {
                         case SceneLoadType.SceneLoad:
                             if (Time.timeScale == 0f)
@@ -61,15 +61,15 @@ namespace Main.UI
                             break;
                         case SceneLoadType.PrefabLoad:
                             // ゴール演出の後処理
-                            if (!UIOwner.Instance.DestroyParticleFromFadeScreen())
+                            if (!GameManager.Instance.UIOwner.GetComponent<UIOwner>().DestroyParticleFromFadeScreen())
                                 Debug.LogError("ゴール演出の後処理の失敗");
                             // 同じステージをリロードする場合はスタート演出を短くする
-                            if (!UIOwner.Instance.SetStartCutsceneContinueFromFadeScreen(SceneOwner.Instance.LoadSceneId == SceneOwner.Instance.SceneIdCrumb.Current))
+                            if (!GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetStartCutsceneContinueFromFadeScreen(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().LoadSceneId == GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current))
                                 Debug.LogError("リスタートフラグセットの失敗");
-                            SceneOwner.Instance.UpdateScenesMap(SceneOwner.Instance.LoadSceneId);
-                            if (!SceneOwner.Instance.StartStage())
+                            GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().UpdateScenesMap(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().LoadSceneId);
+                            if (!GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().StartStage())
                                 Debug.LogError("ステージ開始処理の失敗");
-                            if (!SceneOwner.Instance.PlayManualStartFromSceneOwner())
+                            if (!GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().PlayManualStartFromSceneOwner())
                                 Debug.LogError("疑似スタートイベント発火処理の失敗");
                             if (Time.timeScale == 0f)
                                 Time.timeScale = 1f;
