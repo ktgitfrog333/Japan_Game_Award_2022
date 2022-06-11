@@ -62,24 +62,11 @@ namespace Main.Level
 
         /// <summary>
         /// カウントダウン表示を更新
-        /// LevelOwnerからの呼び出し
         /// </summary>
         /// <param name="count">コネクト回数</param>
         /// <param name="maxCount">クリア条件のコネクト必要回数</param>
         /// <returns>成功／失敗</returns>
-        public bool UpdateCountDownFromLevelOwner(int count, int maxCount)
-        {
-            return UpdateCountDown(count, maxCount);
-        }
-
-
-        /// <summary>
-        /// カウントダウン表示を更新
-        /// </summary>
-        /// <param name="count">コネクト回数</param>
-        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
-        /// <returns>成功／失敗</returns>
-        private bool UpdateCountDown(int count, int maxCount)
+        public bool UpdateCountDown(int count, int maxCount)
         {
             try
             {
@@ -98,20 +85,9 @@ namespace Main.Level
         /// <summary>
         /// ドアを開く
         /// ゴール演出のイベント
-        /// LevelOwnerからの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool OpenDoorFromLevelOwner()
-        {
-            return OpenDoor();
-        }
-
-        /// <summary>
-        /// ドアを開く
-        /// ゴール演出のイベント
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        private bool OpenDoor()
+        public bool OpenDoor()
         {
             try
             {
@@ -177,10 +153,9 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetBanPlayerFromGoalPoint(true))
-                    Debug.LogError("プレイヤー操作禁止フラグ切り替え処理の失敗");
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
                 // 空間操作を禁止
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                 // ショートカット入力を禁止
                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
                 var complete = GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayEndCutsceneFromGoalPoint();

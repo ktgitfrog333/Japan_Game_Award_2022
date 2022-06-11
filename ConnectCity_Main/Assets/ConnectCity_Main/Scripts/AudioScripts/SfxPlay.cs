@@ -12,12 +12,20 @@ namespace Main.Audio
     /// </summary>
     public class SfxPlay : MasterAudioPlay
     {
-        protected override void Initialize()
+        public override bool Initialize()
         {
-            if (!audioSource)
+            try
             {
-                audioSource = GetComponent<AudioSource>();
-                audioSource.playOnAwake = false;
+                if (!audioSource)
+                {
+                    audioSource = GetComponent<AudioSource>();
+                    audioSource.playOnAwake = false;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 

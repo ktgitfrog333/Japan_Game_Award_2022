@@ -9,7 +9,7 @@ using Main.Audio;
 using Main.UI;
 using Main.Common;
 
-namespace Main.Level
+namespace Main.UI
 {
     /// <summary>
     /// ショートカット入力
@@ -81,7 +81,7 @@ namespace Main.Level
                                 GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(retrySEPattern);
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
                             }
@@ -93,7 +93,7 @@ namespace Main.Level
                                 GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
                             }

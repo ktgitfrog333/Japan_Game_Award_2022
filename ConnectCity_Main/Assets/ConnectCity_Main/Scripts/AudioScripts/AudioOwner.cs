@@ -23,6 +23,25 @@ namespace Main.Audio
         }
 
         /// <summary>
+        /// 初期処理
+        /// </summary>
+        public bool Initialize()
+        {
+            try
+            {
+                if (!sfxPlay.GetComponent<SfxPlay>().Initialize())
+                    Debug.LogError("Sfx初期処理の失敗");
+                if (!bgmPlay.GetComponent<BgmPlay>().Initialize())
+                    Debug.LogError("BGM初期処理の失敗");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// SEを再生
         /// </summary>
         /// <param name="clipToPlay">SE番号</param>

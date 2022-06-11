@@ -83,10 +83,10 @@ namespace Main.Direction
                         Destroy(obj);
                     });
                 // 空間操作を許可
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(false);
                 // ショートカット入力を許可
                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocksFromStartCutscene())
+                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())
                     Debug.Log("ぼろいブロック・天井復活処理の失敗");
             }
         }
@@ -99,10 +99,10 @@ namespace Main.Direction
         {
             _playable.Stop();
             // 空間操作を許可
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = false;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(false);
             // ショートカット入力を許可
             GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
-            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocksFromStartCutscene())
+            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
         }
     }

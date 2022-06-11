@@ -44,7 +44,7 @@ namespace Gimmick
         /// ※空間操作ブロックの衝突判定のタイミングより後に実行させる必要があり、暫定対応
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DelayInitializeBreakBlocksFromLevelOwner()
+        public bool DelayInitializeBreakBlocks()
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Gimmick
         /// <summary>
         /// 監視の停止
         /// </summary>
-        public void DisposeAllFromLevelOwner()
+        public void DisposeAll()
         {
             if (_breakBlocks.Length == 0)
                 Debug.Log("開始演出：ぼろいブロック・天井はありません");

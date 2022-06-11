@@ -71,12 +71,6 @@ namespace Main.Common
         /// <summary>読み込ませるステージID</summary>
         public int LoadSceneId => _loadSceneId;
 
-        private void Start()
-        {
-            if (!StartStage())
-                Debug.LogError("ステージ開始処理の失敗");
-        }
-
         /// <summary>
         /// シーン設定をセット
         /// </summary>
@@ -144,92 +138,6 @@ namespace Main.Common
             if (array.Length != 4)
                 Debug.LogError("フォーマット不正");
             return new Vector3(float.Parse(array[0]), float.Parse(array[1]), float.Parse(array[2]));
-        }
-
-        /// <summary>
-        /// ステージ読み込みの設定
-        /// </summary>
-        public bool StartStage()
-        {
-            try
-            {
-                // Skyboxの設定
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetRenderSkyboxFromSceneOwner(skyboxs[_sceneIdCrumb.Current]))
-                    Debug.LogError("Skybox設定処理の失敗");
-                // スタート演出の間は空間操作は無効
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan)
-                    GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
-                // スタート演出の間はショートカット入力は無効
-                GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
-                // 読み込むステージのみ有効
-                var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
-                stage.SetActive(true);
-                // コネクトシステムの初期設定
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.transform.parent = stage.transform;
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.transform.localPosition = Vector3.zero;
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().PlayManualStartFromSceneOwner())
-                    Debug.Log("空間操作開始処理の失敗");
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().Initialize())
-                    Debug.Log("レーザー砲起動処理の失敗");
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().Initialize())
-                    Debug.Log("敵起動処理の失敗");
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().BreakBlookOwner.GetComponent<BreakBlookOwner>().Initialize())
-                    Debug.Log("ぼろいブロック・天井復活処理の失敗");
-                // カメラの初期設定
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.transform.parent = stage.transform;
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.transform.localPosition = cameraTransformLocalPoses[_sceneIdCrumb.Current];
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.transform.localEulerAngles = cameraTransformLocalAngles[_sceneIdCrumb.Current];
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.transform.localScale = cameraTransformLocalScales[_sceneIdCrumb.Current];
-                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.GetComponent<Camera>().fieldOfView = fieldOfViews[_sceneIdCrumb.Current];
-                // BGMの初期設定
-                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlayBGM(playBgmNames[_sceneIdCrumb.Current]);
-                // 最終ステージか否かの判断（クリア画面のUIに影響）
-                FinalStage = finalStages[_sceneIdCrumb.Current];
-                // コネクト回数
-                ClearConnectedCounter = clearConnectedCounters[_sceneIdCrumb.Current];
-                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().InitializeGoalPoint())
-                    Debug.LogError("ゴールポイント初期化の失敗");
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 疑似スタートイベント発火
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneOwner()
-        {
-            if (!GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayManualStartFadeScreenFromSceneOwner())
-                Debug.Log("フェード演出開始処理の失敗");
-            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().PlayManualStartFromSceneOwner())
-                Debug.Log("LevelOwner開始処理の失敗");
-            return true;
-        }
-
-        /// <summary>
-        /// ステージリセットの設定
-        /// </summary>
-        private bool EndStage()
-        {
-            // 該当ステージプレハブ内の情報をリセットする
-            var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(_sceneIdCrumb.Current).gameObject;
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().PlayerOffsets))
-                Debug.LogError("プレイヤーリセット処理の失敗");
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))
-                Debug.LogError("空間操作オブジェクトリセット処理の失敗");
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneOwner();
-            if (!LevelDesisionIsObjected.LoadObjectOffset(stage, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
-                Debug.Log("敵オブジェクトリセット処理の失敗");
-            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
-                Debug.Log("レーザー砲終了処理の失敗");
-            // ぼろいブロック・天井の監視を終了
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DisposeAllBreakBlooksFromSceneOwner();
-            stage.SetActive(false);
-            return true;
         }
 
         /// <summary>
@@ -304,7 +212,7 @@ namespace Main.Common
             else
             {
                 // メインシーン間でのステージ遷移
-                return EndStage() ? SceneLoadType.PrefabLoad : SceneLoadType.Error;
+                return GameManager.Instance.EndStage() ? SceneLoadType.PrefabLoad : SceneLoadType.Error;
             }
         }
 

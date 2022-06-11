@@ -86,197 +86,23 @@ namespace Main.Common
                 turretEnemiesOwner = GameObject.Find("TurretEnemiesOwner");
         }
 
-        private void Start()
-        {
-            ManualStart();
-            this.UpdateAsObservable()
-                .Subscribe(async _ =>
-                {
-                    if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
-                    {
-                        // ProjectSettings > Physics > Sleep Threshold（1フレームの待機時間）
-                        await Task.Delay(omnibusCallDelayTime);
-                    }
-                    _omnibusCall = OmnibusCallCode.None;
-                });
-        }
-
         /// <summary>
-        /// スカイボックスを設定
-        /// SceneOwnerからの呼び出し
+        /// 初期処理
         /// </summary>
-        /// <param name="idx">パターン番号</param>
-        /// <returns></returns>
-        public bool SetRenderSkyboxFromSceneOwner(RenderSettingsSkybox idx)
-        {
-            return skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(idx);
-        }
-
-        /// <summary>
-        /// 疑似スタート
-        /// </summary>
-        public void ManualStart()
-        {
-            _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
-            if (_playerOffsets == null)
-                Debug.LogError("オブジェクト初期状態の保存の失敗");
-        }
-
-        /// <summary>
-        /// ゴールポイント初期処理
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool InitializeGoalPoint()
-        {
-            return GoalPoint.GetComponent<GoalPoint>().Initialize();
-        }
-
-        /// <summary>
-        /// ぼろいブロック・天井の初期処理
-        /// ディレイ付きの初期処理
-        /// ※空間操作ブロックの衝突判定のタイミングより後に実行させる必要があり、暫定対応
-        /// 開始演出からの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool DelayInitializeBreakBlocksFromStartCutscene()
-        {
-            return breakBlookOwner.GetComponent<BreakBlookOwner>().DelayInitializeBreakBlocksFromLevelOwner();
-        }
-
-        /// <summary>
-        /// ぼろいブロック・天井の監視の停止
-        /// SceneOwnerからの呼び出し
-        /// </summary>
-        public void DisposeAllBreakBlooksFromSceneOwner()
-        {
-            breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAllFromLevelOwner();
-        }
-
-        /// <summary>
-        /// カウントダウン表示を更新
-        /// SpaceOwnerからの呼び出し
-        /// </summary>
-        /// <param name="count">コネクト回数</param>
-        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
-        /// <returns>成功／失敗</returns>
-        public bool UpdateCountDownFromSpaceOwner(int count, int maxCount)
-        {
-            return GoalPoint.GetComponent<GoalPoint>().UpdateCountDownFromLevelOwner(count, maxCount);
-        }
-
-        /// <summary>
-        /// ドアを開く
-        /// ゴール演出のイベント
-        /// SpaceOwnerからの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool OpenDoorFromSpaceOwner()
-        {
-            return GoalPoint.GetComponent<GoalPoint>().OpenDoorFromLevelOwner();
-        }
-
-        /// <summary>
-        /// ドアを閉める
-        /// ゴール演出のイベント
-        /// SpaceOwnerからの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool CloseDoorFromSpaceOwner()
-        {
-            return GoalPoint.GetComponent<GoalPoint>().CloseDoorFromLevelOwner();
-        }
-
-        /// <summary>
-        /// 疑似スタートを発火させる
-        /// SceneOwnerからの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneOwner()
-        {
-            ManualStart();
-            return true;
-        }
-
-        /// <summary>
-        /// 空間操作オブジェクトからプレイヤーオブジェクトへ
-        /// プレイヤー操作指令を実行して、実行結果を返却する
-        /// </summary>
-        /// <param name="moveVelocity">移動座標</param>
-        /// <returns>成功／失敗</returns>
-        public bool MoveCharactorFromSpaceOwner(Vector3 moveVelocity)
-        {
-            _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceOwner;
-            return Player.GetComponent<PlayerController>().MoveChatactorFromLevelOwner(moveVelocity);
-        }
-
-        /// <summary>
-        /// 空間操作オブジェクトから敵ギミックオブジェクトへ
-        /// プレイヤー操作指令を実行して、実行結果を返却する
-        /// </summary>
-        /// <param name="moveVelocity">移動座標</param>
-        /// <returns>成功／失敗</returns>
-        public bool MoveRobotEnemyFromSpaceOwner(Vector3 moveVelocity, GameObject hitObject)
-        {
-            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemyFromLevelOwner(moveVelocity);
-        }
-
-        /// <summary>
-        /// 重力操作ギミックオブジェクトからプレイヤーオブジェクトへ
-        /// プレイヤー操作指令を実行して、実行結果を返却する
-        /// </summary>
-        /// <param name="moveVelocity">移動座標</param>
-        /// <returns>成功／失敗</returns>
-        public bool MoveCharactorFromGravityController(Vector3 moveVelocity)
-        {
-            // 空間操作による呼び出しがあるなら実行しない
-            if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
-                return true;
-
-            _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
-            return Player.GetComponent<PlayerController>().MoveChatactorFromLevelOwner(moveVelocity);
-        }
-
-        /// <summary>
-        /// プレイヤーを死亡させる
-        /// コネクトシステム処理からの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromSpaceOwner()
-        {
-            return await Player.GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
-        }
-
-        /// <summary>
-        /// プレイヤーを死亡させる
-        /// 敵からの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromRobotEnemies()
-        {
-            return await player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
-        }
-
-        /// <summary>
-        /// プレイヤーの操作禁止フラグを切り替え
-        /// 空間操作オブジェクトからの呼び出し
-        /// </summary>
-        /// <param name="banFlag">操作禁止フラグ</param>
-        /// <returns>成功／失敗</returns>
-        public bool SetBanPlayerFromSpaceOwner(bool banFlag)
-        {
-            return SetBanPlayerFromLevelOwner(banFlag);
-        }
-
-        /// <summary>
-        /// プレイヤーの操作禁止フラグを切り替え
-        /// </summary>
-        /// <param name="banFlag">操作禁止フラグ</param>
-        /// <returns>成功／失敗</returns>
-        private bool SetBanPlayerFromLevelOwner(bool banFlag)
+        public bool Initialize()
         {
             try
             {
-                Player.GetComponent<PlayerController>().InputBan = banFlag;
+                this.UpdateAsObservable()
+                    .Subscribe(async _ =>
+                    {
+                        if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
+                        {
+                        // ProjectSettings > Physics > Sleep Threshold（1フレームの待機時間）
+                        await Task.Delay(omnibusCallDelayTime);
+                        }
+                        _omnibusCall = OmnibusCallCode.None;
+                    });
                 return true;
             }
             catch
@@ -286,34 +112,155 @@ namespace Main.Common
         }
 
         /// <summary>
-        /// プレイヤーの操作禁止フラグを切り替え
-        /// ゴールポイントからの呼び出し
+        /// 疑似スタート
         /// </summary>
-        /// <param name="banFlag">操作禁止フラグ</param>
         /// <returns>成功／失敗</returns>
-        public bool SetBanPlayerFromGoalPoint(bool banFlag)
+        public bool ManualStart()
         {
-            return SetBanPlayerFromLevelOwner(banFlag);
+            try
+            {
+                _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
+                if (_playerOffsets == null)
+                    Debug.LogError("オブジェクト初期状態の保存の失敗");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// SpaceOwnerの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        public void SetSpaceOwnerInputBan(bool flag)
+        {
+            spaceOwner.GetComponent<SpaceOwner>().InputBan = flag;
+        }
+
+        /// <summary>
+        /// PlayerControllerの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        public void SetPlayerControllerInputBan(bool flag)
+        {
+            Player.GetComponent<PlayerController>().InputBan = flag;
+        }
+
+        /// <summary>
+        /// スカイボックスを設定
+        /// SceneOwnerからの呼び出し
+        /// </summary>
+        /// <param name="idx">パターン番号</param>
+        /// <returns></returns>
+        public bool SetRenderSkybox(RenderSettingsSkybox idx)
+        {
+            return skyBoxSet.GetComponent<SkyBoxSet>().SetRenderSkybox(idx);
+        }
+
+        /// <summary>
+        /// ゴールポイント初期処理
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool GoalPointInitialize()
+        {
+            return GoalPoint.GetComponent<GoalPoint>().Initialize();
+        }
+
+        /// <summary>
+        /// ぼろいブロック・天井の初期処理
+        /// ディレイ付きの初期処理
+        /// ※空間操作ブロックの衝突判定のタイミングより後に実行させる必要があり、暫定対応
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool DelayInitializeBreakBlocks()
+        {
+            return breakBlookOwner.GetComponent<BreakBlookOwner>().DelayInitializeBreakBlocks();
+        }
+
+        /// <summary>
+        /// ぼろいブロック・天井の監視の停止
+        /// </summary>
+        public void DisposeAll()
+        {
+            breakBlookOwner.GetComponent<BreakBlookOwner>().DisposeAll();
+        }
+
+        /// <summary>
+        /// カウントダウン表示を更新
+        /// </summary>
+        /// <param name="count">コネクト回数</param>
+        /// <param name="maxCount">クリア条件のコネクト必要回数</param>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateCountDown(int count, int maxCount)
+        {
+            return GoalPoint.GetComponent<GoalPoint>().UpdateCountDown(count, maxCount);
+        }
+
+        /// <summary>
+        /// ドアを開く
+        /// ゴール演出のイベント
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool OpenDoor()
+        {
+            return GoalPoint.GetComponent<GoalPoint>().OpenDoor();
+        }
+
+        /// <summary>
+        /// プレイヤー操作指令を実行して、実行結果を返却する
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool MoveCharactor(Vector3 moveVelocity)
+        {
+            _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceOwner;
+            return Player.GetComponent<PlayerController>().MoveChatactor(moveVelocity);
+        }
+
+        /// <summary>
+        /// 敵操作指令を実行して、実行結果を返却する
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool MoveRobotEnemy(Vector3 moveVelocity, GameObject hitObject)
+        {
+            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemy(moveVelocity);
+        }
+
+        /// <summary>
+        /// 重力操作ギミックオブジェクトからプレイヤーオブジェクトへ
+        /// プレイヤー操作指令を実行して、実行結果を返却する
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool MoveCharactorOrWait(Vector3 moveVelocity)
+        {
+            // 空間操作による呼び出しがあるなら実行しない
+            if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
+                return true;
+
+            _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
+            return Player.GetComponent<PlayerController>().MoveChatactor(moveVelocity);
         }
 
         /// <summary>
         /// プレイヤーを死亡させる
-        /// レーザー砲からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromTurretEnemies()
+        public async Task<bool> DeadPlayer()
         {
-            return await player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].GetComponent<PlayerController>().DeadPlayerFromLevelOwner();
+            return await Player.GetComponent<PlayerController>().DeadPlayer();
         }
 
         /// <summary>
         /// 敵ギミックを破壊する
-        /// コネクトシステム処理からの呼び出し
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DestroyHumanEnemyFromSpaceOwner(GameObject hitObject)
+        public bool DestroyHumanEnemies(GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().DeadPlayerFromLevelOwner();
+            return hitObject.GetComponent<Robot_Enemy>().DestroyHumanEnemies();
         }
     }
 }

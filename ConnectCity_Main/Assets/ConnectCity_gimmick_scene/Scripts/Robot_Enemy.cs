@@ -125,7 +125,7 @@ namespace Gimmick
                 .Subscribe(async _ =>
                 {
                     _isDead = true;
-                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayerFromRobotEnemies();
+                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
                     GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                     GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
@@ -145,11 +145,11 @@ namespace Gimmick
         }
 
         /// <summary>
-        /// ゲームオブジェクトからプレイヤー操作を実行
+        /// 敵操作を実行
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveRobotEnemyFromLevelOwner(Vector3 moveVelocity)
+        public bool MoveRobotEnemy(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -159,10 +159,10 @@ namespace Gimmick
         }
 
         /// <summary>
-        /// プレイヤーを死亡させる
+        /// 敵を破壊させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DeadPlayerFromLevelOwner()
+        public bool DestroyHumanEnemies()
         {
             // 圧死時のパーティクル
             Instantiate(diedLight, transform.position, Quaternion.identity);

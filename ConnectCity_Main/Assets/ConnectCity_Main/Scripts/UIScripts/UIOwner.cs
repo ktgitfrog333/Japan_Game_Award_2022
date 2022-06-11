@@ -73,31 +73,51 @@ namespace Main.UI
                 endCutscene = GameObject.Find(OBJECT_NAME_ENDCUTSCENE);
         }
 
-        private void Start()
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        public bool Initialize()
         {
-            // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONST_MENU) &&
-                    !clearScreen.activeSelf &&
-                    !pauseScreen.activeSelf)
-                .Subscribe(_ =>
-                {
-                    GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = true;
-                    pauseScreen.SetActive(true);
-                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
-                });
-            // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
-                    !clearScreen.activeSelf &&
-                    !spaceScreen.activeSelf &&
-                    !pauseScreen.activeSelf &&
-                    !gameManualScrollView.activeSelf)
-                .Subscribe(_ =>
-                {
-                    spaceScreen.SetActive(true);
-                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
-                });
+            try
+            {
+                // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
+                this.UpdateAsObservable()
+                    .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONST_MENU) &&
+                        !clearScreen.activeSelf &&
+                        !pauseScreen.activeSelf)
+                    .Subscribe(_ =>
+                    {
+                        GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = true;
+                        pauseScreen.SetActive(true);
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
+                    });
+                // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
+                this.UpdateAsObservable()
+                    .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
+                        !clearScreen.activeSelf &&
+                        !spaceScreen.activeSelf &&
+                        !pauseScreen.activeSelf &&
+                        !gameManualScrollView.activeSelf)
+                    .Subscribe(_ =>
+                    {
+                        spaceScreen.SetActive(true);
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_play_open_No2);
+                    });
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// ShortcuGuideScreenの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        public void SetShortcuGuideScreenInputBan(bool flag)
+        {
+            shortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = flag;
         }
 
         /// <summary>
@@ -109,7 +129,7 @@ namespace Main.UI
             pauseScreen.SetActive(false);
             if (Time.timeScale == 0f)
                 Time.timeScale = 1f;
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = false;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(false);
         }
 
         /// <summary>
@@ -132,7 +152,7 @@ namespace Main.UI
         {
             CloseSpaceScreen();
             // 遊び方表が開いている間はプレイヤーの操作を禁止する
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.GetComponent<PlayerController>().InputBan = active;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(active);
             gameManualScrollView.SetActive(active);
         }
 
@@ -208,9 +228,9 @@ namespace Main.UI
         /// フェード演出UIのスタートイベント内の処理を疑似発火
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFadeScreenFromSceneOwner()
+        public bool FadeScreenPlayFadeInAndStartCutScene()
         {
-            fadeScreen.GetComponent<FadeScreen>().ManualStart();
+            fadeScreen.GetComponent<FadeScreen>().PlayFadeInAndStartCutScene();
             return true;
         }
 

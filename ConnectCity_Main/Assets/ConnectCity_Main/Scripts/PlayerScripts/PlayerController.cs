@@ -50,7 +50,7 @@ namespace Main.Player
         /// <summary>ジャンプ状態</summary>
         private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
-        private BoolReactiveProperty _inputBan;
+        private BoolReactiveProperty _inputBan = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
         public bool InputBan
         {
@@ -98,7 +98,6 @@ namespace Main.Player
             // 移動先の座標（X軸の移動、Y軸のジャンプのみ）
             var moveVelocity = new Vector3();
 
-            _inputBan = new BoolReactiveProperty();
             _inputBan.ObserveEveryValueChanged(x => x.Value)
                 .Subscribe(x =>
                 {
@@ -228,7 +227,7 @@ namespace Main.Player
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactorFromLevelOwner(Vector3 moveVelocity)
+        public bool MoveChatactor(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -240,7 +239,7 @@ namespace Main.Player
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromLevelOwner()
+        public async Task<bool> DeadPlayer()
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)
@@ -253,7 +252,7 @@ namespace Main.Player
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
             GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEDead);
-            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SpaceOwner.GetComponent<SpaceOwner>().InputBan = true;
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;
