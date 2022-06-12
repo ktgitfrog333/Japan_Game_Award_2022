@@ -12,32 +12,20 @@ namespace Main.Audio
     /// </summary>
     public class SfxPlay : MasterAudioPlay
     {
-        /// <summary>クラス自身</summary>
-        private static SfxPlay instance;
-        /// <summary>シングルトンのインスタンス</summary>
-        public static SfxPlay Instance
+        public override bool Initialize()
         {
-            get { return instance; }
-        }
-
-        private void Awake()
-        {
-            // シングルトンのため複数生成禁止
-            if (null != instance)
+            try
             {
-                Destroy(gameObject);
-                return;
+                if (!audioSource)
+                {
+                    audioSource = GetComponent<AudioSource>();
+                    audioSource.playOnAwake = false;
+                }
+                return true;
             }
-
-            instance = this;
-        }
-
-        protected override void Initialize()
-        {
-            if (!audioSource)
+            catch
             {
-                audioSource = GetComponent<AudioSource>();
-                audioSource.playOnAwake = false;
+                return false;
             }
         }
 

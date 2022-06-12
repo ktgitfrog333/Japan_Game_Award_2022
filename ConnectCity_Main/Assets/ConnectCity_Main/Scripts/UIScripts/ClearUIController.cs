@@ -46,7 +46,7 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        if (!SceneInfoManager.Instance.FinalStage)
+                        if (!GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().FinalStage)
                         {
                             n.mode = Navigation.Mode.Explicit;
                             n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.ProceedAction).GetComponent<Button>();
@@ -65,7 +65,7 @@ namespace Main.UI
                     {
                         button = GetComponent<Button>();
                         var n = new Navigation();
-                        if (!SceneInfoManager.Instance.FinalStage)
+                        if (!GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().FinalStage)
                         {
                             n.mode = Navigation.Mode.Explicit;
                             n.selectOnUp = transform.parent.GetChild((int)ClearActionMode.RetryAction).GetComponent<Button>();
@@ -123,39 +123,39 @@ namespace Main.UI
                     if (_menuClose == false)
                     {
                         _menuClose = true;
-                        SfxPlay.Instance.PlaySFX(retrySEPattern);
-                        SceneInfoManager.Instance.SetSceneIdUndo();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(retrySEPattern);
+                        GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         await PlayFlashingMotion();
                         Deselected();
-                        UIManager.Instance.CloseClearScreen();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.SelectAction:
                     if (_menuClose == false)
                     {
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
+                        GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                         _menuClose = true;
                         button.enabled = false;
                         await PlayFlashingMotion();
-                        UIManager.Instance.CloseClearScreen();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseClearScreen();
                     }
                     break;
                 case ClearActionMode.ProceedAction:
                     if (_menuClose == false)
                     {
                         _menuClose = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                        SceneInfoManager.Instance.SetSceneIdNext();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
+                        GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdNext();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
 
                         button.enabled = false;
                         await PlayFlashingMotion();
-                        UIManager.Instance.CloseClearScreen();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseClearScreen();
                     }
                     break;
                 default:

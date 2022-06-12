@@ -88,7 +88,7 @@ namespace Main.Common.LevelDesign
 
         /// <summary>
         /// オブジェクト状態をリセット
-        /// SceneInfoManagerからの呼び出し
+        /// SceneOwnerからの呼び出し
         /// </summary>
         /// <param name="StagePrefab">ステージプレハブ</param>
         /// <param name="objectsOffset">オブジェクトリスト</param>
@@ -179,7 +179,7 @@ namespace Main.Common.LevelDesign
                     }
                 }
             }
-            if (errorCheck && gameObjList.Count < GameObject.Find(sceneInfoName).GetComponent<SceneInfoManager>().StageCountMax)
+            if (errorCheck && gameObjList.Count < GameObject.Find(sceneInfoName).GetComponent<SceneOwner>().StageCountMax)
                 Debug.LogError("の数が足りません");
 
             return gameObjList.ToArray();

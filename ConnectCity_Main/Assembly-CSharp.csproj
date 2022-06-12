@@ -60,8 +60,11 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\TagConst.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\AudioScripts\BgmPlay.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ClearUIController.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneDataReader.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\Select_Comment.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\FadeScreen.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIOwner.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SpaceOwner.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\FadeInOut.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\SelectCanvas.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\SfxPlay.cs" />
@@ -70,6 +73,7 @@
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\EventController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ClearScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\GameManualScrollView.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneDataWritter.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\DiffusionLarge.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\AudioScripts\MasterAudioPlay.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\RobotEnemiesOwner.cs" />
@@ -79,12 +83,12 @@
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\ChangeGravity.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\TurretEnemiesOwner.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\AudioScripts\SfxPlay.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\AudioOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ShortcuGuideScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LevelDesigns.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\GoalPoint.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\InputKey.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LayerConst.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneInfoManager.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\EndCutscene.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SafeZone.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\BgmPlay.cs" />
@@ -94,6 +98,7 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\InputConst.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SpaceUIController.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\BreakBlook.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\GameManager.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\MouseCursorBan.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseUIController.cs" />
@@ -102,19 +107,18 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\BrideScenes_SelectMain.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\SootingMovement.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\LoadNow.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\UIManager.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\MoveCbSmall.cs" />
     <Compile Include="Assets\ConnectCity_Main\SciFi_Door\Script\door.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SpaceManager.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\RegistButtonNavi.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseScreen.cs" />
-    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\GameManager.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LevelOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ActionMode.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\MasterAudioPlay.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Test.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\InputKey_Select.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\BreakBlookOwner.cs" />
+    <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ConnectCountScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SkyBoxSet.cs" />
   </ItemGroup>

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -62,8 +63,8 @@ namespace Main.UI
             if (_menuClose == false)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIManager.Instance.CloseSpaceScreen();
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseSpaceScreen();
                 button.enabled = false;
             }
 

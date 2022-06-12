@@ -50,7 +50,7 @@ namespace Main.Player
         /// <summary>ジャンプ状態</summary>
         private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
-        private BoolReactiveProperty _inputBan;
+        private BoolReactiveProperty _inputBan = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
         public bool InputBan
         {
@@ -98,7 +98,6 @@ namespace Main.Player
             // 移動先の座標（X軸の移動、Y軸のジャンプのみ）
             var moveVelocity = new Vector3();
 
-            _inputBan = new BoolReactiveProperty();
             _inputBan.ObserveEveryValueChanged(x => x.Value)
                 .Subscribe(x =>
                 {
@@ -137,7 +136,7 @@ namespace Main.Player
                 .Subscribe(_ =>
                 {
                     moveVelocity.y = jumpSpeed;
-                    SfxPlay.Instance.PlaySFX(_SEJump);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEJump);
                     if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
                         _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
                     _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
@@ -228,7 +227,7 @@ namespace Main.Player
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactorFromGameManager(Vector3 moveVelocity)
+        public bool MoveChatactor(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -240,7 +239,7 @@ namespace Main.Player
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromGameManager()
+        public async Task<bool> DeadPlayer()
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)
@@ -252,8 +251,8 @@ namespace Main.Player
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
-            SfxPlay.Instance.PlaySFX(_SEDead);
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEDead);
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;

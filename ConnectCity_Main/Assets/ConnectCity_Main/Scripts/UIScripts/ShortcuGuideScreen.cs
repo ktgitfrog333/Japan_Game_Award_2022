@@ -9,7 +9,7 @@ using Main.Audio;
 using Main.UI;
 using Main.Common;
 
-namespace Main.Level
+namespace Main.UI
 {
     /// <summary>
     /// ショートカット入力
@@ -78,10 +78,10 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(retrySEPattern);
-                                SceneInfoManager.Instance.SetSceneIdUndo();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(retrySEPattern);
+                                GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
                             }
@@ -90,10 +90,10 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.SelectAction, x, selectPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                                SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
+                                GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
                             }
@@ -102,8 +102,8 @@ namespace Main.Level
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(manualSEPattern);
-                                UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(manualSEPattern);
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().GameManualScrollViewSetActiveFromUIOwner(true);
                                 x = 0f;
                                 isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
                             }

@@ -13,32 +13,18 @@ namespace Main.UI
     /// </summary>
     public class FadeScreen : MonoBehaviour
     {
-        void Start()
-        {
-            ManualStart();
-        }
-
         /// <summary>
-        /// 疑似スタートイベント
+        /// フェードイン処理＆ステージ開始演出
         /// </summary>
-        public void ManualStart()
+        public void PlayFadeInAndStartCutScene()
         {
-            UIManager.Instance.enabled = false;
-            DrawLoadNowFadeIn();
-        }
-
-        /// <summary>
-        /// フェードイン処理
-        /// </summary>
-        private void DrawLoadNowFadeIn()
-        {
-            GameManager.Instance.Player.SetActive(false);
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(false);
             transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 0f, duration: 1f)
                 .OnComplete(() =>
                 {
-                    UIManager.Instance.enabled = true;
+                    //GameManager.Instance.UIOwner.GetComponent<UIOwner>().enabled = true;
                     // スタート演出の中でプレイヤーを有効にする
-                    if (!UIManager.Instance.PlayStartCutsceneFromSceneInfoManager())
+                    if (!GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayStartCutsceneFromSceneOwner())
                         Debug.LogError("スタート演出の失敗");
                 });
         }
@@ -53,24 +39,14 @@ namespace Main.UI
                 .OnComplete(() =>
                 {
                     // ロード処理の終了通知を受け取ったら一時停止を解除
-                    switch (SceneInfoManager.Instance.PlayLoadScene())
+                    switch (GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().PlayLoadScene())
                     {
                         case SceneLoadType.SceneLoad:
                             if (Time.timeScale == 0f)
                                 Time.timeScale = 1f;
                             break;
                         case SceneLoadType.PrefabLoad:
-                            // ゴール演出の後処理
-                            if (!UIManager.Instance.DestroyParticleFromFadeScreen())
-                                Debug.LogError("ゴール演出の後処理の失敗");
-                            // 同じステージをリロードする場合はスタート演出を短くする
-                            if (!UIManager.Instance.SetStartCutsceneContinueFromFadeScreen(SceneInfoManager.Instance.LoadSceneId == SceneInfoManager.Instance.SceneIdCrumb.Current))
-                                Debug.LogError("リスタートフラグセットの失敗");
-                            SceneInfoManager.Instance.UpdateScenesMap(SceneInfoManager.Instance.LoadSceneId);
-                            if (!SceneInfoManager.Instance.StartStage())
-                                Debug.LogError("ステージ開始処理の失敗");
-                            if (!SceneInfoManager.Instance.PlayManualStartFromSceneInfoManager())
-                                Debug.LogError("疑似スタートイベント発火処理の失敗");
+                            GameManager.Instance.ReStart();
                             if (Time.timeScale == 0f)
                                 Time.timeScale = 1f;
                             break;

@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -61,33 +62,9 @@ namespace Main.UI
                 .Subscribe(_ => Selected());
             button.OnDeselectAsObservable()
                 .Subscribe(_ => Deselected());
-            //button.OnSubmitAsObservable()
-            //    .Subscribe(_ => Submited());
             button.OnCancelAsObservable()
                 .Subscribe(_ => Canceled());
         }
-
-        ///// <summary>
-        ///// 選択項目の決定時に呼び出すメソッド
-        ///// </summary>
-        //public override void Submited()
-        //{
-        //    // 各項目によって変わる
-        //    switch (act.pauseMode)
-        //    {
-        //        case PauseActionMode.BackAction:
-        //            if (_menuClose == false)
-        //            {
-        //                _menuClose = true;
-        //                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-        //                UIManager.Instance.CloseMenu();
-        //                button.enabled = false;
-        //            }
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
 
         /// <summary>
         /// キャンセル時に呼び出すメソッド
@@ -97,8 +74,8 @@ namespace Main.UI
             if (_menuClose == false)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIManager.Instance.CloseMenu();
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseMenu();
                 button.enabled = false;
             }
         }

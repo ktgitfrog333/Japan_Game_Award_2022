@@ -9,13 +9,21 @@ namespace Main.Audio
     /// </summary>
     public class BgmPlay : MasterAudioPlay
     {
-        protected override void Initialize()
+        public override bool Initialize()
         {
-            if (!audioSource)
+            try
             {
-                audioSource = GetComponent<AudioSource>();
-                audioSource.playOnAwake = true;
-                audioSource.loop = true;
+                if (!audioSource)
+                {
+                    audioSource = GetComponent<AudioSource>();
+                    audioSource.playOnAwake = true;
+                    audioSource.loop = true;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 

@@ -5,6 +5,7 @@ using Main.Common.Const;
 using Main.Audio;
 using UniRx;
 using UniRx.Triggers;
+using Main.Common;
 
 namespace Gimmick
 {
@@ -32,7 +33,7 @@ namespace Gimmick
                     isBreaked = true;
                     gameObject.GetComponent<BoxCollider>().enabled = false;
                     gameObject.GetComponent<Renderer>().enabled = false;
-                    SfxPlay.Instance.PlaySFX(breakBlookSE);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(breakBlookSE);
                 })
                 .AddTo(_compositeDisposable);
         }

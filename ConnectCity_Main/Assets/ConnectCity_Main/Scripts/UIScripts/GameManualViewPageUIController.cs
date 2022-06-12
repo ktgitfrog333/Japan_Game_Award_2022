@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -94,8 +95,6 @@ namespace Main.UI
         {
             button.OnSelectAsObservable()
                 .Subscribe(_ => Selected());
-            //button.OnSubmitAsObservable()
-            //    .Subscribe(_ => Submited());
             button.OnCancelAsObservable()
                 .Subscribe(_ => Canceled());
         }
@@ -106,32 +105,18 @@ namespace Main.UI
         public void Selected()
         {
             if (!_selectSEMute)
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_select);
             _selectSEMute = false;
-            UIManager.Instance.GameManualScrollViewScrollPageFromUIManager(_pageIndex);
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().GameManualScrollViewScrollPageFromUIOwner(_pageIndex);
         }
-
-        ///// <summary>
-        ///// 選択項目の決定時に呼び出すメソッド
-        ///// </summary>
-        //public void Submited()
-        //{
-        //    if (!_menuClose)
-        //    {
-        //        _menuClose = true;
-        //        SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-        //        UIManager.Instance.CloseManual();
-        //        button.enabled = false;
-        //    }
-        //}
 
         public void Canceled()
         {
             if (!_menuClose)
             {
                 _menuClose = true;
-                SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                UIManager.Instance.CloseManual();
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseManual();
                 button.enabled = false;
             }
         }
