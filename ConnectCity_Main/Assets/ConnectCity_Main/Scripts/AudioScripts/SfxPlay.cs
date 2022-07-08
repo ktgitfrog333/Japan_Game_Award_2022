@@ -12,15 +12,19 @@ namespace Main.Audio
     /// </summary>
     public class SfxPlay : MasterAudioPlay
     {
+        /// <summary>オーディオソース用のプレハブ</summary>
+        [SerializeField] private GameObject sFXChannelPrefab;
+        /// <summary>プール用</summary>
+        private Transform _transform;
+        /// <summary>プール済みのオーディオ情報マップ</summary>
+        private Dictionary<ClipToPlay, int> _sfxIdxDictionary = new Dictionary<ClipToPlay, int>();
+
         public override bool Initialize()
         {
             try
             {
-                if (!audioSource)
-                {
-                    audioSource = GetComponent<AudioSource>();
-                    audioSource.playOnAwake = false;
-                }
+                if (_transform == null)
+                    _transform = transform;
                 return true;
             }
             catch
@@ -35,10 +39,11 @@ namespace Main.Audio
             {
                 if ((int)clipToPlay <= (clip.Length - 1))
                 {
-                    audioSource.clip = clip[(int)clipToPlay];
+                    var audio = GetSFXSource(clipToPlay);
+                    audio.clip = clip[(int)clipToPlay];
 
                     // SEを再生
-                    audioSource.Play();
+                    audio.Play();
                 }
             }
             catch (System.Exception e)
@@ -46,6 +51,23 @@ namespace Main.Audio
                 Debug.Log("対象のファイルが見つかりません:[" + clipToPlay + "]");
                 Debug.Log(e);
             }
+        }
+
+        /// <summary>
+        /// SFXのキーから対象のオーディオソースを取得する
+        /// </summary>
+        /// <param name="key">ClipToPlayのキー</param>
+        /// <returns>オーディオソース</returns>
+        private AudioSource GetSFXSource(ClipToPlay key)
+        {
+            if (!_sfxIdxDictionary.ContainsKey(key))
+            {
+                var sfx = Instantiate(sFXChannelPrefab);
+                sfx.transform.parent = _transform;
+                _sfxIdxDictionary.Add(key, _transform.childCount - 1);
+                return sfx.GetComponent<AudioSource>();
+            }
+            return _transform.GetChild(_sfxIdxDictionary[key]).GetComponent<AudioSource>();
         }
     }
 

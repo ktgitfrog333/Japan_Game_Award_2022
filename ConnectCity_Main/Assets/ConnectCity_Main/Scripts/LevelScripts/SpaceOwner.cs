@@ -563,19 +563,23 @@ namespace Main.Level
                 {
                     case Direction.UP:
                         var uMove = (orgTran.position + Vector3.up) - metTran.position;
-                        metTran.parent.position += uMove;
+                        if (!CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.up, uMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
                         var dMove = (orgTran.position + Vector3.down) - metTran.position;
-                        metTran.parent.position += dMove;
+                        if (!CheckMeetDistance(metTran, rayOriginOffsetDown, Vector3.down, dMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
                         var lMove = (orgTran.position + Vector3.left) - metTran.position;
-                        metTran.parent.position += lMove;
+                        if (!CheckMeetDistance(metTran, rayOriginOffsetLeft, Vector3.left, lMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
                         var rMove = (orgTran.position + Vector3.right) - metTran.position;
-                        metTran.parent.position += rMove;
+                        if (!CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.right, rMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            metTran.parent.position += rMove;
                         break;
                 }
 
@@ -600,6 +604,24 @@ namespace Main.Level
                 }
                 return true;
             }
+            return false;
+        }
+
+        /// <summary>
+        /// コネクトによって座標移動を行う際、事前に移動距離を測る
+        /// 静的オブジェクトにMoveCubeが詰まったりしないようにする
+        /// </summary>
+        /// <param name="meet">衝突ブロック（移動対象）</param>
+        /// <param name="offset">始点</param>
+        /// <param name="direction">終点</param>
+        /// <param name="distance">距離</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>移動先に静的オブジェクトがあるか</returns>
+        private bool CheckMeetDistance(Transform meet, Vector3 offset, Vector3 direction, float distance, int layerMask)
+        {
+            foreach (Transform child in meet.parent)
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(child.position, offset, direction, distance, layerMask))
+                    return true;
             return false;
         }
 

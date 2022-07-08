@@ -26,6 +26,8 @@ namespace Main.UI
         [SerializeField] protected Button button;
         /// <summary>ボタンの画像</summary>
         [SerializeField] private Image image;
+        /// <summary>選択状態で音を出すか</summary>
+        [SerializeField] private bool selectedMuted = false;
 
         private void Awake()
         {
@@ -85,7 +87,8 @@ namespace Main.UI
             _common.SelectContent();
             if (frame != null)
                 frame.SetActive(true);
-            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_select);
+            if (!selectedMuted)
+                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_select);
         }
 
         /// <summary>
