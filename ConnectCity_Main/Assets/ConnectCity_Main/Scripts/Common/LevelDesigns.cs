@@ -59,7 +59,7 @@ namespace Main.Common.LevelDesign
             if (layerMask < 0) return IsGrounded(postion, rayOriginOffset, rayDirection, rayMaxDistance);
 
             var ray = new Ray(postion + rayOriginOffset, rayDirection);
-            Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
+            //Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
             var hitCount = Physics.RaycastNonAlloc(ray, hits, rayMaxDistance, layerMask);
             return hitCount >= 1f;
         }
