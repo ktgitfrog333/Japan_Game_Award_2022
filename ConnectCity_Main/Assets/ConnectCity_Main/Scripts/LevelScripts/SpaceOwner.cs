@@ -551,36 +551,40 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
-                if (!_inputBan)
-                {
-                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
-                        Debug.Log("パーティクル生成の失敗");
-                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_conect_No1);
-                }
-
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
                 {
                     case Direction.UP:
                         var uMove = (orgTran.position + Vector3.up) - metTran.position;
-                        if (!CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.up, uMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
-                            metTran.parent.position += uMove;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.up, uMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
+                        metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
                         var dMove = (orgTran.position + Vector3.down) - metTran.position;
-                        if (!CheckMeetDistance(metTran, rayOriginOffsetDown, Vector3.down, dMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
-                            metTran.parent.position += dMove;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetDown, Vector3.down, dMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
+                        metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
                         var lMove = (orgTran.position + Vector3.left) - metTran.position;
-                        if (!CheckMeetDistance(metTran, rayOriginOffsetLeft, Vector3.left, lMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
-                            metTran.parent.position += lMove;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetLeft, Vector3.left, lMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
+                        metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
                         var rMove = (orgTran.position + Vector3.right) - metTran.position;
-                        if (!CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.right, rMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
-                            metTran.parent.position += rMove;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.right, rMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
+                        metTran.parent.position += rMove;
                         break;
+                }
+
+                if (!_inputBan)
+                {
+                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
+                        Debug.Log("パーティクル生成の失敗");
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_conect_No1);
                 }
 
                 // お互いの親にぶら下がっている子オブジェクトの数を比較
