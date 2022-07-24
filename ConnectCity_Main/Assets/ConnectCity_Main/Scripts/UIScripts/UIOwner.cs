@@ -10,6 +10,7 @@ using Main.Audio;
 using Main.Common;
 using Main.Direction;
 using Main.Player;
+using Main.InputSystem;
 
 namespace Main.UI
 {
@@ -82,7 +83,7 @@ namespace Main.UI
             {
                 // ポーズ画面表示の入力（クリア画面の表示中はポーズ画面を有効にしない）
                 this.UpdateAsObservable()
-                    .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONST_MENU) &&
+                    .Where(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Paused /*Input.GetButtonDown(InputConst.INPUT_CONST_MENU)*/ &&
                         !clearScreen.activeSelf &&
                         !pauseScreen.activeSelf)
                     .Subscribe(_ =>
@@ -93,7 +94,7 @@ namespace Main.UI
                     });
                 // 空間操作可能な境界を表示切り替え操作の入力（クリア画面の表示中はポーズ画面を有効にしない）
                 this.UpdateAsObservable()
-                    .Where(_ => Input.GetButtonDown(InputConst.INPUT_CONSTSPACE) &&
+                    .Where(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Spaced /*Input.GetButtonDown(InputConst.INPUT_CONSTSPACE)*/ &&
                         !clearScreen.activeSelf &&
                         !spaceScreen.activeSelf &&
                         !pauseScreen.activeSelf &&

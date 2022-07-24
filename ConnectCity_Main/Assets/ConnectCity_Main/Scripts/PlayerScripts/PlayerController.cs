@@ -9,6 +9,7 @@ using Main.Audio;
 using System.Threading.Tasks;
 using Main.Common;
 using Main.Level;
+using Main.InputSystem;
 
 namespace Main.Player
 {
@@ -124,7 +125,7 @@ namespace Main.Player
             // 移動入力に応じて移動座標をセット
             this.UpdateAsObservable()
                 .Where(_ => !_inputBan.Value)
-                .Select(_ => Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed)
+                .Select(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputPlayer.Moved.x /*Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL)*/ * moveSpeed)
                 .Subscribe(x =>
                 {
                     moveVelocity.x = x;
@@ -139,7 +140,7 @@ namespace Main.Player
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE))) &&
                     !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayUpOriginOffset, rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
                     !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayUpOriginOffset, rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
-                .Select(_ => Input.GetButtonDown(InputConst.INPUT_CONSTJUMP))
+                .Select(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputPlayer.Jumped /*Input.GetButtonDown(InputConst.INPUT_CONSTJUMP)*/)
                 .Where(x => x)
                 .Subscribe(x => _isJumped.Value = x);
             // ジャンプフラグ切り替え

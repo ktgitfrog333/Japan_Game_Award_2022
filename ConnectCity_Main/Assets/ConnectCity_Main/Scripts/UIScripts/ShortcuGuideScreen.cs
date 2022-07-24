@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Main.Audio;
 using Main.UI;
 using Main.Common;
+using Main.InputSystem;
 
 namespace Main.UI
 {
@@ -38,22 +39,22 @@ namespace Main.UI
                 .Where(_ => !InputBan)
                 .Subscribe(_ =>
                 {
-                    if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTUNDO))
+                    if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Undoed /*Input.GetButtonDown(InputConst.INPUT_CONSTUNDO)*/)
                         isPushedContents[(int)ShortcuActionMode.UndoAction] = true;
-                    else if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTSELECT))
+                    else if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Selected /*Input.GetButtonDown(InputConst.INPUT_CONSTSELECT)*/)
                         isPushedContents[(int)ShortcuActionMode.SelectAction] = true;
-                    else if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTMANUAL))
+                    else if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Manualed /*Input.GetButtonDown(InputConst.INPUT_CONSTMANUAL)*/)
                         isPushedContents[(int)ShortcuActionMode.CheckAction] = true;
                 });
             // ボタンから手を離す
             this.UpdateAsObservable()
                 .Subscribe(_ =>
                 {
-                    if (isPushedContents[(int)ShortcuActionMode.UndoAction] && Input.GetButtonUp(InputConst.INPUT_CONSTUNDO))
+                    if (isPushedContents[(int)ShortcuActionMode.UndoAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Undoed /*Input.GetButtonUp(InputConst.INPUT_CONSTUNDO)*/)
                         isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
-                    if (isPushedContents[(int)ShortcuActionMode.SelectAction] && Input.GetButtonUp(InputConst.INPUT_CONSTSELECT))
+                    if (isPushedContents[(int)ShortcuActionMode.SelectAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Selected /*Input.GetButtonUp(InputConst.INPUT_CONSTSELECT)*/)
                         isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
-                    if (isPushedContents[(int)ShortcuActionMode.CheckAction] && Input.GetButtonUp(InputConst.INPUT_CONSTMANUAL))
+                    if (isPushedContents[(int)ShortcuActionMode.CheckAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Manualed /*Input.GetButtonUp(InputConst.INPUT_CONSTMANUAL)*/)
                         isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
                 });
 

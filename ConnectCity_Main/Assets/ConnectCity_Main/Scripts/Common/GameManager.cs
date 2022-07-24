@@ -6,6 +6,7 @@ using Main.UI;
 using Main.Level;
 using Gimmick;
 using Main.Common.LevelDesign;
+using Main.InputSystem;
 
 namespace Main.Common
 {
@@ -30,6 +31,10 @@ namespace Main.Common
         [SerializeField] private GameObject levelOwner;
         /// <summary>レベルデザインのオーナー</summary>
         public GameObject LevelOwner => levelOwner;
+        /// <summary>InputSystemのオーナー</summary>
+        [SerializeField] private GameObject inputSystemsOwner;
+        /// <summary>InputSystemのオーナー</summary>
+        public GameObject InputSystemsOwner => inputSystemsOwner;
 
         /// <summary>クラス自身</summary>
         private static GameManager instance;
@@ -53,6 +58,8 @@ namespace Main.Common
                 uIOwner = GameObject.Find("UIOwner");
             if (levelOwner == null)
                 levelOwner = GameObject.Find("LevelOwner");
+            if (inputSystemsOwner == null)
+                inputSystemsOwner = GameObject.Find("InputSystemsOwner");
         }
 
         private void Start()
@@ -183,5 +190,20 @@ namespace Main.Common
                 return false;
             }
         }
+    }
+
+    /// <summary>
+    /// GameMangaerのインターフェース
+    /// </summary>
+    public interface IGameManager
+    {
+        /// <summary>
+        /// 初期処理
+        /// </summary>
+        public bool Initialize();
+        /// <summary>
+        /// 終了
+        /// </summary>
+        public bool Exit();
     }
 }
