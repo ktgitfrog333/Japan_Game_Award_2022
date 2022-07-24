@@ -54,19 +54,6 @@ namespace TitleSelect
         {
             // マウスボタンが押されたら最初の項目を固定で選択する
             Cursor.visible = false;
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetMouseButtonDown(0) ||
-                    Input.GetMouseButtonDown(1) ||
-                    Input.GetMouseButtonDown(2))
-                .Select(_ => _eventSystem)
-                .Subscribe(x =>
-                {
-                    // シーンを再読み込み
-                    OpenClosePanel(true, pushGameStartPanel);
-                    OpenClosePanel(false, gameStartExitPanel);
-                    OpenClosePanel(false, gameExitConfirmPanel);
-                    OpenClosePanel(false, pausePencilLogoImage);
-                });
 
             // イベント登録
             var pushState = SetButtonEvent(pushGameStartPanel.transform, false);
