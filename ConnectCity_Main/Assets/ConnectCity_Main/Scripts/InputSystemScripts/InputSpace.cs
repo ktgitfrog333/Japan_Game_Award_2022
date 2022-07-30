@@ -8,7 +8,7 @@ namespace Main.InputSystem
     /// <summary>
     /// 空間操作用のInputAction
     /// </summary>
-    public class InputSpace : MonoBehaviour
+    public class InputSpace : MonoBehaviour, IInputSystemsOwner
     {
         /// <summary>左空間アクセル入力</summary>
         private bool _manualLAxcel;
@@ -86,6 +86,16 @@ namespace Main.InputSystem
         public void OnAutoRMove(InputAction.CallbackContext context)
         {
             _autoRMove = context.ReadValue<Vector2>();
+        }
+
+        public void DisableAll()
+        {
+            _manualLAxcel = false;
+            _manualRAxcel = false;
+            _manualLMove = new Vector2();
+            _manualRMove = new Vector2();
+            _autoLMove = new Vector2();
+            _autoRMove = new Vector2();
         }
     }
 }

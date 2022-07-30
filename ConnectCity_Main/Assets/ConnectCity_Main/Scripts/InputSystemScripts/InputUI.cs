@@ -8,7 +8,7 @@ namespace Main.InputSystem
     /// <summary>
     /// UI用のInputAction
     /// </summary>
-    public class InputUI : MonoBehaviour
+    public class InputUI : MonoBehaviour, IInputSystemsOwner
     {
         /// <summary>ナビゲーション入力</summaryf>
         private Vector2 _navigated;
@@ -85,7 +85,15 @@ namespace Main.InputSystem
         /// <param name="context">コールバック</param>
         public void OnUndoed(InputAction.CallbackContext context)
         {
-            SetStateByPushedAndReleased(context, _undoed);
+            switch (context.phase)
+            {
+                case InputActionPhase.Started:
+                    _undoed = true;
+                    break;
+                case InputActionPhase.Canceled:
+                    _undoed = false;
+                    break;
+            }
         }
 
         /// <summary>セレクト入力</summary>
@@ -98,7 +106,15 @@ namespace Main.InputSystem
         /// <param name="context">コールバック</param>
         public void OnSelected(InputAction.CallbackContext context)
         {
-            SetStateByPushedAndReleased(context, _selected);
+            switch (context.phase)
+            {
+                case InputActionPhase.Started:
+                    _selected = true;
+                    break;
+                case InputActionPhase.Canceled:
+                    _selected = false;
+                    break;
+            }
         }
 
         /// <summary>マニュアル入力</summary>
@@ -111,25 +127,27 @@ namespace Main.InputSystem
         /// <param name="context">コールバック</param>
         public void OnManualed(InputAction.CallbackContext context)
         {
-            SetStateByPushedAndReleased(context, _manualed);
-        }
-
-        /// <summary>
-        /// ボタン押下、離すステートを更新
-        /// </summary>
-        /// <param name="context">コールバック</param>
-        /// <param name="state">ステート</param>
-        private void SetStateByPushedAndReleased(InputAction.CallbackContext context, bool state)
-        {
             switch (context.phase)
             {
-                case InputActionPhase.Performed:
-                    state = true;
+                case InputActionPhase.Started:
+                    _manualed = true;
                     break;
                 case InputActionPhase.Canceled:
-                    state = false;
+                    _manualed = false;
                     break;
             }
+        }
+
+        public void DisableAll()
+        {
+            _navigated = new Vector2();
+            _submited = false;
+            _canceled = false;
+            _paused = false;
+            _spaced = false;
+            _undoed = false;
+            _selected = false;
+            _manualed = false;
         }
     }
 }
