@@ -50,16 +50,6 @@ namespace Main.UI
         private void Start()
         {
             Initialize();
-            // マウスボタン・キャンセルボタンが押されたら画面を閉じる
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetMouseButtonDown(0) ||
-                    Input.GetMouseButtonDown(1) ||
-                    Input.GetMouseButtonDown(2))
-                .Subscribe(_ =>
-                {
-                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_cancel);
-                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().CloseManual();
-                });
         }
 
         private void Initialize()

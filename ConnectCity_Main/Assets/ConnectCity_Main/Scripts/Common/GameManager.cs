@@ -74,6 +74,8 @@ namespace Main.Common
                 Debug.LogError("レベルデザイン初期処理の失敗");
             if (!levelOwner.GetComponent<LevelOwner>().ManualStart())
                 Debug.LogError("レベルデザイン疑似スタートの失敗");
+            if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Initialize())
+                Debug.LogError("インプット初期処理の失敗");
         }
 
         /// <summary>
@@ -99,6 +101,8 @@ namespace Main.Common
                 Debug.Log("フェード演出開始処理の失敗");
             if (!compLevelOwner.ManualStart())
                 Debug.Log("レベルデザイン疑似スタートの失敗");
+            if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Initialize())
+                Debug.LogError("インプット初期処理の失敗");
         }
 
         /// <summary>
@@ -183,6 +187,9 @@ namespace Main.Common
                 // ぼろいブロック・天井の監視を終了
                 compLevelOwner.DisposeAll();
                 stage.SetActive(false);
+                if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Exit())
+                    Debug.LogError("インプット終了処理の失敗");
+
                 return true;
             }
             catch

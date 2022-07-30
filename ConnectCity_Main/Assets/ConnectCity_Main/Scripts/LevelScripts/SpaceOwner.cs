@@ -857,18 +857,18 @@ namespace Main.Level
         private bool SetMoveVelocotyLeftAndRight()
         {
             // キーボード
-            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel /*Input.GetButton(InputConst.INPUT_CONST_LS_COM)*/;
-            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x /*Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS_KEYBOD)*/;
-            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y /*Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS_KEYBOD)*/;
-            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel /*Input.GetButton(InputConst.INPUT_CONST_RS_COM)*/;
-            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x /*Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS_KEYBOD)*/;
-            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y /*Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS_KEYBOD)*/;
+            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
+            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x;
+            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y;
+            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel;
+            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x;
+            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y;
 
             // コントローラー
-            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x /*Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS)*/;
-            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y /*Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS)*/;
-            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x /*Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS)*/;
-            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y /*Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS)*/;
+            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x;
+            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y;
+            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
+            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
 
             if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
                 (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))

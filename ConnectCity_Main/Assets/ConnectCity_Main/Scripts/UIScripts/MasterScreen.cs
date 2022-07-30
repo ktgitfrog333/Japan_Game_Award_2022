@@ -31,17 +31,6 @@ namespace Main.UI
 
         private void Start()
         {
-            // マウスボタンが押されたら最初の項目を固定で選択する
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetMouseButtonDown(0) ||
-                    Input.GetMouseButtonDown(1) ||
-                    Input.GetMouseButtonDown(2))
-                .Select(_ => @event)
-                .Subscribe(_ =>
-                {
-                    @event.SetSelectedGameObject(firstObject);
-                    SelectFirstElement();
-                });
         }
 
         /// <summary>
