@@ -4,6 +4,8 @@ using UnityEngine;
 using Main.Common;
 using UnityEngine.InputSystem;
 using System;
+using UniRx;
+using UniRx.Triggers;
 
 namespace Main.InputSystem
 {
@@ -28,6 +30,12 @@ namespace Main.InputSystem
         private JGA2022_Main _inputActions;
         /// <summary>インプットアクション</summary>
         public JGA2022_Main InputActions => _inputActions;
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable;
+        /// <summary>現在の入力モード（コントローラー／キーボード）</summary>
+        private IntReactiveProperty _currentInputMode;
+        /// <summary>現在の入力モード（コントローラー／キーボード）</summary>
+        public IntReactiveProperty CurrentInputMode => _currentInputMode;
 
         private void Reset()
         {
@@ -62,8 +70,12 @@ namespace Main.InputSystem
                 _inputActions.UI.Select.canceled += inputUI.OnSelected;
                 _inputActions.UI.Manual.started += inputUI.OnManualed;
                 _inputActions.UI.Manual.canceled += inputUI.OnManualed;
+                _inputActions.Space.ManualLAxcel.started += inputSpace.OnManualLAxcel;
                 _inputActions.Space.ManualLAxcel.performed += inputSpace.OnManualLAxcel;
+                _inputActions.Space.ManualLAxcel.canceled += inputSpace.OnManualLAxcel;
+                _inputActions.Space.ManualRAxcel.started += inputSpace.OnManualRAxcel;
                 _inputActions.Space.ManualRAxcel.performed += inputSpace.OnManualRAxcel;
+                _inputActions.Space.ManualRAxcel.canceled += inputSpace.OnManualRAxcel;
                 _inputActions.Space.ManualLMove.started += inputSpace.OnManualLMove;
                 _inputActions.Space.ManualLMove.performed += inputSpace.OnManualLMove;
                 _inputActions.Space.ManualLMove.canceled += inputSpace.OnManualLMove;
@@ -78,6 +90,23 @@ namespace Main.InputSystem
                 _inputActions.Space.AutoRMove.canceled += inputSpace.OnAutoRMove;
 
                 _inputActions.Enable();
+
+                _compositeDisposable = new CompositeDisposable();
+                _currentInputMode = new IntReactiveProperty((int)InputMode.Gamepad);
+                // 入力モード 0:キーボード 1:コントローラー
+                this.UpdateAsObservable()
+                    .Subscribe(_ =>
+                    {
+                        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+                        {
+                            _currentInputMode.Value = (int)InputMode.Keyboard;
+                        }
+                        else if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+                        {
+                            _currentInputMode.Value = (int)InputMode.Gamepad;
+                        }
+                    })
+                    .AddTo(_compositeDisposable);
 
                 return true;
             }
@@ -95,6 +124,7 @@ namespace Main.InputSystem
                 inputPlayer.DisableAll();
                 inputUI.DisableAll();
                 inputSpace.DisableAll();
+                _compositeDisposable.Clear();
 
                 return true;
             }
@@ -114,5 +144,16 @@ namespace Main.InputSystem
         /// 全ての入力をリセット
         /// </summary>
         public void DisableAll();
+    }
+
+    /// <summary>
+    /// 入力モード
+    /// </summary>
+    public enum InputMode
+    {
+        /// <summary>コントローラー</summary>
+        Gamepad,
+        /// <summary>キーボード</summary>
+        Keyboard,
     }
 }

@@ -153,6 +153,8 @@ namespace Main.Level
         {
             if (LevelDesisionIsObjected.IsGrounded(transform.position, ISGROUNDED_RAY_ORIGIN_OFFSET, ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE))
             {
+                if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                    Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
                 // 空間操作を禁止
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);

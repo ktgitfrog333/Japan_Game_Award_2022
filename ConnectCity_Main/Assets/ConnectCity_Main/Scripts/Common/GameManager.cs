@@ -35,6 +35,10 @@ namespace Main.Common
         [SerializeField] private GameObject inputSystemsOwner;
         /// <summary>InputSystemのオーナー</summary>
         public GameObject InputSystemsOwner => inputSystemsOwner;
+        /// <summary>チュートリアルのオーナー</summary>
+        [SerializeField] private GameObject tutorialOwner;
+        /// <summary>チュートリアルのオーナー</summary>
+        public GameObject TutorialOwner => tutorialOwner;
 
         /// <summary>クラス自身</summary>
         private static GameManager instance;
@@ -60,6 +64,8 @@ namespace Main.Common
                 levelOwner = GameObject.Find("LevelOwner");
             if (inputSystemsOwner == null)
                 inputSystemsOwner = GameObject.Find("InputSystemsOwner");
+            if (tutorialOwner == null)
+                tutorialOwner = GameObject.Find("TutorialOwner");
         }
 
         private void Start()
@@ -76,6 +82,8 @@ namespace Main.Common
                 Debug.LogError("レベルデザイン疑似スタートの失敗");
             if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Initialize())
                 Debug.LogError("インプット初期処理の失敗");
+            if (!tutorialOwner.GetComponent<TutorialOwner>().Initialize())
+                Debug.LogError("チュートリアル初期処理の失敗");
         }
 
         /// <summary>
@@ -189,6 +197,8 @@ namespace Main.Common
                 stage.SetActive(false);
                 if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Exit())
                     Debug.LogError("インプット終了処理の失敗");
+                if (!tutorialOwner.GetComponent<TutorialOwner>().Exit())
+                    Debug.LogError("チュートリアル終了処理の失敗");
 
                 return true;
             }

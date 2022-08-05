@@ -7,6 +7,8 @@ using UniRx;
 using UniRx.Triggers;
 using UnityEngine.UI;
 using DG.Tweening;
+using Main.Common;
+using Main.InputSystem;
 
 namespace Main.UI
 {
@@ -15,292 +17,321 @@ namespace Main.UI
     /// トリガーとなるオブジェクト（TutorialTrigger_0）
     /// ※上記オブジェクトを「*_0...99」のように一意の番号で付けることでビデオクリップの配列番号「channels」と連動する
     /// </summary>
-    public class TutorialScreen : MonoBehaviour
+    public class TutorialScreen : MonoBehaviour, IGameManager, ITutorialOwnerScreen
     {
-        /// <summary>
-        /// ビデオクリップ（リソースからセットする）
-        /// チャンネル0：チュートリアル①_移動
-        /// チャンネル1：チュートリアル②_ジャンプ
-        /// チャンネル2：チュートリアル③_空間操作
-        /// チャンネル3：チュートリアル④_コネクト
-        /// チャンネル4：チュートリアル⑤_空間操作_上下左右
-        /// チャンネル5：チュートリアル⑥_再利用
-        /// </summary>
-        //[SerializeField] private VideoClip[] channels;
-        ///// <summary>ビデオプレイヤー</summary>
-        //[SerializeField] private VideoPlayer videoPlayer;
-        /// <summary>ビデオを再生させるトリガー</summary>
-        [SerializeField] private GameObject[] triggers;
-        /// <summary>出現演出の時間</summary>
-        [SerializeField] float durationFade = .3f;
-        ///// <summary>点滅演出の時間</summary>
-        //[SerializeField] float durationLoopFlash = .3f;
-        ///// <summary>簡易タイプ</summary>
-        //[SerializeField] Ease easeType = Ease.InCubic;
-        ///// <summary>入力操作アイコンの切替時間</summary>
-        //[SerializeField, Range(3, 7)] private double switchInterval = 5d;
-        /// <summary>監視管理</summary>
-        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
-        ///// <summary>コントローラー操作の点滅DOTweenイベント</summary>
-        //private Tweener _flashTweenerController;
-        ///// <summary>キーボード操作の点滅DOTweenイベント</summary>
-        //private Tweener _flashTweenerKeybord;
+        /// <summary>左空間の色</summary>
+        [SerializeField] private Color keyLeftDefaultColor = new Color(47f, 148f, 180f, 255f);
+        /// <summary>右空間の色</summary>
+        [SerializeField] private Color keyRightDefaultColor = new Color(180f, 54f, 47f, 255f);
+        /// <summary>左空間の色</summary>
+        [SerializeField] private Color keyEnabledLeftColor = new Color(47f, 148f, 180f, 255f);
+        /// <summary>右空間の色</summary>
+        [SerializeField] private Color keyEnabledRightColor = new Color(180f, 54f, 47f, 255f);
+        /// <summary>Transformキャッシュ</summary>
+        private Transform _transform;
 
-        private void Reset()
+        public bool Initialize()
         {
-            //if (videoPlayer == null)
-            //    videoPlayer = transform.GetChild(0).GetComponent<VideoPlayer>();
-            if (triggers == null || (triggers != null && triggers.Length == 0))
+            try
             {
-                triggers = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_TUTORIALTRIGGER);
-            }
-        }
+                _transform = transform;
+                // 初期状態はガイドを表示させない
+                foreach (Transform g in _transform)
+                    g.gameObject.SetActive(false);
 
-        private void Start()
-        {
-            // プレイヤー初期状態は表示させない
-            var player = transform.GetChild(0);
-            player.gameObject.SetActive(false);
-            var anims = transform.GetChild(1);
-            foreach (Transform anim in anims)
-                anim.gameObject.SetActive(false);
-
-            foreach (var trigger in triggers)
-            {
-                trigger.OnTriggerEnterAsObservable()
-                    .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
+                var inputMode = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().CurrentInputMode;
+                var isOpenedSpace = new BoolReactiveProperty();
+                isOpenedSpace.Value = _transform.GetChild((int)ScreenIndex.Space).gameObject.activeSelf;
+                _transform.GetChild((int)ScreenIndex.Space).gameObject.OnEnableAsObservable()
+                    .Subscribe(x => isOpenedSpace.Value = true);
+                _transform.GetChild((int)ScreenIndex.Space).gameObject.OnDisableAsObservable()
+                    .Subscribe(x => isOpenedSpace.Value = false);
+                // 空間操作UIのアクティブ状態を監視
+                isOpenedSpace.ObserveEveryValueChanged(x => x.Value)
+                    .Where(x => x)
                     .Subscribe(_ =>
                     {
-                        var compCnt = new IntReactiveProperty(0);
-                        if (!PlayFadeAndSetCompleteCount<RawImage>(player, compCnt, player.GetComponent<RawImage>(), durationFade))
-                            Debug.LogError("RawImage:フェード処理の失敗");
-                        var animIdx = GetIdx(trigger.name);
-                        if (animIdx == 0 ||
-                            animIdx == 1 ||
-                            animIdx == 2 ||
-                            animIdx == 3)
-                        {
-                            var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                            if (!PlayFadeAndSetCompleteCount(anim, compCnt, durationFade))
-                                Debug.LogError("CanvasGroup:フェード処理の失敗");
-                        }
-                        else if (animIdx == 4 ||
-                            animIdx == 5)
-                        {
-                            // UI表示無しの場合はカウントのみ
-                            compCnt.Value++;
-                        }
-                        else
-                        {
-                            Debug.LogError("範囲外インデックス指定");
-                        }
-
-                        compCnt.Where(x => 1 < x)
-                            .Subscribe(_ =>
-                            {
-                                //if (!PlayVideoClip(GetIdx(trigger.name)))
-                                //    Debug.LogError("ビデオクリップ再生処理の失敗");
-                                if (animIdx == 0 ||
-                                    animIdx == 1 ||
-                                    animIdx == 2 ||
-                                    animIdx == 3)
-                                {
-                                    //var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                                    //var subChaIdx = new IntReactiveProperty(0);
-                                    //Observable.Interval(System.TimeSpan.FromSeconds(switchInterval))
-                                    //    .Subscribe(_ => subChaIdx.Value = (subChaIdx.Value == 0) ? 1 : 0)
-                                    //    .AddTo(_compositeDisposable);
-                                    //subChaIdx.Where(x => x == 0 | x == 1)
-                                    //    .Subscribe(x =>
-                                    //    {
-                                    //    // 時間差で切り替える
-                                    //    if (!ChangeSubChannel(anim, x))
-                                    //            Debug.LogError("コントローラー／キーボード表示切替の失敗");
-                                    //    })
-                                    //    .AddTo(_compositeDisposable);
-                                    //// コントローラーとキーボードの点滅部分は常時開始させておく
-                                    //var s = 0;
-                                    //_flashTweenerController = PlayFlash(anim, GetIdx(trigger.name), s++);
-                                    //_flashTweenerKeybord = PlayFlash(anim, GetIdx(trigger.name), s++);
-                                }
-                            });
+                        if (!ChangeSpaceGuide((InputMode)inputMode.Value))
+                            throw new System.Exception("空間操作のUI切り替えの失敗");
                     });
-                trigger.OnTriggerExitAsObservable()
-                    .Where(x => x.CompareTag(TagConst.TAG_NAME_PLAYER))
+                // 入力インタフェースによって表示するUIを切り替える
+                inputMode.ObserveEveryValueChanged(x => x.Value)
+                    .Subscribe(x =>
+                    {
+                        if (isOpenedSpace.Value)
+                            if (!ChangeSpaceGuide((InputMode)x))
+                                throw new System.Exception("空間操作のUI切り替えの失敗");
+                    });
+                // コントローラーのUI
+                var leftTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Gamepad)
+                                    .GetChild((int)Direction2D.Left).GetChild(1);
+                var leftPos = leftTran.localPosition;
+                var rightTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Gamepad)
+                                    .GetChild((int)Direction2D.Right).GetChild(1);
+                var rightPos = rightTran.localPosition;
+                // キーボードのUI（左）
+                var key2Tran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                    .GetChild(0);
+                var leftbaseTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                    .GetChild(1);
+                var qKey = leftbaseTran.GetChild(0);
+                var wKey = leftbaseTran.GetChild(1);
+                var eKey = leftbaseTran.GetChild(2);
+                var rKey = leftbaseTran.GetChild(4);
+                // キーボードのUI（右）
+                var key9Tran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                    .GetChild(2);
+                var rightbaseTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                    .GetChild(3);
+                var uKey = rightbaseTran.GetChild(0);
+                var iKey = rightbaseTran.GetChild(2);
+                var oKey = rightbaseTran.GetChild(3);
+                var pKey = rightbaseTran.GetChild(4);
+
+                this.UpdateAsObservable()
+                    .Where(_ => isOpenedSpace.Value)
                     .Subscribe(_ =>
                     {
-                        var animIdx = GetIdx(trigger.name);
-                        if (animIdx == 0 ||
-                            animIdx == 1 ||
-                            animIdx == 2 ||
-                            animIdx == 3)
+                        Vector3[] inputs = SetMoveVelocotyLeftAndRight();
+
+                        switch ((InputMode)inputMode.Value)
                         {
-                            var anim = transform.GetChild(1).GetChild(GetIdx(trigger.name));
-                            // コントローラーとキーボードの点滅部分は常時開始させておく
-                            var s = 0;
-                            if (!ResetFlash(anim, GetIdx(trigger.name), s++))
-                                Debug.LogError("点滅アルファ値リセット処理の失敗");
-                            if (!ResetFlash(anim, GetIdx(trigger.name), s++))
-                                Debug.LogError("点滅アルファ値リセット処理の失敗");
-                            anim.gameObject.SetActive(false);
-                            //_flashTweenerController.Kill();
-                            //_flashTweenerKeybord.Kill();
-                            _compositeDisposable.Clear();
+                            case InputMode.Gamepad:
+                                leftTran.DOLocalMove(leftPos + inputs[(int)Direction2D.Left] * 60f, .1f);
+                                rightTran.DOLocalMove(rightPos + inputs[(int)Direction2D.Right] * 60f, .1f);
+                                break;
+                            case InputMode.Keyboard:
+                                // 左空間操作中なら確定で光らせる
+                                if (0f < inputs[(int)Direction2D.Left].magnitude)
+                                    PlayAndReturnDOColor(rKey, keyEnabledLeftColor, keyLeftDefaultColor);
+                                // 左空間の左操作
+                                if (inputs[(int)Direction2D.Left].x < 0f)
+                                    PlayAndReturnDOColor(qKey, keyEnabledLeftColor, keyLeftDefaultColor);
+                                // 左空間の右操作
+                                if (0f < inputs[(int)Direction2D.Left].x)
+                                    PlayAndReturnDOColor(eKey, keyEnabledLeftColor, keyLeftDefaultColor);
+                                // 左空間の下操作
+                                if (inputs[(int)Direction2D.Left].y < 0f)
+                                    PlayAndReturnDOColor(wKey, keyEnabledLeftColor, keyLeftDefaultColor);
+                                // 左空間の上操作
+                                if (0f < inputs[(int)Direction2D.Left].y)
+                                    PlayAndReturnDOColor(key2Tran, keyEnabledLeftColor, keyLeftDefaultColor);
+
+                                // 右空間操作中なら確定で光らせる
+                                if (0f < inputs[(int)Direction2D.Right].magnitude)
+                                    PlayAndReturnDOColor(uKey, keyEnabledRightColor, keyRightDefaultColor);
+                                // 右空間の左操作
+                                if (inputs[(int)Direction2D.Right].x < 0f)
+                                    PlayAndReturnDOColor(iKey, keyEnabledRightColor, keyRightDefaultColor);
+                                // 右空間の右操作
+                                if (0f < inputs[(int)Direction2D.Right].x)
+                                    PlayAndReturnDOColor(pKey, keyEnabledRightColor, keyRightDefaultColor);
+                                // 右空間の下操作
+                                if (inputs[(int)Direction2D.Right].y < 0f)
+                                    PlayAndReturnDOColor(oKey, keyEnabledRightColor, keyRightDefaultColor);
+                                // 右空間の上操作
+                                if (0f < inputs[(int)Direction2D.Right].y)
+                                    PlayAndReturnDOColor(key9Tran, keyEnabledRightColor, keyRightDefaultColor);
+
+                                break;
+                            default:
+                                throw new System.Exception("入力モード判定の例外");
                         }
-                        player.gameObject.SetActive(false);
                     });
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
             }
         }
 
-        ///// <summary>
-        ///// サブチャンネル
-        ///// 0と1を切り替える
-        ///// </summary>
-        ///// <param name="tran">コンテンツ</param>
-        ///// <param name="subChannelIdx">サブチャンネルのインデックス</param>
-        ///// <returns>成功／失敗</returns>
-        //private bool ChangeSubChannel(Transform tran, int subChannelIdx)
-        //{
-        //    try
-        //    {
-        //        if (tran != null)
-        //        {
-        //            // 全部のアルファ値をゼロにする
-        //            for (var i = 0; i < tran.childCount; i++)
-        //                tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
-        //            tran.GetChild(subChannelIdx).GetComponent<CanvasGroup>().alpha = 1f;
-        //        }
-
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
         /// <summary>
-        /// フェード処理の再生
-        /// 終了した際に完了カウントをカウントアップ
+        /// DOColorの拡張版
+        /// 完了後に元の色へ戻す
         /// </summary>
-        /// <param name="tran">子オブジェクト</param>
-        /// <param name="count">完了カウント</param>
-        /// <returns></returns>
-        private bool PlayFadeAndSetCompleteCount(Transform tran, IntReactiveProperty count, float durationTime)
+        /// <param name="key">キーボードのキーUI</param>
+        /// <param name="enabledColor">有効状態の色</param>
+        /// <param name="defaultColor">デフォルトカラー</param>
+        private void PlayAndReturnDOColor(Transform key, Color enabledColor, Color defaultColor)
         {
-            tran.gameObject.SetActive(true);
-            for (var i = 0; i < tran.childCount; i++){
-                tran.GetChild(i).GetComponent<CanvasGroup>().alpha = 0f;
-                tran.GetChild(i).gameObject.SetActive(true);
-            }
-
-            tran.GetChild(0).GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationTime)
-                .OnComplete(() => count.Value++);
-
-            return true;
+            key.GetComponent<Image>().DOColor(enabledColor, .1f)
+                .OnComplete(() => key.GetComponent<Image>().color = defaultColor);
         }
 
         /// <summary>
-        /// フェード処理の再生
-        /// 終了した際に完了カウントをカウントアップ
+        /// 操作入力を元に制御情報を更新
         /// </summary>
-        /// <param name="tran">子オブジェクト</param>
-        /// <param name="count">完了カウント</param>
-        /// <returns></returns>
-        private bool PlayFadeAndSetCompleteCount<T>(Transform tran, IntReactiveProperty count, T type, float durationTime)
+        /// <returns>処理結果の成功／失敗</returns>
+        private Vector3[] SetMoveVelocotyLeftAndRight()
         {
-            if (typeof(RawImage) == type.GetType())
+            // キーボード
+            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
+            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x;
+            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y;
+            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel;
+            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x;
+            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y;
+
+            // コントローラー
+            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x;
+            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y;
+            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
+            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
+
+            if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
+                (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
             {
-                tran.GetComponent<RawImage>().color = new Vector4(255f, 255f, 255f, 0f);
-                tran.gameObject.SetActive(true);
-                tran.GetComponent<RawImage>().DOFade(endValue: 1f, duration: durationTime)
-                    .OnComplete(() => count.Value++);
+                // キーボード操作のインプット
+                return SetVelocity(hztlLKey, vtclLkey, hztlRKey, vtclRkey);
             }
-            else if (typeof(CanvasGroup) == type.GetType())
+            else if (0f < Mathf.Abs(hztlL) || 0f < Mathf.Abs(vtclL) || 0f < Mathf.Abs(hztlR) || 0f < Mathf.Abs(vtclR))
             {
-                tran.GetComponent<CanvasGroup>().alpha = 0f;
-                tran.gameObject.SetActive(true);
-                tran.GetComponent<CanvasGroup>().DOFade(endValue: 1f, duration: durationTime)
-                    .OnComplete(() => count.Value++)
-                    .SetLink(gameObject);
+                // コントローラー操作のインプット
+                return SetVelocity(hztlL, vtclL, hztlR, vtclR);
             }
             else
-                return false;
-            return true;
-        }
-
-        ///// <summary>
-        ///// UIのImageを点滅させる
-        ///// コンポーネントが参照できないオブジェクトもある可能性があるためチャンネルで判定する
-        ///// </summary>
-        ///// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
-        ///// <param name="channelIdx">再生させるビデオチャンネル</param>
-        ///// <returns></returns>
-        //private Tweener PlayFlash(Transform content, int channelIdx, int subChannelIdx)
-        //{
-        //    // 点滅が発生するチャンネルのみ実行
-        //    if (channelIdx == 0 ||
-        //        channelIdx == 1 ||
-        //        channelIdx == 2 ||
-        //        channelIdx == 3)
-        //    {
-        //        // 点滅させる
-        //        var t = content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().DOFade(0f, durationLoopFlash)
-        //            .SetEase(easeType)
-        //            .SetLoops(-1, LoopType.Yoyo)
-        //            .SetLink(gameObject);
-        //        return t;
-        //    }
-        //    return null;
-        //}
-
-        /// <summary>
-        /// UIのImageのアルファ値をリセットする
-        /// コンポーネントが参照できないオブジェクトもある可能性があるためチャンネルで判定する
-        /// </summary>
-        /// <param name="content">TutorialInputKeyAnimGroupの子要素</param>
-        /// <param name="channelIdx">再生させるビデオチャンネル</param>
-        /// <returns></returns>
-        private bool ResetFlash(Transform content, int channelIdx, int subChannelIdx)
-        {
-            // 点滅が発生するチャンネルのみ実行
-            if (channelIdx == 0 ||
-                channelIdx == 1 ||
-                channelIdx == 2 ||
-                channelIdx == 3)
             {
-                content.GetChild(subChannelIdx).GetChild(1).GetComponent<CanvasGroup>().alpha = 1f;
+                Vector3[] space = { new Vector3(), new Vector3() };
+                return space;
             }
+        }
+
+        /// <summary>
+        /// 移動先情報をセット
+        /// </summary>
+        /// <param name="horizontalLeft">左空間のHorizontal</param>
+        /// <param name="verticalLeft">左空間のVertical</param>
+        /// <param name="horizontalRight">右空間のHorizontal</param>
+        /// <param name="verticalRight">右空間のVertical</param>
+        /// <returns>成功</returns>
+        private Vector3[] SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
+        {
+            Vector3[] space = { new Vector3(horizontalLeft, verticalLeft), new Vector3(horizontalRight, verticalRight) };
+            return space;
+        }
+
+        /// <summary>
+        /// 空間操作のUI切り替え
+        /// </summary>
+        /// <param name="mode">入力モード</param>
+        /// <returns>成功／失敗</returns>
+        private bool ChangeSpaceGuide(InputMode mode)
+        {
+            try
+            {
+                var current = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)mode);
+                if (!current.gameObject.activeSelf)
+                    current.gameObject.SetActive(true);
+                switch (mode)
+                {
+                    case InputMode.Gamepad:
+                        // コントローラーUI以外は閉じる
+                        var key = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard);
+                        if (key.gameObject.activeSelf)
+                            key.gameObject.SetActive(false);
+                        break;
+                    case InputMode.Keyboard:
+                        // キーボードのUI
+                        var key2Tran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                            .GetChild(0);
+                        var leftbaseTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                            .GetChild(1);
+                        var qKey = leftbaseTran.GetChild(0);
+                        var wKey = leftbaseTran.GetChild(1);
+                        var eKey = leftbaseTran.GetChild(2);
+                        var rKey = leftbaseTran.GetChild(4);
+
+                        var key9Tran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                            .GetChild(2);
+                        var rightbaseTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Keyboard)
+                            .GetChild(3);
+                        var uKey = rightbaseTran.GetChild(0);
+                        var iKey = rightbaseTran.GetChild(2);
+                        var oKey = rightbaseTran.GetChild(3);
+                        var pKey = rightbaseTran.GetChild(4);
+
+                        // デフォルトカラー設定
+                        key2Tran.GetComponent<Image>().color = keyLeftDefaultColor;
+                        qKey.GetComponent<Image>().color = keyLeftDefaultColor;
+                        wKey.GetComponent<Image>().color = keyLeftDefaultColor;
+                        eKey.GetComponent<Image>().color = keyLeftDefaultColor;
+                        rKey.GetComponent<Image>().color = keyLeftDefaultColor;
+
+                        key9Tran.GetComponent<Image>().color = keyRightDefaultColor;
+                        uKey.GetComponent<Image>().color = keyRightDefaultColor;
+                        iKey.GetComponent<Image>().color = keyRightDefaultColor;
+                        oKey.GetComponent<Image>().color = keyRightDefaultColor;
+                        pKey.GetComponent<Image>().color = keyRightDefaultColor;
+
+                        // キーボードUI以外は閉じる
+                        var gpad = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Gamepad);
+                        if (gpad.gameObject.activeSelf)
+                            gpad.gameObject.SetActive(false);
+                        break;
+                    default:
+                        throw new System.Exception("入力モード判定の例外");
+                }
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        public bool OpenScreens(ScreenIndex index, float durationTime)
+        {
+            var screen = _transform.GetChild((int)index);
+            screen.gameObject.SetActive(true);
+            var group = screen.GetComponent<CanvasGroup>();
+            group.alpha = 0f;
+            group.DOFade(endValue: 1f, duration: durationTime);
+
             return true;
         }
 
-        ///// <summary>
-        ///// ビデオクリップの再生
-        ///// </summary>
-        ///// <param name="channelIdx">再生させるビデオチャンネル</param>
-        ///// <returns>成功／失敗</returns>
-        //private bool PlayVideoClip(int channelIdx)
-        //{
-        //    try
-        //    {
-        //        videoPlayer.clip = channels[channelIdx];
-        //        videoPlayer.Play();
-        //        return true;
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        /// <summary>
-        /// 何番目から取得
-        /// </summary>
-        /// <param name="name">名前（.*_nからnを取得）</param>
-        /// <returns>インデックス</returns>
-        private int GetIdx(string name)
+        public bool CloseScreens(ScreenIndex index, float durationTime)
         {
-            return System.Int32.Parse(name.Substring(name.IndexOf("_") + 1));
+            var screen = _transform.GetChild((int)index);
+            var group = screen.GetComponent<CanvasGroup>();
+            group.DOFade(endValue: 0f, duration: durationTime)
+                .OnComplete(() => screen.gameObject.SetActive(false))
+                .SetLink(gameObject);
+
+            return true;
         }
+
+        public bool Exit()
+        {
+            try
+            {
+                // 各UIを無効
+                foreach (Transform g in _transform)
+                    g.gameObject.SetActive(false);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 2Dの角度
+    /// </summary>
+    public enum Direction2D
+    {
+        /// <summary>左方向</summary>
+        Left,
+        /// <summary>右方向</summary>
+        Right,
     }
 }
