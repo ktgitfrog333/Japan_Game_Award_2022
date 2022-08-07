@@ -1,3 +1,4 @@
+using Main.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -244,6 +245,58 @@ namespace Main.Common.LevelDesign
             result[idx++] = new Vector3(rayOriginOffset.x - range / 2f, rayOriginOffset.y);
             result[idx++] = new Vector3(rayOriginOffset.x + range / 2f, rayOriginOffset.y);
             return result;
+        }
+
+        /// <summary>
+        /// 操作入力を元に制御情報を更新
+        /// </summary>
+        /// <returns>処理結果の成功／失敗</returns>
+        public Vector3[] SetMoveVelocotyLeftAndRight()
+        {
+            // キーボード
+            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
+            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x;
+            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y;
+            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel;
+            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x;
+            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y;
+
+            // コントローラー
+            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x;
+            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y;
+            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
+            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
+
+            if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
+                (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
+            {
+                // キーボード操作のインプット
+                return SetVelocity(hztlLKey, vtclLkey, hztlRKey, vtclRkey);
+            }
+            else if (0f < Mathf.Abs(hztlL) || 0f < Mathf.Abs(vtclL) || 0f < Mathf.Abs(hztlR) || 0f < Mathf.Abs(vtclR))
+            {
+                // コントローラー操作のインプット
+                return SetVelocity(hztlL, vtclL, hztlR, vtclR);
+            }
+            else
+            {
+                Vector3[] space = { new Vector3(), new Vector3() };
+                return space;
+            }
+        }
+
+        /// <summary>
+        /// 移動先情報をセット
+        /// </summary>
+        /// <param name="horizontalLeft">左空間のHorizontal</param>
+        /// <param name="verticalLeft">左空間のVertical</param>
+        /// <param name="horizontalRight">右空間のHorizontal</param>
+        /// <param name="verticalRight">右空間のVertical</param>
+        /// <returns>成功</returns>
+        private Vector3[] SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
+        {
+            Vector3[] space = { new Vector3(horizontalLeft, verticalLeft), new Vector3(horizontalRight, verticalRight) };
+            return space;
         }
     }
 

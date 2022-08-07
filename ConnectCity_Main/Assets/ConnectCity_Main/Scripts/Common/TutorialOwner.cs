@@ -19,12 +19,14 @@ namespace Main.Common
     /// チャンネル4：チュートリアル⑤_空間操作_上下左右
     /// チャンネル5：チュートリアル⑥_再利用
     /// </summary>
-    public class TutorialOwner : MonoBehaviour, IGameManager
+    public class TutorialOwner : MonoBehaviour, IOwner
     {
         /// <summary>チュートリアルのUI</summary>
         [SerializeField] private GameObject tutorialScreen;
         /// <summary>チュートリアルのエンバイロメント</summary>
         [SerializeField] private GameObject tutorialEnvironment;
+        /// <summary>チュートリアルのエンバイロメント</summary>
+        public GameObject TutorialEnvironment => tutorialEnvironment;
         /// <summary>ビデオを再生させるトリガー</summary>
         [SerializeField] private GameObject[] triggers;
         /// <summary>コンテンツを表示済みフラグ（ステージ読み込みの度にリセット）</summary>
@@ -92,7 +94,7 @@ namespace Main.Common
                                             Debug.LogError("他コンテンツ終了処理の失敗");
                                         if (!tutorialScreen.GetComponent<TutorialScreen>().OpenScreens(ScreenIndex.Space, durationFade))
                                             Debug.LogError("空間操作の表示処理の失敗");
-                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceController))
+                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceController, durationFade))
                                             Debug.LogError("③_空間操作の表示処理の失敗");
                                         _isPlaiedEvents[(int)animIdx].Value = true;
                                     }
@@ -104,7 +106,7 @@ namespace Main.Common
                                             Debug.LogError("他コンテンツ終了処理の失敗");
                                         if (!tutorialScreen.GetComponent<TutorialScreen>().OpenScreens(ScreenIndex.Space, durationFade))
                                             Debug.LogError("空間操作の表示処理の失敗");
-                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceConnect))
+                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceConnect, durationFade))
                                             Debug.LogError("④_コネクトの表示処理の失敗");
                                         _isPlaiedEvents[(int)animIdx].Value = true;
                                     }
@@ -116,7 +118,7 @@ namespace Main.Common
                                             Debug.LogError("他コンテンツ終了処理の失敗");
                                         if (!tutorialScreen.GetComponent<TutorialScreen>().OpenScreens(ScreenIndex.Space, durationFade))
                                             Debug.LogError("空間操作の表示処理の失敗");
-                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceDirection))
+                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceDirection, durationFade))
                                             Debug.LogError("⑤_空間操作_上下左右の表示処理の失敗");
                                         _isPlaiedEvents[(int)animIdx].Value = true;
                                     }
@@ -128,7 +130,7 @@ namespace Main.Common
                                             Debug.LogError("他コンテンツ終了処理の失敗");
                                         if (!tutorialScreen.GetComponent<TutorialScreen>().OpenScreens(ScreenIndex.Space, durationFade))
                                             Debug.LogError("空間操作の表示処理の失敗");
-                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceRecycle))
+                                        if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().PlayEnvironment(EnvironmentIndex.SpaceRecycle, durationFade))
                                             Debug.LogError("⑥_再利用の表示処理の失敗");
                                         _isPlaiedEvents[(int)animIdx].Value = true;
                                     }
@@ -188,19 +190,6 @@ namespace Main.Common
             }
         }
 
-        //public bool ReStart()
-        //{
-        //    try
-        //    {
-        //        return true;
-        //    }
-        //    catch (System.Exception e)
-        //    {
-        //        Debug.LogException(e);
-        //        return false;
-        //    }
-        //}
-
         /// <summary>
         /// フラグリセット
         /// </summary>
@@ -241,21 +230,21 @@ namespace Main.Common
                         case TriggerIndex.SpaceController:
                             if (!tutorialScreen.GetComponent<TutorialScreen>().CloseScreens(ScreenIndex.Space, durationFade))
                                 Debug.LogError("空間操作の非表示処理の失敗");
-                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceController))
+                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceController, durationFade))
                                 Debug.LogError("③_空間操作の非表示処理の失敗");
                             break;
                         case TriggerIndex.SpaceConnect:
-                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceConnect))
+                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceConnect, durationFade))
                                 Debug.LogError("④_コネクトの非表示処理の失敗");
                             break;
                         case TriggerIndex.SpaceDirection:
-                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceDirection))
+                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceDirection, durationFade))
                                 Debug.LogError("⑤_空間操作_上下左右の非表示処理の失敗");
                             break;
                         case TriggerIndex.SpaceRecycle:
                             if (!tutorialScreen.GetComponent<TutorialScreen>().CloseScreens(ScreenIndex.Space, durationFade))
                                 Debug.LogError("空間操作の非表示処理の失敗");
-                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceRecycle))
+                            if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceRecycle, durationFade))
                                 Debug.LogError("⑥_再利用の非表示処理の失敗");
                             break;
                         default:
@@ -280,6 +269,21 @@ namespace Main.Common
         private int GetIdx(string name)
         {
             return System.Int32.Parse(name.Substring(name.IndexOf("_") + 1));
+        }
+
+        public bool ManualStart()
+        {
+            try
+            {
+                if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().ManualStart())
+                    throw new System.Exception("エンバイロメント疑似スタートの失敗");
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
         }
     }
 
@@ -312,13 +316,14 @@ namespace Main.Common
         /// </summary>
         /// <param name="index">エンバイロメント対象番号</param>
         /// <returns>成功／失敗</returns>
-        public bool PlayEnvironment(EnvironmentIndex index);
+        public bool PlayEnvironment(EnvironmentIndex index, float durationTime);
+
         /// <summary>
         /// ガイドオブジェクト制御を止める
         /// </summary>
         /// <param name="index">エンバイロメント対象番号</param>
         /// <returns>成功／失敗</returns>
-        public bool StopEnvironment(EnvironmentIndex index);
+        public bool StopEnvironment(EnvironmentIndex index, float durationTime);
     }
 
     /// <summary>

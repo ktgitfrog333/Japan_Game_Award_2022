@@ -55,5 +55,9 @@ namespace Main.Common.Const
         /// レーザー砲のタグ名
         /// </summary>
         public static readonly string TAG_NAME_TURRETENEMIES = "TurretEnemies";
+        /// <summary>
+        /// 動くキューブ（ゴースト）のタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_MOVECUBEGHOST = "MoveCubeGhost";
     }
 }

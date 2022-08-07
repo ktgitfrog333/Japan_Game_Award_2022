@@ -84,6 +84,8 @@ namespace Main.Common
                 Debug.LogError("インプット初期処理の失敗");
             if (!tutorialOwner.GetComponent<TutorialOwner>().Initialize())
                 Debug.LogError("チュートリアル初期処理の失敗");
+            if (!tutorialOwner.GetComponent<TutorialOwner>().ManualStart())
+                Debug.LogError("チュートリアル疑似スタートの失敗");
         }
 
         /// <summary>
@@ -94,6 +96,7 @@ namespace Main.Common
             var compSceneOwner = sceneOwner.GetComponent<SceneOwner>();
             var compLevelOwner = levelOwner.GetComponent<LevelOwner>();
             var compUIOwner = uIOwner.GetComponent<UIOwner>();
+            var compTutorialOwner = tutorialOwner.GetComponent<TutorialOwner>();
             var current = compSceneOwner.SceneIdCrumb.Current;
 
             // ゴール演出の後処理
@@ -109,6 +112,8 @@ namespace Main.Common
                 Debug.Log("フェード演出開始処理の失敗");
             if (!compLevelOwner.ManualStart())
                 Debug.Log("レベルデザイン疑似スタートの失敗");
+            if (!compTutorialOwner.ManualStart())
+                Debug.LogWarning("チュートリアル疑似スタートの失敗");
             if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Initialize())
                 Debug.LogError("インプット初期処理の失敗");
         }
@@ -180,6 +185,7 @@ namespace Main.Common
             {
                 var compLevelOwner = levelOwner.GetComponent<LevelOwner>();
                 var current = sceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current;
+                var compTutorialOwner = tutorialOwner.GetComponent<TutorialOwner>();
 
                 // 該当ステージプレハブ内の情報をリセットする
                 var stage = compLevelOwner.LevelDesign.transform.GetChild(current).gameObject;
@@ -189,15 +195,17 @@ namespace Main.Common
                     Debug.LogError("空間操作オブジェクトリセット処理の失敗");
                 compLevelOwner.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneOwner();
                 if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
-                    Debug.Log("敵オブジェクトリセット処理の失敗");
+                    Debug.LogWarning("敵オブジェクトリセット処理の失敗");
                 if (!compLevelOwner.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
-                    Debug.Log("レーザー砲終了処理の失敗");
+                    Debug.LogWarning("レーザー砲終了処理の失敗");
+                if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compTutorialOwner.TutorialEnvironment.GetComponent<TutorialEnvironment>().CubeOffsets))
+                    Debug.LogWarning("チュートリアルエンバイロメントリセット処理の失敗");
                 // ぼろいブロック・天井の監視を終了
                 compLevelOwner.DisposeAll();
                 stage.SetActive(false);
                 if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Exit())
                     Debug.LogError("インプット終了処理の失敗");
-                if (!tutorialOwner.GetComponent<TutorialOwner>().Exit())
+                if (!compTutorialOwner.Exit())
                     Debug.LogError("チュートリアル終了処理の失敗");
 
                 return true;
@@ -222,5 +230,16 @@ namespace Main.Common
         /// 終了
         /// </summary>
         public bool Exit();
+    }
+
+    /// <summary>
+    /// Owner系のインターフェース
+    /// </summary>
+    public interface IOwner : IGameManager
+    {
+        /// <summary>
+        /// 疑似スタート
+        /// </summary>
+        public bool ManualStart();
     }
 }
