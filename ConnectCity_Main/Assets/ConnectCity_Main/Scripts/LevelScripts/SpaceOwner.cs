@@ -361,6 +361,8 @@ namespace Main.Level
                     .Subscribe(async _ =>
                     {
                         isDead = true;
+                        if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                            Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
                         await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
                         GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                         GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();

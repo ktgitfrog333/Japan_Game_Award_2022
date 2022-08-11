@@ -178,7 +178,7 @@ namespace Main.Common
         {
             try
             {
-                if (!CloseAny(_isPlaiedEvents))
+                if (!CloseAny(_isPlaiedEvents, true))
                     Debug.LogError("他コンテンツ終了処理の失敗");
 
                 return true;
@@ -210,6 +210,17 @@ namespace Main.Common
         /// <returns>成功／失敗</returns>
         private bool CloseAny(BoolReactiveProperty[] eventsIndex)
         {
+            return CloseAny(eventsIndex, false);
+        }
+
+        /// <summary>
+        /// 対象以外のチュートリアルを止める
+        /// </summary>
+        /// <param name="eventsIndex">コンテンツ表示済みフラグ配列</param>
+        /// <param name="stageClosed">ステージ終了フラグ</param>
+        /// <returns>成功／失敗</returns>
+        private bool CloseAny(BoolReactiveProperty[] eventsIndex, bool stageClosed)
+        {
             try
             {
                 var targetIdxs = eventsIndex.Select((p, i) => new { Content = p, Index = i })
@@ -234,10 +245,14 @@ namespace Main.Common
                                 Debug.LogError("③_空間操作の非表示処理の失敗");
                             break;
                         case TriggerIndex.SpaceConnect:
+                            if (stageClosed && !tutorialScreen.GetComponent<TutorialScreen>().CloseScreens(ScreenIndex.Space, durationFade))
+                                Debug.LogError("空間操作の非表示処理の失敗");
                             if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceConnect, durationFade))
                                 Debug.LogError("④_コネクトの非表示処理の失敗");
                             break;
                         case TriggerIndex.SpaceDirection:
+                            if (stageClosed && !tutorialScreen.GetComponent<TutorialScreen>().CloseScreens(ScreenIndex.Space, durationFade))
+                                Debug.LogError("空間操作の非表示処理の失敗");
                             if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().StopEnvironment(EnvironmentIndex.SpaceDirection, durationFade))
                                 Debug.LogError("⑤_空間操作_上下左右の非表示処理の失敗");
                             break;
