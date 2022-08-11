@@ -79,7 +79,7 @@ namespace Main.Level
                 _ghostMoveCbSmalls = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGHOST);
                 _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_ghostMoveCbSmalls);
                 for (var i = 0; i < _ghostMoveCbSmalls.Length; i++)
-                    _ghostMoveCbSmalls[i].transform.GetComponent<Renderer>().material.DOFade(0f, .1f);
+                    PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, 0f, .1f);
 
                 return true;
             }
@@ -113,7 +113,7 @@ namespace Main.Level
                 switch (index)
                 {
                     case EnvironmentIndex.SpaceController:
-                        _ghostMoveCbSmalls[0].transform.GetComponent<Renderer>().material.DOFade(.75f, durationTime);
+                        PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[0].transform, .75f, durationTime);
                         _runningSeqence = GetSequenceMoveGhostCube(new GameObject[1] { _ghostMoveCbSmalls[0] }
                             , new LocalPathPositionsMap[1] { positionMap[0] }
                             , _ghostMoveCbSmalls[0].transform
@@ -123,7 +123,7 @@ namespace Main.Level
                         break;
                     case EnvironmentIndex.SpaceConnect:
                         for (var i = 0; i < 3; i++)
-                            _ghostMoveCbSmalls[i].transform.GetComponent<Renderer>().material.DOFade(.75f, durationTime);
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, .75f, durationTime);
                         _runningSeqence = GetSequenceMoveGhostCube(new GameObject[3] { _ghostMoveCbSmalls[0], _ghostMoveCbSmalls[1], _ghostMoveCbSmalls[2] }
                             , new LocalPathPositionsMap[3] { positionMap[1], positionMap[2], positionMap[3] }
                             , _ghostMoveCbSmalls[0].transform
@@ -133,7 +133,7 @@ namespace Main.Level
                         break;
                     case EnvironmentIndex.SpaceDirection:
                         for (var i = 3; i < 6; i++)
-                            _ghostMoveCbSmalls[i].transform.GetComponent<Renderer>().material.DOFade(.75f, durationTime);
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, .75f, durationTime);
                         _runningSeqence = GetSequenceMoveGhostCube(new GameObject[3] { _ghostMoveCbSmalls[3], _ghostMoveCbSmalls[4], _ghostMoveCbSmalls[5] }
                             , new LocalPathPositionsMap[3] { positionMap[4], positionMap[5], positionMap[6] }
                             , _ghostMoveCbSmalls[3].transform
@@ -142,6 +142,14 @@ namespace Main.Level
 
                         break;
                     case EnvironmentIndex.SpaceRecycle:
+                        for (var i = 0; i < 6; i++)
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, .75f, durationTime);
+                        _runningSeqence = GetSequenceMoveGhostCube(new GameObject[6] { _ghostMoveCbSmalls[0], _ghostMoveCbSmalls[1], _ghostMoveCbSmalls[2], _ghostMoveCbSmalls[3], _ghostMoveCbSmalls[4], _ghostMoveCbSmalls[5] }
+                            , new LocalPathPositionsMap[6] { positionMap[7], positionMap[8], positionMap[9], positionMap[10], positionMap[11], positionMap[12] }
+                            , _ghostMoveCbSmalls[2].transform
+                            , positionMap[9].LocalPathPositions
+                            , localPathDuration);
+
                         break;
                     default:
                         throw new System.Exception("チュートリアルエンバイロメント呼び出しの例外");
@@ -289,22 +297,26 @@ namespace Main.Level
                 {
                     case EnvironmentIndex.SpaceController:
                         _currentDirection = new Vector3[2];
-                        _ghostMoveCbSmalls[0].transform.GetComponent<Renderer>().material.DOFade(0f, durationTime);
+                        PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[0].transform, 0f, durationTime);
 
                         break;
                     case EnvironmentIndex.SpaceConnect:
                         _currentDirection = new Vector3[2];
                         for (var i = 0; i < 3; i++)
-                            _ghostMoveCbSmalls[i].transform.GetComponent<Renderer>().material.DOFade(0f, durationTime);
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, 0f, durationTime);
 
                         break;
                     case EnvironmentIndex.SpaceDirection:
                         _currentDirection = new Vector3[2];
                         for (var i = 3; i < 6; i++)
-                            _ghostMoveCbSmalls[i].transform.GetComponent<Renderer>().material.DOFade(0f, durationTime);
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, 0f, durationTime);
 
                         break;
                     case EnvironmentIndex.SpaceRecycle:
+                        _currentDirection = new Vector3[2];
+                        for (var i = 0; i < 6; i++)
+                            PlayDOFadeRendererAndLineRenderer(_ghostMoveCbSmalls[i].transform, 0f, durationTime);
+
                         break;
                     default:
                         throw new System.Exception("チュートリアルエンバイロメント呼び出しの例外");
@@ -317,6 +329,18 @@ namespace Main.Level
                 Debug.LogException(e);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// RendererとLineRendererのコンポーネントに対してDOFadeを実行
+        /// </summary>
+        /// <param name="transform">コンポーネントを持ったオブジェクト</param>
+        /// <param name="endValue">変更後のフェード</param>
+        /// <param name="duration">アニメーション速度</param>
+        private void PlayDOFadeRendererAndLineRenderer(Transform transform, float endValue, float duration)
+        {
+            transform.GetComponent<Renderer>().material.DOFade(endValue, duration);
+            transform.GetComponent<LineRenderer>().material.DOFade(endValue, duration);
         }
     }
 }
