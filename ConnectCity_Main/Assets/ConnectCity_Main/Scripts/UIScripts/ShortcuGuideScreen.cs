@@ -84,6 +84,8 @@ namespace Main.UI
                                 single.Value = true;
                                 GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(retrySEPattern);
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                                if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                                    Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }
@@ -95,6 +97,8 @@ namespace Main.UI
                                 single.Value = true;
                                 GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
+                                if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                                    Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }

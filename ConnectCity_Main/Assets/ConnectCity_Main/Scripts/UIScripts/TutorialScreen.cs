@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Main.Common;
 using Main.InputSystem;
+using Main.Level;
 
 namespace Main.UI
 {
@@ -88,11 +89,13 @@ namespace Main.UI
                 var oKey = rightbaseTran.GetChild(3);
                 var pKey = rightbaseTran.GetChild(4);
 
-                this.UpdateAsObservable()
+                var environment = GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().TutorialEnvironment.GetComponent<TutorialEnvironment>();
+
+                this.FixedUpdateAsObservable()
                     .Where(_ => isOpenedSpace.Value)
                     .Subscribe(_ =>
                     {
-                        Vector3[] inputs = SetMoveVelocotyLeftAndRight();
+                        Vector3[] inputs = environment.CurrentDirection;
 
                         switch ((InputMode)inputMode.Value)
                         {
@@ -159,58 +162,6 @@ namespace Main.UI
         {
             key.GetComponent<Image>().DOColor(enabledColor, .1f)
                 .OnComplete(() => key.GetComponent<Image>().color = defaultColor);
-        }
-
-        /// <summary>
-        /// 操作入力を元に制御情報を更新
-        /// </summary>
-        /// <returns>処理結果の成功／失敗</returns>
-        private Vector3[] SetMoveVelocotyLeftAndRight()
-        {
-            // キーボード
-            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
-            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x;
-            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y;
-            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel;
-            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x;
-            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y;
-
-            // コントローラー
-            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x;
-            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y;
-            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
-            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
-
-            if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
-                (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
-            {
-                // キーボード操作のインプット
-                return SetVelocity(hztlLKey, vtclLkey, hztlRKey, vtclRkey);
-            }
-            else if (0f < Mathf.Abs(hztlL) || 0f < Mathf.Abs(vtclL) || 0f < Mathf.Abs(hztlR) || 0f < Mathf.Abs(vtclR))
-            {
-                // コントローラー操作のインプット
-                return SetVelocity(hztlL, vtclL, hztlR, vtclR);
-            }
-            else
-            {
-                Vector3[] space = { new Vector3(), new Vector3() };
-                return space;
-            }
-        }
-
-        /// <summary>
-        /// 移動先情報をセット
-        /// </summary>
-        /// <param name="horizontalLeft">左空間のHorizontal</param>
-        /// <param name="verticalLeft">左空間のVertical</param>
-        /// <param name="horizontalRight">右空間のHorizontal</param>
-        /// <param name="verticalRight">右空間のVertical</param>
-        /// <returns>成功</returns>
-        private Vector3[] SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
-        {
-            Vector3[] space = { new Vector3(horizontalLeft, verticalLeft), new Vector3(horizontalRight, verticalRight) };
-            return space;
         }
 
         /// <summary>
