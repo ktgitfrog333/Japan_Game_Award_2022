@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Main.Audio;
 using System.Linq;
 using Main.InputSystem;
+using DG.Tweening;
 
 namespace Main.Level
 {
@@ -274,6 +275,23 @@ namespace Main.Level
                 var group = Instantiate(moveCubeGroup, obj.transform.position, Quaternion.identity);
                 group.transform.parent = level;
                 obj.transform.parent = group.transform;
+                // 空間操作ブロックの速度ストッパー（弾き飛ばされないようにする）
+                group.GetComponent<Rigidbody>().ObserveEveryValueChanged(x => x.velocity)
+                    .Subscribe(x =>
+                    {
+                        if (8f < x.magnitude)
+                        {
+                            if (_spaceDirections.RbsLeftSpace != null)
+                                foreach (var r in _spaceDirections.RbsLeftSpace)
+                                    r.isKinematic = true;
+                            if (_spaceDirections.RbsRightSpace != null)
+                                foreach (var r in _spaceDirections.RbsRightSpace)
+                                    r.isKinematic = true;
+                        }
+                    });
+                group.GetComponent<Rigidbody>().ObserveEveryValueChanged(x => x.isKinematic)
+                    .Where(x => x)
+                    .Subscribe(_ => DOVirtual.DelayedCall(.5f, () => group.GetComponent<Rigidbody>().isKinematic = false));
 
                 var rOrgOffAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffset, .5f);
                 // プレイヤーの接地判定
@@ -1032,7 +1050,8 @@ namespace Main.Level
                     else
                         rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
 
-                    rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
+                    if (!rigidBodySpace[i].isKinematic)
+                        rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
                 }
             }
             return true;

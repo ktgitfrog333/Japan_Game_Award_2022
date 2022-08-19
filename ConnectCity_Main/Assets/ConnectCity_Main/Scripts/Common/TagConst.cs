@@ -59,5 +59,9 @@ namespace Main.Common.Const
         /// 動くキューブ（ゴースト）のタグ名
         /// </summary>
         public static readonly string TAG_NAME_MOVECUBEGHOST = "MoveCubeGhost";
+        /// <summary>
+        /// 重力ギミックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_CHANGEGRAVITY = "ChangeGravity";
     }
 }
