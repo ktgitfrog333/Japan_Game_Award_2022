@@ -10,13 +10,15 @@ using Main.UI;
 using System.Threading.Tasks;
 using Main.Audio;
 using System.Linq;
+using Main.InputSystem;
+using DG.Tweening;
 
 namespace Main.Level
 {
     /// <summary>
     /// 空間制御する
     /// </summary>
-    public class SpaceManager : MonoBehaviour
+    public class SpaceOwner : MonoBehaviour
     {
         /// <summary>移動速度（初動フェーズ）</summary>
         [SerializeField] private float moveLSpeed = .3f;
@@ -90,139 +92,147 @@ namespace Main.Level
         /// <summary>
         /// 疑似スタート
         /// </summary>
-        private void ManualStart()
+        public bool Initialize()
         {
-            _connectDirections = new List<ConnectDirection2D>();
-            _spaceDirections = new SpaceDirection2D();
-            // ブロックの接続状況
-            _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
-            if (_moveCubes.Length == 0)
-                Debug.LogError("MobeCubeの取得失敗");
-            // 既にグループ化されている場合は初期値を更新しない
-            var group = _moveCubes.Where(x => x.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
-                .Select(x => x);
-            if (group.ToList().Count == 0)
-                _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
-            if (_cubeOffsets == null)
-                Debug.LogError("オブジェクト初期状態の保存の失敗");
-            // コネクト回数のチェック
-            var connectSuccess = new IntReactiveProperty();
-            connectSuccess.ObserveEveryValueChanged(x => x.Value)
-                .Do(x =>
-                {
-                    if (!_inputBan && 0 < x && !GameManager.Instance.UpdateCountDownFromSpaceManager(x, SceneInfoManager.Instance.ClearConnectedCounter))
-                        Debug.LogError("カウントダウン更新処理の失敗");
-                })
-                .Where(x => SceneInfoManager.Instance.ClearConnectedCounter == x)
-                .Subscribe(_ =>
-                {
-                    if (!GameManager.Instance.OpenDoorFromSpaceManager())
-                        Debug.LogError("ゴール演出の失敗");
-                });
-            _moveCubes = SetCollsion(_moveCubes, SceneInfoManager.Instance.LevelDesign.transform.GetChild(SceneInfoManager.Instance.SceneIdCrumb.Current), connectSuccess);
-            if (_moveCubes == null)
-                throw new System.Exception("オブジェクト取得の失敗");
-            // 速度の初期値
-            _spaceDirections.MoveSpeed = moveLSpeed;
-            // 移動入力をチェック
-            var velocitySeted = new BoolReactiveProperty();
-            this.UpdateAsObservable()
-                .Where(_ => !_inputBan)
-                .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight())
-                .AddTo(_compositeDisposable);
-            velocitySeted.Where(x => x)
-                .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
-                .Where(_ => velocitySeted.Value)
-                .Subscribe(_ =>
-                {
-                    _spaceDirections.MoveSpeed = moveHSpeed;
-                    GameManager.Instance.SetBanPlayerFromSpaceManager(true);
-                })
-                .AddTo(_compositeDisposable);
-            velocitySeted.Where(x => !x)
-                .Subscribe(_ =>
-                {
-                    _spaceDirections.MoveSpeed = moveLSpeed;
-                    GameManager.Instance.SetBanPlayerFromSpaceManager(false);
-                })
-                .AddTo(_compositeDisposable);
+            try
+            {
+                _connectDirections = new List<ConnectDirection2D>();
+                _spaceDirections = new SpaceDirection2D();
+                // ブロックの接続状況
+                _moveCubes = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBE);
+                if (_moveCubes.Length == 0)
+                    Debug.LogError("MobeCubeの取得失敗");
+                // 既にグループ化されている場合は初期値を更新しない
+                var group = _moveCubes.Where(x => x.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
+                    .Select(x => x);
+                if (group.ToList().Count == 0)
+                    _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
+                if (_cubeOffsets == null)
+                    Debug.LogError("オブジェクト初期状態の保存の失敗");
+                // コネクト回数のチェック
+                var connectSuccess = new IntReactiveProperty();
+                connectSuccess.ObserveEveryValueChanged(x => x.Value)
+                    .Do(x =>
+                    {
+                        if (!_inputBan && 0 < x && !GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().UpdateCountDown(x, GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().ClearConnectedCounter))
+                            Debug.LogError("カウントダウン更新処理の失敗");
+                    })
+                    .Where(x => GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().ClearConnectedCounter == x)
+                    .Subscribe(_ =>
+                    {
+                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().OpenDoor())
+                            Debug.LogError("ゴール演出の失敗");
+                    });
+                _moveCubes = SetCollsion(_moveCubes, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current), connectSuccess);
+                if (_moveCubes == null)
+                    throw new System.Exception("オブジェクト取得の失敗");
+                // 速度の初期値
+                _spaceDirections.MoveSpeed = moveLSpeed;
+                // 移動入力をチェック
+                var velocitySeted = new BoolReactiveProperty();
+                this.UpdateAsObservable()
+                    .Where(_ => !_inputBan)
+                    .Subscribe(_ => velocitySeted.Value = SetMoveVelocotyLeftAndRight())
+                    .AddTo(_compositeDisposable);
+                velocitySeted.Where(x => x)
+                    .Throttle(System.TimeSpan.FromSeconds(gearChgDelaySec))
+                    .Where(_ => velocitySeted.Value)
+                    .Subscribe(_ =>
+                    {
+                        _spaceDirections.MoveSpeed = moveHSpeed;
+                        GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
+                    })
+                    .AddTo(_compositeDisposable);
+                velocitySeted.Where(x => !x)
+                    .Subscribe(_ =>
+                    {
+                        _spaceDirections.MoveSpeed = moveLSpeed;
+                        GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(false);
+                    })
+                    .AddTo(_compositeDisposable);
 
-            // 空間内のブロック座標をチェック
-            this.UpdateAsObservable()
-                .Subscribe(_ =>
-                {
-                    if (!CheckPositionAndSetMoveCubesComponents(_moveCubes))
-                        Debug.LogError("制御対象RigidBody格納の失敗");
-                    if (!PlayEffectMove(_spaceDirections.RbsRightSpace))
-                        Debug.LogError("移動エフェクト制御の失敗");
-                    if (!PlayEffectMove(_spaceDirections.RbsLeftSpace))
-                        Debug.LogError("移動エフェクト制御の失敗");
-                });
-            // 不要なグループ削除
-            var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
-            foreach (var obj in moveCubeGroups)
-                obj.ObserveEveryValueChanged(x => x.transform.childCount < 1)
-                    .Where(x => x)
-                    .Subscribe(_ => Destroy(obj));
-            // SEの制御（左空間）
-            var leftMoveSE = false;
-            var leftVelocityMagnitude = new FloatReactiveProperty();
-            leftVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
-                .Subscribe(x =>
-                {
+                // 空間内のブロック座標をチェック
+                this.UpdateAsObservable()
+                    .Subscribe(_ =>
+                    {
+                        if (!CheckPositionAndSetMoveCubesComponents(_moveCubes))
+                            Debug.LogError("制御対象RigidBody格納の失敗");
+                        if (!PlayEffectMove(_spaceDirections.RbsRightSpace))
+                            Debug.LogError("移動エフェクト制御の失敗");
+                        if (!PlayEffectMove(_spaceDirections.RbsLeftSpace))
+                            Debug.LogError("移動エフェクト制御の失敗");
+                    });
+                // 不要なグループ削除
+                var moveCubeGroups = GameObject.FindGameObjectsWithTag(TagConst.TAG_NAME_MOVECUBEGROUP);
+                foreach (var obj in moveCubeGroups)
+                    obj.ObserveEveryValueChanged(x => x.transform.childCount < 1)
+                        .Where(x => x)
+                        .Subscribe(_ => Destroy(obj));
+                // SEの制御（左空間）
+                var leftMoveSE = false;
+                var leftVelocityMagnitude = new FloatReactiveProperty();
+                leftVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
+                    .Subscribe(x =>
+                    {
                     // 0より大きくなった時に一度だけ
                     if (!leftMoveSE && CheckMovementLeftOrRightSpace(_inputBan, x, _spaceDirections.RbsLeftSpace))
+                        {
+                            leftMoveSE = true;
+                            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_block_float);
+                        }
+                        else if (0 == x && leftMoveSE)
+                            leftMoveSE = false;
+                    })
+                    .AddTo(_compositeDisposable);
+                // SEの制御（右空間）
+                var rightMoveSE = false;
+                var rightVelocityMagnitude = new FloatReactiveProperty();
+                rightVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
+                    .Subscribe(x =>
                     {
-                        leftMoveSE = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
-                    }
-                    else if (0 == x && leftMoveSE)
-                        leftMoveSE = false;
-                })
-                .AddTo(_compositeDisposable);
-            // SEの制御（右空間）
-            var rightMoveSE = false;
-            var rightVelocityMagnitude = new FloatReactiveProperty();
-            rightVelocityMagnitude.ObserveEveryValueChanged(x => x.Value)
-                .Subscribe(x =>
-                {
                     // 0より大きくなった時に一度だけ
                     if (!rightMoveSE && CheckMovementLeftOrRightSpace(_inputBan, x, _spaceDirections.RbsRightSpace))
-                    {
-                        rightMoveSE = true;
-                        SfxPlay.Instance.PlaySFX(ClipToPlay.se_block_float);
-                    }
-                    else if (0 == x && rightMoveSE)
-                        rightMoveSE = false;
-                })
-                .AddTo(_compositeDisposable);
+                        {
+                            rightMoveSE = true;
+                            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_block_float);
+                        }
+                        else if (0 == x && rightMoveSE)
+                            rightMoveSE = false;
+                    })
+                    .AddTo(_compositeDisposable);
 
-            // 左空間の制御
-            this.FixedUpdateAsObservable()
-                .Do(_ => leftVelocityMagnitude.Value = _spaceDirections.MoveVelocityLeftSpace.magnitude)
-                .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityLeftSpace.magnitude, _spaceDirections.RbsLeftSpace))
-                .Subscribe(_ =>
-                {
-                    if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
-                        _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
-                    if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.ScrLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
-                        Debug.Log("左空間：MoveCubeの制御を破棄");
-                })
-                .AddTo(_compositeDisposable);
-            // 右空間の制御
-            this.FixedUpdateAsObservable()
-                .Do(_ => rightVelocityMagnitude.Value = _spaceDirections.MoveVelocityRightSpace.magnitude)
-                .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityRightSpace.magnitude, _spaceDirections.RbsRightSpace))
-                .Subscribe(_ =>
-                {
-                    if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
-                        _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
-                    if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.ScrRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
-                        Debug.Log("右空間：MoveCubeの制御を破棄");
-                })
-                .AddTo(_compositeDisposable);
-            if (!InitializePool())
-                Debug.LogError("プール作成の失敗");
+                // 左空間の制御
+                this.FixedUpdateAsObservable()
+                    .Do(_ => leftVelocityMagnitude.Value = _spaceDirections.MoveVelocityLeftSpace.magnitude)
+                    .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityLeftSpace.magnitude, _spaceDirections.RbsLeftSpace))
+                    .Subscribe(_ =>
+                    {
+                        if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
+                            _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
+                        if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
+                            Debug.Log("左空間：MoveCubeの制御を破棄");
+                    })
+                    .AddTo(_compositeDisposable);
+                // 右空間の制御
+                this.FixedUpdateAsObservable()
+                    .Do(_ => rightVelocityMagnitude.Value = _spaceDirections.MoveVelocityRightSpace.magnitude)
+                    .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityRightSpace.magnitude, _spaceDirections.RbsRightSpace))
+                    .Subscribe(_ =>
+                    {
+                        if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
+                            _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
+                        if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
+                            Debug.Log("右空間：MoveCubeの制御を破棄");
+                    })
+                    .AddTo(_compositeDisposable);
+                if (!InitializePool())
+                    Debug.LogError("プール作成の失敗");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -240,20 +250,9 @@ namespace Main.Level
         /// <summary>
         /// 管理系の処理を破棄
         /// </summary>
-        public void DisposeAllFromSceneInfoManager()
+        public void DisposeAllFromSceneOwner()
         {
             _compositeDisposable.Clear();
-        }
-
-        /// <summary>
-        /// 疑似スタートを発火させる
-        /// SceneInfoManagerからの呼び出し
-        /// </summary>
-        /// <returns>成功／失敗</returns>
-        public bool PlayManualStartFromSceneInfoManager()
-        {
-            ManualStart();
-            return true;
         }
 
         /// <summary>
@@ -276,6 +275,23 @@ namespace Main.Level
                 var group = Instantiate(moveCubeGroup, obj.transform.position, Quaternion.identity);
                 group.transform.parent = level;
                 obj.transform.parent = group.transform;
+                // 空間操作ブロックの速度ストッパー（弾き飛ばされないようにする）
+                group.GetComponent<Rigidbody>().ObserveEveryValueChanged(x => x.velocity)
+                    .Subscribe(x =>
+                    {
+                        if (8f < x.magnitude)
+                        {
+                            if (_spaceDirections.RbsLeftSpace != null)
+                                foreach (var r in _spaceDirections.RbsLeftSpace)
+                                    r.isKinematic = true;
+                            if (_spaceDirections.RbsRightSpace != null)
+                                foreach (var r in _spaceDirections.RbsRightSpace)
+                                    r.isKinematic = true;
+                        }
+                    });
+                group.GetComponent<Rigidbody>().ObserveEveryValueChanged(x => x.isKinematic)
+                    .Where(x => x)
+                    .Subscribe(_ => DOVirtual.DelayedCall(.5f, () => group.GetComponent<Rigidbody>().isKinematic = false));
 
                 var rOrgOffAry = LevelDesisionIsObjected.GetThreePointHorizontal(rayOriginOffset, .5f);
                 // プレイヤーの接地判定
@@ -283,7 +299,7 @@ namespace Main.Level
                     .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[2], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
-                    .Select(_ => GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Select(_ => GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactor(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"))
                     .AddTo(_compositeDisposable);
@@ -291,11 +307,11 @@ namespace Main.Level
                 obj.UpdateAsObservable()
                     .Where(_ => (LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetLeft, rayDirectionLeft, rayMaxDistanceLeft, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rayOriginOffsetRight, rayDirectionRight, rayMaxDistanceRight, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER))) &&
-                        (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, obj, GameManager.Instance.Player.transform.position) ||
-                        CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, GameManager.Instance.Player.transform.position)))
+                        (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, obj, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position) ||
+                        CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position)))
                     .Subscribe(_ =>
                     {
-                        if (!GameManager.Instance.MoveCharactorFromSpaceManager(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactor(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                             Debug.LogError("プレイヤー操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -307,7 +323,7 @@ namespace Main.Level
                     .Subscribe(x =>
                     {
                         var top = LevelDesisionIsObjected.IsOnEnemiesAndInfo(x.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                        if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
+                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
                             Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -320,7 +336,7 @@ namespace Main.Level
                         if (left != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, left.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, left.transform.position)))
-                            if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
+                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -333,7 +349,7 @@ namespace Main.Level
                         if (right != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, right.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, right.transform.position)))
-                            if (!GameManager.Instance.MoveRobotEnemyFromSpaceManager(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
+                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -363,9 +379,11 @@ namespace Main.Level
                     .Subscribe(async _ =>
                     {
                         isDead = true;
-                        await GameManager.Instance.DeadPlayerFromSpaceManager();
-                        SceneInfoManager.Instance.SetSceneIdUndo();
-                        UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                        if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                            Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                        await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
+                        GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                     })
                     .AddTo(_compositeDisposable);
                 // 敵との衝突
@@ -377,7 +395,7 @@ namespace Main.Level
                     {
                         var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES);
                         if (target != null)
-                            GameManager.Instance.DestroyHumanEnemyFromSpaceManager(target);
+                            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyHumanEnemies(target);
                     })
                     .AddTo(_compositeDisposable);
             }
@@ -422,6 +440,7 @@ namespace Main.Level
         /// </summary>
         /// <param name="originObject">衝突を受けたオブジェクト</param>
         /// <param name="meetParentObject">衝突したオブジェクト</param>
+        /// <param name="contactsPoint">衝突位置の座標</param>
         /// <returns>MoveCubeのペアと角度／空（親オブジェクト内の子オブジェクトが存在しない）</returns>
         private ConnectDirection2D GetMatchingMoveCubes(GameObject originObject, GameObject meetParentObject, Vector3 contactsPoint)
         {
@@ -538,9 +557,6 @@ namespace Main.Level
             return _connectDirections.Count;
         }
 
-        /// <summary>接続のSEパターン</summary>
-        [SerializeField] private ClipToPlay connectSEPattern = ClipToPlay.se_conect_No1;
-
         /// <summary>
         /// マッチング済みのペア同士を接続する
         /// </summary>
@@ -556,32 +572,40 @@ namespace Main.Level
                 var orgTran = _connectDirections[0].OriginMoveCube.transform;
                 var metTran = _connectDirections[1].OriginMoveCube.transform;
 
-                if (!_inputBan)
-                {
-                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
-                        Debug.Log("パーティクル生成の失敗");
-                    SfxPlay.Instance.PlaySFX(connectSEPattern);
-                }
-
                 // 位置の補正
                 switch (_connectDirections[0].OriginRayDire)
                 {
                     case Direction.UP:
                         var uMove = (orgTran.position + Vector3.up) - metTran.position;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.up, uMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
                         metTran.parent.position += uMove;
                         break;
                     case Direction.DOWN:
                         var dMove = (orgTran.position + Vector3.down) - metTran.position;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetDown, Vector3.down, dMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
                         metTran.parent.position += dMove;
                         break;
                     case Direction.LEFT:
                         var lMove = (orgTran.position + Vector3.left) - metTran.position;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetLeft, Vector3.left, lMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
                         metTran.parent.position += lMove;
                         break;
                     case Direction.RIGHT:
                         var rMove = (orgTran.position + Vector3.right) - metTran.position;
+                        if (CheckMeetDistance(metTran, rayOriginOffsetUp, Vector3.right, rMove.magnitude, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)))
+                            return false;
                         metTran.parent.position += rMove;
                         break;
+                }
+
+                if (!_inputBan)
+                {
+                    if (!PlayConnectParticle(new Vector3(_connectDirections[0].ContactsPoint.x, _connectDirections[0].ContactsPoint.y, _connectDirections[0].ContactsPoint.z - 1f), orgTran.parent.childCount + metTran.parent.childCount))
+                        Debug.Log("パーティクル生成の失敗");
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_conect_No1);
                 }
 
                 // お互いの親にぶら下がっている子オブジェクトの数を比較
@@ -605,6 +629,24 @@ namespace Main.Level
                 }
                 return true;
             }
+            return false;
+        }
+
+        /// <summary>
+        /// コネクトによって座標移動を行う際、事前に移動距離を測る
+        /// 静的オブジェクトにMoveCubeが詰まったりしないようにする
+        /// </summary>
+        /// <param name="meet">衝突ブロック（移動対象）</param>
+        /// <param name="offset">始点</param>
+        /// <param name="direction">終点</param>
+        /// <param name="distance">距離</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>移動先に静的オブジェクトがあるか</returns>
+        private bool CheckMeetDistance(Transform meet, Vector3 offset, Vector3 direction, float distance, int layerMask)
+        {
+            foreach (Transform child in meet.parent)
+                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(child.position, offset, direction, distance, layerMask))
+                    return true;
             return false;
         }
 
@@ -835,18 +877,18 @@ namespace Main.Level
         private bool SetMoveVelocotyLeftAndRight()
         {
             // キーボード
-            var lCom = Input.GetButton(InputConst.INPUT_CONST_LS_COM);
-            var hztlLKey = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS_KEYBOD);
-            var vtclLkey = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS_KEYBOD);
-            var rCom = Input.GetButton(InputConst.INPUT_CONST_RS_COM);
-            var hztlRKey = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS_KEYBOD);
-            var vtclRkey = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS_KEYBOD);
+            var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
+            var hztlLKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.x;
+            var vtclLkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLMove.y;
+            var rCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRAxcel;
+            var hztlRKey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.x;
+            var vtclRkey = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualRMove.y;
 
             // コントローラー
-            var hztlL = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_LS);
-            var vtclL = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_LS);
-            var hztlR = Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL_RS);
-            var vtclR = Input.GetAxis(InputConst.INPUT_CONST_VERTICAL_RS);
+            var hztlL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.x;
+            var vtclL = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoLMove.y;
+            var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
+            var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
 
             if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
                 (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
@@ -885,19 +927,20 @@ namespace Main.Level
         /// <summary>
         /// 動かすブロックの位置が左空間・右空間かを調べて、各空間操作用のリストへ格納
         /// </summary>
+        /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <returns>処理結果の成功／失敗</returns>
-        private bool CheckPositionAndSetMoveCubesComponents(GameObject[] gameObjects)
+        private bool CheckPositionAndSetMoveCubesComponents(GameObject[] moveCubes)
         {
-            if (0 < gameObjects.Length)
+            if (0 < moveCubes.Length)
             {
-                // RididBodyのリスト
+                // RigidBodyのリスト
                 var rbsLeft = new List<Rigidbody>();
                 var rbsRight = new List<Rigidbody>();
                 // Animatorのリスト
                 var scrsLeft = new List<MoveCbSmall>();
                 var scrsRight = new List<MoveCbSmall>();
 
-                foreach (var obj in gameObjects)
+                foreach (var obj in moveCubes)
                 {
                     // グループ化されている場合は親のRigidBodyをセット
                     var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
@@ -965,14 +1008,14 @@ namespace Main.Level
                         {
                             foreach (Transform child in group.transform)
                             {
-                                child.GetComponent<MoveCbSmall>().OnAirHoverFromSpaceManager();
+                                child.GetComponent<MoveCbSmall>().OnAirHoverFromSpaceOwner();
                             }
                         }
                         else
                         {
                             foreach (Transform child in group.transform)
                             {
-                                child.GetComponent<MoveCbSmall>().OnFreezeFromSpaceManager();
+                                child.GetComponent<MoveCbSmall>().OnFreezeFromSpaceOwner();
                             }
                         }
                     }
@@ -992,7 +1035,7 @@ namespace Main.Level
         /// <param name="moveVelocitySpace">移動ベクトル</param>
         /// <param name="moveSpeed">移動速度（初動／移動）</param>
         /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
-        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, MoveCbSmall[] objs, Vector3 moveVelocitySpace, float moveSpeed)
+        private bool MoveMoveCube(Rigidbody[] rigidBodySpace, Vector3 moveVelocitySpace, float moveSpeed)
         {
             for (var i = 0; i < rigidBodySpace.Length; i++)
             {
@@ -1007,7 +1050,8 @@ namespace Main.Level
                     else
                         rigidBodySpace[i].velocity = new Vector3(rigidBodySpace[i].velocity.x, 0f, 0f);
 
-                    rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
+                    if (!rigidBodySpace[i].isKinematic)
+                        rigidBodySpace[i].AddForce(moveVelocitySpace * moveSpeed * (1 - Time.deltaTime));
                 }
             }
             return true;
@@ -1096,11 +1140,11 @@ namespace Main.Level
     /// </summary>
     public enum ParticleSystemPoolIdx
     {
-        /// <summary>0番目</summary>
-        FIRST
         /// <summary>1番目</summary>
-            , SECOND
+        FIRST,
         /// <summary>2番目</summary>
-            , THIRD
+        SECOND,
+        /// <summary>3番目</summary>
+        THIRD,
     }
 }

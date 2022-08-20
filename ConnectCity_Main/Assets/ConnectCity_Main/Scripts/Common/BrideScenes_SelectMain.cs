@@ -70,7 +70,7 @@ namespace Main.Common
         /// <param name="mode"></param>
         private void LoadedGameScene(Scene next, LoadSceneMode mode)
         {
-            SceneInfoManager.Instance.UpdateScenesMap(_loadSceneId);
+            GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().UpdateScenesMap(_loadSceneId);
             // シーン移動の度に実行されないように消す
             SceneManager.sceneLoaded -= LoadedGameScene;
         }

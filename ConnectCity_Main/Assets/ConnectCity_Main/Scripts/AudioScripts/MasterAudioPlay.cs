@@ -19,15 +19,11 @@ namespace Main.Audio
         {
             Initialize();
         }
-        private void Start()
-        {
-            Initialize();
-        }
 
         /// <summary>
         /// 初期設定
         /// </summary>
-        protected virtual void Initialize() { }
+        public virtual bool Initialize() { return false; }
 
         /// <summary>
         /// 指定されたSEを再生する

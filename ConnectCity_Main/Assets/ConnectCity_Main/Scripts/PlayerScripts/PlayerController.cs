@@ -9,6 +9,7 @@ using Main.Audio;
 using System.Threading.Tasks;
 using Main.Common;
 using Main.Level;
+using Main.InputSystem;
 
 namespace Main.Player
 {
@@ -28,6 +29,12 @@ namespace Main.Player
         [SerializeField] private Vector3 rayDirection = Vector3.down;
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
         [SerializeField] private float rayMaxDistance = 0.8f;
+        /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
+        [SerializeField] private Vector3 rayUpOriginOffset = new Vector3(0f, -.1f);
+        /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
+        [SerializeField] private Vector3 rayUpDirection = Vector3.up;
+        /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+        [SerializeField] private float rayUpMaxDistance = 0.8f;
         /// <summary>キャラクター制御</summary>
         [SerializeField] private CharacterController _characterCtrl;
         /// <summary>プレイヤーのアニメーション</summary>
@@ -42,15 +49,18 @@ namespace Main.Player
         [SerializeField] private Color StopLight = new Color(255f, 70f, 0f, 255f);
         /// <summary>
         /// ジャンプSEの設定
-        /// T.B.D ジャンプSEの候補１ or 候補２を決める
         /// </summary>
         [SerializeField] private ClipToPlay _SEJump = ClipToPlay.se_player_jump_No1;
         /// <summary>圧死音SEの設定</summary>
         [SerializeField] private ClipToPlay _SEDead = ClipToPlay.se_player_dead;
+        /// <summary>重力速度の最小値</summary>
+        [SerializeField] private float minGravity = -1f;
+        /// <summary>重力速度の最大値</summary>
+        [SerializeField] private float maxGravity = -10f;
         /// <summary>ジャンプ状態</summary>
         private BoolReactiveProperty _isJumped = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
-        private BoolReactiveProperty _inputBan;
+        private BoolReactiveProperty _inputBan = new BoolReactiveProperty();
         /// <summary>入力禁止</summary>
         public bool InputBan
         {
@@ -98,7 +108,6 @@ namespace Main.Player
             // 移動先の座標（X軸の移動、Y軸のジャンプのみ）
             var moveVelocity = new Vector3();
 
-            _inputBan = new BoolReactiveProperty();
             _inputBan.ObserveEveryValueChanged(x => x.Value)
                 .Subscribe(x =>
                 {
@@ -116,7 +125,7 @@ namespace Main.Player
             // 移動入力に応じて移動座標をセット
             this.UpdateAsObservable()
                 .Where(_ => !_inputBan.Value)
-                .Select(_ => Input.GetAxis(InputConst.INPUT_CONST_HORIZONTAL) * moveSpeed)
+                .Select(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputPlayer.Moved.x * moveSpeed)
                 .Subscribe(x =>
                 {
                     moveVelocity.x = x;
@@ -127,9 +136,11 @@ namespace Main.Player
             this.UpdateAsObservable()
                 .Where(_ => !_inputBan.Value)
                 .Where(_ => !_isJumped.Value &&
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
-                .Select(_ => Input.GetButtonDown(InputConst.INPUT_CONSTJUMP))
+                    (LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE))) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayUpOriginOffset, rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayUpOriginOffset, rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                .Select(_ => GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputPlayer.Jumped)
                 .Where(x => x)
                 .Subscribe(x => _isJumped.Value = x);
             // ジャンプフラグ切り替え
@@ -137,7 +148,7 @@ namespace Main.Player
                 .Subscribe(_ =>
                 {
                     moveVelocity.y = jumpSpeed;
-                    SfxPlay.Instance.PlaySFX(_SEJump);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEJump);
                     if (!_particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.activeSelf)
                         _particleSystems[(int)PlayerEffectIdx.RunDust].gameObject.SetActive(true);
                     _particleSystems[(int)PlayerEffectIdx.RunDust].Play();
@@ -148,10 +159,11 @@ namespace Main.Player
                 .Where(_ => !_isJumped.Value &&
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
                     LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
-                .Select(_ => moveVelocity.y < 0f)
+                .Select(_ => moveVelocity.y < minGravity)
                 .Where(x => x)
-                .Subscribe(x => {
-                    moveVelocity.y = 0f;
+                .Subscribe(x =>
+                {
+                    moveVelocity.y = minGravity;
                 });
             // 空中にいる際の移動座標をセット
             var rOrgOffAry = LevelDesisionIsObjected.GetTwoPointHorizontal(rayOriginOffset, .5f);
@@ -160,7 +172,20 @@ namespace Main.Player
                     !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
                     !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
                     !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
-                .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
+                .Subscribe(_ => moveVelocity.y = moveVelocity.y < maxGravity ? maxGravity : moveVelocity.y + Physics.gravity.y * Time.deltaTime);
+            // 天井・ブロックへの衝突
+            var rUpOrgOffAry = LevelDesisionIsObjected.GetTwoPointHorizontal(rayUpOriginOffset, .5f);
+            this.UpdateAsObservable()
+                .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rUpOrgOffAry[0], rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rUpOrgOffAry[1], rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rUpOrgOffAry[0], rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) ||
+                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rUpOrgOffAry[1], rayUpDirection, rayUpMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                .Subscribe(_ =>
+                {
+                    moveVelocity.y = moveVelocity.y < maxGravity ? maxGravity : moveVelocity.y + Physics.gravity.y * Time.deltaTime;
+                    if (_characterCtrl.enabled)
+                        _characterCtrl.Move(moveVelocity * Time.deltaTime);
+                });
 
             // 移動
             this.FixedUpdateAsObservable()
@@ -228,7 +253,7 @@ namespace Main.Player
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactorFromGameManager(Vector3 moveVelocity)
+        public bool MoveChatactor(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -240,7 +265,7 @@ namespace Main.Player
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayerFromGameManager()
+        public async Task<bool> DeadPlayer()
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)
@@ -252,8 +277,8 @@ namespace Main.Player
             if (!_particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.activeSelf)
                 _particleSystems[(int)PlayerEffectIdx.DiedLight].gameObject.SetActive(true);
             // 圧死音SE
-            SfxPlay.Instance.PlaySFX(_SEDead);
-            GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEDead);
+            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;

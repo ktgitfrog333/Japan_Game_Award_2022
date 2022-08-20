@@ -63,7 +63,7 @@ namespace Gimmick
                         played.Value = false;
                     });
                     StartCoroutine(coroutine);
-                    SfxPlay.Instance.PlaySFX(turretEnemiesSE);
+                    GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(turretEnemiesSE);
                 })
                 .AddTo(_compositeDisposable)
                 .AddTo(gameObject);
@@ -127,9 +127,9 @@ namespace Gimmick
         /// </summary>
         private async void DeadPlayer()
         {
-            await GameManager.Instance.DeadPlayerFromTurretEnemies();
-            SceneInfoManager.Instance.SetSceneIdUndo();
-            UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+            await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
+            GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
         }
 
         /// <summary>

@@ -8,8 +8,9 @@ using UnityEngine.UI;
 using Main.Audio;
 using Main.UI;
 using Main.Common;
+using Main.InputSystem;
 
-namespace Main.Level
+namespace Main.UI
 {
     /// <summary>
     /// ショートカット入力
@@ -38,22 +39,22 @@ namespace Main.Level
                 .Where(_ => !InputBan)
                 .Subscribe(_ =>
                 {
-                    if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTUNDO))
+                    if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Undoed)
                         isPushedContents[(int)ShortcuActionMode.UndoAction] = true;
-                    else if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTSELECT))
+                    else if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Selected)
                         isPushedContents[(int)ShortcuActionMode.SelectAction] = true;
-                    else if (!CheckAllContentsActive(isPushedContents) && Input.GetButtonDown(InputConst.INPUT_CONSTMANUAL))
+                    else if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Manualed)
                         isPushedContents[(int)ShortcuActionMode.CheckAction] = true;
                 });
             // ボタンから手を離す
             this.UpdateAsObservable()
                 .Subscribe(_ =>
                 {
-                    if (isPushedContents[(int)ShortcuActionMode.UndoAction] && Input.GetButtonUp(InputConst.INPUT_CONSTUNDO))
+                    if (isPushedContents[(int)ShortcuActionMode.UndoAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Undoed)
                         isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
-                    if (isPushedContents[(int)ShortcuActionMode.SelectAction] && Input.GetButtonUp(InputConst.INPUT_CONSTSELECT))
+                    if (isPushedContents[(int)ShortcuActionMode.SelectAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Selected)
                         isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
-                    if (isPushedContents[(int)ShortcuActionMode.CheckAction] && Input.GetButtonUp(InputConst.INPUT_CONSTMANUAL))
+                    if (isPushedContents[(int)ShortcuActionMode.CheckAction] && !GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Manualed)
                         isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
                 });
 
@@ -69,6 +70,8 @@ namespace Main.Level
                     else
                         pushingTime.Value = 0f;
                 });
+            // イベントを一度だけ実行するためのフラグ
+            var single = new BoolReactiveProperty(false);
             pushingTime.ObserveEveryValueChanged(x => x.Value)
                 .Subscribe(x =>
                 {
@@ -76,36 +79,37 @@ namespace Main.Level
                     {
                         if (isPushedContents[(int)ShortcuActionMode.UndoAction])
                         {
-                            if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
+                            if (!single.Value && 1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.UndoAction, x, undoPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(retrySEPattern);
-                                SceneInfoManager.Instance.SetSceneIdUndo();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
-                                x = 0f;
-                                isPushedContents[(int)ShortcuActionMode.UndoAction] = false;
+                                single.Value = true;
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(retrySEPattern);
+                                GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                                if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                                    Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }
                         }
-                        else if (isPushedContents[(int)ShortcuActionMode.SelectAction])
+                        else if (!single.Value && isPushedContents[(int)ShortcuActionMode.SelectAction])
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.SelectAction, x, selectPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
-                                SceneInfoManager.Instance.SetSelectSceneNameIdFromMain_Scene();
-                                UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
-                                GameManager.Instance.SpaceManager.GetComponent<SpaceManager>().InputBan = true;
-                                x = 0f;
-                                isPushedContents[(int)ShortcuActionMode.SelectAction] = false;
+                                single.Value = true;
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_decided);
+                                GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
+                                if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
+                                    Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }
                         }
-                        else if (isPushedContents[(int)ShortcuActionMode.CheckAction])
+                        else if (!single.Value && isPushedContents[(int)ShortcuActionMode.CheckAction])
                         {
                             if (1f <= EnabledPushGageAndGetFillAmount(ShortcuActionMode.CheckAction, x, manualPushTimeLimit))
                             {
-                                SfxPlay.Instance.PlaySFX(manualSEPattern);
-                                UIManager.Instance.GameManualScrollViewSetActiveFromUIManager(true);
-                                x = 0f;
-                                isPushedContents[(int)ShortcuActionMode.CheckAction] = false;
+                                single.Value = true;
+                                GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(manualSEPattern);
+                                GameManager.Instance.UIOwner.GetComponent<UIOwner>().GameManualScrollViewSetActiveFromUIOwner(true);
                             }
                         }
                     }
@@ -115,6 +119,7 @@ namespace Main.Level
                         c.GetChild((int)ShortcuActionMode.UndoAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
                         c.GetChild((int)ShortcuActionMode.SelectAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
                         c.GetChild((int)ShortcuActionMode.CheckAction).GetChild(3).GetComponent<Image>().fillAmount = 0f;
+                        single.Value = false;
                     }
                 });
         }

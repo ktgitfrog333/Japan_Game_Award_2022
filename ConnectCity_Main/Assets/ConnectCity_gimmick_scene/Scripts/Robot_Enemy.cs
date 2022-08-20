@@ -21,8 +21,6 @@ namespace Gimmick
     {
         /// <summary>移動速度</summary>
         [SerializeField] private float moveSpeed = 4f;
-        ///// <summary>移動距離</summary>
-        //[SerializeField] private float distance;
         /// <summary>キャラクター制御</summary>
         [SerializeField] private CharacterController _characterCtrl;
         /// <summary>プレイヤーのアニメーション</summary>
@@ -42,16 +40,12 @@ namespace Gimmick
         [SerializeField] private Vector3 rayDirectionLeft = Vector3.left;
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
         [SerializeField] private float rayMaxDistanceLeft = .8f;
-        ///// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
-        //[SerializeField] private float rayMaxDistanceLeftLong = 1.6f;
         /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
         [SerializeField] private Vector3 rayOriginOffsetRight = new Vector3(-.1f, 0f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         [SerializeField] private Vector3 rayDirectionRight = Vector3.right;
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
         [SerializeField] private float rayMaxDistanceRight = .8f;
-        ///// <summary>接地判定用のレイ　当たり判定の最大距離（プレス用）</summary>
-        //[SerializeField] private float rayMaxDistanceRightLong = 1.6f;
         /// <summary>敵を吹き飛ばす先の座標（死亡状態）</summary>
         [SerializeField] private Vector3 smashedPosition = Vector3.back * 100f;
         /// <summary>死亡状態</summary>
@@ -93,13 +87,11 @@ namespace Gimmick
                 {
                     moveVelocity = Vector3.left * x * moveSpeed;
                     // 移動時にx座標反転（元オブジェクト補正）
-                    transform.LookAt(transform.position + new Vector3((moveVelocity.x)/* * -1f*/, 0f, 0f));
+                    transform.LookAt(transform.position + new Vector3((moveVelocity.x), 0f, 0f));
                 });
 
             // 空中にいる際の移動座標をセット
             this.UpdateAsObservable()
-                .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
-                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
                 .Subscribe(_ => moveVelocity.y += Physics.gravity.y * Time.deltaTime);
 
             // 移動
@@ -125,9 +117,9 @@ namespace Gimmick
                 .Subscribe(async _ =>
                 {
                     _isDead = true;
-                    await GameManager.Instance.DeadPlayerFromRobotEnemies();
-                    SceneInfoManager.Instance.SetSceneIdUndo();
-                    UIManager.Instance.EnableDrawLoadNowFadeOutTrigger();
+                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
+                    GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                    GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
         }
 
@@ -145,11 +137,11 @@ namespace Gimmick
         }
 
         /// <summary>
-        /// ゲームオブジェクトからプレイヤー操作を実行
+        /// 敵操作を実行
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveRobotEnemyFromGameManager(Vector3 moveVelocity)
+        public bool MoveRobotEnemy(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -159,15 +151,15 @@ namespace Gimmick
         }
 
         /// <summary>
-        /// プレイヤーを死亡させる
+        /// 敵を破壊させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DeadPlayerFromGameManager()
+        public bool DestroyHumanEnemies()
         {
             // 圧死時のパーティクル
             Instantiate(diedLight, transform.position, Quaternion.identity);
             // 圧死音SE
-            SfxPlay.Instance.PlaySFX(ClipToPlay.se_player_dead);
+            GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(ClipToPlay.se_player_dead);
             _characterCtrl.enabled = false;
             transform.localPosition = smashedPosition;
             return true;

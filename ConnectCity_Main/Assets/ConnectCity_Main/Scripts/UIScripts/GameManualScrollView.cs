@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UniRx;
 using UniRx.Triggers;
 using Main.Audio;
+using Main.Common;
 
 namespace Main.UI
 {
@@ -49,16 +50,6 @@ namespace Main.UI
         private void Start()
         {
             Initialize();
-            // マウスボタン・キャンセルボタンが押されたら画面を閉じる
-            this.UpdateAsObservable()
-                .Where(_ => Input.GetMouseButtonDown(0) ||
-                    Input.GetMouseButtonDown(1) ||
-                    Input.GetMouseButtonDown(2))
-                .Subscribe(_ =>
-                {
-                    SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
-                    UIManager.Instance.CloseManual();
-                });
         }
 
         private void Initialize()
