@@ -1,6 +1,6 @@
 Using pre-set license
 Built from '2020.3/staging' branch; Version is '2020.3.25f1 (9b9180224418) revision 10195328'; Using compiler version '192528614'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19043) 64bit Core' Language: 'ja' Physical Memory: 8118 MB
+OS: 'Windows 10  (10.0.19043) 64bit Core' Language: 'ja' Physical Memory: 16306 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
 
 COMMAND LINE ARGUMENTS:
@@ -11,113 +11,113 @@ C:\Program Files\Unity\Hub\Editor\2020.3.25f1\Editor\Unity.exe
 -name
 AssetImportWorker0
 -projectPath
-C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity_gimmick_scene
+C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_gimmick_scene
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-53830
-Successfully changed project path to: C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity_gimmick_scene
-C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity_gimmick_scene
+53551
+Successfully changed project path to: C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_gimmick_scene
+C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_gimmick_scene
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 47.75 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 29.44 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.25f1 (9b9180224418)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path C:/Users/hirok/Documents/Unity/Japan_Game_Award_2022/ConnectCity_gimmick_scene/Assets
+[Subsystems] Discovering subsystems at path C:/Users/kzpaqu/Documents/Japan_Game_Award_2022_Fork/ConnectCity_gimmick_scene/Assets
 GfxDevice: creating device client; threaded=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: Intel(R) UHD Graphics 620 (ID=0x5917)
+    Renderer: NVIDIA GeForce GTX 1080 (ID=0x1b80)
     Vendor:   
-    VRAM:     4059 MB
-    Driver:   27.20.100.9416
+    VRAM:     8079 MB
+    Driver:   30.0.15.1259
 Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56532
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56008
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.3.25f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003575 seconds.
+Registered in 0.001884 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 37.04 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 28.58 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.723 seconds
+- Completed reload, in  0.485 seconds
 Domain Reload Profiling:
-	ReloadAssembly (723ms)
-		BeginReloadAssembly (92ms)
+	ReloadAssembly (485ms)
+		BeginReloadAssembly (49ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (544ms)
-			LoadAssemblies (91ms)
+		EndReloadAssembly (374ms)
+			LoadAssemblies (47ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (176ms)
+			SetupTypeCache (125ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (36ms)
-			SetupLoadedEditorAssemblies (189ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (132ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (37ms)
-				BeforeProcessingInitializeOnLoad (18ms)
-				ProcessInitializeOnLoadAttributes (94ms)
-				ProcessInitializeOnLoadMethodAttributes (35ms)
+				InitializePlatformSupportModulesInManaged (3ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (29ms)
+				BeforeProcessingInitializeOnLoad (11ms)
+				ProcessInitializeOnLoadAttributes (66ms)
+				ProcessInitializeOnLoadMethodAttributes (23ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.014463 seconds.
+Registered in 0.004302 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.37 ms, found 2 plugins.
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.167 seconds
+- Completed reload, in  0.857 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1168ms)
-		BeginReloadAssembly (173ms)
+	ReloadAssembly (857ms)
+		BeginReloadAssembly (122ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (21ms)
-		EndReloadAssembly (931ms)
-			LoadAssemblies (129ms)
+			CreateAndSetChildDomain (15ms)
+		EndReloadAssembly (683ms)
+			LoadAssemblies (82ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (321ms)
+			SetupTypeCache (236ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (48ms)
-			SetupLoadedEditorAssemblies (358ms)
+			RebuildScriptCaches (36ms)
+			SetupLoadedEditorAssemblies (254ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
+				InitializePlatformSupportModulesInManaged (4ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (0ms)
-				BeforeProcessingInitializeOnLoad (83ms)
-				ProcessInitializeOnLoadAttributes (252ms)
-				ProcessInitializeOnLoadMethodAttributes (10ms)
-				AfterProcessingInitializeOnLoad (7ms)
+				BeforeProcessingInitializeOnLoad (68ms)
+				ProcessInitializeOnLoadAttributes (166ms)
+				ProcessInitializeOnLoadMethodAttributes (8ms)
+				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (7ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.11 seconds
-Refreshing native plugins compatible for Editor in 0.37 ms, found 2 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Refreshing native plugins compatible for Editor in 0.30 ms, found 2 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1504 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 70.7 MB.
-System memory in use after: 70.8 MB.
+System memory in use before: 69.3 MB.
+System memory in use after: 69.3 MB.
 
-Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 1940.
-Total: 2.881200 ms (FindLiveObjects: 0.128000 ms CreateObjectMapping: 0.044300 ms MarkObjects: 2.643000 ms  DeleteObjects: 0.065000 ms)
+Unloading 19 unused Assets to reduce memory usage. Loaded Objects now: 1936.
+Total: 2.266700 ms (FindLiveObjects: 0.112600 ms CreateObjectMapping: 0.034200 ms MarkObjects: 2.068300 ms  DeleteObjects: 0.051000 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -126,15 +126,1366 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
-  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
+  path: Assets/ConnectCity_gimmick_scene
+  artifactKey: Guid(584ce8274a429e5488c19bc2ef3fabcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene using Guid(584ce8274a429e5488c19bc2ef3fabcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1799b74e5b645df4bafc153f98fdd7d7') in 0.003729 seconds 
+  Import took 0.005530 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 9.840992 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs
+  artifactKey: Guid(ecaf31613f75e3f479f2237b6628f6b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs using Guid(ecaf31613f75e3f479f2237b6628f6b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '028c96d702b73c5cf1d84a954bbedcd8') in 0.001922 seconds 
+  Import took 0.004088 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 13.298552 seconds.
   path: Assets/Prefab/BreakBlook.prefab
   artifactKey: Guid(3fb5ce19ec17a624fa5d71fef8882dcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefab/BreakBlook.prefab using Guid(3fb5ce19ec17a624fa5d71fef8882dcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fef07df06c90c55de70afad4ca142b7e') in 0.155140 seconds 
-  Import took 0.158427 seconds .
+Start importing Assets/Prefab/BreakBlook.prefab using Guid(3fb5ce19ec17a624fa5d71fef8882dcd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '205afab41ebf819273252dbec2379010') in 0.218127 seconds 
+  Import took 0.220304 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.596906 seconds.
+  path: Assets/Prefab/BreakBlook 1.prefab
+  artifactKey: Guid(64585ada9d3c5d24dbaf8b5877dc572b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefab/BreakBlook 1.prefab using Guid(64585ada9d3c5d24dbaf8b5877dc572b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '401fabf2fdeeb1082b899450436f9dd2') in 0.013022 seconds 
+  Import took 0.015282 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.586323 seconds.
+  path: Assets/Prefab/dashpanel.prefab
+  artifactKey: Guid(8ede573b7eb590349b788674da23af42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefab/dashpanel.prefab using Guid(8ede573b7eb590349b788674da23af42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd805be1ac013a9f2f90cecd137de8b80') in 0.003990 seconds 
+  Import took 0.006129 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.685066 seconds.
+  path: Assets/Prefab/dashpanel 1.prefab
+  artifactKey: Guid(8058c436b66e34d49b8b564ca61fc12f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefab/dashpanel 1.prefab using Guid(8058c436b66e34d49b8b564ca61fc12f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f620686e2a78b029cfb75389406b3f5b') in 0.005568 seconds 
+  Import took 0.007656 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 45.601531 seconds.
+  path: Assets/Scenes/EnemyScene.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/EnemyScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a471e38a367a2b2ea2ed606b59b46e76') in 0.001985 seconds 
+  Import took 0.004439 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 9.605252 seconds.
+  path: Assets/Prefab/MainRobot.prefab
+  artifactKey: Guid(8c627d36398ef3f4ebbfcee73a199a9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefab/MainRobot.prefab using Guid(8c627d36398ef3f4ebbfcee73a199a9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dca636cf7a4eb1639268a6d7de1f5017') in 0.180779 seconds 
+  Import took 0.183352 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 37.957453 seconds.
+  path: Assets/Scenes/EnemyScene.unity
+  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/EnemyScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b1193765926385d1c7d81a3cead95178') in 0.001874 seconds 
+  Import took 0.004239 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.679805 seconds.
+  path: Assets/Scenes/FallFoorScene.unity
+  artifactKey: Guid(43112b86eacb8a0409296379262f722e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/FallFoorScene.unity using Guid(43112b86eacb8a0409296379262f722e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2adb1ee3a56a990d9e7baf1b1538ad72') in 0.001941 seconds 
+  Import took 0.004281 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 45.975973 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials
+  artifactKey: Guid(2e90e1f9802615d44b78b4647720a3ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials using Guid(2e90e1f9802615d44b78b4647720a3ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '772e571e64fe994475f8b0e5b83bee39') in 0.001769 seconds 
+  Import took 0.004006 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 74.897753 seconds.
+  path: Assets/Scenes/GravityScene.unity
+  artifactKey: Guid(b8bde312bdcc47a4784c122c5747ba88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/GravityScene.unity using Guid(b8bde312bdcc47a4784c122c5747ba88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '38550a54f965848e968aa2005df3d2ca') in 0.002316 seconds 
+  Import took 0.004571 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 77.902088 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity.prefab
+  artifactKey: Guid(8ede573b7eb590349b788674da23af42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity.prefab using Guid(8ede573b7eb590349b788674da23af42) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e7c8116d6046fb3860bc9e82d327d05f') in 0.003523 seconds 
+  Import took 0.005627 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 251.136010 seconds.
+  path: Assets
+  artifactKey: Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets using Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42d402b061de3733987d63b9cc3b64de') in 0.001748 seconds 
+  Import took 0.004240 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.903701 seconds.
+  path: Assets/Models
+  artifactKey: Guid(3de9211f5b7c23c418e9c6af841cc13c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models using Guid(3de9211f5b7c23c418e9c6af841cc13c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b00443cd279a210ca31ab19f7590dbe9') in 0.001642 seconds 
+  Import took 0.003941 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 4.824592 seconds.
+  path: Assets/Models/dashpanel.fbx
+  artifactKey: Guid(a5a52b69727ec3445bc71a23fa930af8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/dashpanel.fbx using Guid(a5a52b69727ec3445bc71a23fa930af8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24cc606d648db69931a01d9865ba568b') in 0.144389 seconds 
+  Import took 0.146758 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 26.610419 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity 1.prefab
+  artifactKey: Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity 1.prefab using Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '583f1a9cb216e31e01717f5adec920cb') in 0.009743 seconds 
+  Import took 0.012013 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 30.927665 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity 1.prefab
+  artifactKey: Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravity 1.prefab using Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f4de93f09907155c323b301e063a2dc6') in 0.008871 seconds 
+  Import took 0.011093 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 11.077927 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravityVer2.prefab
+  artifactKey: Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravityVer2.prefab using Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '811ccad09f31e9abcd29a579b7ca4c35') in 0.010350 seconds 
+  Import took 0.012636 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 333.099064 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravityVer2.prefab
+  artifactKey: Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/ChangeGravityVer2.prefab using Guid(c9414213e0ec88c4fa165f413978bac3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a3e47dcf0c7fd22ab752a4202d67c94e') in 0.007631 seconds 
+  Import took 0.010550 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 125.759619 seconds.
+  path: Assets/Delivery Robot/Prefabs
+  artifactKey: Guid(1dc95efbbf0d8d74c8c0c2a52bdf6f0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Delivery Robot/Prefabs using Guid(1dc95efbbf0d8d74c8c0c2a52bdf6f0c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7f8c5a7bb60a082f6c4811c1d573899d') in 0.001743 seconds 
+  Import took 0.004051 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.422136 seconds.
+  path: Assets/Delivery Robot/Models
+  artifactKey: Guid(6d3e3d711e030e341b28ef3c66f432f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Delivery Robot/Models using Guid(6d3e3d711e030e341b28ef3c66f432f7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '10bafda1489b04f5033151cdce22d70f') in 0.001767 seconds 
+  Import took 0.004134 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 6.100448 seconds.
+  path: Assets/Delivery Robot/Scene/Demo.unity
+  artifactKey: Guid(b892df8e309fa5c4fa59ebc24e526df3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Delivery Robot/Scene/Demo.unity using Guid(b892df8e309fa5c4fa59ebc24e526df3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '062d1dd18729443b0f5ea568c27bc9bc') in 0.002059 seconds 
+  Import took 0.004169 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 31.512084 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Animation/RobotAnim.controller
+  artifactKey: Guid(cf02b06a21c432840bf9ae99b6177bb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Animation/RobotAnim.controller using Guid(cf02b06a21c432840bf9ae99b6177bb3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2199e3fa2ee17878d9cbc5322db06d13') in 0.007877 seconds 
+  Import took 0.010318 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004388 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.811 seconds
+Domain Reload Profiling:
+	ReloadAssembly (811ms)
+		BeginReloadAssembly (106ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (27ms)
+		EndReloadAssembly (654ms)
+			LoadAssemblies (75ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (230ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (31ms)
+			SetupLoadedEditorAssemblies (236ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (63ms)
+				ProcessInitializeOnLoadAttributes (154ms)
+				ProcessInitializeOnLoadMethodAttributes (7ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.32 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1498 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.0 MB.
+System memory in use after: 87.1 MB.
+
+Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 1985.
+Total: 2.342400 ms (FindLiveObjects: 0.115200 ms CreateObjectMapping: 0.035900 ms MarkObjects: 2.175200 ms  DeleteObjects: 0.015400 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 199.765941 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Orange.prefab
+  artifactKey: Guid(1a2c76287bc28a04a95707dd2453a001) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Orange.prefab using Guid(1a2c76287bc28a04a95707dd2453a001) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0d319d10589e82d5d665c2921b8a31b9') in 0.097027 seconds 
+  Import took 0.101082 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 3.425783 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Orange 1.prefab
+  artifactKey: Guid(85aca3fe79c8d304caae1f4adbc15d71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Orange 1.prefab using Guid(85aca3fe79c8d304caae1f4adbc15d71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9fc0cc10119a67fdf5d68e662b2d5b0c') in 0.044013 seconds 
+  Import took 0.048184 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004457 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.793 seconds
+Domain Reload Profiling:
+	ReloadAssembly (793ms)
+		BeginReloadAssembly (94ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (28ms)
+		EndReloadAssembly (644ms)
+			LoadAssemblies (74ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (230ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (32ms)
+			SetupLoadedEditorAssemblies (234ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (61ms)
+				ProcessInitializeOnLoadAttributes (155ms)
+				ProcessInitializeOnLoadMethodAttributes (7ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1499 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.1 MB.
+System memory in use after: 87.3 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 1989.
+Total: 2.386400 ms (FindLiveObjects: 0.120500 ms CreateObjectMapping: 0.036300 ms MarkObjects: 2.217200 ms  DeleteObjects: 0.011800 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003993 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.799 seconds
+Domain Reload Profiling:
+	ReloadAssembly (799ms)
+		BeginReloadAssembly (101ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (25ms)
+		EndReloadAssembly (645ms)
+			LoadAssemblies (73ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (229ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (32ms)
+			SetupLoadedEditorAssemblies (234ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (61ms)
+				ProcessInitializeOnLoadAttributes (153ms)
+				ProcessInitializeOnLoadMethodAttributes (8ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.32 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1499 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.2 MB.
+System memory in use after: 87.3 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 1991.
+Total: 2.461400 ms (FindLiveObjects: 0.127400 ms CreateObjectMapping: 0.037900 ms MarkObjects: 2.283800 ms  DeleteObjects: 0.011700 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 87.182879 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Scripts
+  artifactKey: Guid(9b7f6413dc4a0c9479ba7b7e35cdfd5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Scripts using Guid(9b7f6413dc4a0c9479ba7b7e35cdfd5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9590e68547456deaaaff076b9b708c3') in 0.003750 seconds 
+  Import took 0.005963 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.004038 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.32 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.797 seconds
+Domain Reload Profiling:
+	ReloadAssembly (797ms)
+		BeginReloadAssembly (106ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (3ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (26ms)
+		EndReloadAssembly (637ms)
+			LoadAssemblies (73ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (221ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (31ms)
+			SetupLoadedEditorAssemblies (235ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (65ms)
+				ProcessInitializeOnLoadAttributes (153ms)
+				ProcessInitializeOnLoadMethodAttributes (7ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.32 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1499 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.2 MB.
+System memory in use after: 87.3 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 1993.
+Total: 2.385100 ms (FindLiveObjects: 0.098500 ms CreateObjectMapping: 0.035200 ms MarkObjects: 2.239600 ms  DeleteObjects: 0.011300 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.005076 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.793 seconds
+Domain Reload Profiling:
+	ReloadAssembly (793ms)
+		BeginReloadAssembly (89ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (24ms)
+		EndReloadAssembly (652ms)
+			LoadAssemblies (73ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (238ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (33ms)
+			SetupLoadedEditorAssemblies (234ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (61ms)
+				ProcessInitializeOnLoadAttributes (154ms)
+				ProcessInitializeOnLoadMethodAttributes (7ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (5ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1499 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.2 MB.
+System memory in use after: 87.3 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 1995.
+Total: 2.215400 ms (FindLiveObjects: 0.117800 ms CreateObjectMapping: 0.035400 ms MarkObjects: 2.050400 ms  DeleteObjects: 0.011200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 31.742334 seconds.
+  path: Assets/Scripts/ChangeGravity.cs
+  artifactKey: Guid(b282a4cc97534b246830f94c92a4dd5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/ChangeGravity.cs using Guid(b282a4cc97534b246830f94c92a4dd5a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c25ce229e1e48c42481c87bcd533b207') in 0.005432 seconds 
+  Import took 0.007376 seconds .
+
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.003975 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.31 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.799 seconds
+Domain Reload Profiling:
+	ReloadAssembly (799ms)
+		BeginReloadAssembly (99ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (24ms)
+		EndReloadAssembly (640ms)
+			LoadAssemblies (75ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (226ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (31ms)
+			SetupLoadedEditorAssemblies (234ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (4ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (62ms)
+				ProcessInitializeOnLoadAttributes (154ms)
+				ProcessInitializeOnLoadMethodAttributes (7ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+Refreshing native plugins compatible for Editor in 0.36 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1499 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 87.2 MB.
+System memory in use after: 87.3 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 1997.
+Total: 2.349300 ms (FindLiveObjects: 0.127500 ms CreateObjectMapping: 0.035800 ms MarkObjects: 2.172900 ms  DeleteObjects: 0.012200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 58.671363 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Prefabs/Robot_Ememy.prefab
+  artifactKey: Guid(1cd1100fc20c00c4ea685c5f9a232b14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Prefabs/Robot_Ememy.prefab using Guid(1cd1100fc20c00c4ea685c5f9a232b14) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '66f712b87ac42865f02a0bf07ed1563c') in 0.076164 seconds 
+  Import took 0.080137 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 55.806992 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Red Variant.prefab
+  artifactKey: Guid(914575360e0fc6748b940d93cbfe811c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Red Variant.prefab using Guid(914575360e0fc6748b940d93cbfe811c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb91cd531ceb83bcf765da91e6257d76') in 0.035274 seconds 
+  Import took 0.039440 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005325 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Red.mat
+  artifactKey: Guid(ca8dae2d4ebf149468fcf1e09176716f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Red.mat using Guid(ca8dae2d4ebf149468fcf1e09176716f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1717cda3f9fe334bfdd9950b560e7ec8') in 0.017781 seconds 
+  Import took 0.019902 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006559 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials/Stone 01/diffuse.tga
+  artifactKey: Guid(54ccdb26b5047c54b828ced4bf15ca47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials/Stone 01/diffuse.tga using Guid(54ccdb26b5047c54b828ced4bf15ca47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42337fccb06c0fca0d89965bbc9b294e') in 0.017682 seconds 
+  Import took 0.019931 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006018 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Red.png
+  artifactKey: Guid(32f708336a3b547468693a37070409e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Red.png using Guid(32f708336a3b547468693a37070409e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab06ec44acd94fd1cf000c7955dc34b4') in 0.010146 seconds 
+  Import took 0.012212 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004683 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials
+  artifactKey: Guid(2f58bfd6ee26b3b40aef55ebb741b128) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials using Guid(2f58bfd6ee26b3b40aef55ebb741b128) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '67b2747a883462b3faafb7b30d8b195f') in 0.001342 seconds 
+  Import took 0.003186 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002347 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Red.mat
+  artifactKey: Guid(451c88664abc6ab49b4b7581879ab1a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Red.mat using Guid(451c88664abc6ab49b4b7581879ab1a6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1a74572c4d3e2b75fd87fdffdd33b1b') in 0.006794 seconds 
+  Import took 0.008633 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002700 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Green.mat
+  artifactKey: Guid(d2696168dd319a44dafe0376d30a401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Green.mat using Guid(d2696168dd319a44dafe0376d30a401d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '546a7d4e968ca0c04d08b7321e64e3f5') in 0.016645 seconds 
+  Import took 0.019110 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004756 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP
+  artifactKey: Guid(de94c684306c62a479cc5943c421fbf6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP using Guid(de94c684306c62a479cc5943c421fbf6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c33fd441e22925a3b4355f4c711e7d63') in 0.001611 seconds 
+  Import took 0.003418 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002312 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Black Variant.prefab
+  artifactKey: Guid(59bc9924e824f0847b9312e63fdfebc9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Black Variant.prefab using Guid(59bc9924e824f0847b9312e63fdfebc9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c77142a3ea6a231387c46d8143f80243') in 0.007027 seconds 
+  Import took 0.008929 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006025 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Robot_MaskMap.png
+  artifactKey: Guid(b6b690807af6c554eb0b8cff44a7c32e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Robot_MaskMap.png using Guid(b6b690807af6c554eb0b8cff44a7c32e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8ad6cb27965a587e24b14f45d8812845') in 0.007036 seconds 
+  Import took 0.009056 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005126 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Orange.mat
+  artifactKey: Guid(13a5e1236dcf5484ca622f8ac01a2ff2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Orange.mat using Guid(13a5e1236dcf5484ca622f8ac01a2ff2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a58f91f859519a3882a430fb889db73d') in 0.006121 seconds 
+  Import took 0.008137 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002703 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Orange.prefab
+  artifactKey: Guid(fcc11f2cb61bb5544b6dfa6d2435b146) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Orange.prefab using Guid(fcc11f2cb61bb5544b6dfa6d2435b146) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '006d49b567ab8abae0760d4cc5e20b55') in 0.006113 seconds 
+  Import took 0.008014 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005462 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Robot_MetallicSmoothness.png
+  artifactKey: Guid(7f91c0223554a4d4d868a4adfb2c9d08) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Robot_MetallicSmoothness.png using Guid(7f91c0223554a4d4d868a4adfb2c9d08) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8c62a1752e8abb91e6e3706c8b649111') in 0.007453 seconds 
+  Import took 0.009496 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005240 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Scripts/BreakBlook.cs
+  artifactKey: Guid(49229d2b0fdcdaa43ad779ac0593dc8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Scripts/BreakBlook.cs using Guid(49229d2b0fdcdaa43ad779ac0593dc8f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '26634066a4631dd165aa29a0027f258d') in 0.001353 seconds 
+  Import took 0.003189 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002266 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Blue.mat
+  artifactKey: Guid(ea87be89d44e3fa48bea7118a89839aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Blue.mat using Guid(ea87be89d44e3fa48bea7118a89839aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c65fc285cc29c25631d9a9328d9ef10') in 0.005669 seconds 
+  Import took 0.007438 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002761 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Green Variant.prefab
+  artifactKey: Guid(b4a79f74f169592429d7109ea2b1fae0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Green Variant.prefab using Guid(b4a79f74f169592429d7109ea2b1fae0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b4d160d02e95d9cdcf6c7b0a80100060') in 0.006982 seconds 
+  Import took 0.008996 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004672 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Green Variant.prefab
+  artifactKey: Guid(cc279f80c7da7774d8edafda3aa582b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Green Variant.prefab using Guid(cc279f80c7da7774d8edafda3aa582b1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e6bb57de1f4adccaef983a2928d6b9d9') in 0.013406 seconds 
+  Import took 0.016302 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004491 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP
+  artifactKey: Guid(5f95ef321a1a8274e99644b7d39660cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP using Guid(5f95ef321a1a8274e99644b7d39660cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47952b5180279402f694abff46276193') in 0.001426 seconds 
+  Import took 0.003266 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001777 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP
+  artifactKey: Guid(130ddcebba9af80458d89c51b3f9f215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP using Guid(130ddcebba9af80458d89c51b3f9f215) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f820c9a07054074fcdc6646e8e4e1f0c') in 0.001241 seconds 
+  Import took 0.002779 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001577 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard
+  artifactKey: Guid(16771cb7de15db1449e60c881a73b75a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard using Guid(16771cb7de15db1449e60c881a73b75a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8368eb7d47b5cb9839d50fcdc4cd3420') in 0.001615 seconds 
+  Import took 0.003165 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003439 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_Normal.png
+  artifactKey: Guid(fc39427bc43a15f42ad2d1e34daccb97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_Normal.png using Guid(fc39427bc43a15f42ad2d1e34daccb97) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e3310b36a6c94cc676a98985ba7e4159') in 0.011036 seconds 
+  Import took 0.013105 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007328 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP
+  artifactKey: Guid(7cf0da7da7eec084e96ba01b038b9fcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP using Guid(7cf0da7da7eec084e96ba01b038b9fcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '583bcae021d1d432fa98d9feac756173') in 0.001518 seconds 
+  Import took 0.003343 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003430 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Orange.prefab
+  artifactKey: Guid(489c78e473f50bc4f84cc091e401cb6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Orange.prefab using Guid(489c78e473f50bc4f84cc091e401cb6d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ebb8a3237141a2dddfe4190644293e20') in 0.011932 seconds 
+  Import took 0.014366 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004380 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP
+  artifactKey: Guid(b7598eee48b35d24ea5f389d91354ef1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP using Guid(b7598eee48b35d24ea5f389d91354ef1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '923b8d97485075c484def7c2df9b2149') in 0.001554 seconds 
+  Import took 0.003574 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002159 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Green.mat
+  artifactKey: Guid(cfc019edafc41e2479e47a79870c767e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Green.mat using Guid(cfc019edafc41e2479e47a79870c767e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6019bf54fb3694c8fcbc6084e865bb2d') in 0.006199 seconds 
+  Import took 0.008055 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002766 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Blue Variant.prefab
+  artifactKey: Guid(f04c58daee6db1249bcf169b6cf13c45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Blue Variant.prefab using Guid(f04c58daee6db1249bcf169b6cf13c45) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9d3d42ae3a4ba8d1bf60340c129803fb') in 0.030987 seconds 
+  Import took 0.034897 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005315 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Black Variant.prefab
+  artifactKey: Guid(bf4c2f0a43e1a2c4daa8550add28dcd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Black Variant.prefab using Guid(bf4c2f0a43e1a2c4daa8550add28dcd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4c6172afb2cd75e0050ccad4c594a045') in 0.016439 seconds 
+  Import took 0.019335 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007741 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Black.mat
+  artifactKey: Guid(316b7987d57ba13499f524d018a8883d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Black.mat using Guid(316b7987d57ba13499f524d018a8883d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '61cce2f0a1c0dc13bf37fb57f1648723') in 0.006624 seconds 
+  Import took 0.008863 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002175 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard
+  artifactKey: Guid(8deebebbcccd1ad4a8c2d2f0a5d2462e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard using Guid(8deebebbcccd1ad4a8c2d2f0a5d2462e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4bf618d99beff094f18ef1a037d4f38f') in 0.001500 seconds 
+  Import took 0.003636 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002880 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Box_MaskMap.png
+  artifactKey: Guid(225810f915de87f4cadc02a05ca57a57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Box_MaskMap.png using Guid(225810f915de87f4cadc02a05ca57a57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '18dbcfa374dbb2450e16a56330d629bf') in 0.008476 seconds 
+  Import took 0.010864 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005149 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Green.mat
+  artifactKey: Guid(07741fe5d0ccca64c83d31a0777f6dd1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Green.mat using Guid(07741fe5d0ccca64c83d31a0777f6dd1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a816651fcab26e69778a510093882f2') in 0.006411 seconds 
+  Import took 0.008694 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002963 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Green.mat
+  artifactKey: Guid(80031cb72bdff39498ec09e5c4c0174d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Green.mat using Guid(80031cb72bdff39498ec09e5c4c0174d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '80f643a1f4a850d13a449ead63f33e0f') in 0.017078 seconds 
+  Import took 0.019725 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006407 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Blue Variant.prefab
+  artifactKey: Guid(4d6dbd1c2c6a41b45ab48e9537a034ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Blue Variant.prefab using Guid(4d6dbd1c2c6a41b45ab48e9537a034ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6d821747f7202fc4ff21fd3e46d1ecea') in 0.019902 seconds 
+  Import took 0.024446 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006608 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Green.png
+  artifactKey: Guid(b758c404d84c96f4a995a07a22199d77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Green.png using Guid(b758c404d84c96f4a995a07a22199d77) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '604663506019ced5204006b4e51a06f4') in 0.008641 seconds 
+  Import took 0.011492 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006949 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Blue.mat
+  artifactKey: Guid(2f51d4e23813fa140afb4561e0873569) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Blue.mat using Guid(2f51d4e23813fa140afb4561e0873569) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c7958ff114ce134a5257598c72e62d7') in 0.016037 seconds 
+  Import took 0.018586 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005097 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Blue Variant.prefab
+  artifactKey: Guid(81cd6fbcbb764934aa90f4db28e88f3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Blue Variant.prefab using Guid(81cd6fbcbb764934aa90f4db28e88f3a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59982fe9daf057886cc37adc9475e2ba') in 0.012497 seconds 
+  Import took 0.015084 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004848 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Blue.png
+  artifactKey: Guid(0270164a1e3f7d8429d11bf06f21101a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Blue.png using Guid(0270164a1e3f7d8429d11bf06f21101a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a704d78ad4163398a04d98211cab7de') in 0.005929 seconds 
+  Import took 0.007976 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006159 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Robot_Normal.png
+  artifactKey: Guid(d19eff58b92bbe74682c1b7e49ad12b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Robot_Normal.png using Guid(d19eff58b92bbe74682c1b7e49ad12b5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1735c24b0b7818b5c83f37537bc2ed30') in 0.007552 seconds 
+  Import took 0.009602 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002097 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures
+  artifactKey: Guid(f844fbe9a7b80e84387da8b188330ae3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures using Guid(f844fbe9a7b80e84387da8b188330ae3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e34b856a8297ab977f40a9d85037314d') in 0.001526 seconds 
+  Import took 0.003183 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003002 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Scene
+  artifactKey: Guid(816d8827cd2551344af4cf86c353865f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Scene using Guid(816d8827cd2551344af4cf86c353865f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86c4e3ebb2376b0f10a161321cd01965') in 0.001422 seconds 
+  Import took 0.003069 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002301 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Red Variant.prefab
+  artifactKey: Guid(876bfb16ec30e9e4ea9bd83d8ed312bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Red Variant.prefab using Guid(876bfb16ec30e9e4ea9bd83d8ed312bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '51ef25014f2fa12d934d6607eecdee64') in 0.007286 seconds 
+  Import took 0.009220 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004725 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Box_Normal.png
+  artifactKey: Guid(344e19ff941a353409ed53ca8af508ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP/Box_Normal.png using Guid(344e19ff941a353409ed53ca8af508ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '41821e8898cbbc56f551401a6aa1f951') in 0.007692 seconds 
+  Import took 0.009744 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004901 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Orange.mat
+  artifactKey: Guid(695270cd5afb4f248bafdba3276e1e44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Orange.mat using Guid(695270cd5afb4f248bafdba3276e1e44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b0564befcebe6b27e1b28630dea818a2') in 0.005965 seconds 
+  Import took 0.008103 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002604 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Red.mat
+  artifactKey: Guid(d69264887e47a604b8ae41994d2bbc64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Red.mat using Guid(d69264887e47a604b8ae41994d2bbc64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3131f820812882577937e2eaaedb08d') in 0.015166 seconds 
+  Import took 0.017572 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004644 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Red.mat
+  artifactKey: Guid(159162fdccbc0034caa1949d169225ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Red.mat using Guid(159162fdccbc0034caa1949d169225ed) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9bd9796609281b4435637e73136444e6') in 0.006068 seconds 
+  Import took 0.008113 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003823 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Orange.mat
+  artifactKey: Guid(1d15a1b39db48db408b2ec44b7fe34dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Orange.mat using Guid(1d15a1b39db48db408b2ec44b7fe34dc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2a89d9716673de8cce3199cbef0c266') in 0.005716 seconds 
+  Import took 0.007627 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002014 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials/Stone 01
+  artifactKey: Guid(21f9a189c2c263c4c92a04391bd373e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials/Stone 01 using Guid(21f9a189c2c263c4c92a04391bd373e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be68b25c8d4651dd0c6e3ca88afcee47') in 0.001491 seconds 
+  Import took 0.003264 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002160 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Green Variant.prefab
+  artifactKey: Guid(3048a91a5818a6445ba550b5abf98812) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Green Variant.prefab using Guid(3048a91a5818a6445ba550b5abf98812) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '79cc8245b23846c03d6adb29545a433c') in 0.006868 seconds 
+  Import took 0.008755 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004989 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Orange.mat
+  artifactKey: Guid(da112511feb71df419d3d76bc6fe7a9a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Orange.mat using Guid(da112511feb71df419d3d76bc6fe7a9a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '698b606ed87dabadbbd33143b8721fdf') in 0.005953 seconds 
+  Import took 0.007975 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002589 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Green.mat
+  artifactKey: Guid(305d30467ac02284c8e0dfd2c846ca6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Robot_Green.mat using Guid(305d30467ac02284c8e0dfd2c846ca6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '65110af9cc780724f56efafbd4c5d156') in 0.005903 seconds 
+  Import took 0.007769 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002574 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Red.png
+  artifactKey: Guid(dc2034be9cc039841b3dcc005fda1e70) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Red.png using Guid(dc2034be9cc039841b3dcc005fda1e70) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '77ede073c26881ba2c765197c73abf9f') in 0.006091 seconds 
+  Import took 0.008088 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005106 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Box_Normal.png
+  artifactKey: Guid(cfe68b38c97b5b94781a036e5e139904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Box_Normal.png using Guid(cfe68b38c97b5b94781a036e5e139904) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f1cb40ce9c957c16f726fcfcf59bc67b') in 0.007196 seconds 
+  Import took 0.009203 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004794 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Models/Box.fbx
+  artifactKey: Guid(d061bd7be60b7b542be9b54c5fc1347e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Models/Box.fbx using Guid(d061bd7be60b7b542be9b54c5fc1347e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e8bf8a0e57bac40172f8a04259ea9614') in 0.017939 seconds 
+  Import took 0.019973 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004960 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Black.mat
+  artifactKey: Guid(ffaec5bb95e7f9f4eb322750a0ecbdc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Black.mat using Guid(ffaec5bb95e7f9f4eb322750a0ecbdc8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b01392eddc9d6aecc09e854bdd5ac2b') in 0.005891 seconds 
+  Import took 0.007936 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002586 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Blue.mat
+  artifactKey: Guid(129ab691793e70547b2257d4c665557b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Robot_Blue.mat using Guid(129ab691793e70547b2257d4c665557b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3bfbdccc600653e6aec09d8dd69635ce') in 0.005656 seconds 
+  Import took 0.007784 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004130 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Blue.png
+  artifactKey: Guid(a21662b846e5205409850ccc41341087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Blue.png using Guid(a21662b846e5205409850ccc41341087) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd4454fef85060880ee59e4102df9947e') in 0.006625 seconds 
+  Import took 0.008664 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007346 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Orange Variant.prefab
+  artifactKey: Guid(07896a0cf1672964bb877133649a213e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Orange Variant.prefab using Guid(07896a0cf1672964bb877133649a213e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5bf250ed171019426832f7da0d8e4be5') in 0.006737 seconds 
+  Import took 0.008837 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004975 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Black Variant.prefab
+  artifactKey: Guid(0987a9be38c099d4cb9e09565b720709) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Black Variant.prefab using Guid(0987a9be38c099d4cb9e09565b720709) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '11602b0b0bc60dc69b9f0308f512811f') in 0.007208 seconds 
+  Import took 0.009379 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005522 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Box_MetallicSmoothness.png
+  artifactKey: Guid(05dbd3bc9896cad49aaa263fc2cc98b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Box_MetallicSmoothness.png using Guid(05dbd3bc9896cad49aaa263fc2cc98b8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cb047948d3f908151aedfbff54662550') in 0.007994 seconds 
+  Import took 0.010221 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004989 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Blue.mat
+  artifactKey: Guid(cd953296fc5492b459e6a7e9e33bf54d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/URP/Box_Blue.mat using Guid(cd953296fc5492b459e6a7e9e33bf54d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fce7fef410694d98e55df5d7e00b0755') in 0.006030 seconds 
+  Import took 0.008168 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002124 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot
+  artifactKey: Guid(ed1d4d29a20e2ec4784828b197a11e87) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot using Guid(ed1d4d29a20e2ec4784828b197a11e87) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a0540008c9671caae6e886ed7b1aa5b') in 0.001716 seconds 
+  Import took 0.003499 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.001792 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP
+  artifactKey: Guid(d9bc69c636f3cd340b5aa349e353daca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/HDRP using Guid(d9bc69c636f3cd340b5aa349e353daca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab75e9e06b9b9093cfcd1a4b446536f8') in 0.001625 seconds 
+  Import took 0.003818 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003216 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard
+  artifactKey: Guid(e3a09d3804b77484da8d9adde6fe4b04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard using Guid(e3a09d3804b77484da8d9adde6fe4b04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a7f909649e2033a0c7fc4ab8f0b74ef') in 0.001492 seconds 
+  Import took 0.003418 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004905 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_MetallicSmoothness.png
+  artifactKey: Guid(9f17019215bd6de43b36625ceee64ee2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_MetallicSmoothness.png using Guid(9f17019215bd6de43b36625ceee64ee2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd877ba7d8f6543f010a42e191c4e5b28') in 0.007803 seconds 
+  Import took 0.009834 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003047 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials/Stone 01/Stone pattern 01.mat
+  artifactKey: Guid(6449059ea69669b4cac66cd9de185980) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials/Stone 01/Stone pattern 01.mat using Guid(6449059ea69669b4cac66cd9de185980) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6d43637d0e05cd8115c5daea747a49d') in 0.009032 seconds 
+  Import took 0.011134 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005048 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Scripts/Robot_Enemy.cs
+  artifactKey: Guid(15dda6fb3d5cce34fb08cf167fd446c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Scripts/Robot_Enemy.cs using Guid(15dda6fb3d5cce34fb08cf167fd446c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '120a8827dd6d6d3851db4b2a2b8767f4') in 0.001463 seconds 
+  Import took 0.003407 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003808 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Green.mat
+  artifactKey: Guid(57de8ef2dad2cea41bc0ea0a23fa54c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Green.mat using Guid(57de8ef2dad2cea41bc0ea0a23fa54c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'be24f14c3e9ff2929687f5f4a427c6ea') in 0.006073 seconds 
+  Import took 0.008128 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002730 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Red Variant.prefab
+  artifactKey: Guid(870b55a891c2f1a4d8f30ae6b13ff8d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Red Variant.prefab using Guid(870b55a891c2f1a4d8f30ae6b13ff8d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cf27d227db39bd55a57ab5fec86c97f0') in 0.013400 seconds 
+  Import took 0.015965 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007067 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Black.mat
+  artifactKey: Guid(cb78f73113d8a3c44891a97121dd1b90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Black.mat using Guid(cb78f73113d8a3c44891a97121dd1b90) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e190fb85ed30cc3584f6b0bdc67eaccf') in 0.015639 seconds 
+  Import took 0.018194 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005511 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Orange.png
+  artifactKey: Guid(2b13399c89386af4d827ac3a73b97089) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Orange.png using Guid(2b13399c89386af4d827ac3a73b97089) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '043ee8a6a3386b3a4373dddc6d50ce48') in 0.006221 seconds 
+  Import took 0.008413 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006328 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Orange.mat
+  artifactKey: Guid(248dbd8f137bfe545a63f833564d3956) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Orange.mat using Guid(248dbd8f137bfe545a63f833564d3956) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02f286bc8f703aaba8626ad06d4f4abb') in 0.015463 seconds 
+  Import took 0.018142 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007203 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Green.png
+  artifactKey: Guid(149261f605789b24f9eb626fe13c87d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Green.png using Guid(149261f605789b24f9eb626fe13c87d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6bf571f4627f93bb185b94ab7783e897') in 0.007840 seconds 
+  Import took 0.009940 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006057 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Animation
+  artifactKey: Guid(eb37640208b686e48803321dce831401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Animation using Guid(eb37640208b686e48803321dce831401) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c008e1659a43fe177d6eaa6137e0d6b3') in 0.001373 seconds 
+  Import took 0.003600 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002237 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Orange.prefab
+  artifactKey: Guid(8b13ea507ef8dff4e8c19030fc6da3cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Orange.prefab using Guid(8b13ea507ef8dff4e8c19030fc6da3cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fec119b23d4dcbe4754efd0da0d38139') in 0.015352 seconds 
+  Import took 0.017736 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005281 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Black.png
+  artifactKey: Guid(9e356554191b3154c878b31d5d7ab561) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Box_BaseColor_Black.png using Guid(9e356554191b3154c878b31d5d7ab561) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c065ce3a63a340254939f640939e3f0') in 0.006372 seconds 
+  Import took 0.008444 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005298 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_Height.png
+  artifactKey: Guid(741da0a3b71df6044bd8e42f26502b00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_Height.png using Guid(741da0a3b71df6044bd8e42f26502b00) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99e935a128aef3fc9e1b99d8338b3bb1') in 0.006864 seconds 
+  Import took 0.008915 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005316 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Models/MainRobot.fbx
+  artifactKey: Guid(e68422d44dbeca14b8abd6b3b3a2c6df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Models/MainRobot.fbx using Guid(e68422d44dbeca14b8abd6b3b3a2c6df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '129318f903cfa7603e46a72dd4bb6bb3') in 0.024429 seconds 
+  Import took 0.026927 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004726 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Green Variant.prefab
+  artifactKey: Guid(56c0df7e21fe075408e1c3241dea858d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Robot_Green Variant.prefab using Guid(56c0df7e21fe075408e1c3241dea858d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3453db14faaba746575c7b62c49ed946') in 0.013108 seconds 
+  Import took 0.015780 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004737 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Orange.prefab
+  artifactKey: Guid(bf7a0b0eac96d9c4fa90abe22fb68fac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Orange.prefab using Guid(bf7a0b0eac96d9c4fa90abe22fb68fac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3d85c2300c35ca8a46a8e6ef275285a4') in 0.011610 seconds 
+  Import took 0.014086 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005843 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Robot_Normal.png
+  artifactKey: Guid(dac19eba1d8e49341a6aebde61c125c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/URP/Robot_Normal.png using Guid(dac19eba1d8e49341a6aebde61c125c2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cc84860f3dfcd66846861dae18cae401') in 0.007921 seconds 
+  Import took 0.010079 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002605 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Red.prefab
+  artifactKey: Guid(5463dc60b2408be4cbec6a51f5ecb575) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Red.prefab using Guid(5463dc60b2408be4cbec6a51f5ecb575) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59141d3d24c46ef0f97afdc6e636e179') in 0.006514 seconds 
+  Import took 0.008479 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006084 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Orange.png
+  artifactKey: Guid(ba10fcf1332a23348bb89b66839905bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Robot_BaseColor_Orange.png using Guid(ba10fcf1332a23348bb89b66839905bb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6a5c96a754ad990b9f48e8799344184d') in 0.006645 seconds 
+  Import took 0.008730 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004682 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Red Variant.prefab
+  artifactKey: Guid(b4ff0a665fc0beb499ee48f0435fb49d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Red Variant.prefab using Guid(b4ff0a665fc0beb499ee48f0435fb49d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '15714b89b4aaf61474f067fc6b7f7e3d') in 0.015223 seconds 
+  Import took 0.017689 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005183 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Green Variant.prefab
+  artifactKey: Guid(fdd784f73d734684c8883b1f091a161a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Robot_Green Variant.prefab using Guid(fdd784f73d734684c8883b1f091a161a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '30ea74db8d38eb8667ea48260e75cda0') in 0.030576 seconds 
+  Import took 0.034590 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005471 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_MetallicSmoothness.png
+  artifactKey: Guid(8a4ca4fdc3636154d97df9c288f75084) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_MetallicSmoothness.png using Guid(8a4ca4fdc3636154d97df9c288f75084) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '32d2e6c29960223ad25fb079c784d28f') in 0.006757 seconds 
+  Import took 0.008866 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002829 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_Height.png
+  artifactKey: Guid(7a065081eb3fde94fbaf8a1b3659926c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Robot_Height.png using Guid(7a065081eb3fde94fbaf8a1b3659926c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '983f5d8f0740ea82cc4b34732c36b5f7') in 0.006841 seconds 
+  Import took 0.008724 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005178 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Blue Variant.prefab
+  artifactKey: Guid(830be24f3873aa14197dbbc06b70e500) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Blue Variant.prefab using Guid(830be24f3873aa14197dbbc06b70e500) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7d29cc320e1dfa5a393f80686933759f') in 0.016495 seconds 
+  Import took 0.019054 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004845 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_Normal.png
+  artifactKey: Guid(dba81af38af016d4a9c0a7d847de6c39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Textures/Stamdard/Box_Normal.png using Guid(dba81af38af016d4a9c0a7d847de6c39) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a0ea7f9a808a6414dc005d7c47bfdb58') in 0.007048 seconds 
+  Import took 0.009135 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003047 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Blue Variant.prefab
+  artifactKey: Guid(ce0a6fcabb252b641a0477a4b01cb041) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/HDRP/Box_Blue Variant.prefab using Guid(ce0a6fcabb252b641a0477a4b01cb041) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2dbc7470f601a62b11d693d02125b981') in 0.008641 seconds 
+  Import took 0.010878 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005276 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Red Variant.prefab
+  artifactKey: Guid(692407a57791ed14eb6142992bfcc0e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Robot_Red Variant.prefab using Guid(692407a57791ed14eb6142992bfcc0e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b4ad9aa22f744db2cf97fcd227911a7b') in 0.014886 seconds 
+  Import took 0.017750 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006678 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Red.mat
+  artifactKey: Guid(7701603a2a50a364b8ae0d25e58a4d02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Red.mat using Guid(7701603a2a50a364b8ae0d25e58a4d02) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87be59e2fa8ef6b9ed65758aaf860e80') in 0.015895 seconds 
+  Import took 0.018514 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005119 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Blue.mat
+  artifactKey: Guid(4e7f6288eb443a8489b2f2928b1ba185) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Blue.mat using Guid(4e7f6288eb443a8489b2f2928b1ba185) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2e899b468b59caa0b761d62cd3504cf') in 0.006701 seconds 
+  Import took 0.008969 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.002992 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Blue.mat
+  artifactKey: Guid(a22aec07c164db643a1952b53072a68a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Robot_Blue.mat using Guid(a22aec07c164db643a1952b53072a68a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c958a5c70658e176e7da0388fd2da740') in 0.016272 seconds 
+  Import took 0.018943 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005344 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials/Stone 01/preview.jpg
+  artifactKey: Guid(af667b94c926dbd47870920fa7ea55b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials/Stone 01/preview.jpg using Guid(af667b94c926dbd47870920fa7ea55b7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47fe1173a14877c8080bcbb01e94c277') in 0.007795 seconds 
+  Import took 0.009962 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.005103 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Blue Variant.prefab
+  artifactKey: Guid(473de852af1cc7b40842d2c6373914d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/URP/Box_Blue Variant.prefab using Guid(473de852af1cc7b40842d2c6373914d3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5dcf387ff368834df4f778525bc4816f') in 0.007417 seconds 
+  Import took 0.009635 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.004760 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Orange.mat
+  artifactKey: Guid(efab50acf55713344956a4e19a6f1e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/Standard/Box_Orange.mat using Guid(efab50acf55713344956a4e19a6f1e92) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '179fc75ca0128c9888bf2f3dcd56fb47') in 0.015570 seconds 
+  Import took 0.018361 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.006797 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Red.mat
+  artifactKey: Guid(2a4a23b7387e9b54ba0e2f1e254cce69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Materials/HDRP/Box_Red.mat using Guid(2a4a23b7387e9b54ba0e2f1e254cce69) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '88f72a4a66438c4f1229501f82a88ada') in 0.006454 seconds 
+  Import took 0.008724 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.003007 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Green Variant.prefab
+  artifactKey: Guid(e962633414073a94691e4a2f06ebb494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Delivery Robot/Prefabs/Standard/Box_Green Variant.prefab using Guid(e962633414073a94691e4a2f06ebb494) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '75389a9257c2ee2d2b13c5509cae87d6') in 0.017526 seconds 
+  Import took 0.020178 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007135 seconds.
+  path: Assets/ConnectCity_gimmick_scene/Materials/Stone 01/normal.tga
+  artifactKey: Guid(4f43a7a68bcd11e4ea2d51248db9dc84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/ConnectCity_gimmick_scene/Materials/Stone 01/normal.tga using Guid(4f43a7a68bcd11e4ea2d51248db9dc84) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eb91776ad296a74f5a98824cbc6531b7') in 0.008447 seconds 
+  Import took 0.011159 seconds .
 
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file

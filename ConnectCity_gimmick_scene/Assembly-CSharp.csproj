@@ -54,10 +54,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\Robot_Enemy.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\ChangeGravity.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\BreakBlook.cs" />
     <Compile Include="Assets\Scripts\FallFoor.cs" />
-    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\Robot_Enemy.cs" />
+    <Compile Include="Assets\Scripts\SwitchOnOFFBlockOwner.cs" />
+    <Compile Include="Assets\Scripts\SwitchOnOFFBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
