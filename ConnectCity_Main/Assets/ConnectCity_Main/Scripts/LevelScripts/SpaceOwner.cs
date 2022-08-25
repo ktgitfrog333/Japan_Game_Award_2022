@@ -72,6 +72,8 @@ namespace Main.Level
         public ObjectsOffset[] CubeOffsets => _cubeOffsets;
         /// <summary>空間操作に必要なRigidBody、Velocity</summary>
         private SpaceDirection2D _spaceDirections = new SpaceDirection2D();
+        /// <summary>空間操作に必要なRigidBody、Velocity</summary>
+        public SpaceDirection2D SpaceDirections => _spaceDirections;
         /// <summary>ブロックの接続状況</summary>
         private List<ConnectDirection2D> _connectDirections = new List<ConnectDirection2D>();
         /// <summary>プールのグループ</summary>
@@ -680,17 +682,17 @@ namespace Main.Level
             if (3 < count)
             {
                 // パーティクルレベル3
-                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD]);
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD], point, Quaternion.identity, _poolGroup.Pools[(int)ParticleSystemPoolIdx.THIRD]);
             }
             else if (2 < count)
             {
                 // パーティクルレベル2
-                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND]);
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND], point, Quaternion.identity, _poolGroup.Pools[(int)ParticleSystemPoolIdx.SECOND]);
             }
             else
             {
                 // パーティクルレベル1
-                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST], point, Quaternion.identity, _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST]);
+                return InstanceConnectedRingsPool(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST], point, Quaternion.identity, _poolGroup.Pools[(int)ParticleSystemPoolIdx.FIRST]);
             }
         }
 
@@ -1064,10 +1066,10 @@ namespace Main.Level
         private bool InitializePool()
         {
             _poolGroup = new PoolGroup();
-            _poolGroup.ConnectedRingPools = new Transform[connectedRingPrefabs.Length];
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.FIRST] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.SECOND] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
-            _poolGroup.ConnectedRingPools[(int)ParticleSystemPoolIdx.THIRD] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
+            _poolGroup.Pools = new Transform[connectedRingPrefabs.Length];
+            _poolGroup.Pools[(int)ParticleSystemPoolIdx.FIRST] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.FIRST].name + "Pool").transform;
+            _poolGroup.Pools[(int)ParticleSystemPoolIdx.SECOND] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.SECOND].name + "Pool").transform;
+            _poolGroup.Pools[(int)ParticleSystemPoolIdx.THIRD] = GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool") != null ? GameObject.Find(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform : new GameObject(connectedRingPrefabs[(int)ParticleSystemPoolIdx.THIRD].name + "Pool").transform;
             return true;
         }
     }
@@ -1131,7 +1133,7 @@ namespace Main.Level
     public struct PoolGroup
     {
         /// <summary>接続演出のプレハブ（リング）のプール</summary>
-        public Transform[] ConnectedRingPools { get; set; }
+        public Transform[] Pools { get; set; }
     }
 
     /// <summary>

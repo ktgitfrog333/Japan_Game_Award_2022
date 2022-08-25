@@ -63,5 +63,13 @@ namespace Main.Common.Const
         /// 重力ギミックのタグ名
         /// </summary>
         public static readonly string TAG_NAME_CHANGEGRAVITY = "ChangeGravity";
+        /// <summary>
+        /// 自動追尾ドローンギミックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_AUTODRONE = "AutoDrone";
+        /// <summary>
+        /// 静的ブロックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_FREEZECUBE = "FreezeCube";
     }
 }

@@ -10,6 +10,7 @@ using DG.Tweening;
 using Main.Common;
 using Main.InputSystem;
 using Main.Level;
+using Main.Common.LevelDesign;
 
 namespace Main.UI
 {
@@ -273,16 +274,5 @@ namespace Main.UI
                 return false;
             }
         }
-    }
-
-    /// <summary>
-    /// 2Dの角度
-    /// </summary>
-    public enum Direction2D
-    {
-        /// <summary>左方向</summary>
-        Left,
-        /// <summary>右方向</summary>
-        Right,
     }
 }

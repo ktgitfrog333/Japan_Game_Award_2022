@@ -210,7 +210,7 @@ namespace Main.Level
             var seqence = DOTween.Sequence();
             seqence.SetLink(gameObject)
                 .SetLoops(-1, LoopType.Restart)
-                .OnUpdate(() => dire.Value = CheckPositionAndGetDirection2D(watchingTarget.localPosition))
+                .OnUpdate(() => dire.Value = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(_spaceOwnerTransform, watchingTarget.localPosition))
                 ;
 
             // 移動パスを元にゴーストを自動操作
@@ -253,24 +253,6 @@ namespace Main.Level
                 return sequence.Append(ghostMoveCubeTransform.DOLocalMove(pathPosition, duration));
             else
                 return sequence.Join(ghostMoveCubeTransform.DOLocalMove(pathPosition, duration));
-        }
-
-        /// <summary>
-        /// 対象の位置が左空間 or 右空間に存在するかをチェック
-        /// </summary>
-        /// <param name="targetPosition">対象のポジション</param>
-        /// <returns>左右の方向（0なら-1）</returns>
-        private int CheckPositionAndGetDirection2D(Vector3 targetPosition)
-        {
-            if (targetPosition.x < _spaceOwnerTransform.localPosition.x)
-            {
-                return (int)Direction2D.Left;
-            }
-            else if (_spaceOwnerTransform.localPosition.x < targetPosition.x)
-            {
-                return (int)Direction2D.Right;
-            }
-            return -1;
         }
 
         /// <summary>
