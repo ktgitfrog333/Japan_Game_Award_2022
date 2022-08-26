@@ -16,7 +16,7 @@ namespace Main.Common
     /// <summary>
     /// レベルデザインのオーナー
     /// </summary>
-    public class LevelOwner : MonoBehaviour
+    public class LevelOwner : MonoBehaviour, IOwner
     {
         /// <summary>レベルデザイン</summary>
         [SerializeField] private GameObject levelDesign;
@@ -59,6 +59,10 @@ namespace Main.Common
         [SerializeField] private GameObject turretEnemiesOwner;
         /// <summary>レーザー砲ギミックのオーナー</summary>
         public GameObject TurretEnemiesOwner => turretEnemiesOwner;
+        /// <summary>自動追尾ドローンのオーナー</summary>
+        [SerializeField] private GameObject autoDroneOwner;
+        /// <summary>自動追尾ドローンのオーナー</summary>
+        public GameObject AutoDroneOwner => autoDroneOwner;
         /// <summary>メソッドをコールさせる優先順位</summary>
         private OmnibusCallCode _omnibusCall = OmnibusCallCode.None;
         /// <summary>優先メソッドをコール中の待機時間</summary>
@@ -84,6 +88,8 @@ namespace Main.Common
                 robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
             if (turretEnemiesOwner == null)
                 turretEnemiesOwner = GameObject.Find("TurretEnemiesOwner");
+            if (autoDroneOwner == null)
+                autoDroneOwner = GameObject.Find("AutoDroneOwner");
         }
 
         /// <summary>
@@ -103,6 +109,7 @@ namespace Main.Common
                         }
                         _omnibusCall = OmnibusCallCode.None;
                     });
+
                 return true;
             }
             catch
@@ -122,12 +129,23 @@ namespace Main.Common
                 _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
                 if (_playerOffsets == null)
                     Debug.LogError("オブジェクト初期状態の保存の失敗");
+                if (!autoDroneOwner.GetComponent<AutoDroneOwner>().ManualStart())
+                    Debug.LogError("自動追尾ドローンオーナー初期処理の失敗");
+
                 return true;
             }
             catch
             {
                 return false;
             }
+        }
+
+        public bool Exit()
+        {
+            if (!autoDroneOwner.GetComponent<AutoDroneOwner>().Exit())
+                Debug.LogError("自動追尾ドローンオーナー終了処理の失敗");
+
+            return true;
         }
 
         /// <summary>

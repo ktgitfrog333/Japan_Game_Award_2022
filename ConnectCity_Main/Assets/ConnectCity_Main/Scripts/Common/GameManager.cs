@@ -196,12 +196,16 @@ namespace Main.Common
                 compLevelOwner.SpaceOwner.GetComponent<SpaceOwner>().DisposeAllFromSceneOwner();
                 if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.RobotEnemiesOwner.GetComponent<RobotEnemiesOwner>().RobotEmemOffsets))
                     Debug.LogWarning("敵オブジェクトリセット処理の失敗");
+                if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.AutoDroneOwner.GetComponent<AutoDroneOwner>().AutoDroneOffsets))
+                    Debug.LogWarning("自動追尾ドローンリセット処理の失敗");
                 if (!compLevelOwner.TurretEnemiesOwner.GetComponent<TurretEnemiesOwner>().OnImitationDestroy())
                     Debug.LogWarning("レーザー砲終了処理の失敗");
                 if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compTutorialOwner.TutorialEnvironment.GetComponent<TutorialEnvironment>().CubeOffsets))
                     Debug.LogWarning("チュートリアルエンバイロメントリセット処理の失敗");
                 // ぼろいブロック・天井の監視を終了
                 compLevelOwner.DisposeAll();
+                if (!levelOwner.GetComponent<LevelOwner>().Exit())
+                    Debug.LogError("レベルデザイン終了処理の失敗");
                 stage.SetActive(false);
                 if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Exit())
                     Debug.LogError("インプット終了処理の失敗");

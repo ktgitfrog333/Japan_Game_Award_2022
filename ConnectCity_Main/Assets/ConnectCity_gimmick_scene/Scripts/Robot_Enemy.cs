@@ -33,8 +33,8 @@ namespace Gimmick
         [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, 0.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         [SerializeField] private Vector3 rayDirection = Vector3.down;
-        /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
-        [SerializeField] private float rayMaxDistance = 0.8f;
+        ///// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+        //[SerializeField] private float rayMaxDistance = 0.8f;
         [SerializeField] private Vector3 rayOriginOffsetLeft = new Vector3(.1f, 0f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         [SerializeField] private Vector3 rayDirectionLeft = Vector3.left;
