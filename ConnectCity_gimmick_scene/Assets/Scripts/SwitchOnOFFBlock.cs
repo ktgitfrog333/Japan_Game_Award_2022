@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class SwitchOnOFFBlock : MonoBehaviour
 {
-    [SerializeField] private bool isEnabled;    //ブロックの有効／無効ステータス（有効ならtrue、無効ならfalse）
-    [SerializeField] private float enabledEndValue; //有効状態のフェード値
-    [SerializeField] private float disabledEndValue;    //無効状態のフェード値
-    [SerializeField] private float doFadeDuration;  //フェードアニメーションの遷移時間
+    /// <summary>
+    /// ブロックの有効／無効ステータス（有効ならtrue、無効ならfalse）
+    /// </summary>
+    [SerializeField] private bool isEnabled;
+    /// <summary>
+    /// 有効状態のフェード値
+    /// </summary>
+    [SerializeField] private float enabledEndValue;
+    /// <summary>
+    /// 無効状態のフェード値
+    /// </summary>
+    [SerializeField] private float disabledEndValue;
+    /// <summary>
+    /// フェードアニメーションの遷移時間
+    /// </summary>
+    [SerializeField] private float doFadeDuration;
     private bool _defaultIsEnabled; //有効／無効ステータスの初期値
     private Renderer _renderer; //オブジェクトのマテリアル等の情報
     private BoxCollider _collider;  //コライダー
