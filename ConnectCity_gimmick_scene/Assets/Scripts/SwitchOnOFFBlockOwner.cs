@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class SwitchOnOFFBlockOwner : MonoBehaviour
 {
-    private GameObject[] _switchOnOFFBlocks;    //ゲームオブジェクト「SwitchOnOFFBlock」を複数管理する配列オブジェクト
+    /// <summary>
+    /// ゲームオブジェクト「SwitchOnOFFBlock」を複数管理する配列オブジェクト
+    /// </summary>
+    private GameObject[] _switchOnOFFBlocks;
 
     public bool Initialize()
     {
-        return true;
+        try
+        {
+            _switchOnOFFBlocks = GameObject.FindGameObjectsWithTag("SwitchOnOFFBlockOwner");
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
     // Start is called before the first frame update
     void Start()
