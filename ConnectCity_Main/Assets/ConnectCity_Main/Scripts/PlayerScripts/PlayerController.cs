@@ -253,7 +253,7 @@ namespace Main.Player
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveChatactor(Vector3 moveVelocity)
+        public bool MoveCharactorPlayer(Vector3 moveVelocity)
         {
             if (_characterCtrl == null)
                 return false;
@@ -262,10 +262,23 @@ namespace Main.Player
         }
 
         /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCharactorControllerStatePlayer(bool isEnabled)
+        {
+            if (_characterCtrl == null)
+                return false;
+            _characterCtrl.enabled = isEnabled;
+            return true;
+        }
+
+        /// <summary>
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayer()
+        public async Task<bool> DestroyPlayer()
         {
             var model = transform.GetChild(2);
             if (model.gameObject.activeSelf)

@@ -71,5 +71,9 @@ namespace Main.Common.Const
         /// 静的ブロックのタグ名
         /// </summary>
         public static readonly string TAG_NAME_FREEZECUBE = "FreezeCube";
+        /// <summary>
+        /// ワープゲートのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_WARPGATE = "WarpGate";
     }
 }

@@ -301,7 +301,7 @@ namespace Main.Level
                     .Where(_ => LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[0], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[1], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)) ||
                         LevelDesisionIsObjected.IsOnPlayeredAndInfo(obj.transform.position, rOrgOffAry[2], rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER)))
-                    .Select(_ => GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactor(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                    .Select(_ => GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorPlayer(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                     .Where(x => !x)
                     .Subscribe(_ => Debug.LogError("プレイヤー操作指令の失敗"))
                     .AddTo(_compositeDisposable);
@@ -313,7 +313,7 @@ namespace Main.Level
                         CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, obj, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position)))
                     .Subscribe(_ =>
                     {
-                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactor(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
+                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorPlayer(obj.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime))
                             Debug.LogError("プレイヤー操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -325,7 +325,7 @@ namespace Main.Level
                     .Subscribe(x =>
                     {
                         var top = LevelDesisionIsObjected.IsOnEnemiesAndInfo(x.transform.position, rayOriginOffset, rayDirection, rayMaxDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
+                        if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, top))
                             Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -338,7 +338,7 @@ namespace Main.Level
                         if (left != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, left.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, left.transform.position)))
-                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
+                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, left))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -351,7 +351,7 @@ namespace Main.Level
                         if (right != null &&
                             (CheckPushingActor(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, x, right.transform.position) ||
                             CheckPushingActor(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, x, right.transform.position)))
-                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
+                            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MoveCharactorRobotEnemy(x.transform.parent.GetComponent<Rigidbody>().GetPointVelocity(Vector3.zero) * Time.deltaTime, right))
                                 Debug.LogError("敵ギミック操作指令の失敗");
                     })
                     .AddTo(_compositeDisposable);
@@ -383,7 +383,7 @@ namespace Main.Level
                         isDead = true;
                         if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                             Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
-                        await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
+                        await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyPlayer();
                         GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                         GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                     })
@@ -397,7 +397,7 @@ namespace Main.Level
                     {
                         var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES);
                         if (target != null)
-                            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyHumanEnemies(target);
+                            GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyRobotEnemies(target);
                     })
                     .AddTo(_compositeDisposable);
             }
@@ -1057,6 +1057,96 @@ namespace Main.Level
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// MoveCubeをRigidBodyから動かす
+        /// </summary>
+        /// <param name="moveVelocitySpace">移動ベクトル</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
+        public bool MoveRigidBodyMoveCube(Vector3 moveVelocitySpace, GameObject origin)
+        {
+            try
+            {
+                var rigidbody = GetMoveCubeParentRigidbody(origin);
+                if (rigidbody != null)
+                    rigidbody.velocity = moveVelocitySpace;
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// オーナーからRigidbodyのステータスを変更
+        /// </summary>
+        /// <param name="isKinematic">有効／無効</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeRigidBodyStateMoveCube(bool isKinematic, GameObject origin)
+        {
+            try
+            {
+                var rigidbody = GetMoveCubeParentRigidbody(origin);
+                if (rigidbody != null)
+                    rigidbody.isKinematic = isKinematic;
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// オーナーからボックスコライダーのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeBoxColliderStateMoveCube(bool isEnabled, GameObject origin)
+        {
+            try
+            {
+                var rigidbody = GetMoveCubeParentRigidbody(origin);
+                if (rigidbody != null)
+                    foreach (Transform t in rigidbody.transform)
+                        t.GetComponent<BoxCollider>().enabled = isEnabled;
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 空間操作ブロックグループRigidbodyをリストから取得
+        /// </summary>
+        /// <param name="origin">対象の空間操作ブロック</param>
+        /// <returns>空間操作ブロックRigidbody（単体）</returns>
+        private Rigidbody GetMoveCubeParentRigidbody(GameObject origin)
+        {
+            var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, origin.transform.parent.localPosition);
+            if (-1 < direction)
+                if (((Direction2D)direction).Equals(Direction2D.Left))
+                    return _spaceDirections.RbsLeftSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                        .Select(q => q)
+                        .ToArray()[0];
+                else if (((Direction2D)direction).Equals(Direction2D.Right))
+                    return _spaceDirections.RbsRightSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                        .Select(q => q)
+                        .ToArray()[0];
+            return null;
         }
 
         /// <summary>

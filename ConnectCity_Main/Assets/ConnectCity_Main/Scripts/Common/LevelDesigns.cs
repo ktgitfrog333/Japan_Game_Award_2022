@@ -31,6 +31,32 @@ namespace Main.Common.LevelDesign
         }
 
         /// <summary>
+        /// 接地判定
+        /// </summary>
+        /// <param name="postion">位置・スケール</param>
+        /// <param name="rayOriginOffset">始点</param>
+        /// <param name="rayDirection">終点</param>
+        /// <param name="rayMaxDistance">最大距離</param>
+        /// <returns>レイのヒット判定の有無</returns>
+        public static bool IsHitCheckCube(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask)
+        {
+            var hits = new RaycastHit[1];
+            //Debug.Log(layerMask);
+            if (layerMask < 0)
+            {
+                return IsGrounded(postion, rayOriginOffset, rayDirection, rayMaxDistance);
+            }
+
+            var ray = new Ray(postion + rayOriginOffset, rayDirection);
+            //Debug.LogError($"{layerMask}");
+            var hitCount = Physics.RaycastNonAlloc(ray, hits, rayMaxDistance/*, layerMask*/);
+            if (hitCount >= 1f)
+                Debug.Log(hits[0].transform.name);
+            Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
+            return hitCount >= 1f;
+        }
+
+        /// <summary>
         /// プレイヤーが上に乗っているかの判定
         /// </summary>
         /// <param name="postion">位置・スケール</param>
