@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4305469216428796299}
   - component: {fileID: 1039150119471165767}
-  - component: {fileID: -710879487111434392}
-  - component: {fileID: 6424056303849003492}
   m_Layer: 0
   m_Name: CheckCbSmall
   m_TagString: CheckCube
@@ -131,75 +129,3 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!114 &-710879487111434392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2139571353087031040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0cb76869a0904a46951e9aadca99e9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  raysMap:
-  - dotPosition:
-    - {x: 0, y: 0.5, z: -0.5}
-    - {x: 0, y: -0.1, z: 0}
-  - dotPosition:
-    - {x: -0.5, y: 0, z: -0.5}
-    - {x: 0.1, y: 0, z: 0}
-  - dotPosition:
-    - {x: 0, y: 0.5, z: 0.5}
-    - {x: 0, y: -0.1, z: 0}
-  - dotPosition:
-    - {x: -0.5, y: 0, z: 0.5}
-    - {x: 0.1, y: 0, z: 0}
-  - dotPosition:
-    - {x: -0.5, y: 0.5, z: 0}
-    - {x: 0, y: -0.1, z: 0}
-  - dotPosition:
-    - {x: -0.5, y: 0, z: 0.5}
-    - {x: 0, y: 0, z: -0.1}
-  - dotPosition:
-    - {x: 0.5, y: 0.5, z: 0}
-    - {x: 0, y: -0.1, z: 0}
-  - dotPosition:
-    - {x: 0.5, y: 0, z: 0.5}
-    - {x: 0, y: 0, z: -0.1}
-  - dotPosition:
-    - {x: 0, y: 0.5, z: 0.5}
-    - {x: 0, y: 0, z: -0.1}
-  - dotPosition:
-    - {x: -0.5, y: 0.5, z: 0}
-    - {x: 0.1, y: 0, z: 0}
-  - dotPosition:
-    - {x: 0, y: -0.5, z: 0.5}
-    - {x: 0, y: 0, z: -0.1}
-  - dotPosition:
-    - {x: -0.5, y: -0.5, z: 0}
-    - {x: 0.1, y: 0, z: 0}
-  - dotPosition:
-    - {x: 0, y: 0, z: 0.5}
-    - {x: 0, y: 0, z: -0.1}
-  - dotPosition:
-    - {x: -0.5, y: 0, z: 0}
-    - {x: 0.1, y: 0, z: 0}
-  distance: 10
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!65 &6424056303849003492
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2139571353087031040}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
