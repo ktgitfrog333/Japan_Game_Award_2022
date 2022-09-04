@@ -67,7 +67,7 @@ namespace TitleSelect
             pushState[0].ObserveEveryValueChanged(x => x.Value)
                 .Subscribe(x =>
                 {
-                    if (x.Equals((int)EventCommand.Submited))
+                    if (x.Equals((int)EventCommand.AnyKeysPushed))
                     {
                         OpenClosePanel(false, pushGameStartPanel);
                         OpenClosePanel(true, gameStartExitPanel);
@@ -265,6 +265,8 @@ namespace TitleSelect
                     .Subscribe(_ => child.GetComponent<EventController>().Submited());
                 btn.OnCancelAsObservable()
                     .Subscribe(_ => child.GetComponent<EventController>().Canceled());
+                if (parent.Equals(pushGameStartPanel.transform))
+                    child.GetComponent<EventController>().AnyKeys();
 
                 btnEventStateList.Add(child.GetComponent<EventController>().EventRP);
             }
