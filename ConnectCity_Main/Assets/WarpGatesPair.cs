@@ -28,6 +28,14 @@ namespace Gimmick
         [SerializeField] private CubeRaysMap[] raysMap;
         /// <summary>一辺を描画するレイの距離</summary>
         [SerializeField] private float distance;
+        /// <summary>プレイヤーと敵のレイ</summary>
+        [SerializeField] private CubeRaysMap isUnderMoveCube;
+        /// <summary>プレイヤーのレイの距離</summary>
+        [SerializeField] private float isOnUnderDistance;
+        /// <summary>プレイヤーと敵のレイ</summary>
+        [SerializeField] private CubeRaysMap isOnPlayerAndEnemyRay;
+        /// <summary>移動用のオブジェクト名</summary>
+        private readonly string MOVE_PARENT_NAME = "MoveParentName";
 
         /// <summary>
         /// 一辺を描画するレイのマップ
@@ -62,14 +70,10 @@ namespace Gimmick
                 var warpB = parent.GetChild(1);
                 // T.B.D 移動方法はひとまず単一エレベーター式を採用（※複数タクシー式（複数のオブジェクトごとにフラグ管理）に戻す可能性もあり）
                 var isMoving = new BoolReactiveProperty();
-                // 確認用
-                //isMoving.ObserveEveryValueChanged(x => x.Value)
-                //    .Subscribe(x => Debug.Log(x));
                 for (var i = 0; i < parent.childCount; i++)
                 {
                     Transform warp = parent.GetChild(i);
                     warp.OnTriggerEnterAsObservable()
-                        //.Do(_ => Debug.Log("OnTriggerEnter"))
                         .Where(x => !isMoving.Value &&
                             0 < collierTagNames.Where(q => x.CompareTag(q)).Select(q => q).ToArray().Length)
                         .Select(x => x.gameObject)
@@ -81,7 +85,6 @@ namespace Gimmick
                         })
                         .AddTo(_compositeDisposable);
                     warp.OnTriggerExitAsObservable()
-                        //.Do(_ => Debug.Log("OnTriggerExit"))
                         .Where(x => isMoving.Value &&
                             0 < collierTagNames.Where(q => x.CompareTag(q)).Select(q => q).ToArray().Length)
                         .Subscribe(_ =>
@@ -114,28 +117,122 @@ namespace Gimmick
         {
             try
             {
-                //Debug.Log($"接触：{environment.name}");
-                if (!ChangeFakeStatic(environment))
-                    throw new System.Exception("静的変化の失敗");
+                // ヒットオブジェクトがある場合はセットする
+                GameObject hitMoveCube = null;
+                GameObject hitPlayerOrEnemy = null;
                 if (environment.CompareTag(TagConst.TAG_NAME_PLAYER) || environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                 {
-                    // 一度触れたワープポイントの中心に移動させる
-                    environment.transform.position = warp.Equals(warpA) ? warpA.position : warpB.position;
-                    // 移動先のワープへ配置
-                    environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
+                    hitMoveCube = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isUnderMoveCube.DotPosition[0], isUnderMoveCube.DotPosition[1], isOnUnderDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE));
                 }
                 else if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 {
-                    // 最終配置のポジションを算出
-                    var lastPosition = warp.Equals(warpA) ?
-                        GetCalcWarpPosition(environment.transform.parent.position, warpA.position, warpB.position) :
-                        GetCalcWarpPosition(environment.transform.parent.position, warpB.position, warpA.position);
-                    _checkObject = InstanceCheckCube(environment.transform.parent, lastPosition, warp, warpA, warpB);
+                    var hitPlayer = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
+                    var hitEnemy = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                    hitPlayerOrEnemy = hitPlayer != null ? hitPlayer : hitEnemy;
+                }
+                // 移動オブジェクトを一時的に静的オブジェクトにする
+                if (!ChangeFakeStatic(environment))
+                    throw new System.Exception("静的変化の失敗");
+                if (hitMoveCube != null)
+                    if (!ChangeFakeStatic(hitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? hitMoveCube.transform.GetChild(0).gameObject : hitMoveCube))
+                        throw new System.Exception("静的変化の失敗");
+                if (hitPlayerOrEnemy != null)
+                    if (!ChangeFakeStatic(hitPlayerOrEnemy))
+                        throw new System.Exception("静的変化の失敗");
+                // 移動処理
+                if (environment.CompareTag(TagConst.TAG_NAME_PLAYER) || environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
+                {
+                    if (hitMoveCube != null)
+                    {
+                        if (!WarpCollisionEnvironmentSameTime(environment, warp, warpA, warpB, hitMoveCube))
+                            throw new System.Exception("同時ワープの失敗");
+                    }
+                    else
+                    {
+                        // 一度触れたワープポイントの中心に移動させる
+                        environment.transform.position = warp.Equals(warpA) ? warpA.position : warpB.position;
+                        // 移動先のワープへ配置
+                        environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
+                    }
+                }
+                else if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                {
+                    if (hitPlayerOrEnemy != null)
+                    {
+                        if (!WarpCollisionEnvironmentSameTime(environment, warp, warpA, warpB, hitPlayerOrEnemy))
+                            throw new System.Exception("同時ワープの失敗");
+                    }
+                    else
+                    {
+                        // 最終配置のポジションを算出
+                        var lastPosition = warp.Equals(warpA) ?
+                            GetCalcWarpPosition(environment.transform.parent.position, warpA.position, warpB.position) :
+                            GetCalcWarpPosition(environment.transform.parent.position, warpB.position, warpA.position);
+                        _checkObject = InstanceCheckCube(environment.transform.parent, lastPosition, warp, warpA, warpB);
+                    }
                 }
                 else
                     throw new System.Exception("非対象オブジェクト");
+                // 移動オブジェクトを元に戻す
                 if (!ChangeDynamic(environment))
                     throw new System.Exception("動的変化の失敗");
+                if (hitMoveCube != null)
+                    if (!ChangeDynamic(hitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? hitMoveCube.transform.GetChild(0).gameObject : hitMoveCube))
+                        throw new System.Exception("静的変化の失敗");
+                if (hitPlayerOrEnemy != null)
+                    if (!ChangeDynamic(hitPlayerOrEnemy))
+                        throw new System.Exception("静的変化の失敗");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 衝突した対象オブジェクトをワープさせる処理からの呼び出し
+        /// 同時ワープを実現する
+        /// </summary>
+        /// <param name="environment">エンバイロメント</param>
+        /// <param name="warp">接触ワープ</param>
+        /// <param name="warpA">ワープA（比較用）</param>
+        /// <param name="warpB">ワープB（比較用）</param>
+        /// <param name="hitObject">ヒットしたオブジェクト</param>
+        /// <returns></returns>
+        private bool WarpCollisionEnvironmentSameTime(GameObject environment, Transform warp, Transform warpA, Transform warpB, GameObject hitObject)
+        {
+            try
+            {
+                // 一つにまとめるオブジェクトを仮生成
+                var obj = GameObject.Find(MOVE_PARENT_NAME) != null ? GameObject.Find(MOVE_PARENT_NAME) : new GameObject(MOVE_PARENT_NAME);
+                var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current).gameObject;
+                obj.transform.position = environment.transform.position + (environment.transform.position - hitObject.transform.position);
+                obj.transform.parent = stage.transform;
+                // 親を一時格納
+                var defParent = environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? environment.transform.parent.parent : environment.transform.parent;
+                var defOnParent = hitObject.transform.parent;
+                // 一時的なグループ化
+                if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                    environment.transform.parent.parent = obj.transform;
+                else
+                    environment.transform.parent = obj.transform;
+                hitObject.transform.parent = obj.transform;
+
+                // 最終配置のポジションを算出
+                var lastPosition = warp.Equals(warpA) ?
+                    GetCalcWarpPosition(obj.transform.position, warpA.position, warpB.position) :
+                    GetCalcWarpPosition(obj.transform.position, warpB.position, warpA.position);
+                _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, environment);
+
+                // グループを元に戻す
+                if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                    environment.transform.parent.parent = defParent;
+                else
+                    environment.transform.parent = defParent;
+                hitObject.transform.parent = defOnParent;
 
                 return true;
             }
@@ -158,12 +255,29 @@ namespace Gimmick
         /// <returns>当たり判定用プレハブのクローン</returns>
         private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB)
         {
+            return InstanceCheckCube(originParent, lastPosition, warp, warpA, warpB, null);
+        }
+
+        /// <summary>
+        /// 移動先当たり判定のレイを生成
+        /// ワープ対象のオブジェクトがワープ先に移動できるか否かをチェックする
+        /// </summary>
+        /// <param name="originParent">移動対象オブジェクトの親</param>
+        /// <param name="lastPosition">移動先の位置</param>
+        /// <param name="warp">現在触れているワープ</param>
+        /// <param name="warpA">ワープA</param>
+        /// <param name="warpB">ワープB</param>
+        /// <param name="onOrUnderObject">上または下に存在するオブジェクト</param>
+        /// <returns>当たり判定用プレハブのクローン</returns>
+        private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB, GameObject onOrUnderObject)
+        {
             try
             {
-                if (originParent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
+                var moveCubeGroup = originParent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? originParent : GetFindChildGameObjectWithTag(originParent, TagConst.TAG_NAME_MOVECUBEGROUP);
+                if (moveCubeGroup.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                 {
                     var group = Instantiate(checkCbSmallGroupPrefab, lastPosition, Quaternion.identity, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current));
-                    foreach (Transform child in originParent)
+                    foreach (Transform child in moveCubeGroup)
                     {
                         Instantiate(checkCbSmallPrefab, warp.Equals(warpA) ?
                             GetCalcWarpPosition(child.position, warpA.position, warpB.position) :
@@ -171,6 +285,21 @@ namespace Gimmick
                     }
                     if (group.transform.childCount < 1)
                         throw new System.Exception("子オブジェクトがありません");
+                    if (onOrUnderObject != null)
+                    {
+                        if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_PLAYER) || onOrUnderObject.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
+                        {
+                            // プレイヤーは空間操作ブロック上にいるのでプレイヤー位置にチェックブロックを追加
+                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                        }
+                        else if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                        {
+                            // 空間操作ブロックはプレイヤーの下にいるのでプレイヤー位置にチェックブロックを追加
+                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                        }
+                        else
+                            throw new System.Exception("非対象オブジェクト");
+                    }
                     var isCollision = false;
                     foreach (Transform child in group.transform)
                     {
@@ -181,7 +310,6 @@ namespace Gimmick
                     }
                     if (!isCollision)
                     {
-                        //Debug.Log("オブジェクトを削除");
                         Destroy(group);
 
                         // 一度、触れたワープポイントの中心に移動させる
@@ -201,8 +329,26 @@ namespace Gimmick
             }
             catch (System.Exception e)
             {
-                throw e;
+                Debug.LogException(e);
+                return null;
             }
+        }
+
+        /// <summary>
+        /// 親オブジェクト内にある子オブジェクトを探す
+        /// タグ名から一つのオブジェクトを取得
+        /// </summary>
+        /// <param name="parent">子を持つオブジェクト</param>
+        /// <param name="tagName">タグ名</param>
+        /// <returns>タグ名にヒットする子オブジェクト</returns>
+        private Transform GetFindChildGameObjectWithTag(Transform parent, string tagName)
+        {
+            var childList = new List<Transform>();
+            foreach (Transform child in parent)
+                childList.Add(child);
+            if (1 < childList.Where(q => q.CompareTag(tagName)).Select(q => q).ToArray().Length)
+                throw new System.Exception("同じタグ名のオブジェクトが複数存在します");
+            return childList.Where(q => q.CompareTag(tagName)).Select(q => q).ToArray()[0];
         }
 
         /// <summary>

@@ -1118,7 +1118,8 @@ namespace Main.Level
                 var rigidbody = GetMoveCubeParentRigidbody(origin);
                 if (rigidbody != null)
                     foreach (Transform t in rigidbody.transform)
-                        t.GetComponent<BoxCollider>().enabled = isEnabled;
+                        if (t.GetComponent<BoxCollider>() != null)
+                            t.GetComponent<BoxCollider>().enabled = isEnabled;
 
                 return true;
             }
@@ -1136,17 +1137,25 @@ namespace Main.Level
         /// <returns>空間操作ブロックRigidbody（単体）</returns>
         private Rigidbody GetMoveCubeParentRigidbody(GameObject origin)
         {
-            var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, origin.transform.parent.localPosition);
-            if (-1 < direction)
-                if (((Direction2D)direction).Equals(Direction2D.Left))
-                    return _spaceDirections.RbsLeftSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
-                        .Select(q => q)
-                        .ToArray()[0];
-                else if (((Direction2D)direction).Equals(Direction2D.Right))
-                    return _spaceDirections.RbsRightSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
-                        .Select(q => q)
-                        .ToArray()[0];
-            return null;
+            try
+            {
+                var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, origin.transform.parent.localPosition);
+                if (-1 < direction)
+                    if (((Direction2D)direction).Equals(Direction2D.Left))
+                        return _spaceDirections.RbsLeftSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                            .Select(q => q)
+                            .ToArray()[0];
+                    else if (((Direction2D)direction).Equals(Direction2D.Right))
+                        return _spaceDirections.RbsRightSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                            .Select(q => q)
+                            .ToArray()[0];
+                return null;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return null;
+            }
         }
 
         /// <summary>
