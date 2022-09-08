@@ -23,6 +23,19 @@ public class SwitchOnOFFBlock : MonoBehaviour
     private bool _defaultIsEnabled; //有効／無効ステータスの初期値
     private Renderer _renderer; //オブジェクトのマテリアル等の情報
     private BoxCollider _collider;  //コライダー
+
+    public bool Initialize()
+    {
+        try
+        {
+            isEnabled = _defaultIsEnabled;
+            return true;
+        }
+        catch
+        {
+            System.Exception
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
