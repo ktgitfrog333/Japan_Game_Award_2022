@@ -28,12 +28,56 @@ public class SwitchOnOFFBlock : MonoBehaviour
     {
         try
         {
-            isEnabled = _defaultIsEnabled;
+            _defaultIsEnabled = isEnabled;
+            _renderer = GetComponent<Renderer>();
+            _collider = GetComponent<BoxCollider>();
             return true;
         }
-        catch
+        catch(System.Exception)
         {
-            System.Exception
+            return false;
+        }
+    }
+
+    public bool Exit()
+    {
+        try
+        {
+            isEnabled = _defaultIsEnabled;
+            CheckOnOffState();
+            return true;
+        }
+        catch(System.Exception)
+        {
+            return false;
+        }
+    }
+
+    public void CheckOnOffState()
+    {
+        if(isEnabled == true)
+        {
+            _collider.enabled = true;
+        }
+    }
+
+    public bool UpdateOnOffState()
+    {
+        try
+        {
+            if(isEnabled == true)
+            {
+                isEnabled = false;
+            }
+            else
+            {
+                isEnabled = true;
+            }
+            return true;
+        }
+        catch(System.Exception)
+        {
+            return false;
         }
     }
     // Start is called before the first frame update
