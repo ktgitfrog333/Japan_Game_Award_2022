@@ -263,6 +263,7 @@ namespace Main.Level
         /// </summary>
         /// <param name="moveCubes">空間操作ブロックオブジェクト</param>
         /// <param name="level">レベルデザイン</param>
+        /// <param name="count">コネクト成功回数</param>
         /// <returns>セット処理完了／引数情報の一部にnull</returns>
         private GameObject[] SetCollsion(GameObject[] moveCubes, Transform level, IntReactiveProperty count)
         {
@@ -367,7 +368,11 @@ namespace Main.Level
                         else
                         {
                             if (!_inputBan)
+                            {
                                 count.Value++;
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SwitchWarpState())
+                                    Debug.LogError("ワープ可否フラグ切り替え処理の呼び出し失敗");
+                            }
                         }
                         _connectDirections = new List<ConnectDirection2D>();
                     })
@@ -1142,13 +1147,37 @@ namespace Main.Level
                 var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, origin.transform.parent.localPosition);
                 if (-1 < direction)
                     if (((Direction2D)direction).Equals(Direction2D.Left))
+                    {
+                        if (_spaceDirections.RbsLeftSpace == null ||
+                            (_spaceDirections.RbsLeftSpace != null && _spaceDirections.RbsLeftSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                            .Select(q => q)
+                            .ToArray()
+                            .Length < 1))
+                        {
+                            // 空間操作Rigidbodyリストの同期
+                            if (!CheckPositionAndSetMoveCubesComponents(_moveCubes))
+                                Debug.LogError("制御対象RigidBody格納の失敗");
+                        }
                         return _spaceDirections.RbsLeftSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
                             .Select(q => q)
                             .ToArray()[0];
+                    }
                     else if (((Direction2D)direction).Equals(Direction2D.Right))
+                    {
+                        if (_spaceDirections.RbsRightSpace == null ||
+                            (_spaceDirections.RbsRightSpace != null && _spaceDirections.RbsRightSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
+                            .Select(q => q)
+                            .ToArray()
+                            .Length < 1))
+                        {
+                            // 空間操作Rigidbodyリストの同期
+                            if (!CheckPositionAndSetMoveCubesComponents(_moveCubes))
+                                Debug.LogError("制御対象RigidBody格納の失敗");
+                        }
                         return _spaceDirections.RbsRightSpace.Where(q => q.transform.gameObject.Equals(origin.transform.parent.gameObject))
                             .Select(q => q)
                             .ToArray()[0];
+                    }
                 return null;
             }
             catch (System.Exception e)

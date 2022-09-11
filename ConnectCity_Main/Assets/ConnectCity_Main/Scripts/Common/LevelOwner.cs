@@ -356,6 +356,15 @@ namespace Main.Common
         {
             return hitObject.GetComponent<Robot_Enemy>().DestroyRobotEnemies();
         }
+
+        /// <summary>
+        /// ワープ可否のステータスを切り替える
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool SwitchWarpState()
+        {
+            return warpGateOwner.GetComponent<WarpGateOwner>().SwitchWarpState();
+        }
     }
 }
 /// <summary>

@@ -27,5 +27,9 @@ namespace Main.Common.Const
         /// 敵ギミックのレイヤー名
         /// </summary>
         public static readonly string LAYER_NAME_ROBOTENEMIES = "Robot_Ememy";
+        /// <summary>
+        /// ワープのレイヤー名
+        /// </summary>
+        public static readonly string LAYER_NAME_WARPGATE = "WarpGate";
     }
 }
