@@ -951,13 +951,17 @@ namespace Main.Level
                 {
                     // グループ化されている場合は親のRigidBodyをセット
                     var rb = obj.transform.parent.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? obj.transform.parent.GetComponent<Rigidbody>() : obj.GetComponent<Rigidbody>();
-                    if (obj.transform.parent.localPosition.x < transform.localPosition.x)
+                    // ワープ移動中はオブジェクトの親子関係が一時的に変更となるため、それを考慮する
+                    var currentIdx = GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current;
+                    var currentLevel = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(currentIdx);
+                    var parentLocal = obj.transform.parent.parent.Equals(currentLevel) ? obj.transform.parent : obj.transform.parent.parent;
+                    if (parentLocal.localPosition.x < transform.localPosition.x)
                     {
                         // 左空間
                         rbsLeft.Add(rb);
                         scrsLeft.Add(obj.GetComponent<MoveCbSmall>());
                     }
-                    else if (transform.localPosition.x < obj.transform.parent.localPosition.x)
+                    else if (transform.localPosition.x < parentLocal.localPosition.x)
                     {
                         //右空間
                         rbsRight.Add(rb);
@@ -1144,7 +1148,12 @@ namespace Main.Level
         {
             try
             {
-                var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, origin.transform.parent.localPosition);
+                // ワープ移動中はオブジェクトの親子関係が一時的に変更となるため、それを考慮する
+                var currentIdx = GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current;
+                var currentLevel = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(currentIdx);
+                var parentLocal = origin.transform.parent.parent.Equals(currentLevel) ? origin.transform.parent : origin.transform.parent.parent;
+
+                var direction = LevelDesisionIsObjected.CheckPositionAndGetDirection2D(transform, parentLocal.localPosition);
                 if (-1 < direction)
                     if (((Direction2D)direction).Equals(Direction2D.Left))
                     {

@@ -8,6 +8,7 @@ using Main.Common.Const;
 using System.Linq;
 using Main.Level;
 using Main.Common.LevelDesign;
+using DG.Tweening;
 
 namespace Gimmick
 {
@@ -36,6 +37,18 @@ namespace Gimmick
         [SerializeField] private Vector3 isExitedMoveCube;
         /// <summary>空間操作ブロック１ブロック分の当たり判定</summary>
         [SerializeField] private Vector3 isHitedMovingSpace;
+        /// <summary>ワープ有効な場合のスケール</summary>
+        [SerializeField] private Vector3 enableScale = Vector3.one;
+        /// <summary>ワープ無効な場合のスケール</summary>
+        [SerializeField] private Vector3 disableScale = Vector3.one * .25f;
+        /// <summary>ワープスケール変更アニメーションの時間</summary>
+        [SerializeField] private float doScaleDuration = .1f;
+        /// <summary>吸引時の回転</summary>
+        [SerializeField] private Vector3 suctionRotate = new Vector3(0f, 0f, 360f);
+        /// <summary>吸引時のスケール</summary>
+        [SerializeField] private Vector3 suctionScale = Vector3.zero;
+        /// <summary>吸引時アニメーション時間</summary>
+        [SerializeField] private float suctionDuration = .5f;
 
         /// <summary>
         /// 一辺を描画するレイのマップ
@@ -67,25 +80,31 @@ namespace Gimmick
         {
             try
             {
+                var parent = transform;
+                var warpA = parent.GetChild(0);
+                var warpB = parent.GetChild(1);
                 _isWarp.Value = false;
                 _isWarp.ObserveEveryValueChanged(x => x.Value)
                     .Subscribe(x =>
                     {
                         if (x)
                         {
-                            // T.B.D ワープ有効の処理を実装
-                            Debug.Log("ワープ有効");
+                            // ワープ有効
+                            warpA.DOScale(enableScale, doScaleDuration)
+                                .SetLink(gameObject);
+                            warpB.DOScale(enableScale, doScaleDuration)
+                                .SetLink(gameObject);
                         }
                         else
                         {
-                            // T.B.D ワープ無効の処理を実装
-                            Debug.Log("ワープ無効");
+                            // ワープ無効
+                            warpA.DOScale(disableScale, doScaleDuration)
+                                .SetLink(gameObject);
+                            warpB.DOScale(disableScale, doScaleDuration)
+                                .SetLink(gameObject);
                         }
                     })
                     .AddTo(_compositeDisposable);
-                var parent = transform;
-                var warpA = parent.GetChild(0);
-                var warpB = parent.GetChild(1);
                 // トリガーに触れたオブジェクトを管理
                 Dictionary<Transform, bool> onEnteredTransMap = null;
                 for (var i = 0; i < parent.childCount; i++)
@@ -107,7 +126,9 @@ namespace Gimmick
                                     onEnteredTransMap[c] = true;
                             else
                                 onEnteredTransMap[x.transform] = true;
-                            if (!WarpCollisionEnvironment(x, warp, warpA, warpB))
+                            var charactors = new WarpCharactors();
+                            charactors.Environment = x;
+                            if (!WarpCollisionEnvironment(warp, warpA, warpB, suctionRotate, suctionScale, suctionDuration, charactors))
                                 throw new System.Exception("衝突エンバイロメント制御の失敗");
                         })
                         .AddTo(_compositeDisposable);
@@ -167,82 +188,95 @@ namespace Gimmick
         /// <summary>
         /// 衝突した対象オブジェクトをワープさせる
         /// </summary>
-        /// <param name="environment">エンバイロメント</param>
         /// <param name="warp">接触ワープ</param>
         /// <param name="warpA">ワープA（比較用）</param>
         /// <param name="warpB">ワープB（比較用）</param>
+        /// <param name="suctionRotate">吸引対象オブジェクトのクォータニオン角</param>
+        /// <param name="suctionScale">吸引対象オブジェクトのスケール</param>
+        /// <param name="suctionDuration">吸引アニメーション時間</param>
+        /// <param name="charactors">移動対象キャラクター</param>
         /// <returns>成功／失敗</returns>
-        private bool WarpCollisionEnvironment(GameObject environment, Transform warp, Transform warpA, Transform warpB/*, Vector3 closestPoint*/)
+        private bool WarpCollisionEnvironment(Transform warp, Transform warpA, Transform warpB, Vector3 suctionRotate, Vector3 suctionScale, float suctionDuration, WarpCharactors charactors)
         {
             try
             {
                 // ヒットオブジェクトがある場合はセットする
-                GameObject hitMoveCube = null;
-                GameObject hitPlayerOrEnemy = null;
-                if (environment.CompareTag(TagConst.TAG_NAME_PLAYER) || environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
+                if (charactors.Environment.CompareTag(TagConst.TAG_NAME_PLAYER) || charactors.Environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                 {
-                    hitMoveCube = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isUnderMoveCube.DotPosition[0], isUnderMoveCube.DotPosition[1], isOnUnderDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE));
+                    charactors.HitMoveCube = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isUnderMoveCube.DotPosition[0], isUnderMoveCube.DotPosition[1], isOnUnderDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE));
                 }
-                else if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                else if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 {
                     // 距離を延ばす
-                    var addDistance = environment.transform.parent.childCount;
-                    var hitPlayer = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * environment.transform.parent.childCount, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
-                    var hitEnemy = LevelDesisionIsObjected.IsOnEnemiesAndInfo(environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * addDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                    hitPlayerOrEnemy = hitPlayer != null ? hitPlayer : hitEnemy;
+                    var addDistance = charactors.Environment.transform.parent.childCount;
+                    var hitPlayer = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * charactors.Environment.transform.parent.childCount, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
+                    var hitEnemy = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * addDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                    charactors.HitPlayerOrEnemy = hitPlayer != null ? hitPlayer : hitEnemy;
                 }
                 else
                     throw new System.Exception("非対象オブジェクト");
                 // 移動オブジェクトを一時的に静的オブジェクトにする
-                if (!ChangeFakeStatic(environment))
+                if (!ChangeFakeStatic(charactors.Environment))
                     throw new System.Exception("静的変化の失敗");
-                if (hitMoveCube != null)
-                    if (!ChangeFakeStatic(hitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? hitMoveCube.transform.GetChild(0).gameObject : hitMoveCube))
+                if (charactors.HitMoveCube != null)
+                    if (!ChangeFakeStatic(charactors.HitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? charactors.HitMoveCube.transform.GetChild(0).gameObject : charactors.HitMoveCube))
                         throw new System.Exception("静的変化の失敗");
-                if (hitPlayerOrEnemy != null)
-                    if (!ChangeFakeStatic(hitPlayerOrEnemy))
+                if (charactors.HitPlayerOrEnemy != null)
+                    if (!ChangeFakeStatic(charactors.HitPlayerOrEnemy))
                         throw new System.Exception("静的変化の失敗");
                 // 移動処理
-                if (environment.CompareTag(TagConst.TAG_NAME_PLAYER) || environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
+                if (charactors.Environment.CompareTag(TagConst.TAG_NAME_PLAYER) || charactors.Environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                 {
-                    if (hitMoveCube != null)
+                    if (charactors.HitMoveCube != null)
                     {
-                        if (!WarpCollisionEnvironmentSameTime(environment, warp, warpA, warpB, hitMoveCube))
+                        if (!WarpCollisionEnvironmentSameTime(warp, warpA, warpB, charactors.HitMoveCube, suctionRotate, suctionScale, suctionDuration, charactors))
                             throw new System.Exception("同時ワープの失敗");
                     }
                     else
                     {
-                        // 一度触れたワープポイントの中心に移動させる
-                        environment.transform.position = warp.Equals(warpA) ? warpA.position : warpB.position;
-                        // 移動先のワープへ配置
-                        environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
+                        var defaultScale = charactors.Environment.transform.localScale;
+                        // ワープへ吸い込まれる
+                        var isCompetedSuction = new BoolReactiveProperty();
+                        if (!PlaySuction(charactors.Environment.transform, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                            throw new System.Exception("吸引アニメーション管理の失敗");
+                        var isCompletedRelease = new BoolReactiveProperty();
+                        isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
+                            .Where(x => x)
+                            .Subscribe(_ =>
+                            {
+                                // 移動先のワープへ配置
+                                charactors.Environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
+                                if (!PlaySuction(charactors.Environment.transform, charactors.Environment.transform.position, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                    throw new System.Exception("吸引アニメーション管理の失敗");
+                            })
+                            .AddTo(_compositeDisposable);
+                        // 放出後の後処理
+                        isCompletedRelease.ObserveEveryValueChanged(x => x.Value)
+                            .Where(x => x)
+                            .Subscribe(_ =>
+                            {
+                                if (!AllChangeDynamic(charactors))
+                                    throw new System.Exception("いずれかの動的変化の失敗");
+                            })
+                            .AddTo(_compositeDisposable);
                     }
                 }
-                else if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                else if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 {
-                    if (hitPlayerOrEnemy != null)
+                    if (charactors.HitPlayerOrEnemy != null)
                     {
-                        if (!WarpCollisionEnvironmentSameTime(environment, warp, warpA, warpB, hitPlayerOrEnemy))
+                        if (!WarpCollisionEnvironmentSameTime(warp, warpA, warpB, charactors.HitPlayerOrEnemy, suctionRotate, suctionScale, suctionDuration, charactors))
                             throw new System.Exception("同時ワープの失敗");
                     }
                     else
                     {
                         // 最終配置のポジションを算出
                         var lastPosition = warp.Equals(warpA) ?
-                            GetCalcWarpPosition(environment.transform.localPosition, warpB.position, true) :
-                            GetCalcWarpPosition(environment.transform.localPosition, warpA.position, true);
-                        _checkObject = InstanceCheckCube(environment.transform.parent, lastPosition, warp, warpA, warpB);
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpB.position, true) :
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpA.position, true);
+                        _checkObject = InstanceCheckCube(charactors.Environment.transform.parent, lastPosition, warp, warpA, warpB, suctionRotate, suctionScale, suctionDuration, charactors);
                     }
                 }
-                // 移動オブジェクトを元に戻す
-                if (!ChangeDynamic(environment))
-                    throw new System.Exception("動的変化の失敗");
-                if (hitMoveCube != null)
-                    if (!ChangeDynamic(hitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? hitMoveCube.transform.GetChild(0).gameObject : hitMoveCube))
-                        throw new System.Exception("静的変化の失敗");
-                if (hitPlayerOrEnemy != null)
-                    if (!ChangeDynamic(hitPlayerOrEnemy))
-                        throw new System.Exception("静的変化の失敗");
 
                 return true;
             }
@@ -254,46 +288,139 @@ namespace Gimmick
         }
 
         /// <summary>
+        /// 動的変化の一括処理
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <returns>成功／失敗</returns>
+        private bool AllChangeDynamic(WarpCharactors charactors)
+        {
+            try
+            {
+                return AllChangeDynamic(charactors, null);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 動的変化の一括処理
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <param name="isCompletedCheck">移動可否チェック完了フラグ</param>
+        /// <returns>成功／失敗</returns>
+        private bool AllChangeDynamic(WarpCharactors charactors, BoolReactiveProperty isCompletedCheck)
+        {
+            try
+            {
+                // 移動オブジェクトを元に戻す
+                if (!ChangeDynamic(charactors.Environment))
+                    throw new System.Exception("動的変化の失敗");
+                if (charactors.HitMoveCube != null)
+                    if (!ChangeDynamic(charactors.HitMoveCube.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP) ? charactors.HitMoveCube.transform.GetChild(0).gameObject : charactors.HitMoveCube))
+                        throw new System.Exception("動的変化の失敗");
+                if (charactors.HitPlayerOrEnemy != null)
+                    if (!ChangeDynamic(charactors.HitPlayerOrEnemy))
+                        throw new System.Exception("動的変化の失敗");
+                if (isCompletedCheck != null)
+                    isCompletedCheck.Value = true;
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 吸引／放出アニメーションを管理
+        /// ・fromワープへの移動アニメーション
+        /// ・回転アニメーション
+        /// ・縮小アニメーション
+        /// </summary>
+        /// <param name="environment">エンバイロメント</param>
+        /// <param name="endPosition">移動先の座標</param>
+        /// <param name="endRotate">回転する角度</param>
+        /// <param name="endScale">変化スケール</param>
+        /// <param name="duration">アニメーション時間</param>
+        /// <param name="isCompeted">アニメーション終了のフラグ</param>
+        /// <returns>成功／失敗</returns>
+        private bool PlaySuction(Transform environment, Vector3 endPosition, Vector3 endRotate, Vector3 endScale, float duration, BoolReactiveProperty isCompeted)
+        {
+            try
+            {
+                var seq = DOTween.Sequence();
+                // 一度触れたワープポイントの中心に移動させる
+                seq.Append(environment.transform.DOMove(endPosition, duration))
+                    .Join(environment.transform.DORotate(endRotate, duration, RotateMode.WorldAxisAdd))
+                    .Join(environment.transform.DOScale(endScale, duration))
+                    .AppendCallback(() => isCompeted.Value = true)
+                    .SetLink(gameObject);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 衝突した対象オブジェクトをワープさせる処理からの呼び出し
         /// 同時ワープを実現する
         /// </summary>
-        /// <param name="environment">エンバイロメント</param>
         /// <param name="warp">接触ワープ</param>
         /// <param name="warpA">ワープA（比較用）</param>
         /// <param name="warpB">ワープB（比較用）</param>
         /// <param name="hitObject">ヒットしたオブジェクト</param>
-        /// <returns></returns>
-        private bool WarpCollisionEnvironmentSameTime(GameObject environment, Transform warp, Transform warpA, Transform warpB, GameObject hitObject)
+        /// <param name="suctionRotate">吸引対象オブジェクトのクォータニオン角</param>
+        /// <param name="suctionScale">吸引対象オブジェクトのスケール</param>
+        /// <param name="suctionDuration">吸引アニメーション時間</param>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <returns>成功／失敗</returns>
+        private bool WarpCollisionEnvironmentSameTime(Transform warp, Transform warpA, Transform warpB, GameObject hitObject, Vector3 suctionRotate, Vector3 suctionScale, float suctionDuration, WarpCharactors charactors)
         {
             try
             {
                 // 一つにまとめるオブジェクトを仮生成
                 var obj = GameObject.Find(MOVE_PARENT_NAME) != null ? GameObject.Find(MOVE_PARENT_NAME) : new GameObject(MOVE_PARENT_NAME);
                 var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current).gameObject;
-                obj.transform.position = environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? environment.transform.parent.position : environment.transform.position/*environment.transform.position + (environment.transform.position - hitObject.transform.position)*/;
+                obj.transform.position = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.position : charactors.Environment.transform.position/*environment.transform.position + (environment.transform.position - hitObject.transform.position)*/;
                 obj.transform.parent = stage.transform;
                 // 親を一時格納
-                var defParent = environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? environment.transform.parent.parent : environment.transform.parent;
+                var defParent = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.parent : charactors.Environment.transform.parent;
                 var defOnParent = hitObject.transform.parent;
                 // 一時的なグループ化
-                if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
-                    environment.transform.parent.parent = obj.transform;
+                if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                    charactors.Environment.transform.parent.parent = obj.transform;
                 else
-                    environment.transform.parent = obj.transform;
+                    charactors.Environment.transform.parent = obj.transform;
                 hitObject.transform.parent = obj.transform;
 
                 // 最終配置のポジションを算出
                 var lastPosition = warp.Equals(warpA) ?
-                    GetCalcWarpPosition(environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpB.position, true) :
-                    GetCalcWarpPosition(environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpA.position, true);
-                _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject);
-
-                // グループを元に戻す
-                if (environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
-                    environment.transform.parent.parent = defParent;
-                else
-                    environment.transform.parent = defParent;
-                hitObject.transform.parent = defOnParent;
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpB.position, true) :
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpA.position, true);
+                // 移動チェックブロック生成、移動処理
+                var isCompletedCheck = new BoolReactiveProperty();
+                _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject, suctionRotate, suctionScale, suctionDuration, charactors, isCompletedCheck);
+                isCompletedCheck.ObserveEveryValueChanged(x => x.Value)
+                    .Where(x => x)
+                    .Subscribe(_ =>
+                    {
+                        // グループを元に戻す
+                        if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                            charactors.Environment.transform.parent.parent = defParent;
+                        else
+                            charactors.Environment.transform.parent = defParent;
+                        hitObject.transform.parent = defOnParent;
+                    })
+                    .AddTo(_compositeDisposable);
 
                 return true;
             }
@@ -314,9 +441,9 @@ namespace Gimmick
         /// <param name="warpA">ワープA</param>
         /// <param name="warpB">ワープB</param>
         /// <returns>当たり判定用プレハブのクローン</returns>
-        private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB)
+        private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB, Vector3 suctionRotate, Vector3 suctionScale, float suctionDuration, WarpCharactors charactors)
         {
-            return InstanceCheckCube(originParent, lastPosition, warp, warpA, warpB, null);
+            return InstanceCheckCube(originParent, lastPosition, warp, warpA, warpB, null, suctionRotate, suctionScale, suctionDuration, charactors, null);
         }
 
         /// <summary>
@@ -330,7 +457,7 @@ namespace Gimmick
         /// <param name="warpB">ワープB</param>
         /// <param name="onOrUnderObject">上または下に存在するオブジェクト</param>
         /// <returns>当たり判定用プレハブのクローン</returns>
-        private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB, GameObject onOrUnderObject)
+        private GameObject InstanceCheckCube(Transform originParent, Vector3 lastPosition, Transform warp, Transform warpA, Transform warpB, GameObject onOrUnderObject, Vector3 suctionRotate, Vector3 suctionScale, float suctionDuration, WarpCharactors charactors, BoolReactiveProperty isCompletedCheck)
         {
             try
             {
@@ -376,16 +503,41 @@ namespace Gimmick
                     {
                         Destroy(group);
 
+                        var defaultScale = originParent.localScale;
+                        // ワープへ吸い込まれる
+                        var isCompetedSuction = new BoolReactiveProperty();
                         // 一度、触れたワープポイントの中心に移動させる
-                        originParent.position = warp.Equals(warpA) ? warpA.position : warpB.position;
-                        // 一度、移動先のワープポイントの中心へ配置
-                        originParent.position = warp.Equals(warpA) ? warpB.position : warpA.position;
-                        // 最終配置のポジションへ調整
-                        originParent.position = lastPosition;
+                        if (!PlaySuction(originParent, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                            throw new System.Exception("吸引アニメーション管理の失敗");
+                        var isCompletedRelease = new BoolReactiveProperty();
+                        isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
+                            .Where(x => x)
+                            .Subscribe(_ =>
+                            {
+                                // 一度、移動先のワープポイントの中心へ配置
+                                originParent.position = warp.Equals(warpA) ? warpB.position : warpA.position;
+                                // 最終配置のポジションへ調整
+                                if (!PlaySuction(originParent, lastPosition, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                    throw new System.Exception("吸引アニメーション管理の失敗");
+                            })
+                            .AddTo(_compositeDisposable);
+                        // 放出後の後処理
+                        isCompletedRelease.ObserveEveryValueChanged(x => x.Value)
+                            .Where(x => x)
+                            .Subscribe(_ =>
+                            {
+                                if (!AllChangeDynamic(charactors, isCompletedCheck))
+                                    throw new System.Exception("いずれかの動的変化の失敗");
+                            })
+                            .AddTo(_compositeDisposable);
                     }
                     else
+                    {
                         foreach (Transform child in group.transform)
                             child.GetComponent<LineRenderer>().enabled = true;
+                        if (!AllChangeDynamic(charactors))
+                            throw new System.Exception("いずれかの動的変化の失敗");
+                    }
 
                     return group;
                 }
@@ -553,6 +705,27 @@ namespace Gimmick
                 Debug.LogException(e);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 移動対象となるキャラクター
+        /// </summary>
+        public struct WarpCharactors
+        {
+            /// <summary>
+            /// プレイヤー／敵／空間操作ブロック
+            /// </summary>
+            public GameObject Environment { get; set; }
+            /// <summary>
+            /// ヒットしたオブジェクト格納用
+            /// 空間操作ブロック（グループ）
+            /// </summary>
+            public GameObject HitMoveCube { get; set; }
+            /// <summary>
+            /// ヒットしたオブジェクト格納用
+            /// プレイヤー／敵
+            /// </summary>
+            public GameObject HitPlayerOrEnemy { get; set; }
         }
     }
 }
