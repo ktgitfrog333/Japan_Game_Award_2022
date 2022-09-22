@@ -15,6 +15,10 @@ namespace Main.Level
         [SerializeField] private Animator _animator;
         /// <summary>パーティクルシステムの配列</summary>
         [SerializeField] private ParticleSystem[] _particleSystems;
+        /// <summary>生成されたか否かのフラグ</summary>
+        private bool _instanced;
+        /// <summary>生成されたか否かのフラグ</summary>
+        public bool Instanced => _instanced;
 
         private void Reset()
         {
@@ -29,6 +33,26 @@ namespace Main.Level
                 }
                 if (particleList.Count < 1) Debug.LogError("パーティクルのセットが失敗");
                 _particleSystems = particleList.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 生成されたオブジェクトは有効にする
+        /// 条件付きブロックで使用する
+        /// </summary>
+        /// <param name="enabled">後から生成された</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetInstanced(bool enabled)
+        {
+            try
+            {
+                _instanced = enabled;
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
             }
         }
 

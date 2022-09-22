@@ -44,6 +44,12 @@ namespace Main.Common.Const
         /// </summary>
         public static readonly string TAG_NAME_CONNECTCOUNTSCREEN = "ConnectCountScreen";
         /// <summary>
+        /// コネクトカウントダウンUIのタグ名
+        /// （条件付きブロックで使用）
+        /// </summary>
+        public static readonly string TAG_NAME_CONNECTCOUNTSCREEN_CONDITIONALBLOCK = "ConnectCountScreenConditionalBlock";
+        //
+        /// <summary>
         /// 敵ロボットのタグ名
         /// </summary>
         public static readonly string TAG_NAME_ROBOT_EMEMY = "Robot_Ememy";
@@ -75,5 +81,9 @@ namespace Main.Common.Const
         /// ワープゲートのタグ名
         /// </summary>
         public static readonly string TAG_NAME_WARPGATE = "WarpGate";
+        /// <summary>
+        /// 条件付きブロックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_CONDITIONALBLOCK = "ConditionalBlock";
     }
 }

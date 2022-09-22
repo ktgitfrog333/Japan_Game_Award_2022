@@ -67,6 +67,10 @@ namespace Main.Common
         [SerializeField] private GameObject warpGateOwner;
         /// <summary>ワープゲートのオーナー</summary>
         public GameObject WarpGateOwner => warpGateOwner;
+        /// <summary>条件付きブロックのオーナー</summary>
+        [SerializeField] private GameObject conditionalBlockOwner;
+        /// <summary>条件付きブロックのオーナー</summary>
+        public GameObject ConditionalBlockOwner => conditionalBlockOwner;
         /// <summary>メソッドをコールさせる優先順位</summary>
         private OmnibusCallCode _omnibusCall = OmnibusCallCode.None;
         /// <summary>優先メソッドをコール中の待機時間</summary>
@@ -96,6 +100,8 @@ namespace Main.Common
                 autoDroneOwner = GameObject.Find("AutoDroneOwner");
             if (warpGateOwner == null)
                 warpGateOwner = GameObject.Find("WarpGateOwner");
+            if (conditionalBlockOwner == null)
+                conditionalBlockOwner = GameObject.Find("ConditionalBlockOwner");
         }
 
         /// <summary>
@@ -139,6 +145,8 @@ namespace Main.Common
                     Debug.LogError("自動追尾ドローンオーナー初期処理の失敗");
                 if (!warpGateOwner.GetComponent<WarpGateOwner>().ManualStart())
                     Debug.LogError("ワープゲートのオーナー初期処理の失敗");
+                if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().ManualStart())
+                    Debug.LogError("条件付きブロックのオーナー初期処理の失敗");
 
                 return true;
             }
@@ -154,6 +162,8 @@ namespace Main.Common
                 Debug.LogError("自動追尾ドローンオーナー終了処理の失敗");
             if (!warpGateOwner.GetComponent<WarpGateOwner>().Exit())
                 Debug.LogError("ワープゲートのオーナー終了処理の失敗");
+            if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().Exit())
+                Debug.LogError("条件付きブロックのオーナー終了処理の失敗");
 
             return true;
         }
@@ -224,6 +234,15 @@ namespace Main.Common
         public bool UpdateCountDown(int count, int maxCount)
         {
             return GoalPoint.GetComponent<GoalPoint>().UpdateCountDown(count, maxCount);
+        }
+
+        /// <summary>
+        /// 条件付きブロックのカウントダウン
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateCountDownConditionalBlock()
+        {
+            return conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().UpdateCountDownConditionalBlock();
         }
 
         /// <summary>
@@ -364,6 +383,16 @@ namespace Main.Common
         public bool SwitchWarpState()
         {
             return warpGateOwner.GetComponent<WarpGateOwner>().SwitchWarpState();
+        }
+
+        /// <summary>
+        /// 新たに空間操作ブロックを生成
+        /// </summary>
+        /// <param name="target">生成する座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool CreateNewMoveCube(Vector3 target)
+        {
+            return spaceOwner.GetComponent<SpaceOwner>().CreateNewMoveCube(target);
         }
     }
 }
