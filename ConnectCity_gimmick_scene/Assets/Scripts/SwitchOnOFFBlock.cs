@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SwitchOnOFFBlock : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class SwitchOnOFFBlock : MonoBehaviour
         }
         catch(System.Exception)
         {
-            return false;
+            throw;
         }
     }
 
@@ -49,7 +50,7 @@ public class SwitchOnOFFBlock : MonoBehaviour
         }
         catch(System.Exception)
         {
-            return false;
+            throw;
         }
     }
 
@@ -58,6 +59,12 @@ public class SwitchOnOFFBlock : MonoBehaviour
         if(isEnabled == true)
         {
             _collider.enabled = true;
+            this._renderer.DOFade(endValue: enabledEndValue, duration: doFadeDuration);
+        }
+        else if(isEnabled == false)
+        {
+            _collider.enabled = false;
+            this._renderer.DOFade(endValue: disabledEndValue, duration: doFadeDuration);
         }
     }
 
@@ -77,7 +84,7 @@ public class SwitchOnOFFBlock : MonoBehaviour
         }
         catch(System.Exception)
         {
-            return false;
+            throw;
         }
     }
     // Start is called before the first frame update
