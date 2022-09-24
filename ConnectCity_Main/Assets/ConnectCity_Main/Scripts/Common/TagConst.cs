@@ -85,5 +85,9 @@ namespace Main.Common.Const
         /// 条件付きブロックのタグ名
         /// </summary>
         public static readonly string TAG_NAME_CONDITIONALBLOCK = "ConditionalBlock";
+        /// <summary>
+        /// ON/OFFブロックのタグ名
+        /// </summary>
+        public static readonly string TAG_NAME_SWITCHONOFFBLOCK = "SwitchOnOffBlock";
     }
 }

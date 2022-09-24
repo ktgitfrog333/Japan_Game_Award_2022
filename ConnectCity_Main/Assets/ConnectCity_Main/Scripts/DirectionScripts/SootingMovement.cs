@@ -20,11 +20,6 @@ namespace Main.Direction
         private BoolReactiveProperty _success = new BoolReactiveProperty();
         /// <summary>ステージ開始のカットシーン</summary>
         [SerializeField] private GameObject startCutscene;
-        /// <summary>プレイヤーの位置</summary>
-        [SerializeField] private GameObject[] playerPositions;
-
-        /// <summary>追尾対象</summary>
-        public Transform Target => playerPositions[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current].transform;
 
         /// <summary>
         /// 流星のような挙動の再生
@@ -39,7 +34,6 @@ namespace Main.Direction
         {
             if (startCutscene == null)
                 startCutscene = GameObject.Find("StartCutscene");
-            playerPositions = GameObject.FindGameObjectsWithTag("Player");
         }
 
         private void Start()
@@ -56,9 +50,9 @@ namespace Main.Direction
                     // プレイヤー生成位置に拡散エフェクトを発生させる
                     var complated = false;
                     var targetTrigger = new GameObject("ShootingTargetTrigger");
-                    targetTrigger.transform.position = Target.position;
+                    targetTrigger.transform.position = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position;
                     targetTrigger.AddComponent<BoxCollider>();
-                    var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(diffusonShootingStar, Target);
+                    var coroutine = TechnicalParticleMotion.CoroutineMoveShootTarget(diffusonShootingStar, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform);
                     this.OnParticleCollisionAsObservable()
                         .Where(x => x.name.Equals("ShootingTargetTrigger") && !complated)
                         .Subscribe(_ =>
@@ -102,7 +96,7 @@ namespace Main.Direction
         /// <returns>成功／失敗</returns>
         private bool InstanceDiffusion()
         {
-            var par = Instantiate(diffusionParticlePrefab, Target.position, Quaternion.identity);
+            var par = Instantiate(diffusionParticlePrefab, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.transform.position, Quaternion.identity);
             DOVirtual.DelayedCall(3f, () => Destroy(par));
             return true;
         }

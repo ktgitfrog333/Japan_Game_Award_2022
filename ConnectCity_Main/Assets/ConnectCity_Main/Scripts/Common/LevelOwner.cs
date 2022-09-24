@@ -71,6 +71,10 @@ namespace Main.Common
         [SerializeField] private GameObject conditionalBlockOwner;
         /// <summary>条件付きブロックのオーナー</summary>
         public GameObject ConditionalBlockOwner => conditionalBlockOwner;
+        /// <summary>ON/OFFブロックのオーナー</summary>
+        [SerializeField] private GameObject switchOnOffBlockOwner;
+        /// <summary>ON/OFFブロックのオーナー</summary>
+        public GameObject SwitchOnOffBlockOwner => switchOnOffBlockOwner;
         /// <summary>メソッドをコールさせる優先順位</summary>
         private OmnibusCallCode _omnibusCall = OmnibusCallCode.None;
         /// <summary>優先メソッドをコール中の待機時間</summary>
@@ -102,6 +106,8 @@ namespace Main.Common
                 warpGateOwner = GameObject.Find("WarpGateOwner");
             if (conditionalBlockOwner == null)
                 conditionalBlockOwner = GameObject.Find("ConditionalBlockOwner");
+            if (switchOnOffBlockOwner == null)
+                switchOnOffBlockOwner = GameObject.Find("SwitchOnOffBlockOwner");
         }
 
         /// <summary>
@@ -140,18 +146,21 @@ namespace Main.Common
             {
                 _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
                 if (_playerOffsets == null)
-                    Debug.LogError("オブジェクト初期状態の保存の失敗");
+                    throw new System.Exception("オブジェクト初期状態の保存の失敗");
                 if (!autoDroneOwner.GetComponent<AutoDroneOwner>().ManualStart())
-                    Debug.LogError("自動追尾ドローンオーナー初期処理の失敗");
+                    throw new System.Exception("自動追尾ドローンオーナー初期処理の失敗");
                 if (!warpGateOwner.GetComponent<WarpGateOwner>().ManualStart())
-                    Debug.LogError("ワープゲートのオーナー初期処理の失敗");
+                    throw new System.Exception("ワープゲートのオーナー初期処理の失敗");
                 if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().ManualStart())
-                    Debug.LogError("条件付きブロックのオーナー初期処理の失敗");
+                    throw new System.Exception("条件付きブロックのオーナー初期処理の失敗");
+                if (!switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().ManualStart())
+                    throw new System.Exception("ON/OFFブロックのオーナー初期処理の失敗");
 
                 return true;
             }
-            catch
+            catch (System.Exception e)
             {
+                Debug.LogException(e);
                 return false;
             }
         }
@@ -164,6 +173,8 @@ namespace Main.Common
                 Debug.LogError("ワープゲートのオーナー終了処理の失敗");
             if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().Exit())
                 Debug.LogError("条件付きブロックのオーナー終了処理の失敗");
+            if (!switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().Exit())
+                Debug.LogError("ON/OFFブロックのオーナー終了処理の失敗");
 
             return true;
         }
@@ -243,6 +254,15 @@ namespace Main.Common
         public bool UpdateCountDownConditionalBlock()
         {
             return conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().UpdateCountDownConditionalBlock();
+        }
+
+        /// <summary>
+        /// ON/OFFブロックのステータス変更
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateOnOffState()
+        {
+            return switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().UpdateOnOffState();
         }
 
         /// <summary>
