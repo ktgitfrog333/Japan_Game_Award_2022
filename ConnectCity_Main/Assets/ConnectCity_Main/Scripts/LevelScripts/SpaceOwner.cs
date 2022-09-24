@@ -441,6 +441,8 @@ namespace Main.Level
                                     Debug.LogError("ワープ可否フラグ切り替え処理の呼び出し失敗");
                                 if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().UpdateCountDownConditionalBlock())
                                     Debug.LogError("条件付きブロックのカウントダウン処理の呼び出し失敗");
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().UpdateOnOffState())
+                                    Debug.LogError("ON/OFFブロックのステータス変更処理の呼び出し失敗");
                             }
                         }
                         _connectDirections = new List<ConnectDirection2D>();

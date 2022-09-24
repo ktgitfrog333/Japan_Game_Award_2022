@@ -110,6 +110,7 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SpaceUIController.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\BreakBlook.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\GameManager.cs" />
+    <Compile Include="Assets\ConnectCity_TitleSelect\ConnectCity_Main\Scripts\PlayerIdleController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\MouseCursorBan.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseUIController.cs" />
@@ -134,7 +135,8 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\SceneOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ConnectCountScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SkyBoxSet.cs" />
-    <Compile Include="Assets\ConnectCity_TitleSelect\ConnectCity_Main\Scripts\PlayerIdleController.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\SwitchOnOffBlock.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\SwitchOnOffBlockOwner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -748,14 +750,14 @@
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
