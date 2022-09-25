@@ -19,6 +19,8 @@ namespace Gimmick
     /// </summary>
     public class WarpGatesPair : MonoBehaviour, IOwner
     {
+        /// <summary>ワープ初期の有効／無効ステータス（有効ならtrue、無効ならfalse）</summary>
+        [SerializeField] private bool isEnabled = false;
         /// <summary>コライダー対象とするオブジェクト</summary>
         [SerializeField] private string[] collierTagNames = { TagConst.TAG_NAME_PLAYER, TagConst.TAG_NAME_MOVECUBE, TagConst.TAG_NAME_ROBOT_EMEMY };
         /// <summary>空間操作ブロックの移動先チェックオブジェクトのプレハブ</summary>
@@ -83,7 +85,7 @@ namespace Gimmick
                 var parent = transform;
                 var warpA = parent.GetChild(0);
                 var warpB = parent.GetChild(1);
-                _isWarp.Value = false;
+                _isWarp.Value = isEnabled;
                 _isWarp.ObserveEveryValueChanged(x => x.Value)
                     .Subscribe(x =>
                     {
