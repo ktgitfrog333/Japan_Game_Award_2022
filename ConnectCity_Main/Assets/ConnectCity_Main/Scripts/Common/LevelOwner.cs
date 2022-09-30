@@ -198,6 +198,16 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// ドローンの操作制御
+        /// </summary>
+        /// <param name="active">操作可否フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetAutoDroneMoveEnable(bool active)
+        {
+            return autoDroneOwner.GetComponent<AutoDroneOwner>().SetAutoDroneMoveEnable(active);
+        }
+
+        /// <summary>
         /// スカイボックスを設定
         /// SceneOwnerからの呼び出し
         /// </summary>

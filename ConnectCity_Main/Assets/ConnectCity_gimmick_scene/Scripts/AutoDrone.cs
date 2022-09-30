@@ -44,15 +44,36 @@ namespace Gimmick
         [SerializeField] private GameObject droneCollisionEffectPrefab;
         /// <summary>コライダー対象とするオブジェクト</summary>
         [SerializeField] private string[] collierTagNames = { TagConst.TAG_NAME_FREEZECUBE };
-
+        /// <summary>操作可能／不可フラグ</summary>
+        private BoolReactiveProperty _moveEnable = new BoolReactiveProperty();
         /// <summary>監視管理</summary>
         private CompositeDisposable _compositeDisposable = new CompositeDisposable();
+
+        /// <summary>
+        /// ドローンの操作制御
+        /// </summary>
+        /// <param name="active">操作可否フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetAutoDroneMoveEnable(bool active)
+        {
+            try
+            {
+                if (_moveEnable != null)
+                    _moveEnable.Value = active;
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
 
         public bool ManualStart()
         {
             try
             {
-                var moveEnable = new BoolReactiveProperty(true);
+                _moveEnable = new BoolReactiveProperty();
                 var currentTransform = transform;
 
                 // 左空間／右空間のどちらに存在するか
@@ -67,10 +88,10 @@ namespace Gimmick
                             spacePlaceDefault.Value = x;
                         else
                         {
-                            if (moveEnable.Value)
+                            if (_moveEnable.Value)
                             {
-                                moveEnable.Value = false;
-                                DOVirtual.DelayedCall(returnDelay, () => moveEnable.Value = true);
+                                _moveEnable.Value = false;
+                                DOVirtual.DelayedCall(returnDelay, () => _moveEnable.Value = true);
                                 currentTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
 
                                 if (((Direction2D)spacePlaceDefault.Value).Equals(Direction2D.Left))
@@ -111,7 +132,7 @@ namespace Gimmick
                             var spaceInput = LevelDesisionIsObjected.SetMoveVelocotyLeftAndRight();
                             for (var i = 0; i < spaceInput.Length; i++)
                             {
-                                if (0f < spaceInput[i].magnitude && moveEnable.Value)
+                                if (0f < spaceInput[i].magnitude && _moveEnable.Value)
                                 {
                                     Movement((Direction2D)i, spacePlace, currentTransform, player.transform.localPosition, spaceOwner.GetComponent<SpaceOwner>().SpaceDirections, isMoving[i]);
                                 }
@@ -137,10 +158,10 @@ namespace Gimmick
                             .Select(x => x)
                             .ToArray().Length)
                         {
-                            if (moveEnable.Value)
+                            if (_moveEnable.Value)
                             {
-                                moveEnable.Value = false;
-                                DOVirtual.DelayedCall(returnDelay, () => moveEnable.Value = true);
+                                _moveEnable.Value = false;
+                                DOVirtual.DelayedCall(returnDelay, () => _moveEnable.Value = true);
                                 currentTransform.DOShakeRotation(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness);
                                 if (pool.Pools[0].childCount <= 0)
                                 {

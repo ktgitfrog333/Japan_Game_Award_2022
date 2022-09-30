@@ -116,6 +116,7 @@ namespace Main.Level
                     _cubeOffsets = LevelDesisionIsObjected.SaveObjectOffset(_moveCubes);
                 if (_cubeOffsets == null)
                     Debug.LogError("オブジェクト初期状態の保存の失敗");
+                _connectSuccess.Value = 0;
                 // コネクト回数のチェック
                 _connectSuccess.ObserveEveryValueChanged(x => x.Value)
                     .Do(x =>

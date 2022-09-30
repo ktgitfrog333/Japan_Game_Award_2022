@@ -84,6 +84,8 @@ namespace Main.Direction
                     });
                 // 空間操作を許可
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(false);
+                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetAutoDroneMoveEnable(true))
+                    Debug.LogError("自動追尾ドローン操作制御処理の失敗");
                 // ショートカット入力を許可
                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
                 if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())
@@ -100,6 +102,8 @@ namespace Main.Direction
             _playable.Stop();
             // 空間操作を許可
             GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(false);
+            if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetAutoDroneMoveEnable(true))
+                Debug.LogError("自動追尾ドローン操作制御処理の失敗");
             // ショートカット入力を許可
             GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
             if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())

@@ -40,6 +40,30 @@ namespace Gimmick
                 return false;
             }
         }
+
+        /// <summary>
+        /// ドローンの操作制御
+        /// </summary>
+        /// <param name="active">操作可否フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetAutoDroneMoveEnable(bool active)
+        {
+            try
+            {
+                if (_autoDrones != null)
+                    foreach (var drone in _autoDrones)
+                        if (!drone.GetComponent<AutoDrone>().SetAutoDroneMoveEnable(active))
+                            throw new System.Exception("自動追尾ドローン初期処理の失敗");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
         public bool Initialize()
         {
             throw new System.NotImplementedException();
