@@ -15,17 +15,20 @@ namespace Main.Level
     /// <summary>
     /// ゴールエリア
     /// </summary>
-    public class GoalPoint : MonoBehaviour
+    public class GoalPoint : MonoBehaviour, IOwner
     {
         /// <summary>コネクト残り回数のカウントダウンスクリーンプレハブ</summary>
         [SerializeField] private GameObject connectCountScreenPrefab;
+        /// <summary>カウントダウンのUI</summary>
         private GameObject _connectCountScreen;
         /// <summary>接地判定用のレイ　オブジェクトの始点</summary>
         private static readonly Vector3 ISGROUNDED_RAY_ORIGIN_OFFSET = new Vector3(0f, 0.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         private static readonly Vector3 ISGROUNDED_RAY_DIRECTION = Vector3.down;
         /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
-        private static readonly float ISGROUNDED_RAY_MAX_DISTANCE = 1.5f;
+        private static readonly float ISGROUNDED_RAY_MAX_DISTANCE = .25f;
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         /// <summary>
         /// 初期処理
@@ -44,6 +47,8 @@ namespace Main.Level
                 screen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.GetComponent<Camera>());
                 _connectCountScreen = screen;
             }
+            else
+                _connectCountScreen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.GetComponent<Camera>());
 
             if (!UpdateCountDown(0, GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().ClearConnectedCounter))
                 Debug.LogError("カウンター初期値セットの失敗");
@@ -57,6 +62,21 @@ namespace Main.Level
                 if (!CloseDoor())
                     Debug.LogError("ドアを閉める処理の失敗");
             }
+
+            var rOrgOffAry = LevelDesisionIsObjected.GetTwoPointHorizontal(ISGROUNDED_RAY_ORIGIN_OFFSET, .5f);
+            this.FixedUpdateAsObservable()
+                .Where(_ => !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[0], ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[0], ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)) &&
+                    !LevelDesisionIsObjected.IsOnPlayeredAndInfo(transform.position, rOrgOffAry[1], ISGROUNDED_RAY_DIRECTION, ISGROUNDED_RAY_MAX_DISTANCE, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE)))
+                .Subscribe(_ =>
+                {
+                    transform.position += Physics.gravity * Time.deltaTime;
+                    if (_connectCountScreen != null)
+                        _connectCountScreen.GetComponent<ConnectCountScreen>().Initialize(transform, GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().MainCamera.GetComponent<Camera>());
+                })
+                .AddTo(_compositeDisposable);
+
             return true;
         }
 
@@ -104,7 +124,7 @@ namespace Main.Level
                     {
                         complete = true;
                         if (!PlayClearDirectionAndOpenClearScreen())
-                            Debug.Log("ゴール演出エラー発生");
+                            Debug.LogWarning("ゴール演出エラー発生");
                         disposable.Dispose();
                     });
 
@@ -156,6 +176,8 @@ namespace Main.Level
                 if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                     Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
+                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().ChangeCharactorControllerStatePlayer(false))
+                    Debug.LogError("プレイヤーのCharactorControllerステータス変更の失敗");
                 // 空間操作を禁止
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                 // ショートカット入力を禁止
@@ -173,7 +195,27 @@ namespace Main.Level
             }
             else
             {
-                Debug.Log("ゴール下に足場がありません");
+                Debug.LogWarning("ゴール下に足場がありません");
+                return false;
+            }
+        }
+
+        public bool ManualStart()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool Exit()
+        {
+            try
+            {
+                _compositeDisposable.Clear();
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
                 return false;
             }
         }

@@ -43,5 +43,61 @@ namespace Gimmick
                 return false;
             }
         }
+
+        /// <summary>
+        /// 敵操作を実行
+        /// </summary>
+        /// <param name="moveVelocity">移動座標</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool MoveCharactorRobotEnemy(Vector3 moveVelocity, GameObject origin)
+        {
+            var obj = GetRobotEnemy(origin);
+            if (obj != null)
+                return obj.GetComponent<Robot_Enemy>().MoveRobotEnemy(moveVelocity);
+            return false;
+        }
+
+        /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCharactorControllerStateRobotEnemy(bool isEnabled, GameObject origin)
+        {
+            var obj = GetRobotEnemy(origin);
+            if (obj != null)
+                return obj.GetComponent<Robot_Enemy>().ChangeCharactorControllerStateRobotEnemy(isEnabled);
+            return false;
+        }
+
+        /// <summary>
+        /// オーナーからカプセルコライダーのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCapsuleColliderStateRobotEnemy(bool isEnabled, GameObject origin)
+        {
+            var obj = GetRobotEnemy(origin);
+            if (obj != null)
+                return obj.GetComponent<Robot_Enemy>().ChangeCapsuleColliderStateRobotEnemy(isEnabled);
+            return false;
+        }
+
+        /// <summary>
+        /// 敵をリストから取得
+        /// </summary>
+        /// <param name="origin">対象の敵オブジェクト</param>
+        /// <returns>敵オブジェクト（単体）</returns>
+        private GameObject GetRobotEnemy(GameObject origin)
+        {
+            if (_robotEmems != null && 0 < _robotEmems.Length)
+                return _robotEmems.Where(q => q.Equals(origin))
+                    .Select(q => q)
+                    .ToArray()[0];
+            return null;
+        }
     }
 }

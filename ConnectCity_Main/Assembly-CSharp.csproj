@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\SwitchOnOffBlockOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\TutorialScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\TagConst.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\AudioScripts\BgmPlay.cs" />
@@ -85,26 +86,33 @@
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\ChangeGravity.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\TurretEnemiesOwner.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\AudioScripts\SfxPlay.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\AutoDrone.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\TutorialEnvironment.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\AudioOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ShortcuGuideScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LevelDesigns.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\WarpGateOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\InputSystemScripts\InputSpace.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\GoalPoint.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\InputKey.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LayerConst.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\ConditionalBlock.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\EndCutscene.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\LevelScripts\SafeZone.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\BgmPlay.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\ConditionalBlockOwner.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\SwitchOnOffBlock.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\InputSystemScripts\InputPlayer.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\DirectionScripts\TextMaterialController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\InputSystemScripts\InputSystemsOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\PlayerScripts\PlayerController.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\WarpGatesPair.cs" />
     <Compile Include="Assets\ConnectCity_TitleSelect\Scripts\TitleCanvas.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\InputConst.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\SpaceUIController.cs" />
     <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\BreakBlook.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\GameManager.cs" />
+    <Compile Include="Assets\ConnectCity_TitleSelect\ConnectCity_Main\Scripts\PlayerIdleController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\MouseCursorBan.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterUIController.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\PauseUIController.cs" />
@@ -120,6 +128,7 @@
     <Compile Include="Assets\ConnectCity_Main\Scripts\Common\LevelOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\ActionMode.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\AudioScripts\MasterAudioPlay.cs" />
+    <Compile Include="Assets\ConnectCity_gimmick_scene\Scripts\AutoDroneOwner.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\UIScripts\MasterScreen.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\Test.cs" />
     <Compile Include="Assets\ConnectCity_Main\Scripts\InputSystemScripts\InputUI.cs" />
@@ -153,6 +162,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\ConnectCity_TitleSelect\Scripts\UniRx\ReadMe.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
@@ -740,14 +750,14 @@
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>

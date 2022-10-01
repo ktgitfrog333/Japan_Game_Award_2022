@@ -25,6 +25,8 @@ namespace Gimmick
         [SerializeField] private CharacterController _characterCtrl;
         /// <summary>プレイヤーのアニメーション</summary>
         [SerializeField] private Animator _playerAnimation;
+        /// <summary>コライダー</summary>
+        [SerializeField] private CapsuleCollider _capsuleCollider;
         /// <summary>移動方向切り替え間隔</summary>
         [SerializeField] private float direChgDelaySec = 2f;
         /// <summary>パーティクルシステムの配列</summary>
@@ -33,8 +35,8 @@ namespace Gimmick
         [SerializeField] private Vector3 rayOriginOffset = new Vector3(0f, 0.1f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         [SerializeField] private Vector3 rayDirection = Vector3.down;
-        /// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
-        [SerializeField] private float rayMaxDistance = 0.8f;
+        ///// <summary>接地判定用のレイ　当たり判定の最大距離</summary>
+        //[SerializeField] private float rayMaxDistance = 0.8f;
         [SerializeField] private Vector3 rayOriginOffsetLeft = new Vector3(.1f, 0f);
         /// <summary>接地判定用のレイ　オブジェクトの終点</summary>
         [SerializeField] private Vector3 rayDirectionLeft = Vector3.left;
@@ -57,6 +59,8 @@ namespace Gimmick
                 _characterCtrl = GetComponent<CharacterController>();
             if (_playerAnimation == null)
                 _playerAnimation = GetComponent<Animator>();
+            if (_capsuleCollider == null)
+                _capsuleCollider = GetComponent<CapsuleCollider>();
         }
 
         /// <summary>
@@ -117,7 +121,7 @@ namespace Gimmick
                 .Subscribe(async _ =>
                 {
                     _isDead = true;
-                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DeadPlayer();
+                    await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyPlayer();
                     GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                     GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
@@ -151,10 +155,36 @@ namespace Gimmick
         }
 
         /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCharactorControllerStateRobotEnemy(bool isEnabled)
+        {
+            if (_characterCtrl == null)
+                return false;
+            _characterCtrl.enabled = isEnabled;
+            return true;
+        }
+
+        /// <summary>
+        /// オーナーからカプセルコライダーのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCapsuleColliderStateRobotEnemy(bool isEnabled)
+        {
+            if (_capsuleCollider == null)
+                return false;
+            _capsuleCollider.enabled = isEnabled;
+            return true;
+        }
+
+        /// <summary>
         /// 敵を破壊させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DestroyHumanEnemies()
+        public bool DestroyRobotEnemies()
         {
             // 圧死時のパーティクル
             Instantiate(diedLight, transform.position, Quaternion.identity);

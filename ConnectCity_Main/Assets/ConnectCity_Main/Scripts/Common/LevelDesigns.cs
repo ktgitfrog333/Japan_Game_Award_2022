@@ -251,7 +251,7 @@ namespace Main.Common.LevelDesign
         /// 操作入力を元に制御情報を更新
         /// </summary>
         /// <returns>処理結果の成功／失敗</returns>
-        public Vector3[] SetMoveVelocotyLeftAndRight()
+        public static Vector3[] SetMoveVelocotyLeftAndRight()
         {
             // キーボード
             var lCom = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.ManualLAxcel;
@@ -293,10 +293,38 @@ namespace Main.Common.LevelDesign
         /// <param name="horizontalRight">右空間のHorizontal</param>
         /// <param name="verticalRight">右空間のVertical</param>
         /// <returns>成功</returns>
-        private Vector3[] SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
+        private static Vector3[] SetVelocity(float horizontalLeft, float verticalLeft, float horizontalRight, float verticalRight)
         {
             Vector3[] space = { new Vector3(horizontalLeft, verticalLeft), new Vector3(horizontalRight, verticalRight) };
             return space;
+        }
+
+        /// <summary>
+        /// 対象の位置が左空間 or 右空間に存在するかをチェック
+        /// </summary>
+        /// <param name="targetPosition">対象のポジション</param>
+        /// <returns>左右の方向（0なら-1）</returns>
+        public static int CheckPositionAndGetDirection2D(Transform centerTransform, Vector3 targetPosition)
+        {
+            return CheckPositionAndGetDirection2D(centerTransform, targetPosition, 0f);
+        }
+
+        /// <summary>
+        /// 対象の位置が左空間 or 右空間に存在するかをチェック
+        /// </summary>
+        /// <param name="targetPosition">対象のポジション</param>
+        /// <returns>左右の方向（0なら-1）</returns>
+        public static int CheckPositionAndGetDirection2D(Transform centerTransform, Vector3 targetPosition, float offset)
+        {
+            if (targetPosition.x < centerTransform.localPosition.x - offset)
+            {
+                return (int)Direction2D.Left;
+            }
+            else if (centerTransform.localPosition.x + offset < targetPosition.x)
+            {
+                return (int)Direction2D.Right;
+            }
+            return -1;
         }
     }
 
@@ -324,5 +352,16 @@ namespace Main.Common.LevelDesign
         LEFT,
         /// <summary>右</summary>
         RIGHT,
+    }
+
+    /// <summary>
+    /// 2Dの角度
+    /// </summary>
+    public enum Direction2D
+    {
+        /// <summary>左方向</summary>
+        Left,
+        /// <summary>右方向</summary>
+        Right,
     }
 }

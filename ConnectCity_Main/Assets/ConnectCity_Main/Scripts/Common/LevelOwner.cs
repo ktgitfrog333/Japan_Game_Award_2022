@@ -16,7 +16,7 @@ namespace Main.Common
     /// <summary>
     /// レベルデザインのオーナー
     /// </summary>
-    public class LevelOwner : MonoBehaviour
+    public class LevelOwner : MonoBehaviour, IOwner
     {
         /// <summary>レベルデザイン</summary>
         [SerializeField] private GameObject levelDesign;
@@ -46,6 +46,10 @@ namespace Main.Common
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         public GameObject GoalPoint => goalPoint[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
+        /// <summary>ゴールポイントの初期状態</summary>
+        private ObjectsOffset[] _goalPointOffsets;
+        /// <summary>ゴールポイントの初期状態</summary>
+        public ObjectsOffset[] GoalPointOffsets => _goalPointOffsets;
         /// <summary>敵ギミックのオーナー</summary>
         [SerializeField] private GameObject robotEnemiesOwner;
         /// <summary>敵ギミックのオーナー</summary>
@@ -59,6 +63,22 @@ namespace Main.Common
         [SerializeField] private GameObject turretEnemiesOwner;
         /// <summary>レーザー砲ギミックのオーナー</summary>
         public GameObject TurretEnemiesOwner => turretEnemiesOwner;
+        /// <summary>自動追尾ドローンのオーナー</summary>
+        [SerializeField] private GameObject autoDroneOwner;
+        /// <summary>自動追尾ドローンのオーナー</summary>
+        public GameObject AutoDroneOwner => autoDroneOwner;
+        /// <summary>ワープゲートのオーナー</summary>
+        [SerializeField] private GameObject warpGateOwner;
+        /// <summary>ワープゲートのオーナー</summary>
+        public GameObject WarpGateOwner => warpGateOwner;
+        /// <summary>条件付きブロックのオーナー</summary>
+        [SerializeField] private GameObject conditionalBlockOwner;
+        /// <summary>条件付きブロックのオーナー</summary>
+        public GameObject ConditionalBlockOwner => conditionalBlockOwner;
+        /// <summary>ON/OFFブロックのオーナー</summary>
+        [SerializeField] private GameObject switchOnOffBlockOwner;
+        /// <summary>ON/OFFブロックのオーナー</summary>
+        public GameObject SwitchOnOffBlockOwner => switchOnOffBlockOwner;
         /// <summary>メソッドをコールさせる優先順位</summary>
         private OmnibusCallCode _omnibusCall = OmnibusCallCode.None;
         /// <summary>優先メソッドをコール中の待機時間</summary>
@@ -84,6 +104,14 @@ namespace Main.Common
                 robotEnemiesOwner = GameObject.Find("RobotEnemiesOwner");
             if (turretEnemiesOwner == null)
                 turretEnemiesOwner = GameObject.Find("TurretEnemiesOwner");
+            if (autoDroneOwner == null)
+                autoDroneOwner = GameObject.Find("AutoDroneOwner");
+            if (warpGateOwner == null)
+                warpGateOwner = GameObject.Find("WarpGateOwner");
+            if (conditionalBlockOwner == null)
+                conditionalBlockOwner = GameObject.Find("ConditionalBlockOwner");
+            if (switchOnOffBlockOwner == null)
+                switchOnOffBlockOwner = GameObject.Find("SwitchOnOffBlockOwner");
         }
 
         /// <summary>
@@ -103,6 +131,7 @@ namespace Main.Common
                         }
                         _omnibusCall = OmnibusCallCode.None;
                     });
+
                 return true;
             }
             catch
@@ -121,13 +150,40 @@ namespace Main.Common
             {
                 _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
                 if (_playerOffsets == null)
-                    Debug.LogError("オブジェクト初期状態の保存の失敗");
+                    throw new System.Exception("オブジェクト初期状態の保存の失敗");
+                _goalPointOffsets = LevelDesisionIsObjected.SaveObjectOffset(GoalPoint);
+                if (!autoDroneOwner.GetComponent<AutoDroneOwner>().ManualStart())
+                    throw new System.Exception("自動追尾ドローンオーナー初期処理の失敗");
+                if (!warpGateOwner.GetComponent<WarpGateOwner>().ManualStart())
+                    throw new System.Exception("ワープゲートのオーナー初期処理の失敗");
+                if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().ManualStart())
+                    throw new System.Exception("条件付きブロックのオーナー初期処理の失敗");
+                if (!switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().ManualStart())
+                    throw new System.Exception("ON/OFFブロックのオーナー初期処理の失敗");
+
                 return true;
             }
-            catch
+            catch (System.Exception e)
             {
+                Debug.LogException(e);
                 return false;
             }
+        }
+
+        public bool Exit()
+        {
+            if (!autoDroneOwner.GetComponent<AutoDroneOwner>().Exit())
+                Debug.LogError("自動追尾ドローンオーナー終了処理の失敗");
+            if (!warpGateOwner.GetComponent<WarpGateOwner>().Exit())
+                Debug.LogError("ワープゲートのオーナー終了処理の失敗");
+            if (!conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().Exit())
+                Debug.LogError("条件付きブロックのオーナー終了処理の失敗");
+            if (!switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().Exit())
+                Debug.LogError("ON/OFFブロックのオーナー終了処理の失敗");
+            if (!GoalPoint.GetComponent<GoalPoint>().Exit())
+                Debug.LogError("ゴール終了処理の失敗");
+
+            return true;
         }
 
         /// <summary>
@@ -146,6 +202,16 @@ namespace Main.Common
         public void SetPlayerControllerInputBan(bool flag)
         {
             Player.GetComponent<PlayerController>().InputBan = flag;
+        }
+
+        /// <summary>
+        /// ドローンの操作制御
+        /// </summary>
+        /// <param name="active">操作可否フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetAutoDroneMoveEnable(bool active)
+        {
+            return autoDroneOwner.GetComponent<AutoDroneOwner>().SetAutoDroneMoveEnable(active);
         }
 
         /// <summary>
@@ -199,6 +265,24 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// 条件付きブロックのカウントダウン
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateCountDownConditionalBlock()
+        {
+            return conditionalBlockOwner.GetComponent<ConditionalBlockOwner>().UpdateCountDownConditionalBlock();
+        }
+
+        /// <summary>
+        /// ON/OFFブロックのステータス変更
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateOnOffState()
+        {
+            return switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().UpdateOnOffState();
+        }
+
+        /// <summary>
         /// ドアを開く
         /// ゴール演出のイベント
         /// </summary>
@@ -213,10 +297,64 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveCharactor(Vector3 moveVelocity)
+        public bool MoveCharactorPlayer(Vector3 moveVelocity)
         {
             _omnibusCall = OmnibusCallCode.MoveCharactorFromSpaceOwner;
-            return Player.GetComponent<PlayerController>().MoveChatactor(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveCharactorPlayer(moveVelocity);
+        }
+
+        /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCharactorControllerStatePlayer(bool isEnabled)
+        {
+            return Player.GetComponent<PlayerController>().ChangeCharactorControllerStatePlayer(isEnabled);
+        }
+
+        /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCharactorControllerStateRobotEnemy(bool isEnabled, GameObject origin)
+        {
+            return robotEnemiesOwner.GetComponent<RobotEnemiesOwner>().ChangeCharactorControllerStateRobotEnemy(isEnabled, origin);
+        }
+
+        /// <summary>
+        /// オーナーからCharactorのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeCapsuleColliderStateRobotEnemy(bool isEnabled, GameObject origin)
+        {
+            return robotEnemiesOwner.GetComponent<RobotEnemiesOwner>().ChangeCapsuleColliderStateRobotEnemy(isEnabled, origin);
+        }
+
+        /// <summary>
+        /// オーナーからRigidbodyのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeRigidBodyStateMoveCube(bool isKinematic, GameObject origin)
+        {
+            return spaceOwner.GetComponent<SpaceOwner>().ChangeRigidBodyStateMoveCube(isKinematic, origin);
+        }
+
+        /// <summary>
+        /// オーナーからRigidbodyのステータスを変更
+        /// </summary>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        public bool ChangeBoxColliderStateMoveCube(bool isEnabled, GameObject origin)
+        {
+            return spaceOwner.GetComponent<SpaceOwner>().ChangeBoxColliderStateMoveCube(isEnabled, origin);
         }
 
         /// <summary>
@@ -224,9 +362,21 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveRobotEnemy(Vector3 moveVelocity, GameObject hitObject)
+        public bool MoveCharactorRobotEnemy(Vector3 moveVelocity, GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemy(moveVelocity);
+            //return hitObject.GetComponent<Robot_Enemy>().MoveRobotEnemy(moveVelocity);
+            return robotEnemiesOwner.GetComponent<RobotEnemiesOwner>().MoveCharactorRobotEnemy(moveVelocity, hitObject);
+        }
+
+        /// <summary>
+        /// MoveCubeをRigidBodyから動かす
+        /// </summary>
+        /// <param name="moveVelocitySpace">移動ベクトル</param>
+        /// <param name="origin">対象オブジェクト</param>
+        /// <returns>移動処理完了／RigidBodyの一部がnull</returns>
+        public bool MoveRigidBodyMoveCube(Vector3 moveVelocitySpace, GameObject origin)
+        {
+            return spaceOwner.GetComponent<SpaceOwner>().MoveRigidBodyMoveCube(moveVelocitySpace, origin);
         }
 
         /// <summary>
@@ -235,32 +385,51 @@ namespace Main.Common
         /// </summary>
         /// <param name="moveVelocity">移動座標</param>
         /// <returns>成功／失敗</returns>
-        public bool MoveCharactorOrWait(Vector3 moveVelocity)
+        public bool MoveCharactorPlayerOrWait(Vector3 moveVelocity)
         {
             // 空間操作による呼び出しがあるなら実行しない
             if (_omnibusCall.Equals(OmnibusCallCode.MoveCharactorFromSpaceOwner))
                 return true;
 
             _omnibusCall = OmnibusCallCode.MoveCharactorFromGravityController;
-            return Player.GetComponent<PlayerController>().MoveChatactor(moveVelocity);
+            return Player.GetComponent<PlayerController>().MoveCharactorPlayer(moveVelocity);
         }
 
         /// <summary>
         /// プレイヤーを死亡させる
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public async Task<bool> DeadPlayer()
+        public async Task<bool> DestroyPlayer()
         {
-            return await Player.GetComponent<PlayerController>().DeadPlayer();
+            return await Player.GetComponent<PlayerController>().DestroyPlayer();
         }
 
         /// <summary>
         /// 敵ギミックを破壊する
         /// </summary>
         /// <returns>成功／失敗</returns>
-        public bool DestroyHumanEnemies(GameObject hitObject)
+        public bool DestroyRobotEnemies(GameObject hitObject)
         {
-            return hitObject.GetComponent<Robot_Enemy>().DestroyHumanEnemies();
+            return hitObject.GetComponent<Robot_Enemy>().DestroyRobotEnemies();
+        }
+
+        /// <summary>
+        /// ワープ可否のステータスを切り替える
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool SwitchWarpState()
+        {
+            return warpGateOwner.GetComponent<WarpGateOwner>().SwitchWarpState();
+        }
+
+        /// <summary>
+        /// 新たに空間操作ブロックを生成
+        /// </summary>
+        /// <param name="target">生成する座標</param>
+        /// <returns>成功／失敗</returns>
+        public bool CreateNewMoveCube(Vector3 target)
+        {
+            return spaceOwner.GetComponent<SpaceOwner>().CreateNewMoveCube(target);
         }
     }
 }
