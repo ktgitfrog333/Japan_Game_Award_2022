@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine.InputSystem;
 
 namespace TitleSelect
 {
@@ -17,6 +18,7 @@ namespace TitleSelect
         /// 1 : DeSelected
         /// 2 : Submited
         /// 3 : Canceled
+        /// 4 : AnyKeysPushed
         /// </summary>
         public IntReactiveProperty EventRP { get; set; } = new IntReactiveProperty(-1);
 
@@ -51,6 +53,31 @@ namespace TitleSelect
         {
             EventRP.Value = (int)EventCommand.Canceled;
         }
+
+        /// <summary>
+        /// いずれかのキー入力時に発火するイベント
+        /// </summary>
+        public void AnyKeys()
+        {
+            this.UpdateAsObservable()
+                .Subscribe(_ =>
+                {
+                    if ((Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) ||
+                        (Gamepad.current != null && (Gamepad.current.buttonSouth.wasPressedThisFrame ||
+                            Gamepad.current.buttonNorth.wasPressedThisFrame ||
+                            Gamepad.current.buttonEast.wasPressedThisFrame ||
+                            Gamepad.current.buttonWest.wasPressedThisFrame ||
+                            Gamepad.current.leftShoulder.wasPressedThisFrame ||
+                            Gamepad.current.rightShoulder.wasPressedThisFrame ||
+                            Gamepad.current.leftTrigger.wasPressedThisFrame ||
+                            Gamepad.current.rightTrigger.wasPressedThisFrame ||
+                            Gamepad.current.startButton.wasPressedThisFrame ||
+                            Gamepad.current.selectButton.wasPressedThisFrame)))
+                    {
+                        EventRP.Value = (int)EventCommand.AnyKeysPushed;
+                    }
+                });
+        }
     }
 
     /// <summary>
@@ -66,5 +93,7 @@ namespace TitleSelect
         Submited,
         /// <summary>キャンセルされた</summary>
         Canceled,
+        /// <summary>いずれかのキーの入力</summary>
+        AnyKeysPushed,
     }
 }
