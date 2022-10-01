@@ -191,6 +191,8 @@ namespace Main.Common
                 var stage = compLevelOwner.LevelDesign.transform.GetChild(current).gameObject;
                 if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.PlayerOffsets))
                     Debug.LogError("プレイヤーリセット処理の失敗");
+                if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.GoalPointOffsets))
+                    Debug.LogError("ゴールリセット処理の失敗");
                 if (!compLevelOwner.SpaceOwner.GetComponent<SpaceOwner>().DestroyNewMoveCube())
                     Debug.LogError("後から生成された空間操作オブジェクト削除の失敗");
                 if (!LevelDesisionIsObjected.LoadObjectOffset(stage, compLevelOwner.SpaceOwner.GetComponent<SpaceOwner>().CubeOffsets))

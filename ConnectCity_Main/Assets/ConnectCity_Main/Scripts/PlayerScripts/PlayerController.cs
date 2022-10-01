@@ -184,7 +184,12 @@ namespace Main.Player
                 {
                     moveVelocity.y = moveVelocity.y < maxGravity ? maxGravity : moveVelocity.y + Physics.gravity.y * Time.deltaTime;
                     if (_characterCtrl.enabled)
-                        _characterCtrl.Move(moveVelocity * Time.deltaTime);
+                    {
+                        var velocity = moveVelocity;
+                        velocity.x = 0f;
+                        velocity.z = 0f;
+                        _characterCtrl.Move(velocity * Time.deltaTime);
+                    }
                 });
 
             // 移動

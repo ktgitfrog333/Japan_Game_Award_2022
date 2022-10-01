@@ -46,6 +46,10 @@ namespace Main.Common
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         public GameObject GoalPoint => goalPoint[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
+        /// <summary>ゴールポイントの初期状態</summary>
+        private ObjectsOffset[] _goalPointOffsets;
+        /// <summary>ゴールポイントの初期状態</summary>
+        public ObjectsOffset[] GoalPointOffsets => _goalPointOffsets;
         /// <summary>敵ギミックのオーナー</summary>
         [SerializeField] private GameObject robotEnemiesOwner;
         /// <summary>敵ギミックのオーナー</summary>
@@ -147,6 +151,7 @@ namespace Main.Common
                 _playerOffsets = LevelDesisionIsObjected.SaveObjectOffset(Player);
                 if (_playerOffsets == null)
                     throw new System.Exception("オブジェクト初期状態の保存の失敗");
+                _goalPointOffsets = LevelDesisionIsObjected.SaveObjectOffset(GoalPoint);
                 if (!autoDroneOwner.GetComponent<AutoDroneOwner>().ManualStart())
                     throw new System.Exception("自動追尾ドローンオーナー初期処理の失敗");
                 if (!warpGateOwner.GetComponent<WarpGateOwner>().ManualStart())
@@ -175,6 +180,8 @@ namespace Main.Common
                 Debug.LogError("条件付きブロックのオーナー終了処理の失敗");
             if (!switchOnOffBlockOwner.GetComponent<SwitchOnOffBlockOwner>().Exit())
                 Debug.LogError("ON/OFFブロックのオーナー終了処理の失敗");
+            if (!GoalPoint.GetComponent<GoalPoint>().Exit())
+                Debug.LogError("ゴール終了処理の失敗");
 
             return true;
         }
