@@ -678,6 +678,8 @@ namespace Gimmick
             try
             {
                 _compositeDisposable.Clear();
+                if (_checkObject != null)
+                    Destroy(_checkObject);
                 return true;
             }
             catch (System.Exception e)

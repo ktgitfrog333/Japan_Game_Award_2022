@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using System;
 using UniRx;
 using UniRx.Triggers;
+using DG.Tweening;
 
 namespace Main.InputSystem
 {
@@ -36,6 +37,14 @@ namespace Main.InputSystem
         private IntReactiveProperty _currentInputMode;
         /// <summary>現在の入力モード（コントローラー／キーボード）</summary>
         public IntReactiveProperty CurrentInputMode => _currentInputMode;
+        /// <summary>ゲームパッド</summary>
+        private Gamepad _gamepad;
+        /// <summary>左モーター（低周波）の回転数</summary>
+        [SerializeField] private float leftMotor = .8f;
+        /// <summary>右モーター（高周波）の回転数</summary>
+        [SerializeField] private float rightMotor = 0f;
+        /// <summary>振動を停止するまでの時間</summary>
+        [SerializeField] private float delayTime = .3f;
 
         private void Reset()
         {
@@ -107,6 +116,8 @@ namespace Main.InputSystem
                         }
                     })
                     .AddTo(_compositeDisposable);
+                // ゲームパッドの情報をセット
+                _gamepad = Gamepad.current;
 
                 return true;
             }
@@ -130,6 +141,55 @@ namespace Main.InputSystem
             }
             catch
             {
+                return false;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (!StopVibration())
+                Debug.LogError("振動停止の失敗");
+        }
+
+        /// <summary>
+        /// 振動の再生
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool PlayVibration()
+        {
+            try
+            {
+                if (_gamepad != null)
+                    _gamepad.SetMotorSpeeds(leftMotor, rightMotor);
+                DOVirtual.DelayedCall(delayTime, () =>
+                {
+                    if (!StopVibration())
+                        Debug.LogError("振動停止の失敗");
+                });
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 振動停止
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool StopVibration()
+        {
+            try
+            {
+                _gamepad.ResetHaptics();
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
                 return false;
             }
         }
