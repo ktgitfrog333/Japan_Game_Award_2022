@@ -210,28 +210,36 @@ namespace Main.Level
                     })
                     .AddTo(_compositeDisposable);
 
+                // 1フレーム前のVelocity値が同じなら移動制御を行わない（Vector3.zeroを繰り返さない）
+                var beforeSpaceDirections = new SpaceDirection2D();
                 // 左空間の制御
                 this.FixedUpdateAsObservable()
                     .Do(_ => leftVelocityMagnitude.Value = _spaceDirections.MoveVelocityLeftSpace.magnitude)
-                    .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityLeftSpace.magnitude, _spaceDirections.RbsLeftSpace))
                     .Subscribe(_ =>
                     {
-                        if (_spaceDirections.MoveVelocityLeftSpace.magnitude < deadMagnitude)
-                            _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
-                        if (!MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
-                            Debug.Log("左空間：MoveCubeの制御を破棄");
+                        if (0f < beforeSpaceDirections.MoveVelocityLeftSpace.magnitude)
+                        {
+                            if (!CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityLeftSpace.magnitude, _spaceDirections.RbsLeftSpace))
+                                _spaceDirections.MoveVelocityLeftSpace = Vector3.zero;
+                            if (_spaceDirections.RbsLeftSpace != null && !MoveMoveCube(_spaceDirections.RbsLeftSpace, _spaceDirections.MoveVelocityLeftSpace, _spaceDirections.MoveSpeed))
+                                Debug.LogWarning("左空間：MoveCubeの制御を破棄");
+                        }
+                        beforeSpaceDirections.MoveVelocityLeftSpace = _spaceDirections.MoveVelocityLeftSpace;
                     })
                     .AddTo(_compositeDisposable);
                 // 右空間の制御
                 this.FixedUpdateAsObservable()
                     .Do(_ => rightVelocityMagnitude.Value = _spaceDirections.MoveVelocityRightSpace.magnitude)
-                    .Where(_ => CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityRightSpace.magnitude, _spaceDirections.RbsRightSpace))
                     .Subscribe(_ =>
                     {
-                        if (_spaceDirections.MoveVelocityRightSpace.magnitude < deadMagnitude)
-                            _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
-                        if (!MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
-                            Debug.Log("右空間：MoveCubeの制御を破棄");
+                        if (0f < beforeSpaceDirections.MoveVelocityRightSpace.magnitude)
+                        {
+                            if (!CheckMovementLeftOrRightSpace(_inputBan, _spaceDirections.MoveVelocityRightSpace.magnitude, _spaceDirections.RbsRightSpace))
+                                _spaceDirections.MoveVelocityRightSpace = Vector3.zero;
+                            if (_spaceDirections.RbsRightSpace != null && !MoveMoveCube(_spaceDirections.RbsRightSpace, _spaceDirections.MoveVelocityRightSpace, _spaceDirections.MoveSpeed))
+                                Debug.LogWarning("右空間：MoveCubeの制御を破棄");
+                        }
+                        beforeSpaceDirections.MoveVelocityRightSpace = _spaceDirections.MoveVelocityRightSpace;
                     })
                     .AddTo(_compositeDisposable);
                 if (!InitializePool())
@@ -313,7 +321,7 @@ namespace Main.Level
         /// <returns>移動可</returns>
         private bool CheckMovementLeftOrRightSpace(bool inputBan, float velocitySpaceMagnitude, Rigidbody[] rigidbodiesSpace)
         {
-            return !inputBan && 0f < velocitySpaceMagnitude && rigidbodiesSpace != null && 0 < rigidbodiesSpace.Length;
+            return !inputBan && deadMagnitude < velocitySpaceMagnitude && rigidbodiesSpace != null && 0 < rigidbodiesSpace.Length;
         }
 
         /// <summary>
@@ -969,8 +977,7 @@ namespace Main.Level
             var hztlR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.x;
             var vtclR = GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputSpace.AutoRMove.y;
 
-            if ((lCom && 0f < Mathf.Abs(hztlLKey)) || (lCom && 0f < Mathf.Abs(vtclLkey)) ||
-                (rCom && 0f < Mathf.Abs(hztlRKey)) || (rCom && 0f < Mathf.Abs(vtclRkey)))
+            if (lCom || rCom)
             {
                 // キーボード操作のインプット
                 return SetVelocity(hztlLKey, vtclLkey, hztlRKey, vtclRkey);
