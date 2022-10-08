@@ -210,9 +210,8 @@ namespace Gimmick
                 else if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 {
                     // 距離を延ばす
-                    var addDistance = charactors.Environment.transform.parent.childCount;
-                    var hitPlayer = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * charactors.Environment.transform.parent.childCount, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
-                    var hitEnemy = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * addDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                    var hitPlayer = GetHitPlayerOrEnemyInMoveCubeGroup(charactors, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
+                    var hitEnemy = GetHitPlayerOrEnemyInMoveCubeGroup(charactors, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
                     charactors.HitPlayerOrEnemy = hitPlayer != null ? hitPlayer : hitEnemy;
                 }
                 else
@@ -287,6 +286,24 @@ namespace Gimmick
                 Debug.LogException(e);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 空間操作ブロックグループ内のブロックの上に乗っているオブジェクトを返却
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>プレイヤー／敵（どちらでもないならnull）</returns>
+        private GameObject GetHitPlayerOrEnemyInMoveCubeGroup(WarpCharactors charactors, int layerMask)
+        {
+            var hitList = new List<GameObject>();
+            foreach (Transform c in charactors.Environment.transform.parent)
+            {
+                var g = LevelDesisionIsObjected.IsOnEnemiesAndInfoThreePointHorizontal(c.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance, layerMask, .5f);
+                if (g != null)
+                    hitList.Add(g);
+            }
+            return 0 < hitList.Count ? hitList[0] : null;
         }
 
         /// <summary>
@@ -392,11 +409,11 @@ namespace Gimmick
                 // 一つにまとめるオブジェクトを仮生成
                 var obj = GameObject.Find(MOVE_PARENT_NAME) != null ? GameObject.Find(MOVE_PARENT_NAME) : new GameObject(MOVE_PARENT_NAME);
                 var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current).gameObject;
-                obj.transform.position = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.position : charactors.Environment.transform.position/*environment.transform.position + (environment.transform.position - hitObject.transform.position)*/;
+                obj.transform.position = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.position : charactors.Environment.transform.position;
                 obj.transform.parent = stage.transform;
                 // 親を一時格納
-                var defParent = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.parent : charactors.Environment.transform.parent;
-                var defOnParent = hitObject.transform.parent;
+                charactors.DefaultParent = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.parent : charactors.Environment.transform.parent;
+                charactors.DefaultHitParent = hitObject.transform.parent;
                 // 一時的なグループ化
                 if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                     charactors.Environment.transform.parent.parent = obj.transform;
@@ -406,8 +423,8 @@ namespace Gimmick
 
                 // 最終配置のポジションを算出
                 var lastPosition = warp.Equals(warpA) ?
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpB.position, true) :
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpA.position, true);
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpB.position, true) :
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpA.position, true);
                 // 移動チェックブロック生成、移動処理
                 var isCompletedCheck = new BoolReactiveProperty();
                 _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject, suctionRotate, suctionScale, suctionDuration, charactors, isCompletedCheck);
@@ -415,14 +432,37 @@ namespace Gimmick
                     .Where(x => x)
                     .Subscribe(_ =>
                     {
-                        // グループを元に戻す
-                        if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
-                            charactors.Environment.transform.parent.parent = defParent;
-                        else
-                            charactors.Environment.transform.parent = defParent;
-                        hitObject.transform.parent = defOnParent;
+                        if (!ResetGroup(charactors, hitObject))
+                            throw new System.Exception("グループ化解除の失敗");
                     })
                     .AddTo(_compositeDisposable);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// グループ化した親関係を元に戻す
+        /// ※EnvironmentとHitオブジェクトを同時に移動させる事象で使用される
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <param name="hitObject">ヒットしたオブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        private bool ResetGroup(WarpCharactors charactors, GameObject hitObject)
+        {
+            try
+            {
+                // グループを元に戻す
+                if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                    charactors.Environment.transform.parent.parent = charactors.DefaultParent;
+                else
+                    charactors.Environment.transform.parent = charactors.DefaultParent;
+                hitObject.transform.parent = charactors.DefaultHitParent;
 
                 return true;
             }
@@ -478,12 +518,12 @@ namespace Gimmick
                         if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_PLAYER) || onOrUnderObject.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                         {
                             // プレイヤーは空間操作ブロック上にいるのでプレイヤー位置にチェックブロックを追加
-                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                            Instantiate(checkCbSmallPrefab, GetMinDistance(moveCubeGroup, onOrUnderObject).Target.localPosition + lastPosition + Vector3.up, Quaternion.identity, group.transform);
                         }
                         else if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                         {
                             // 空間操作ブロックはプレイヤーの下にいるのでプレイヤー位置にチェックブロックを追加
-                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                            Instantiate(checkCbSmallPrefab, GetMinDistance(moveCubeGroup, onOrUnderObject).Target.localPosition + lastPosition + Vector3.up, Quaternion.identity, group.transform);
                             group.transform.position += Vector3.down;
                         }
                         else
@@ -535,6 +575,9 @@ namespace Gimmick
                     }
                     else
                     {
+                        if (originParent.name.Equals(MOVE_PARENT_NAME))
+                            if (!ResetGroup(charactors, onOrUnderObject))
+                                throw new System.Exception("グループ化解除の失敗");
                         foreach (Transform child in group.transform)
                             child.GetComponent<LineRenderer>().enabled = true;
                         if (!AllChangeDynamic(charactors))
@@ -549,6 +592,40 @@ namespace Gimmick
             {
                 Debug.LogException(e);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// プレイヤー／敵と空間操作ブロックを比較
+        /// 最短距離の組み合わせを返却
+        /// </summary>
+        /// <param name="moveCubeGroup">空間操作ブロックグループ</param>
+        /// <param name="onOrUnderObject">上または下に存在するオブジェクト</param>
+        /// <returns>オブジェクト距離情報</returns>
+        private PairDistance GetMinDistance(Transform moveCubeGroup, GameObject onOrUnderObject)
+        {
+            try
+            {
+                var pairDistanceList = new List<PairDistance>();
+                foreach (Transform child in moveCubeGroup)
+                {
+                    var pair = new PairDistance();
+                    var d = Vector3.Distance(child.position, onOrUnderObject.transform.position);
+                    pair.Target = child;
+                    pair.Distance = d;
+                    pairDistanceList.Add(pair);
+                }
+                IOrderedEnumerable<PairDistance> pairSortList = pairDistanceList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.Target.name);
+                foreach (var p in pairSortList)
+                    return p;
+
+                throw new System.Exception("ペアが存在しません");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return new PairDistance();
             }
         }
 
@@ -597,6 +674,7 @@ namespace Gimmick
                 var owner = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>();
                 if (environment.CompareTag(TagConst.TAG_NAME_PLAYER))
                 {
+                    owner.SetPlayerControllerInputBan(true);
                     if (!owner.MoveCharactorPlayer(Vector3.zero))
                         throw new System.Exception("プレイヤーの外部制御の失敗");
                     if (!owner.ChangeCharactorControllerStatePlayer(false))
@@ -646,6 +724,7 @@ namespace Gimmick
                 {
                     if (!owner.ChangeCharactorControllerStatePlayer(true))
                         throw new System.Exception("プレイヤーのCharactorControllerステータス変更の失敗");
+                    owner.SetPlayerControllerInputBan(false);
                 }
                 else if (environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                 {
@@ -730,6 +809,25 @@ namespace Gimmick
             /// プレイヤー／敵
             /// </summary>
             public GameObject HitPlayerOrEnemy { get; set; }
+            /// <summary>
+            /// デフォルトの親
+            /// </summary>
+            public Transform DefaultParent { get; set; }
+            /// <summary>
+            /// ヒットオブジェクトのデフォルトの親
+            /// </summary>
+            public Transform DefaultHitParent { get; set; }
+        }
+
+        /// <summary>
+        /// オブジェクトの距離
+        /// </summary>
+        public struct PairDistance
+        {
+            /// <summary>対象オブジェクト</summary>
+            public Transform Target { get; set; }
+            /// <summary>距離</summary>
+            public float Distance { get; set; }
         }
     }
 }
