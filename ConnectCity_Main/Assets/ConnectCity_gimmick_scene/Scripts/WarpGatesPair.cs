@@ -273,8 +273,8 @@ namespace Gimmick
                     {
                         // 最終配置のポジションを算出
                         var lastPosition = warp.Equals(warpA) ?
-                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpB.position, true) :
-                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpA.position, true);
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpB.position) :
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpA.position);
                         _checkObject = InstanceCheckCube(charactors.Environment.transform.parent, lastPosition, warp, warpA, warpB, suctionRotate, suctionScale, suctionDuration, charactors);
                     }
                 }
@@ -423,8 +423,8 @@ namespace Gimmick
 
                 // 最終配置のポジションを算出
                 var lastPosition = warp.Equals(warpA) ?
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpB.position, true) :
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpA.position, true);
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpB.position) :
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpA.position);
                 // 移動チェックブロック生成、移動処理
                 var isCompletedCheck = new BoolReactiveProperty();
                 _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject, suctionRotate, suctionScale, suctionDuration, charactors, isCompletedCheck);
@@ -523,7 +523,7 @@ namespace Gimmick
                         else if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                         {
                             // 空間操作ブロックはプレイヤーの下にいるのでプレイヤー位置にチェックブロックを追加
-                            Instantiate(checkCbSmallPrefab, GetMinDistance(moveCubeGroup, onOrUnderObject).Target.localPosition + lastPosition + Vector3.up, Quaternion.identity, group.transform);
+                            Instantiate(checkCbSmallPrefab, lastPosition + Vector3.up * 2, Quaternion.identity, group.transform);
                             group.transform.position += Vector3.down;
                         }
                         else
@@ -654,11 +654,10 @@ namespace Gimmick
         /// </summary>
         /// <param name="localPosition">対象オブジェクトのローカル座標</param>
         /// <param name="toPosition">移動先のワールド座標</param>
-        /// <param name="isReversed">座標反転（デフォルトは無効）</param>
         /// <returns>移動座標</returns>
-        private Vector3 GetCalcWarpPosition(Vector3 localPosition, Vector3 toPosition, bool isReversed)
+        private Vector3 GetCalcWarpPosition(Vector3 localPosition, Vector3 toPosition)
         {
-            return toPosition + new Vector3(0f, localPosition.y * (isReversed ? -1f : 1f), 0f);
+            return toPosition + new Vector3(localPosition.x * -1f, localPosition.y * -1f, 0f);
         }
 
         /// <summary>
