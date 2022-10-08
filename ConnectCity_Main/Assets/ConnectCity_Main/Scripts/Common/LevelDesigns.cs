@@ -16,14 +16,14 @@ namespace Main.Common.LevelDesign
         /// <summary>
         /// 接地判定
         /// </summary>
-        /// <param name="postion">位置・スケール</param>
+        /// <param name="position">位置・スケール</param>
         /// <param name="rayOriginOffset">始点</param>
         /// <param name="rayDirection">終点</param>
         /// <param name="rayMaxDistance">最大距離</param>
         /// <returns>レイのヒット判定の有無</returns>
-        public static bool IsGrounded(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance)
+        public static bool IsGrounded(Vector3 position, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance)
         {
-            var ray = new Ray(postion + rayOriginOffset, rayDirection);
+            var ray = new Ray(position + rayOriginOffset, rayDirection);
             //Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
             var raycastHits = new RaycastHit[1];
             var hitCount = Physics.RaycastNonAlloc(ray, raycastHits, rayMaxDistance);
@@ -33,33 +33,33 @@ namespace Main.Common.LevelDesign
         /// <summary>
         /// プレイヤーが上に乗っているかの判定
         /// </summary>
-        /// <param name="postion">位置・スケール</param>
+        /// <param name="position">位置・スケール</param>
         /// <param name="rayOriginOffset">始点</param>
         /// <param name="rayDirection">終点</param>
         /// <param name="rayMaxDistance">最大距離</param>
         /// <param name="layerMask">マスク情報</param>
         /// <returns>レイのヒット判定の有無</returns>
-        public static bool IsOnPlayeredAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask)
+        public static bool IsOnPlayeredAndInfo(Vector3 position, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask)
         {
             var hits = new RaycastHit[1];
-            return IsOnPlayeredAndInfo(postion, rayOriginOffset, rayDirection, rayMaxDistance, layerMask, out hits);
+            return IsOnPlayeredAndInfo(position, rayOriginOffset, rayDirection, rayMaxDistance, layerMask, out hits);
         }
 
         /// <summary>
         /// 敵が上に乗っているかの判定
         /// </summary>
-        /// <param name="postion">位置・スケール</param>
+        /// <param name="position">位置・スケール</param>
         /// <param name="rayOriginOffset">始点</param>
         /// <param name="rayDirection">終点</param>
         /// <param name="rayMaxDistance">最大距離</param>
         /// <param name="layerMask">マスク情報</param>
         /// <returns>レイのヒット判定の有無</returns>
-        public static bool IsOnPlayeredAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask, out RaycastHit[] hits)
+        public static bool IsOnPlayeredAndInfo(Vector3 position, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask, out RaycastHit[] hits)
         {
             hits = new RaycastHit[1];
-            if (layerMask < 0) return IsGrounded(postion, rayOriginOffset, rayDirection, rayMaxDistance);
+            if (layerMask < 0) return IsGrounded(position, rayOriginOffset, rayDirection, rayMaxDistance);
 
-            var ray = new Ray(postion + rayOriginOffset, rayDirection);
+            var ray = new Ray(position + rayOriginOffset, rayDirection);
             //Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
             var hitCount = Physics.RaycastNonAlloc(ray, hits, rayMaxDistance, layerMask);
             return hitCount >= 1f;
@@ -68,16 +68,16 @@ namespace Main.Common.LevelDesign
         /// <summary>
         /// 敵が上に乗っているかの判定
         /// </summary>
-        /// <param name="postion">位置・スケール</param>
+        /// <param name="position">位置・スケール</param>
         /// <param name="rayOriginOffset">始点</param>
         /// <param name="rayDirection">終点</param>
         /// <param name="rayMaxDistance">最大距離</param>
         /// <param name="layerMask">マスク情報</param>
         /// <returns>レイのヒット判定の有無</returns>
-        public static GameObject IsOnEnemiesAndInfo(Vector3 postion, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask/*, out RaycastHit[] hits*/)
+        public static GameObject IsOnEnemiesAndInfo(Vector3 position, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask/*, out RaycastHit[] hits*/)
         {
-            var ray = new Ray(postion + rayOriginOffset, rayDirection);
-            Debug.DrawRay(postion + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
+            var ray = new Ray(position + rayOriginOffset, rayDirection);
+            Debug.DrawRay(position + rayOriginOffset, rayDirection * rayMaxDistance, Color.green);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, rayMaxDistance, layerMask))
             {
@@ -85,6 +85,30 @@ namespace Main.Common.LevelDesign
             }
 
             return hit.transform == null ? null : hit.transform.gameObject;
+        }
+
+        /// <summary>
+        /// 敵が上に乗っているかの判定
+        /// レイの光線を3本たてる処理との統合版
+        /// </summary>
+        /// <param name="position">位置・スケール</param>
+        /// <param name="rayOriginOffset">始点</param>
+        /// <param name="rayDirection">終点</param>
+        /// <param name="rayMaxDistance">最大距離</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <param name="range">幅を広げる範囲</param>
+        /// <returns>レイのヒット判定の有無</returns>
+        public static GameObject IsOnEnemiesAndInfoThreePointHorizontal(Vector3 position, Vector3 rayOriginOffset, Vector3 rayDirection, float rayMaxDistance, int layerMask, float range)
+        {
+            var rOrgOffAry = GetThreePointHorizontal(rayOriginOffset, range);
+            var objList = new List<GameObject>();
+            foreach (var offset in rOrgOffAry)
+            {
+                var g = IsOnEnemiesAndInfo(position, offset, rayDirection, rayMaxDistance, layerMask);
+                if (g != null)
+                    objList.Add(g);
+            }
+            return 0 < objList.Count ? objList[0] : null;
         }
 
         /// <summary>

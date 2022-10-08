@@ -297,6 +297,8 @@ namespace Main.Player
             // 圧死音SE
             GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(_SEDead);
             GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
+            if (!GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().PlayVibration())
+                Debug.LogError("コントローラーの振動の失敗");
             _inputBan.Value = true;
             await Task.Delay(3000);
             return true;
