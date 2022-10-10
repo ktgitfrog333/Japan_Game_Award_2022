@@ -35,11 +35,14 @@ namespace Main.Common
 
         private void Reset()
         {
+#if UNITY_EDITOR
             var tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             CheckLayers(tagManager);
             tagManager.ApplyModifiedProperties();
+#endif
         }
 
+#if UNITY_EDITOR
         /// <summary>
         /// 設定したいレイヤーを上書きする
         /// </summary>
@@ -66,5 +69,6 @@ namespace Main.Common
                 index++;
             }
         }
+#endif
     }
 }
