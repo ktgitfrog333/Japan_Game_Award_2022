@@ -112,10 +112,10 @@ namespace Main.Common
                 Debug.Log("フェード演出開始処理の失敗");
             if (!compLevelOwner.ManualStart())
                 Debug.Log("レベルデザイン疑似スタートの失敗");
-            if (!compTutorialOwner.ManualStart())
-                Debug.LogWarning("チュートリアル疑似スタートの失敗");
             if (!inputSystemsOwner.GetComponent<InputSystemsOwner>().Initialize())
                 Debug.LogError("インプット初期処理の失敗");
+            if (!compTutorialOwner.ManualStart())
+                Debug.LogWarning("チュートリアル疑似スタートの失敗");
         }
 
         /// <summary>
