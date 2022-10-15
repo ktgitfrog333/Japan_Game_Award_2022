@@ -72,6 +72,10 @@ namespace Gimmick
         private GameObject _checkObject;
         /// <summary>ワープ可否状態</summary>
         private BoolReactiveProperty _isWarp = new BoolReactiveProperty();
+        /// <summary>吸い込みTweenアニメーション</summary>
+        private Sequence[] _sequenceSuction = new Sequence[2];
+        /// <summary>入力禁止</summary>
+        public bool _inputBan;
 
         public bool Initialize()
         {
@@ -82,6 +86,7 @@ namespace Gimmick
         {
             try
             {
+                _inputBan = false;
                 var parent = transform;
                 var warpA = parent.GetChild(0);
                 var warpB = parent.GetChild(1);
@@ -117,7 +122,9 @@ namespace Gimmick
                             // 移動対象に含まれる
                             0 < collierTagNames.Where(q => x.CompareTag(q)).Select(q => q).ToArray().Length &&
                             // トリガーに触れたオブジェクトがnull
-                            onEnteredTransMap == null)
+                            onEnteredTransMap == null &&
+                            // 操作禁止の状態でない
+                            !_inputBan)
                         .Select(x => x.gameObject)
                         .Subscribe(x =>
                         {
@@ -156,6 +163,44 @@ namespace Gimmick
                             }
                         })
                         .AddTo(_compositeDisposable);
+                }
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 吸い込まれるTweenアニメーションを実行済み状態でKill
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool KillCompleteTweeenSuction()
+        {
+            try
+            {
+                if (_sequenceSuction != null && 0 < _sequenceSuction.Length)
+                {
+                    for (var i = 0; i < _sequenceSuction.Length; i++)
+                    {
+                        if (_sequenceSuction[i] != null)
+                        {
+                            switch (i)
+                            {
+                                case 0:
+                                    _sequenceSuction[i].PlayBackwards();
+                                    break;
+                                case 1:
+                                    _sequenceSuction[i].Kill(true);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                 }
 
                 return true;
@@ -210,9 +255,8 @@ namespace Gimmick
                 else if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                 {
                     // 距離を延ばす
-                    var addDistance = charactors.Environment.transform.parent.childCount;
-                    var hitPlayer = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * charactors.Environment.transform.parent.childCount, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
-                    var hitEnemy = LevelDesisionIsObjected.IsOnEnemiesAndInfo(charactors.Environment.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance * addDistance, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                    var hitPlayer = GetHitPlayerOrEnemyInMoveCubeGroup(charactors, LayerMask.GetMask(LayerConst.LAYER_NAME_PLAYER));
+                    var hitEnemy = GetHitPlayerOrEnemyInMoveCubeGroup(charactors, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
                     charactors.HitPlayerOrEnemy = hitPlayer != null ? hitPlayer : hitEnemy;
                 }
                 else
@@ -239,16 +283,18 @@ namespace Gimmick
                         var defaultScale = charactors.Environment.transform.localScale;
                         // ワープへ吸い込まれる
                         var isCompetedSuction = new BoolReactiveProperty();
-                        if (!PlaySuction(charactors.Environment.transform, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                        _sequenceSuction[0] = PlayAndGetSuction(charactors.Environment.transform, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction);
+                        if (_sequenceSuction[0] == null)
                             throw new System.Exception("吸引アニメーション管理の失敗");
                         var isCompletedRelease = new BoolReactiveProperty();
                         isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
-                            .Where(x => x)
+                            .Where(x => x && !_inputBan)
                             .Subscribe(_ =>
                             {
                                 // 移動先のワープへ配置
                                 charactors.Environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
-                                if (!PlaySuction(charactors.Environment.transform, charactors.Environment.transform.position, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                _sequenceSuction[1] = PlayAndGetSuction(charactors.Environment.transform, charactors.Environment.transform.position, suctionRotate, defaultScale, suctionDuration, isCompletedRelease);
+                                if (_sequenceSuction[1] == null)
                                     throw new System.Exception("吸引アニメーション管理の失敗");
                             })
                             .AddTo(_compositeDisposable);
@@ -274,8 +320,8 @@ namespace Gimmick
                     {
                         // 最終配置のポジションを算出
                         var lastPosition = warp.Equals(warpA) ?
-                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpB.position, true) :
-                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpA.position, true);
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpB.position) :
+                            GetCalcWarpPosition(charactors.Environment.transform.localPosition, warpA.position);
                         _checkObject = InstanceCheckCube(charactors.Environment.transform.parent, lastPosition, warp, warpA, warpB, suctionRotate, suctionScale, suctionDuration, charactors);
                     }
                 }
@@ -287,6 +333,24 @@ namespace Gimmick
                 Debug.LogException(e);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 空間操作ブロックグループ内のブロックの上に乗っているオブジェクトを返却
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <param name="layerMask">マスク情報</param>
+        /// <returns>プレイヤー／敵（どちらでもないならnull）</returns>
+        private GameObject GetHitPlayerOrEnemyInMoveCubeGroup(WarpCharactors charactors, int layerMask)
+        {
+            var hitList = new List<GameObject>();
+            foreach (Transform c in charactors.Environment.transform.parent)
+            {
+                var g = LevelDesisionIsObjected.IsOnEnemiesAndInfoThreePointHorizontal(c.transform.position, isOnPlayerAndEnemyRay.DotPosition[0], isOnPlayerAndEnemyRay.DotPosition[1], isOnUnderDistance, layerMask, .5f);
+                if (g != null)
+                    hitList.Add(g);
+            }
+            return 0 < hitList.Count ? hitList[0] : null;
         }
 
         /// <summary>
@@ -350,8 +414,8 @@ namespace Gimmick
         /// <param name="endScale">変化スケール</param>
         /// <param name="duration">アニメーション時間</param>
         /// <param name="isCompeted">アニメーション終了のフラグ</param>
-        /// <returns>成功／失敗</returns>
-        private bool PlaySuction(Transform environment, Vector3 endPosition, Vector3 endRotate, Vector3 endScale, float duration, BoolReactiveProperty isCompeted)
+        /// <returns>Tween情報</returns>
+        private Sequence PlayAndGetSuction(Transform environment, Vector3 endPosition, Vector3 endRotate, Vector3 endScale, float duration, BoolReactiveProperty isCompeted)
         {
             try
             {
@@ -360,15 +424,15 @@ namespace Gimmick
                 seq.Append(environment.transform.DOMove(endPosition, duration))
                     .Join(environment.transform.DORotate(endRotate, duration, RotateMode.WorldAxisAdd))
                     .Join(environment.transform.DOScale(endScale, duration))
-                    .AppendCallback(() => isCompeted.Value = true)
+                    .OnComplete(() => isCompeted.Value = true)
                     .SetLink(gameObject);
 
-                return true;
+                return seq;
             }
             catch (System.Exception e)
             {
                 Debug.LogError(e);
-                return false;
+                return null;
             }
         }
 
@@ -392,11 +456,11 @@ namespace Gimmick
                 // 一つにまとめるオブジェクトを仮生成
                 var obj = GameObject.Find(MOVE_PARENT_NAME) != null ? GameObject.Find(MOVE_PARENT_NAME) : new GameObject(MOVE_PARENT_NAME);
                 var stage = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().LevelDesign.transform.GetChild(GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current).gameObject;
-                obj.transform.position = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.position : charactors.Environment.transform.position/*environment.transform.position + (environment.transform.position - hitObject.transform.position)*/;
+                obj.transform.position = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.position : charactors.Environment.transform.position;
                 obj.transform.parent = stage.transform;
                 // 親を一時格納
-                var defParent = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.parent : charactors.Environment.transform.parent;
-                var defOnParent = hitObject.transform.parent;
+                charactors.DefaultParent = charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.parent.parent : charactors.Environment.transform.parent;
+                charactors.DefaultHitParent = hitObject.transform.parent;
                 // 一時的なグループ化
                 if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
                     charactors.Environment.transform.parent.parent = obj.transform;
@@ -406,8 +470,8 @@ namespace Gimmick
 
                 // 最終配置のポジションを算出
                 var lastPosition = warp.Equals(warpA) ?
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpB.position, true) :
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, /*obj.transform.position,*/ warpA.position, true);
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpB.position) :
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpA.position);
                 // 移動チェックブロック生成、移動処理
                 var isCompletedCheck = new BoolReactiveProperty();
                 _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject, suctionRotate, suctionScale, suctionDuration, charactors, isCompletedCheck);
@@ -415,14 +479,37 @@ namespace Gimmick
                     .Where(x => x)
                     .Subscribe(_ =>
                     {
-                        // グループを元に戻す
-                        if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
-                            charactors.Environment.transform.parent.parent = defParent;
-                        else
-                            charactors.Environment.transform.parent = defParent;
-                        hitObject.transform.parent = defOnParent;
+                        if (!ResetGroup(charactors, hitObject))
+                            throw new System.Exception("グループ化解除の失敗");
                     })
                     .AddTo(_compositeDisposable);
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// グループ化した親関係を元に戻す
+        /// ※EnvironmentとHitオブジェクトを同時に移動させる事象で使用される
+        /// </summary>
+        /// <param name="charactors">移動対象キャラクター</param>
+        /// <param name="hitObject">ヒットしたオブジェクト</param>
+        /// <returns>成功／失敗</returns>
+        private bool ResetGroup(WarpCharactors charactors, GameObject hitObject)
+        {
+            try
+            {
+                // グループを元に戻す
+                if (charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE))
+                    charactors.Environment.transform.parent.parent = charactors.DefaultParent;
+                else
+                    charactors.Environment.transform.parent = charactors.DefaultParent;
+                hitObject.transform.parent = charactors.DefaultHitParent;
 
                 return true;
             }
@@ -478,12 +565,12 @@ namespace Gimmick
                         if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_PLAYER) || onOrUnderObject.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                         {
                             // プレイヤーは空間操作ブロック上にいるのでプレイヤー位置にチェックブロックを追加
-                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                            Instantiate(checkCbSmallPrefab, GetMinDistance(moveCubeGroup, onOrUnderObject).Target.localPosition + lastPosition + Vector3.up, Quaternion.identity, group.transform);
                         }
                         else if (onOrUnderObject.CompareTag(TagConst.TAG_NAME_MOVECUBEGROUP))
                         {
                             // 空間操作ブロックはプレイヤーの下にいるのでプレイヤー位置にチェックブロックを追加
-                            Instantiate(checkCbSmallPrefab, group.transform.GetChild(0).position + Vector3.up, Quaternion.identity, group.transform);
+                            Instantiate(checkCbSmallPrefab, lastPosition + Vector3.up * 2, Quaternion.identity, group.transform);
                             group.transform.position += Vector3.down;
                         }
                         else
@@ -509,17 +596,19 @@ namespace Gimmick
                         // ワープへ吸い込まれる
                         var isCompetedSuction = new BoolReactiveProperty();
                         // 一度、触れたワープポイントの中心に移動させる
-                        if (!PlaySuction(originParent, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                        _sequenceSuction[0] = PlayAndGetSuction(originParent, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction);
+                        if (_sequenceSuction[0] == null)
                             throw new System.Exception("吸引アニメーション管理の失敗");
                         var isCompletedRelease = new BoolReactiveProperty();
                         isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
-                            .Where(x => x)
+                            .Where(x => x && !_inputBan)
                             .Subscribe(_ =>
                             {
                                 // 一度、移動先のワープポイントの中心へ配置
                                 originParent.position = warp.Equals(warpA) ? warpB.position : warpA.position;
                                 // 最終配置のポジションへ調整
-                                if (!PlaySuction(originParent, lastPosition, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                _sequenceSuction[1] = PlayAndGetSuction(originParent, lastPosition, suctionRotate, defaultScale, suctionDuration, isCompletedRelease);
+                                if (_sequenceSuction[1] == null)
                                     throw new System.Exception("吸引アニメーション管理の失敗");
                             })
                             .AddTo(_compositeDisposable);
@@ -535,6 +624,9 @@ namespace Gimmick
                     }
                     else
                     {
+                        if (originParent.name.Equals(MOVE_PARENT_NAME))
+                            if (!ResetGroup(charactors, onOrUnderObject))
+                                throw new System.Exception("グループ化解除の失敗");
                         foreach (Transform child in group.transform)
                             child.GetComponent<LineRenderer>().enabled = true;
                         if (!AllChangeDynamic(charactors))
@@ -549,6 +641,40 @@ namespace Gimmick
             {
                 Debug.LogException(e);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// プレイヤー／敵と空間操作ブロックを比較
+        /// 最短距離の組み合わせを返却
+        /// </summary>
+        /// <param name="moveCubeGroup">空間操作ブロックグループ</param>
+        /// <param name="onOrUnderObject">上または下に存在するオブジェクト</param>
+        /// <returns>オブジェクト距離情報</returns>
+        private PairDistance GetMinDistance(Transform moveCubeGroup, GameObject onOrUnderObject)
+        {
+            try
+            {
+                var pairDistanceList = new List<PairDistance>();
+                foreach (Transform child in moveCubeGroup)
+                {
+                    var pair = new PairDistance();
+                    var d = Vector3.Distance(child.position, onOrUnderObject.transform.position);
+                    pair.Target = child;
+                    pair.Distance = d;
+                    pairDistanceList.Add(pair);
+                }
+                IOrderedEnumerable<PairDistance> pairSortList = pairDistanceList.OrderBy(rec => rec.Distance)
+                    .ThenBy(rec => rec.Target.name);
+                foreach (var p in pairSortList)
+                    return p;
+
+                throw new System.Exception("ペアが存在しません");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return new PairDistance();
             }
         }
 
@@ -577,11 +703,10 @@ namespace Gimmick
         /// </summary>
         /// <param name="localPosition">対象オブジェクトのローカル座標</param>
         /// <param name="toPosition">移動先のワールド座標</param>
-        /// <param name="isReversed">座標反転（デフォルトは無効）</param>
         /// <returns>移動座標</returns>
-        private Vector3 GetCalcWarpPosition(Vector3 localPosition, Vector3 toPosition, bool isReversed)
+        private Vector3 GetCalcWarpPosition(Vector3 localPosition, Vector3 toPosition)
         {
-            return toPosition + new Vector3(0f, localPosition.y * (isReversed ? -1f : 1f), 0f);
+            return toPosition + new Vector3(localPosition.x * -1f, localPosition.y * -1f, 0f);
         }
 
         /// <summary>
@@ -597,6 +722,7 @@ namespace Gimmick
                 var owner = GameManager.Instance.LevelOwner.GetComponent<LevelOwner>();
                 if (environment.CompareTag(TagConst.TAG_NAME_PLAYER))
                 {
+                    owner.SetPlayerControllerInputBan(true);
                     if (!owner.MoveCharactorPlayer(Vector3.zero))
                         throw new System.Exception("プレイヤーの外部制御の失敗");
                     if (!owner.ChangeCharactorControllerStatePlayer(false))
@@ -646,6 +772,7 @@ namespace Gimmick
                 {
                     if (!owner.ChangeCharactorControllerStatePlayer(true))
                         throw new System.Exception("プレイヤーのCharactorControllerステータス変更の失敗");
+                    owner.SetPlayerControllerInputBan(false);
                 }
                 else if (environment.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY))
                 {
@@ -678,6 +805,8 @@ namespace Gimmick
             try
             {
                 _compositeDisposable.Clear();
+                if (_checkObject != null)
+                    Destroy(_checkObject);
                 return true;
             }
             catch (System.Exception e)
@@ -710,6 +839,27 @@ namespace Gimmick
         }
 
         /// <summary>
+        /// WarpGatesPairの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        /// <returns></returns>
+        public bool SetWarpGatesPairInputBan(bool flag)
+        {
+            try
+            {
+                _inputBan = true;
+                Debug.Log($"操作禁止フラグをセット:{_inputBan}");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// 移動対象となるキャラクター
         /// </summary>
         public struct WarpCharactors
@@ -728,6 +878,25 @@ namespace Gimmick
             /// プレイヤー／敵
             /// </summary>
             public GameObject HitPlayerOrEnemy { get; set; }
+            /// <summary>
+            /// デフォルトの親
+            /// </summary>
+            public Transform DefaultParent { get; set; }
+            /// <summary>
+            /// ヒットオブジェクトのデフォルトの親
+            /// </summary>
+            public Transform DefaultHitParent { get; set; }
+        }
+
+        /// <summary>
+        /// オブジェクトの距離
+        /// </summary>
+        public struct PairDistance
+        {
+            /// <summary>対象オブジェクト</summary>
+            public Transform Target { get; set; }
+            /// <summary>距離</summary>
+            public float Distance { get; set; }
         }
     }
 }

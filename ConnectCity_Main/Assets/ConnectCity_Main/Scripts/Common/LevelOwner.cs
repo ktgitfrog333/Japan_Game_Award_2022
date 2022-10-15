@@ -205,6 +205,16 @@ namespace Main.Common
         }
 
         /// <summary>
+        /// WarpGatesPairの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">入力禁止フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetWarpGatesPairInputBan(bool flag)
+        {
+            return warpGateOwner.GetComponent<WarpGateOwner>().SetWarpGatesPairInputBan(flag);
+        }
+
+        /// <summary>
         /// ドローンの操作制御
         /// </summary>
         /// <param name="active">操作可否フラグ</param>
@@ -430,6 +440,15 @@ namespace Main.Common
         public bool CreateNewMoveCube(Vector3 target)
         {
             return spaceOwner.GetComponent<SpaceOwner>().CreateNewMoveCube(target);
+        }
+
+        /// <summary>
+        /// 吸い込まれるTweenアニメーションを実行済み状態でKill
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool KillCompleteTweeenSuction()
+        {
+            return warpGateOwner.GetComponent<WarpGateOwner>().KillCompleteTweeenSuction();
         }
     }
 }

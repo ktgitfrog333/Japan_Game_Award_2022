@@ -52,8 +52,8 @@ namespace Main.Common
         {
             try
             {
-                if (!tutorialScreen.GetComponent<TutorialScreen>().Initialize())
-                    throw new System.Exception("UI初期処理の失敗");
+                if (!tutorialScreen.GetComponent<TutorialScreen>().ManualStart())
+                    throw new System.Exception("UI疑似スタートの失敗");
                 if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().Initialize())
                     throw new System.Exception("エンバイロメント初期処理の失敗");
                 // フラグリセット
@@ -290,6 +290,8 @@ namespace Main.Common
         {
             try
             {
+                if (!tutorialScreen.GetComponent<TutorialScreen>().ManualStart())
+                    throw new System.Exception("UI疑似スタートの失敗");
                 if (!tutorialEnvironment.GetComponent<TutorialEnvironment>().ManualStart())
                     throw new System.Exception("エンバイロメント疑似スタートの失敗");
                 return true;

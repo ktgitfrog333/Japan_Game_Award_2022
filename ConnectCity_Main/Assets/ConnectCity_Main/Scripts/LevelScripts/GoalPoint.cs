@@ -181,7 +181,7 @@ namespace Main.Level
                 // 空間操作を禁止
                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                 // ショートカット入力を禁止
-                GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = true;
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(true);
                 var complete = GameManager.Instance.UIOwner.GetComponent<UIOwner>().PlayEndCutsceneFromGoalPoint();
                 complete.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)

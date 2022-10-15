@@ -28,6 +28,10 @@ namespace Main.Level
                 .Subscribe(_ => {
                     GameManager.Instance.AudioOwner.GetComponent<AudioOwner>().PlaySFX(fallSEPattern);
                     GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
+                    if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetWarpGatesPairInputBan(true))
+                        Debug.LogError("フラグ切り替え処理の失敗");
+                    if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().KillCompleteTweeenSuction())
+                        Debug.LogError("TweenアニメーションKill呼び出しの失敗");
                     GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                 });
         }

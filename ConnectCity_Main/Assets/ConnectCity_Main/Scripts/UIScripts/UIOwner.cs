@@ -118,7 +118,7 @@ namespace Main.UI
         /// <param name="flag">有効／無効</param>
         public void SetShortcuGuideScreenInputBan(bool flag)
         {
-            shortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = flag;
+            shortcuGuideScreen.GetComponent<ShortcuGuideScreen>().SetShortcuGuideScreenInputBan(flag);
         }
 
         /// <summary>
@@ -219,10 +219,18 @@ namespace Main.UI
         /// <returns></returns>
         public bool EnableDrawLoadNowFadeOutTrigger()
         {
-            fadeScreen.SetActive(true);
-            fadeScreen.GetComponent<FadeScreen>().DrawLoadNowFadeOut();
+            try
+            {
+                fadeScreen.SetActive(true);
+                fadeScreen.GetComponent<FadeScreen>().DrawLoadNowFadeOut();
 
-            return true;
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
         }
 
         /// <summary>

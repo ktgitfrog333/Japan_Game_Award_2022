@@ -87,7 +87,7 @@ namespace Main.Direction
                 if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetAutoDroneMoveEnable(true))
                     Debug.LogError("自動追尾ドローン操作制御処理の失敗");
                 // ショートカット入力を許可
-                GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+                GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(false);
                 if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())
                     Debug.Log("ぼろいブロック・天井復活処理の失敗");
             }
@@ -105,7 +105,7 @@ namespace Main.Direction
             if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetAutoDroneMoveEnable(true))
                 Debug.LogError("自動追尾ドローン操作制御処理の失敗");
             // ショートカット入力を許可
-            GameManager.Instance.UIOwner.GetComponent<UIOwner>().ShortcuGuideScreen.GetComponent<ShortcuGuideScreen>().InputBan = false;
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(false);
             if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DelayInitializeBreakBlocks())
                 Debug.Log("ぼろいブロック・天井復活処理の失敗");
         }
