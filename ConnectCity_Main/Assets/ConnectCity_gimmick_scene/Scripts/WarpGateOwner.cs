@@ -77,5 +77,50 @@ namespace Gimmick
                 return false;
             }
         }
+
+        /// <summary>
+        /// 吸い込まれるTweenアニメーションを実行済み状態でKill
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool KillCompleteTweeenSuction()
+        {
+            try
+            {
+                if (_warpGatesPairs != null)
+                    foreach (var pair in _warpGatesPairs)
+                        if (!pair.GetComponent<WarpGatesPair>().KillCompleteTweeenSuction())
+                            throw new System.Exception("Tweenアニメーションを実行済み状態でKill処理の失敗");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// WarpGatesPairの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">入力禁止フラグ</param>
+        /// <returns>成功／失敗</returns>
+        public bool SetWarpGatesPairInputBan(bool flag)
+        {
+            try
+            {
+                if (_warpGatesPairs != null)
+                    foreach (var pair in _warpGatesPairs)
+                        if (!pair.GetComponent<WarpGatesPair>().SetWarpGatesPairInputBan(flag))
+                            throw new System.Exception("操作禁止フラグ切り替えの失敗");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
     }
 }

@@ -86,6 +86,10 @@ namespace Main.UI
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                                 if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                                     Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetWarpGatesPairInputBan(true))
+                                    Debug.LogError("フラグ切り替え処理の失敗");
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().KillCompleteTweeenSuction())
+                                    Debug.LogError("TweenアニメーションKill呼び出しの失敗");
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }
