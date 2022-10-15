@@ -28,7 +28,16 @@ namespace Main.UI
         /// <summary>リトライのSEパターン</summary>
         [SerializeField] private ClipToPlay retrySEPattern = ClipToPlay.se_retry_No1;
         /// <summary>入力禁止</summary>
-        public bool InputBan { get; set; } = false;
+        private bool _inputBan;
+
+        /// <summary>
+        /// ShortcuGuideScreenの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        public void SetShortcuGuideScreenInputBan(bool flag)
+        {
+            _inputBan = flag;
+        }
 
         void Start()
         {
@@ -36,7 +45,7 @@ namespace Main.UI
             var isPushedContents = new bool[3];
             // ボタン押下
             this.UpdateAsObservable()
-                .Where(_ => !InputBan)
+                .Where(_ => !_inputBan)
                 .Subscribe(_ =>
                 {
                     if (!CheckAllContentsActive(isPushedContents) && GameManager.Instance.InputSystemsOwner.GetComponent<InputSystemsOwner>().InputUI.Undoed)
@@ -63,7 +72,7 @@ namespace Main.UI
             this.UpdateAsObservable()
                 .Subscribe(_ =>
                 {
-                    if (CheckAllContentsActive(isPushedContents))
+                    if (CheckAllContentsActive(isPushedContents) && !_inputBan)
                     {
                         pushingTime.Value += Time.deltaTime;
                     }
@@ -90,6 +99,9 @@ namespace Main.UI
                                     Debug.LogError("フラグ切り替え処理の失敗");
                                 if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().KillCompleteTweeenSuction())
                                     Debug.LogError("TweenアニメーションKill呼び出しの失敗");
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().ChangeCharactorControllerStatePlayer(false))
+                                    Debug.LogError("プレイヤーのCharactorControllerステータス変更の失敗");
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }
@@ -103,6 +115,9 @@ namespace Main.UI
                                 GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSelectSceneNameIdFromMain_Scene();
                                 if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                                     Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                                GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetPlayerControllerInputBan(true);
+                                if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().ChangeCharactorControllerStatePlayer(false))
+                                    Debug.LogError("プレイヤーのCharactorControllerステータス変更の失敗");
                                 GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
                                 GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().SetSpaceOwnerInputBan(true);
                             }

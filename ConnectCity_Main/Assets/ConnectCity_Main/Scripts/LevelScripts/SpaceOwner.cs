@@ -468,6 +468,7 @@ namespace Main.Level
                         isDead = true;
                         if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                             Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(true);
                         await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyPlayer();
                         GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                         GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
