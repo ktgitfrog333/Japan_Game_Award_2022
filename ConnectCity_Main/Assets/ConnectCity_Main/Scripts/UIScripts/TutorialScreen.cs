@@ -19,7 +19,7 @@ namespace Main.UI
     /// トリガーとなるオブジェクト（TutorialTrigger_0）
     /// ※上記オブジェクトを「*_0...99」のように一意の番号で付けることでビデオクリップの配列番号「channels」と連動する
     /// </summary>
-    public class TutorialScreen : MonoBehaviour, IGameManager, ITutorialOwnerScreen
+    public class TutorialScreen : MonoBehaviour, IOwner, ITutorialOwnerScreen
     {
         /// <summary>左空間の色</summary>
         [SerializeField] private Color keyLeftDefaultColor = new Color(47f, 148f, 180f, 255f);
@@ -31,8 +31,10 @@ namespace Main.UI
         [SerializeField] private Color keyEnabledRightColor = new Color(180f, 54f, 47f, 255f);
         /// <summary>Transformキャッシュ</summary>
         private Transform _transform;
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
-        public bool Initialize()
+        public bool ManualStart()
         {
             try
             {
@@ -45,9 +47,11 @@ namespace Main.UI
                 var isOpenedSpace = new BoolReactiveProperty();
                 isOpenedSpace.Value = _transform.GetChild((int)ScreenIndex.Space).gameObject.activeSelf;
                 _transform.GetChild((int)ScreenIndex.Space).gameObject.OnEnableAsObservable()
-                    .Subscribe(x => isOpenedSpace.Value = true);
+                    .Subscribe(x => isOpenedSpace.Value = true)
+                    .AddTo(_compositeDisposable);
                 _transform.GetChild((int)ScreenIndex.Space).gameObject.OnDisableAsObservable()
-                    .Subscribe(x => isOpenedSpace.Value = false);
+                    .Subscribe(x => isOpenedSpace.Value = false)
+                    .AddTo(_compositeDisposable);
                 // 空間操作UIのアクティブ状態を監視
                 isOpenedSpace.ObserveEveryValueChanged(x => x.Value)
                     .Where(x => x)
@@ -55,7 +59,8 @@ namespace Main.UI
                     {
                         if (!ChangeSpaceGuide((InputMode)inputMode.Value))
                             throw new System.Exception("空間操作のUI切り替えの失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 // 入力インタフェースによって表示するUIを切り替える
                 inputMode.ObserveEveryValueChanged(x => x.Value)
                     .Subscribe(x =>
@@ -63,7 +68,8 @@ namespace Main.UI
                         if (isOpenedSpace.Value)
                             if (!ChangeSpaceGuide((InputMode)x))
                                 throw new System.Exception("空間操作のUI切り替えの失敗");
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
                 // コントローラーのUI
                 var leftTran = _transform.GetChild((int)ScreenIndex.Space).GetChild((int)InputMode.Gamepad)
                                     .GetChild((int)Direction2D.Left).GetChild(1);
@@ -141,7 +147,8 @@ namespace Main.UI
                             default:
                                 throw new System.Exception("入力モード判定の例外");
                         }
-                    });
+                    })
+                    .AddTo(_compositeDisposable);
 
                 return true;
             }
@@ -265,6 +272,7 @@ namespace Main.UI
                 // 各UIを無効
                 foreach (Transform g in _transform)
                     g.gameObject.SetActive(false);
+                _compositeDisposable.Clear();
 
                 return true;
             }
@@ -273,6 +281,11 @@ namespace Main.UI
                 Debug.LogException(e);
                 return false;
             }
+        }
+
+        public bool Initialize()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

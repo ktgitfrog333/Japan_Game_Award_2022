@@ -72,6 +72,10 @@ namespace Gimmick
         private GameObject _checkObject;
         /// <summary>ワープ可否状態</summary>
         private BoolReactiveProperty _isWarp = new BoolReactiveProperty();
+        /// <summary>吸い込みTweenアニメーション</summary>
+        private Sequence[] _sequenceSuction = new Sequence[2];
+        /// <summary>入力禁止</summary>
+        public bool _inputBan;
 
         public bool Initialize()
         {
@@ -82,6 +86,7 @@ namespace Gimmick
         {
             try
             {
+                _inputBan = false;
                 var parent = transform;
                 var warpA = parent.GetChild(0);
                 var warpB = parent.GetChild(1);
@@ -117,7 +122,9 @@ namespace Gimmick
                             // 移動対象に含まれる
                             0 < collierTagNames.Where(q => x.CompareTag(q)).Select(q => q).ToArray().Length &&
                             // トリガーに触れたオブジェクトがnull
-                            onEnteredTransMap == null)
+                            onEnteredTransMap == null &&
+                            // 操作禁止の状態でない
+                            !_inputBan)
                         .Select(x => x.gameObject)
                         .Subscribe(x =>
                         {
@@ -156,6 +163,44 @@ namespace Gimmick
                             }
                         })
                         .AddTo(_compositeDisposable);
+                }
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 吸い込まれるTweenアニメーションを実行済み状態でKill
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        public bool KillCompleteTweeenSuction()
+        {
+            try
+            {
+                if (_sequenceSuction != null && 0 < _sequenceSuction.Length)
+                {
+                    for (var i = 0; i < _sequenceSuction.Length; i++)
+                    {
+                        if (_sequenceSuction[i] != null)
+                        {
+                            switch (i)
+                            {
+                                case 0:
+                                    _sequenceSuction[i].PlayBackwards();
+                                    break;
+                                case 1:
+                                    _sequenceSuction[i].Kill(true);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                 }
 
                 return true;
@@ -238,16 +283,18 @@ namespace Gimmick
                         var defaultScale = charactors.Environment.transform.localScale;
                         // ワープへ吸い込まれる
                         var isCompetedSuction = new BoolReactiveProperty();
-                        if (!PlaySuction(charactors.Environment.transform, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                        _sequenceSuction[0] = PlayAndGetSuction(charactors.Environment.transform, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction);
+                        if (_sequenceSuction[0] == null)
                             throw new System.Exception("吸引アニメーション管理の失敗");
                         var isCompletedRelease = new BoolReactiveProperty();
                         isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
-                            .Where(x => x)
+                            .Where(x => x && !_inputBan)
                             .Subscribe(_ =>
                             {
                                 // 移動先のワープへ配置
                                 charactors.Environment.transform.position = warp.Equals(warpA) ? warpB.position : warpA.position;
-                                if (!PlaySuction(charactors.Environment.transform, charactors.Environment.transform.position, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                _sequenceSuction[1] = PlayAndGetSuction(charactors.Environment.transform, charactors.Environment.transform.position, suctionRotate, defaultScale, suctionDuration, isCompletedRelease);
+                                if (_sequenceSuction[1] == null)
                                     throw new System.Exception("吸引アニメーション管理の失敗");
                             })
                             .AddTo(_compositeDisposable);
@@ -367,8 +414,8 @@ namespace Gimmick
         /// <param name="endScale">変化スケール</param>
         /// <param name="duration">アニメーション時間</param>
         /// <param name="isCompeted">アニメーション終了のフラグ</param>
-        /// <returns>成功／失敗</returns>
-        private bool PlaySuction(Transform environment, Vector3 endPosition, Vector3 endRotate, Vector3 endScale, float duration, BoolReactiveProperty isCompeted)
+        /// <returns>Tween情報</returns>
+        private Sequence PlayAndGetSuction(Transform environment, Vector3 endPosition, Vector3 endRotate, Vector3 endScale, float duration, BoolReactiveProperty isCompeted)
         {
             try
             {
@@ -377,15 +424,15 @@ namespace Gimmick
                 seq.Append(environment.transform.DOMove(endPosition, duration))
                     .Join(environment.transform.DORotate(endRotate, duration, RotateMode.WorldAxisAdd))
                     .Join(environment.transform.DOScale(endScale, duration))
-                    .AppendCallback(() => isCompeted.Value = true)
+                    .OnComplete(() => isCompeted.Value = true)
                     .SetLink(gameObject);
 
-                return true;
+                return seq;
             }
             catch (System.Exception e)
             {
                 Debug.LogError(e);
-                return false;
+                return null;
             }
         }
 
@@ -549,17 +596,19 @@ namespace Gimmick
                         // ワープへ吸い込まれる
                         var isCompetedSuction = new BoolReactiveProperty();
                         // 一度、触れたワープポイントの中心に移動させる
-                        if (!PlaySuction(originParent, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction))
+                        _sequenceSuction[0] = PlayAndGetSuction(originParent, warp.Equals(warpA) ? warpA.position : warpB.position, suctionRotate, suctionScale, suctionDuration, isCompetedSuction);
+                        if (_sequenceSuction[0] == null)
                             throw new System.Exception("吸引アニメーション管理の失敗");
                         var isCompletedRelease = new BoolReactiveProperty();
                         isCompetedSuction.ObserveEveryValueChanged(x => x.Value)
-                            .Where(x => x)
+                            .Where(x => x && !_inputBan)
                             .Subscribe(_ =>
                             {
                                 // 一度、移動先のワープポイントの中心へ配置
                                 originParent.position = warp.Equals(warpA) ? warpB.position : warpA.position;
                                 // 最終配置のポジションへ調整
-                                if (!PlaySuction(originParent, lastPosition, suctionRotate, defaultScale, suctionDuration, isCompletedRelease))
+                                _sequenceSuction[1] = PlayAndGetSuction(originParent, lastPosition, suctionRotate, defaultScale, suctionDuration, isCompletedRelease);
+                                if (_sequenceSuction[1] == null)
                                     throw new System.Exception("吸引アニメーション管理の失敗");
                             })
                             .AddTo(_compositeDisposable);
@@ -779,6 +828,27 @@ namespace Gimmick
                     _isWarp.Value = !_isWarp.Value;
                 else
                     throw new System.Exception("ワープ可否フラグnull");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// WarpGatesPairの操作禁止フラグをセット
+        /// </summary>
+        /// <param name="flag">有効／無効</param>
+        /// <returns></returns>
+        public bool SetWarpGatesPairInputBan(bool flag)
+        {
+            try
+            {
+                _inputBan = true;
+                Debug.Log($"操作禁止フラグをセット:{_inputBan}");
 
                 return true;
             }

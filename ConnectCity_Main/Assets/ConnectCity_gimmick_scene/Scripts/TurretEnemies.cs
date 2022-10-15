@@ -127,6 +127,7 @@ namespace Gimmick
         /// </summary>
         private async void DeadPlayer()
         {
+            GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(true);
             await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyPlayer();
             GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
             GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();

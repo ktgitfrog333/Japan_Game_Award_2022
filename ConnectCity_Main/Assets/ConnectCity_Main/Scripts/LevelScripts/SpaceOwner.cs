@@ -461,13 +461,14 @@ namespace Main.Level
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_PLAYER) &&
                     _spaceDirections.MoveSpeed == moveHSpeed &&
-                    CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_PLAYER) &&
+                    CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_PLAYER, CollisionDirectionVelocity(x.relativeVelocity)) &&
                     !isDead)
                     .Subscribe(async _ =>
                     {
                         isDead = true;
                         if (!GameManager.Instance.TutorialOwner.GetComponent<TutorialOwner>().CloseEventsAll())
                             Debug.LogError("チュートリアルのUIイベントリセット処理の失敗");
+                        GameManager.Instance.UIOwner.GetComponent<UIOwner>().SetShortcuGuideScreenInputBan(true);
                         await GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyPlayer();
                         GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SetSceneIdUndo();
                         GameManager.Instance.UIOwner.GetComponent<UIOwner>().EnableDrawLoadNowFadeOutTrigger();
@@ -477,10 +478,10 @@ namespace Main.Level
                 obj.transform.parent.OnCollisionEnterAsObservable()
                     .Where(x => x.gameObject.CompareTag(TagConst.TAG_NAME_ROBOT_EMEMY) &&
                     _spaceDirections.MoveSpeed == moveHSpeed &&
-                    CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_ROBOTENEMIES))
-                    .Subscribe(_ =>
+                    CheckDirectionMoveCubeToPlayer(obj, LayerConst.LAYER_NAME_ROBOTENEMIES, CollisionDirectionVelocity(x.relativeVelocity)))
+                    .Subscribe(x =>
                     {
-                        var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES);
+                        var target = CheckDirectionMoveCubeToEmemies(obj, LayerConst.LAYER_NAME_ROBOTENEMIES, CollisionDirectionVelocity(x.relativeVelocity));
                         if (target != null)
                             GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().DestroyRobotEnemies(target);
                     })
@@ -488,6 +489,29 @@ namespace Main.Level
             }
 
             return moveCubes;
+        }
+
+        /// <summary>
+        /// 衝突方向からどの向きかを判断する
+        /// </summary>
+        /// <param name="relativeVelocity">衝突時の相対速度</param>
+        /// <returns>角度</returns>
+        private DirectionAndError CollisionDirectionVelocity(Vector3 relativeVelocity)
+        {
+            var reverse = relativeVelocity * -1f;
+            if (0 < Mathf.Abs(reverse.magnitude))
+                if (Mathf.Abs(reverse.x) < Mathf.Abs(reverse.y))
+                    if (0 < reverse.y)
+                        return DirectionAndError.UP;
+                    else
+                        return DirectionAndError.DOWN;
+                else
+                    if (0 < reverse.x)
+                    return DirectionAndError.RIGHT;
+                else
+                    return DirectionAndError.LEFT;
+            else
+                return DirectionAndError.ERROR;
         }
 
         /// <summary>
@@ -807,11 +831,12 @@ namespace Main.Level
         /// </summary>
         /// <param name="moveCube">対象のMoveCube</param>
         /// <param name="layerName">レイヤー名</param>
+        /// <param name="direction">角度</param>
         /// <returns>挟まっている／離れている</returns>
-        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName)
+        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName, DirectionAndError direction)
         {
             RaycastHit[] hits = new RaycastHit[1];
-            return CheckDirectionMoveCubeToPlayer(moveCube, layerName, out hits);
+            return CheckDirectionMoveCubeToPlayer(moveCube, layerName, out hits, direction);
         }
 
         /// <summary>
@@ -820,8 +845,9 @@ namespace Main.Level
         /// <param name="moveCube">対象のMoveCube</param>
         /// <param name="layerName">レイヤー名</param>
         /// <param name="hits">ヒットオブジェクト（参照用）</param>
+        /// <param name="direction">角度</param>
         /// <returns>挟まっている／離れている</returns>
-        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName, out RaycastHit[] hits)
+        private bool CheckDirectionMoveCubeToPlayer(GameObject moveCube, string layerName, out RaycastHit[] hits, DirectionAndError direction)
         {
             var rOrgOffL = rayOriginOffsetLeft;
             var rOrgDireL = rayDirectionLeft;
@@ -837,47 +863,51 @@ namespace Main.Level
             var rMaxDisDown = rayMaxDistanceDownLong;
             hits = new RaycastHit[1];
 
-            // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
-            // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
-            // 左
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
+            foreach (Transform moveCubeChild in moveCube.transform.parent)
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
+                // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
+                // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
+                // 左
+                if (direction.Equals(DirectionAndError.LEFT) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
                 {
-                    return true;
-                }
-            }
-            // 右
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
-            {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
-                    LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
-                {
-                    return true;
-                }
-            }
-            for (var i = 0; i < 3; i++)
-            {
-                // 上
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
-                {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }
                 }
-                // 下
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
+                // 右
+                if (direction.Equals(DirectionAndError.RIGHT) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
-                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                        LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
                     {
                         return true;
                     }
                 }
+                for (var i = 0; i < 3; i++)
+                {
+                    // 上
+                    if (direction.Equals(DirectionAndError.UP) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
+                    {
+                        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                            LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
+                        {
+                            return true;
+                        }
+                    }
+                    // 下
+                    if (direction.Equals(DirectionAndError.DOWN) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
+                    {
+                        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_FREEZE), out hits) ||
+                            LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_MOVECUBE), out hits))
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
+
             return false;
         }
 
@@ -887,10 +917,10 @@ namespace Main.Level
         /// <param name="moveCube">対象のMoveCube</param>
         /// <param name="layerName">レイヤー名</param>
         /// <returns>挟まっている／離れている</returns>
-        private GameObject CheckDirectionMoveCubeToEmemies(GameObject moveCube, string layerName)
+        private GameObject CheckDirectionMoveCubeToEmemies(GameObject moveCube, string layerName, DirectionAndError direction)
         {
             RaycastHit[] hits = new RaycastHit[1];
-            return CheckDirectionMoveCubeToEmemies(moveCube, layerName, out hits);
+            return CheckDirectionMoveCubeToEmemies(moveCube, layerName, out hits, direction);
         }
 
         /// <summary>
@@ -900,7 +930,7 @@ namespace Main.Level
         /// <param name="layerName">レイヤー名</param>
         /// <param name="hits">ヒットオブジェクト（参照用）</param>
         /// <returns>挟まっている／離れている</returns>
-        private GameObject CheckDirectionMoveCubeToEmemies(GameObject moveCube, string layerName, out RaycastHit[] hits)
+        private GameObject CheckDirectionMoveCubeToEmemies(GameObject moveCube, string layerName, out RaycastHit[] hits, DirectionAndError direction)
         {
             var rOrgOffL = rayOriginOffsetLeft;
             var rOrgDireL = rayDirectionLeft;
@@ -916,43 +946,47 @@ namespace Main.Level
             var rMaxDisDown = rayMaxDistanceDownLong;
             hits = new RaycastHit[1];
 
-            // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
-            // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
-            // 左
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
+            foreach (Transform moveCubeChild in moveCube.transform.parent)
             {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                // MoveCubeから出した光線がプレイヤーとFreezeオブジェクトにヒット
+                // MoveCubeから出した光線がプレイヤーと他のMoveCubeにヒット
+                // 左
+                if (direction.Equals(DirectionAndError.LEFT) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(layerName)))
                 {
-                    return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCube.transform.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                }
-            }
-            // 右
-            if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
-            {
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
-                {
-                    return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCube.transform.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
-                }
-            }
-            for (var i = 0; i < 3; i++)
-            {
-                // 上
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
-                {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
                     {
-                        return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCube.transform.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCubeChild.position, rOrgOffL, rOrgDireL, rMaxDisL, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
                     }
                 }
-                // 下
-                if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
+                // 右
+                if (direction.Equals(DirectionAndError.RIGHT) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(layerName)))
                 {
-                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                    if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
                     {
-                        return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCube.transform.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCubeChild.position, rOrgOffR, rOrgDireR, rMaxDisR, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                    }
+                }
+                for (var i = 0; i < 3; i++)
+                {
+                    // 上
+                    if (direction.Equals(DirectionAndError.UP) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(layerName)))
+                    {
+                        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                        {
+                            return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCubeChild.position, rOrgOffUpAry[i], rOrgDireUp, rMaxDisUp, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        }
+                    }
+                    // 下
+                    if (direction.Equals(DirectionAndError.DOWN) && LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(layerName)))
+                    {
+                        if (LevelDesisionIsObjected.IsOnPlayeredAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES), out hits))
+                        {
+                            return LevelDesisionIsObjected.IsOnEnemiesAndInfo(moveCubeChild.position, rOrgOffDownAry[i], rOrgDireDown, rMaxDisDown, LayerMask.GetMask(LayerConst.LAYER_NAME_ROBOTENEMIES));
+                        }
                     }
                 }
             }
+
             return null;
         }
 
@@ -1341,6 +1375,23 @@ namespace Main.Level
         , LEFT
         /// <summary>右</summary>
         , RIGHT
+    }
+
+    /// <summary>
+    /// 角度（例外付き）
+    /// </summary>
+    public enum DirectionAndError
+    {
+        /// <summary>上</summary>
+        UP,
+        /// <summary>下</summary>
+        DOWN,
+        /// <summary>左</summary>
+        LEFT,
+        /// <summary>右</summary>
+        RIGHT,
+        /// <summary>エラー</summary>
+        ERROR,
     }
 
     /// <summary>

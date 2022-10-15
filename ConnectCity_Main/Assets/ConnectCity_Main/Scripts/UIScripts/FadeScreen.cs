@@ -13,11 +13,18 @@ namespace Main.UI
     /// </summary>
     public class FadeScreen : MonoBehaviour
     {
+        /// <summary>フェードアウト演出の実行中</summary>
+        private bool _playingFadeOut;
+        /// <summary>フェードアウト演出の実行中</summary>
+        public bool PlayingFadeOut => _playingFadeOut;
+
         /// <summary>
         /// フェードイン処理＆ステージ開始演出
         /// </summary>
         public void PlayFadeInAndStartCutScene()
         {
+            if (_playingFadeOut)
+                _playingFadeOut = false;
             GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().Player.SetActive(false);
             transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 0f, duration: 1f)
                 .OnComplete(() =>
@@ -34,30 +41,34 @@ namespace Main.UI
         /// </summary>
         public void DrawLoadNowFadeOut()
         {
-            transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 1f, duration: 1f)
-                .SetUpdate(true)
-                .OnComplete(() =>
-                {
+            if (!_playingFadeOut)
+            {
+                _playingFadeOut = true;
+                transform.GetChild(0).GetComponent<Image>().DOFade(endValue: 1f, duration: 1f)
+                    .SetUpdate(true)
+                    .OnComplete(() =>
+                    {
                     // ロード処理の終了通知を受け取ったら一時停止を解除
                     switch (GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().PlayLoadScene())
-                    {
-                        case SceneLoadType.SceneLoad:
-                            if (Time.timeScale == 0f)
-                                Time.timeScale = 1f;
-                            break;
-                        case SceneLoadType.PrefabLoad:
-                            GameManager.Instance.ReStart();
-                            if (Time.timeScale == 0f)
-                                Time.timeScale = 1f;
-                            break;
-                        case SceneLoadType.Error:
-                            Debug.LogError("ロード処理の失敗");
-                            break;
-                        default:
-                            Debug.LogError("ロード処理の例外エラー");
-                            break;
-                    }
-                });
+                        {
+                            case SceneLoadType.SceneLoad:
+                                if (Time.timeScale == 0f)
+                                    Time.timeScale = 1f;
+                                break;
+                            case SceneLoadType.PrefabLoad:
+                                GameManager.Instance.ReStart();
+                                if (Time.timeScale == 0f)
+                                    Time.timeScale = 1f;
+                                break;
+                            case SceneLoadType.Error:
+                                Debug.LogError("ロード処理の失敗");
+                                break;
+                            default:
+                                Debug.LogError("ロード処理の例外エラー");
+                                break;
+                        }
+                    });
+            }
         }
     }
 }
