@@ -470,8 +470,8 @@ namespace Gimmick
 
                 // 最終配置のポジションを算出
                 var lastPosition = warp.Equals(warpA) ?
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpB.position) :
-                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.up, warpA.position);
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpB.position) :
+                    GetCalcWarpPosition(charactors.Environment.CompareTag(TagConst.TAG_NAME_MOVECUBE) ? charactors.Environment.transform.localPosition : Vector3.zero, warpA.position);
                 // 移動チェックブロック生成、移動処理
                 var isCompletedCheck = new BoolReactiveProperty();
                 _checkObject = InstanceCheckCube(obj.transform, lastPosition, warp, warpA, warpB, hitObject, suctionRotate, suctionScale, suctionDuration, charactors, isCompletedCheck);
@@ -848,7 +848,6 @@ namespace Gimmick
             try
             {
                 _inputBan = true;
-                Debug.Log($"操作禁止フラグをセット:{_inputBan}");
 
                 return true;
             }
