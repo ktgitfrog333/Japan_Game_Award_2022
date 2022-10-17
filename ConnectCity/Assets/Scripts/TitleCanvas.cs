@@ -30,6 +30,8 @@ namespace TitleSelect
         [SerializeField] private GameObject fadeInOutCanvas;
         /// <summary>イベントシステム</summary>
         private EventSystem _eventSystem;
+        /// <summary>監視管理</summary>
+        private CompositeDisposable _compositeDisposable = new CompositeDisposable();
 
         private void Reset()
         {
@@ -91,6 +93,10 @@ namespace TitleSelect
                             SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
+                            if (!UpdateButtonState(gameStartExitPanel.transform, false, false))
+                                Debug.LogError("ボタン状態変更処理の失敗");
+                            if (!ClearButtonObservable())
+                                Debug.LogError("監視クリア処理の失敗");
                             Observable.FromCoroutine<bool>(observer => fadeInOutCanvas.transform.GetChild(0).GetComponent<FadeInOut>().Fadeout(observer))
                                 .Subscribe(_ => SceneManager.LoadScene("SelectScene"))
                                 .AddTo(gameObject);
@@ -146,6 +152,10 @@ namespace TitleSelect
                             SfxPlay.Instance.PlaySFX(ClipToPlay.se_cancel);
                             break;
                         case EventCommand.Submited:
+                            if (!UpdateButtonState(gameExitConfirmPanel.transform, true, false))
+                                Debug.LogError("ボタン状態変更処理の失敗");
+                            if (!ClearButtonObservable())
+                                Debug.LogError("監視クリア処理の失敗");
                             SfxPlay.Instance.PlaySFX(ClipToPlay.se_decided);
                             Observable.FromCoroutine<bool>(observer => fadeInOutCanvas.transform.GetChild(0).GetComponent<FadeInOut>().Fadeout(observer))
                                 .Subscribe(_ => Quit())
@@ -258,13 +268,17 @@ namespace TitleSelect
                 // イベント登録
                 var btn = child.GetComponent<Button>();
                 btn.OnSelectAsObservable()
-                    .Subscribe(_ => child.GetComponent<EventController>().Selected());
+                    .Subscribe(_ => child.GetComponent<EventController>().Selected())
+                    .AddTo(_compositeDisposable);
                 btn.OnDeselectAsObservable()
-                    .Subscribe(_ => child.GetComponent<EventController>().DeSelected());
+                    .Subscribe(_ => child.GetComponent<EventController>().DeSelected())
+                    .AddTo(_compositeDisposable);
                 btn.OnSubmitAsObservable()
-                    .Subscribe(_ => child.GetComponent<EventController>().Submited());
+                    .Subscribe(_ => child.GetComponent<EventController>().Submited())
+                    .AddTo(_compositeDisposable);
                 btn.OnCancelAsObservable()
-                    .Subscribe(_ => child.GetComponent<EventController>().Canceled());
+                    .Subscribe(_ => child.GetComponent<EventController>().Canceled())
+                    .AddTo(_compositeDisposable);
                 if (parent.Equals(pushGameStartPanel.transform))
                     child.GetComponent<EventController>().AnyKeys();
 
@@ -272,6 +286,58 @@ namespace TitleSelect
             }
 
             return (btnEventStateList != null && 0 < btnEventStateList.Count) ? btnEventStateList.ToArray() : null;
+        }
+
+        /// <summary>
+        /// 子要素ごとのボタンの状態を変更
+        /// </summary>
+        /// <param name="parent">親</param>
+        /// <param name="titleFind">タイトル要素（ボタンとしての機能が無いもの）があるか</param>
+        /// <param name="isEnabled">有効／無効フラグ</param>
+        /// <returns>成功／失敗</returns>
+        private bool UpdateButtonState(Transform parent, bool titleFind, bool isEnabled)
+        {
+            try
+            {
+                for (var i = 0; i < parent.childCount; i++)
+                {
+                    var child = parent.GetChild(i);
+
+                    // 最初の項目がタイトルならスキップ
+                    if (titleFind && i == 0)
+                        continue;
+                    // イベント登録
+                    var btn = child.GetComponent<Button>();
+                    btn.enabled = isEnabled;
+                }
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// ボタン操作の監視をクリア
+        /// </summary>
+        /// <returns>成功／失敗</returns>
+        private bool ClearButtonObservable()
+        {
+            try
+            {
+                _compositeDisposable.Clear();
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
         }
     }
 }

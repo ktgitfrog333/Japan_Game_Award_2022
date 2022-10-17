@@ -1844,28 +1844,28 @@ namespace TitleSelect
 
         public bool GetInputCancel()
         {
-            return Keyboard.current.backspaceKey.wasPressedThisFrame ||
-                (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame);
+            return !select_cancel && !select_decide && (Keyboard.current.backspaceKey.wasPressedThisFrame ||
+                (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame));
         }
 
         public bool GetInputLeft()
         {
-            return Keyboard.current.leftArrowKey.wasPressedThisFrame ||
+            return !select_cancel && !select_decide && (Keyboard.current.leftArrowKey.wasPressedThisFrame ||
                 (Gamepad.current != null && Gamepad.current.leftStick.left.wasPressedThisFrame) ||
-                (Gamepad.current != null && Gamepad.current.dpad.left.wasPressedThisFrame);
+                (Gamepad.current != null && Gamepad.current.dpad.left.wasPressedThisFrame));
         }
 
         public bool GetInputRight()
         {
-            return Keyboard.current.rightArrowKey.wasPressedThisFrame ||
+            return !select_cancel && !select_decide && (Keyboard.current.rightArrowKey.wasPressedThisFrame ||
                 (Gamepad.current != null && Gamepad.current.leftStick.right.wasPressedThisFrame) ||
-                (Gamepad.current != null && Gamepad.current.dpad.right.wasPressedThisFrame);
+                (Gamepad.current != null && Gamepad.current.dpad.right.wasPressedThisFrame));
         }
 
         public bool GetInputSubmit()
         {
-            return Keyboard.current.enterKey.wasPressedThisFrame ||
-                (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame);
+            return !select_cancel && !select_decide && (Keyboard.current.enterKey.wasPressedThisFrame ||
+                (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame));
         }
     }
 
