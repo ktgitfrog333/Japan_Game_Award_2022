@@ -68,6 +68,8 @@ namespace Main.Level
         [SerializeField] private float rayMaxDistanceDownLong = 1.6f;
         /// <summary>Axis入力の斜めの甘さ（高い程メリハリのある入力が必要）</summary>
         [SerializeField, Range(0f, 1f)] private float deadMagnitude = 0.9f;
+        /// <summary>フレームチェック遅延時間（ミリ秒）</summary>
+        [SerializeField] private int checkDelayTimeMs = 10;
         /// <summary>MoveCubeの初期状態</summary>
         private ObjectsOffset[] _cubeOffsets;
         /// <summary>MoveCubeの初期状態</summary>
@@ -130,6 +132,11 @@ namespace Main.Level
                         if (!GameManager.Instance.LevelOwner.GetComponent<LevelOwner>().OpenDoor())
                             Debug.LogError("ゴール演出の失敗");
                     })
+                    .AddTo(_compositeDisposable);
+                // 特定の空間操作ブロックはデフォルトで接続状態にする
+                _connectDirections.ObserveEveryValueChanged(x => x.Count)
+                    .Where(x => x < 1 && _moveCubes != null && 0 < _moveCubes.Length)
+                    .Subscribe(x => AsyncCheckConnectDirection2DListDelayTime(_connectDirections, _moveCubes))
                     .AddTo(_compositeDisposable);
                 _moveCubes = SetCollsion(_moveCubes, _connectSuccess);
                 if (_moveCubes == null)
@@ -249,6 +256,66 @@ namespace Main.Level
             catch (System.Exception e)
             {
                 Debug.LogException(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 非同期処理
+        /// Updateの１フレーム送り後にコネクトセットリストの内容が空かチェック
+        /// セルフコネクト呼び出し判定
+        /// </summary>
+        /// <param name="connectDirections">ブロックの接続状況リスト</param>
+        /// <param name="moveCubes">空間操作ブロック</param>
+        private async void AsyncCheckConnectDirection2DListDelayTime(List<ConnectDirection2D> connectDirections, GameObject[] moveCubes)
+        {
+            await Task.Delay(checkDelayTimeMs);
+            if (connectDirections.Count < 1)
+                if (!SelfConnectCubes(connectDirections, moveCubes))
+                    Debug.LogError("セルフコネクト処理の失敗");
+        }
+
+        /// <summary>
+        /// セルフコネクト処理
+        /// </summary>
+        /// <param name="connectDirections">ブロックの接続状況リスト</param>
+        /// <param name="moveCubes">空間操作ブロック</param>
+        /// <returns>成功／失敗</returns>
+        private bool SelfConnectCubes(List<ConnectDirection2D> connectDirections, GameObject[] moveCubes)
+        {
+            try
+            {
+                // コネクト事前登録済みのオブジェクト同士を取得
+                foreach (var originCube in moveCubes.Where(q => q.GetComponent<MoveCbSmall>().ConnectedLockTo != null && 0 < q.GetComponent<MoveCbSmall>().ConnectedLockTo.Length)
+                    .Select(q => q))
+                {
+                    var pair = new ConnectDirection2D();
+                    pair.OriginMoveCube = originCube;
+                    foreach (var meetCube in originCube.GetComponent<MoveCbSmall>().ConnectedLockTo)
+                    {
+                        if (!originCube.transform.parent.Equals(meetCube.transform.parent))
+                        {
+                            pair.MeetMoveCube = meetCube;
+                            pair = GetConnectDirection2DAddDirection(pair);
+                            if (1 == SetGroupMattingMoveCube(pair))
+                            {
+                                var p = new ConnectDirection2D();
+                                p.OriginMoveCube = pair.MeetMoveCube;
+                                p.MeetMoveCube = pair.OriginMoveCube;
+                                p = GetConnectDirection2DAddDirection(p);
+                                if (2 == SetGroupMattingMoveCube(p))
+                                    ConnectMoveCube();
+                                _connectDirections = new List<ConnectDirection2D>();
+                            }
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
                 return false;
             }
         }
@@ -440,7 +507,7 @@ namespace Main.Level
                     .Subscribe(x =>
                     {
                         if (!x)
-                            Debug.Log("MoveCubeのコネクト処理失敗");
+                            Debug.LogWarning("MoveCubeのコネクト処理失敗");
                         else
                         {
                             if (!_inputBan)
@@ -455,6 +522,11 @@ namespace Main.Level
                             }
                         }
                         _connectDirections = new List<ConnectDirection2D>();
+                        // 特定の空間操作ブロックはデフォルトで接続状態にする
+                        _connectDirections.ObserveEveryValueChanged(x => x.Count)
+                            .Where(x => x < 1 && _moveCubes != null && 0 < _moveCubes.Length)
+                            .Subscribe(x => AsyncCheckConnectDirection2DListDelayTime(_connectDirections, _moveCubes))
+                            .AddTo(_compositeDisposable);
                     })
                     .AddTo(_compositeDisposable);
                 // プレイヤーとの衝突
@@ -559,6 +631,17 @@ namespace Main.Level
             // 取得したペアがない場合は空オブジェクトを返却
             if (pair.MeetMoveCube == null || pair.MeetMoveCube == null) return new ConnectDirection2D();
             pair.ContactsPoint = contactsPoint;
+
+            return GetConnectDirection2DAddDirection(pair);
+        }
+
+        /// <summary>
+        /// ペアに対して角度を付与して返却する
+        /// </summary>
+        /// <param name="pair">ペア（角度の情報が無い状態）</param>
+        /// <returns>ペア（角度付き）</returns>
+        private ConnectDirection2D GetConnectDirection2DAddDirection(ConnectDirection2D pair)
+        {
             Direction result;
 
             // X座標とY座標を比較して距離がある＝対象軸上にオブジェクトがある
