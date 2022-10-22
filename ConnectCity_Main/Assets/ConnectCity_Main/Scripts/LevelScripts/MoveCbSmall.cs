@@ -15,6 +15,10 @@ namespace Main.Level
         [SerializeField] private Animator _animator;
         /// <summary>パーティクルシステムの配列</summary>
         [SerializeField] private ParticleSystem[] _particleSystems;
+        /// <summary>最初からコネクト固定対象オブジェクト</summary>
+        [SerializeField] private GameObject[] _defaultConnectedTo;
+        /// <summary>最初からコネクト固定対象オブジェクト</summary>
+        public GameObject[] ConnectedLockTo => _defaultConnectedTo;
         /// <summary>生成されたか否かのフラグ</summary>
         private bool _instanced;
         /// <summary>生成されたか否かのフラグ</summary>

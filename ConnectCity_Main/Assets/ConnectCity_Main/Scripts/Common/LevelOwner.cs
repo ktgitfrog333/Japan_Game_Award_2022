@@ -30,6 +30,18 @@ namespace Main.Common
         [SerializeField] private GameObject[] player;
         /// <summary>プレイヤーのゲームオブジェクト</summary>
         public GameObject Player => player[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
+        /// <summary>プレイヤーのゲームオブジェクト（取り込み時のみ使用）</summary>
+        public GameObject[] Players
+        {
+            get
+            {
+                return player;
+            }
+            set
+            {
+                player = value;
+            }
+        }
         /// <summary>プレイヤーの初期状態</summary>
         private ObjectsOffset[] _playerOffsets;
         /// <summary>プレイヤーの初期状態</summary>
@@ -46,6 +58,17 @@ namespace Main.Common
         [SerializeField] private GameObject[] goalPoint;
         /// <summary>ゴールポイントのゲームオブジェクト</summary>
         public GameObject GoalPoint => goalPoint[GameManager.Instance.SceneOwner.GetComponent<SceneOwner>().SceneIdCrumb.Current];
+        /// <summary>ゴールポイントのゲームオブジェクト（取り込み時のみ使用）</summary>
+        public GameObject[] GoalPoints {
+            get
+            {
+                return goalPoint;
+            }
+            set
+            {
+                goalPoint = value;
+            }
+        }
         /// <summary>ゴールポイントの初期状態</summary>
         private ObjectsOffset[] _goalPointOffsets;
         /// <summary>ゴールポイントの初期状態</summary>
