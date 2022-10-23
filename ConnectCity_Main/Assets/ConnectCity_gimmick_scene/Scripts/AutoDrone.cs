@@ -151,7 +151,7 @@ namespace Gimmick
                 pool.Pools = new Transform[1];
                 pool.Pools[0] = GameObject.Find(droneCollisionEffectPrefab.name + "Pool") != null ? GameObject.Find(droneCollisionEffectPrefab.name + "Pool").transform : new GameObject(droneCollisionEffectPrefab.name + "Pool").transform;
                 var isDead = new BoolReactiveProperty();
-                this.OnTriggerEnterAsObservable()
+                this.OnTriggerStayAsObservable()
                     .Subscribe(async x =>
                     {
                         if (0 < collierTagNames.Where(q => x.CompareTag(q))
@@ -175,7 +175,19 @@ namespace Gimmick
                                 }
                                 particle.Play();
 
-                                transform.localPosition = Vector3.MoveTowards(currentTransform.localPosition, x.transform.localPosition, -1f * returnDashSpeed * Time.deltaTime);
+                                var movePosition = Vector3.MoveTowards(currentTransform.localPosition, x.transform.localPosition, -1f * returnDashSpeed * Time.deltaTime);
+                                if (LevelDesisionIsObjected.CheckPositionAndGetDirection2D(spaceOwnTransform, movePosition, borderOffset) < 0)
+                                {
+                                    // ローカルから取得した座標が左空間の移動範囲外になる場合
+                                    // 多少強引だが、固定座標値を設定
+                                    if (((Direction2D)LevelDesisionIsObjected.CheckPositionAndGetDirection2D(spaceOwnTransform, currentTransform.localPosition, borderOffset)).Equals(Direction2D.Left))
+                                        transform.localPosition += Vector3.left * returnLevel;
+                                    else
+                                        transform.localPosition += Vector3.right * returnLevel;
+
+                                }
+                                else
+                                    transform.localPosition = movePosition;
                             }
                         }
                         if (x.CompareTag(TagConst.TAG_NAME_PLAYER) && !isDead.Value)
