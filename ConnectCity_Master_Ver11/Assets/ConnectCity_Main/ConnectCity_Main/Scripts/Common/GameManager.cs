@@ -7,12 +7,14 @@ using Main.Level;
 using Gimmick;
 using Main.Common.LevelDesign;
 using Main.InputSystem;
+using Trial.Main;
 
 namespace Main.Common
 {
     /// <summary>
     /// ゲームマネージャー
     /// </summary>
+    [RequireComponent(typeof(GameManagerTrial))]
     public class GameManager : MonoBehaviour
     {
         /// <summary>シーンのオーナー</summary>
@@ -44,9 +46,14 @@ namespace Main.Common
         private static GameManager instance;
         /// <summary>シングルトンのインスタンス</summary>
         public static GameManager Instance => instance;
+        /// <summary>体験版ゲームマネージャー</summary>
+        private GameManagerTrial _gameManagerTrial;
 
         private void Awake()
         {
+            _gameManagerTrial = GetComponent<GameManagerTrial>();
+            if (_gameManagerTrial.TrialMode)
+                _gameManagerTrial.SelfAwake();
             instance = this;
             if (!audioOwner.GetComponent<AudioOwner>().Initialize())
                 Debug.LogError("オーディオ初期処理の失敗");
