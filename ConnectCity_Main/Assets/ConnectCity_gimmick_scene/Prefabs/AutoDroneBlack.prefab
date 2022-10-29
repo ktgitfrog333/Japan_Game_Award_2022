@@ -572,7 +572,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.75
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5100237560629663099
 MonoBehaviour:
@@ -596,6 +596,8 @@ MonoBehaviour:
   shakeVibrato: 5
   shakeRandomness: 35
   droneCollisionEffectPrefab: {fileID: 1962168753770254928, guid: 5f73fe44cb9196b47a544eb9e0e78801, type: 3}
+  collierTagNames:
+  - FreezeCube
 --- !u!54 &4757667056529370065
 Rigidbody:
   m_ObjectHideFlags: 0
