@@ -11,7 +11,7 @@ namespace Main.Common
     {
         private void Reset()
         {
-            //AllApply();
+            AllApply();
         }
 
         private void AllApply()
