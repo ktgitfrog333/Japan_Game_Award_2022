@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Trial.TitleSelect;
 
 namespace TitleSelect
 {
     public class Select_Comment : MonoBehaviour
     {
         public Text text;
+        /// <summary>体験版セレクトシーンの制御</summary>
+        private InputKey_SelectTrial _inputKey_SelectTrial;
         // Start is called before the first frame update
         void Start()
         {
@@ -22,6 +25,12 @@ namespace TitleSelect
 
         public void Comment(int stage)
         {
+            if (_inputKey_SelectTrial == null) { }
+                _inputKey_SelectTrial = GameObject.Find("GameObject").GetComponent<InputKey_SelectTrial>();
+            if (_inputKey_SelectTrial.TrialMode)
+                stage = _inputKey_SelectTrial.GetStageNumberTrial(stage);
+            if (stage < 1)
+                throw new System.Exception("ステージ番号取得の失敗");
             if (stage == 1)
             {
                 text.text = "難易度【★☆☆☆☆☆☆☆☆☆】\r\nコネクトシティでの基本操作を覚える\r\nステージだよ。";

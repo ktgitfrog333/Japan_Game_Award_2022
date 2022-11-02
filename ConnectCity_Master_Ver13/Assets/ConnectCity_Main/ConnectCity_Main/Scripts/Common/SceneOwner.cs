@@ -72,6 +72,55 @@ namespace Main.Common
         public int LoadSceneId => _loadSceneId;
 
         /// <summary>
+        /// 最終ステージフラグを更新
+        /// ステージ単位で変更
+        /// </summary>
+        /// <param name="index">ステージ番号</param>
+        /// <param name="value">値</param>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateFinalStage(int index, bool value)
+        {
+            try
+            {
+                finalStages[index] = value;
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// コネクトクリア回数を更新
+        /// </summary>
+        /// <param name="chgCounters">コネクトクリア回数（変更配列）</param>
+        /// <returns>成功／失敗</returns>
+        public bool UpdateClearConnectedCounters(int[] chgCounters)
+        {
+            try
+            {
+                if (chgCounters != null && 0 < chgCounters.Length)
+                {
+                    for (var i = 0; i < chgCounters.Length; i++)
+                    {
+                        clearConnectedCounters[i] = chgCounters[i];
+                    }
+                }
+                else
+                    throw new System.Exception("データが空");
+
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// シーン設定をセット
         /// </summary>
         /// <param name="index">シーン番号</param>

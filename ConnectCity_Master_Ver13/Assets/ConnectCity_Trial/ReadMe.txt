@@ -1,0 +1,7 @@
+Assets\ConnectCity_TitleSelect\Scripts\InputKey_Select.cs
+Assets\ConnectCity_TitleSelect\Scripts\Select_Comment.cs
+Assets\ConnectCity_TitleSelect\Resources\SelectSceneMapingData.csv
+Assets\ConnectCity_Main\ConnectCity_Main\Scripts\Common\GameManager.cs
+Assets\ConnectCity_Main\ConnectCity_Main\Scripts\Common\SceneOwner.cs
+Assets\ConnectCity_Main\Resources\MainSceneMapingData.csv
+Assets\ConnectCity_Trial\*

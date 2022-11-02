@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Main.Common;
 using UniRx;
 using UnityEngine.InputSystem;
+using Trial.TitleSelect;
 
 namespace TitleSelect
 {
+    [RequireComponent(typeof(InputKey_SelectTrial))]
     public class InputKey_Select : MonoBehaviour, IInputCallbackValue
     {
         public GameObject Select_Flame_Image_01;
@@ -123,6 +125,9 @@ namespace TitleSelect
         bool select_cancel;
 
         public Text text;
+        /// <summary>体験版セレクトシーンの制御</summary>
+        private InputKey_SelectTrial inputKey_SelectTrial;
+
         public enum Stage_Num
         {
             Zero,
@@ -198,6 +203,8 @@ namespace TitleSelect
         // Start is called before the first frame update
         void Start()
         {
+            inputKey_SelectTrial = GetComponent<InputKey_SelectTrial>();
+            inputKey_SelectTrial.SelfStart();
             Select_Flame_Image_01 = GameObject.Find("Select_Flame_Image_01");
             Select_Flame_Image_02 = GameObject.Find("Select_Flame_Image_02");
             Select_Flame_Image_03 = GameObject.Find("Select_Flame_Image_03");
@@ -263,35 +270,35 @@ namespace TitleSelect
             {
                 scroll = Stage_Scroll.Scroll2;
             }
-            else if ((int)Stage_Num.Stage11 <= (int)stage && (int)stage <= (int)Stage_Num.Stage15)
+            else if ((int)Stage_Num.Stage11 <= (int)stage && (int)stage <= (int)Stage_Num.Stage15 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll3;
             }
-            else if ((int)Stage_Num.Stage16 <= (int)stage && (int)stage <= (int)Stage_Num.Stage20)
+            else if ((int)Stage_Num.Stage16 <= (int)stage && (int)stage <= (int)Stage_Num.Stage20 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll4;
             }
-            else if ((int)Stage_Num.Stage21 <= (int)stage && (int)stage <= (int)Stage_Num.Stage25)
+            else if ((int)Stage_Num.Stage21 <= (int)stage && (int)stage <= (int)Stage_Num.Stage25 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll5;
             }
-            else if ((int)Stage_Num.Stage26 <= (int)stage && (int)stage <= (int)Stage_Num.Stage30)
+            else if ((int)Stage_Num.Stage26 <= (int)stage && (int)stage <= (int)Stage_Num.Stage30 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll6;
             }
-            else if ((int)Stage_Num.Stage31 <= (int)stage && (int)stage <= (int)Stage_Num.Stage35)
+            else if ((int)Stage_Num.Stage31 <= (int)stage && (int)stage <= (int)Stage_Num.Stage35 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll7;
             }
-            else if ((int)Stage_Num.Stage36 <= (int)stage && (int)stage <= (int)Stage_Num.Stage40)
+            else if ((int)Stage_Num.Stage36 <= (int)stage && (int)stage <= (int)Stage_Num.Stage40 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll8;
             }
-            else if ((int)Stage_Num.Stage41 <= (int)stage && (int)stage <= (int)Stage_Num.Stage45)
+            else if ((int)Stage_Num.Stage41 <= (int)stage && (int)stage <= (int)Stage_Num.Stage45 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll9;
             }
-            else if ((int)Stage_Num.Stage46 <= (int)stage && (int)stage <= (int)Stage_Num.Stage50)
+            else if ((int)Stage_Num.Stage46 <= (int)stage && (int)stage <= (int)Stage_Num.Stage50 && !inputKey_SelectTrial.TrialMode)
             {
                 scroll = Stage_Scroll.Scroll10;
             }
@@ -557,7 +564,7 @@ namespace TitleSelect
                 case Stage_Scroll.Scroll2:
                     RenderUpdateSelectFlameImage(scroll);
                     Select_Left_Arrow.SetActive(true);
-                    Select_Right_Arrow.SetActive(true);
+                    Select_Right_Arrow.SetActive(!inputKey_SelectTrial.TrialMode);
                     switch (stage)
                     {
                         case Stage_Num.Stage6:
@@ -675,7 +682,7 @@ namespace TitleSelect
                                 stage = Stage_Num.Stage9;
                                 SfxPlay.Instance.PlaySFX(ClipToPlay.se_select);
                             }
-                            if (GetInputRight())
+                            if (GetInputRight() && !inputKey_SelectTrial.TrialMode)
                             {
                                 scroll = Stage_Scroll.Scroll3;
                                 stage = Stage_Num.Stage11;
